@@ -13,6 +13,7 @@
 | **Language** | Swift 6 |
 | **UI Framework** | SwiftUI |
 | **Architecture** | MVI |
+| **Network** | Alamofire |
 | **Concurrency** | Swift Concurrency |
 | **Package Manager** | Swift Package Manager (SPM) |
 
@@ -28,7 +29,7 @@
 
 ## 📌 Convention
 ### Code Style
-[Swift 스타일쉐어 가이드](https://github.com/StyleShare/swift-style-guide)를 기반으로 하되, 팀원의 기존 스타일과 SwiftUI 프로젝트 특성을 반영하여 일부 규칙은 재정의할 수 있습니다.
+[Swift 스타일쉐어 가이드](https://github.com/StyleShare/swift-style-guide)를 기반으로 하되, 팀원의 기존 스타일과 SwiftUI 프로젝트 특성을 반영하여 일부 규칙은 재정의했습니다.
 [코딩 컨벤션](https://furtive-purchase-33f.notion.site/3e4fe29d786d80edbdc0fc5d656d785c) 문서를 참고해주세요!
 
 ### Commit
@@ -70,16 +71,16 @@ ex) feat/#3-login
 - `main`에는 직접 커밋하지 않으며, 배포 시점에 `develop` → `main` PR로만 반영합니다.
 
 ## 🌊 Git Flow
-1. 작업할 내용에 대한 이슈를 판다
-2. 이슈 번호를 확인하고, 브랜치 컨벤션에 맞게 **GitHub에서** 브랜치를 판다
-   - 반드시 최신 `develop` 브랜치에서 파생해야 함
-   - 로컬에서는 `git fetch origin` → `git switch 브랜치이름`으로 이동
-3. 작업 내용을 적당히 쪼개어 로컬에서 `commit` 한다
-4. 작업이 완료되면 `push` 후 PR을 자세히 작성한다
-   - `push` 전 최신 `develop`을 작업 브랜치에 `merge` 하고 빌드되는지 꼭 확인
-5. 코드 리뷰 후 모든 개발 팀원의 `approve`를 받으면 `develop`에 `merge` 한다
-   - `merge` 후 원격 브랜치는 삭제한다 (로컬은 남겨두는 것이 좋음)
-6. `merge` 후 팀원에게 알리고, 모든 팀원은 로컬 `develop`을 최신화한다
+1. 작업할 내용에 대한 이슈를 생성합니다.
+2. 이슈 번호를 확인하고, 브랜치 컨벤션에 맞게 **GitHub에서** 브랜치를 생성합니다.
+   - 반드시 최신 `develop` 브랜치에서 파생해야 합니다.
+   - 로컬에서는 `git fetch origin` → `git switch 브랜치이름`으로 이동합니다.
+3. 작업 내용을 적당히 쪼개어 로컬에서 `commit` 합니다.
+4. 작업이 완료되면 `push` 후 PR을 자세히 작성합니다.
+   - `push` 전 최신 `develop`을 작업 브랜치에 `merge` 하고, 빌드되는지 꼭 확인합니다.
+5. 코드 리뷰 후 모든 개발 팀원의 `approve`를 받으면 `develop`에 `merge` 합니다.
+   - `merge` 후 원격 브랜치는 삭제합니다. (로컬 브랜치는 남겨두는 것을 권장합니다.)
+6. `merge` 후 팀원에게 알리고, 모든 팀원은 로컬 `develop`을 최신화합니다.
 
 ## 🧑‍💻 Team Members
 | | | | | | |
