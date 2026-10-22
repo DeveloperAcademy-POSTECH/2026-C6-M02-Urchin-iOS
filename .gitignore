@@ -1,0 +1,65 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+*.icloud
+
+# macOS 볼륨 / 네트워크 공유
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Xcode
+xcuserdata/
+DerivedData/
+*.xcscmblueprint
+*.xccheckout
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+/*.gcno
+timeline.xctimeline
+playground.xcworkspace
+**/xcshareddata/WorkspaceSettings.xcsettings
+
+# .xcodeproj 안에서는 프로젝트 파일, 공유 스킴, Package.resolved만 커밋
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+
+# 의존성
+.build/
+Carthage/Build/
+.accio/
+iOSInjectionProject/
+
+# 시크릿 – 저장소에 없으니 팀원에게 따로 받기
+*.xcconfig
+.env
+**/GoogleService-Info.plist
+
+# fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots/
+**/fastlane/test_output
+**/fastlane/FastlaneRunner
+**/fastlane/BuildOutputs
+**/fastlane/metadata
+**/fastlane/Deliverfile
+**/fastlane/.env.default
+Gemfile.lock
