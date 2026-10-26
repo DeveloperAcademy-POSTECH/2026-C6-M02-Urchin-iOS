@@ -33,10 +33,3 @@ enum DecimalInput {
         return Double("\(integerPart).\(fractionPart)")
     }
 }
-
-private extension Character {
-    
-    var isASCIIDigit: Bool {
-        isASCII && isNumber
-    }
-}
