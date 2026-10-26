@@ -40,4 +40,21 @@ struct OrganizationNameTests {
     func 가운데_공백은_길이에_포함한다() {
         #expect(OrganizationName.isValid(String(repeating: "가", count: 10) + " " + String(repeating: "가", count: 10)) == false)
     }
+    
+    @Test
+    func 한글_영문_숫자_띄어쓰기는_허용한다() {
+        #expect(OrganizationName.isValid("포항 Ocean 1팀") == true)
+    }
+    
+    @Test
+    func 특수문자와_이모지는_허용하지_않는다() {
+        #expect(OrganizationName.isValid("포항-바다") == false)
+        #expect(OrganizationName.isValid("포항·바다") == false)
+        #expect(OrganizationName.isValid("포항🌊") == false)
+    }
+    
+    @Test
+    func 가운데_줄바꿈은_허용하지_않는다() {
+        #expect(OrganizationName.isValid("포항\n바다") == false)
+    }
 }

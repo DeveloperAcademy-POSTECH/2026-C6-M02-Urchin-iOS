@@ -43,7 +43,28 @@ struct NicknameTests {
     }
     
     @Test
-    func 가운데_공백은_길이에_포함한다() {
-        #expect(Nickname.isValid("포 항") == true)
+    func 한글_영문_숫자는_허용한다() {
+        #expect(Nickname.isValid("포항Diver1") == true)
+    }
+    
+    @Test
+    func 띄어쓰기는_허용하지_않는다() {
+        #expect(Nickname.isValid("포 항") == false)
+    }
+    
+    @Test
+    func 특수문자와_이모지는_허용하지_않는다() {
+        #expect(Nickname.isValid("포항_다이버") == false)
+        #expect(Nickname.isValid("포항🐟") == false)
+    }
+    
+    @Test
+    func 자음이나_모음만_있으면_허용하지_않는다() {
+        #expect(Nickname.isValid("ㅋㅋ") == false)
+    }
+    
+    @Test
+    func 전각_영문과_숫자는_허용하지_않는다() {
+        #expect(Nickname.isValid("ＡＢ１") == false)
     }
 }

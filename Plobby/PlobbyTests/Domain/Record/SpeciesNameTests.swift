@@ -40,4 +40,17 @@ struct SpeciesNameTests {
     func 가운데_공백은_길이에_포함한다() {
         #expect(SpeciesName.isValid(String(repeating: "가", count: 25) + " " + String(repeating: "가", count: 25)) == false)
     }
+    
+    @Test
+    func 한글과_띄어쓰기는_허용한다() {
+        #expect(SpeciesName.isValid("별 불가사리") == true)
+    }
+    
+    @Test
+    func 영문_숫자_특수문자_이모지는_허용하지_않는다() {
+        #expect(SpeciesName.isValid("Asterias") == false)
+        #expect(SpeciesName.isValid("불가사리1") == false)
+        #expect(SpeciesName.isValid("불가사리!") == false)
+        #expect(SpeciesName.isValid("불가사리⭐️") == false)
+    }
 }

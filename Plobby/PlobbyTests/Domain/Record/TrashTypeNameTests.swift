@@ -40,4 +40,16 @@ struct TrashTypeNameTests {
     func 가운데_공백은_길이에_포함한다() {
         #expect(TrashTypeName.isValid(String(repeating: "가", count: 10) + " " + String(repeating: "가", count: 10)) == false)
     }
+    
+    @Test
+    func 한글_영문_숫자_띄어쓰기_가운뎃점은_허용한다() {
+        #expect(TrashTypeName.isValid("PET 병·캔 2") == true)
+    }
+    
+    @Test
+    func 가운뎃점_외_특수문자와_이모지는_허용하지_않는다() {
+        #expect(TrashTypeName.isValid("병/캔") == false)
+        #expect(TrashTypeName.isValid("병.캔") == false)
+        #expect(TrashTypeName.isValid("병🍾") == false)
+    }
 }

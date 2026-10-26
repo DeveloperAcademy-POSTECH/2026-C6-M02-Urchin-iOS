@@ -36,4 +36,16 @@ struct RecordMemoTests {
         #expect(RecordMemo.isValid(String(repeating: "가", count: 250) + " " + String(repeating: "가", count: 250)) == false)
         #expect(RecordMemo.isValid(String(repeating: "가", count: 250) + "\n" + String(repeating: "가", count: 250)) == false)
     }
+    
+    @Test
+    func 이모지가_아닌_문자는_모두_허용한다() {
+        #expect(RecordMemo.isValid("Plastic 3개, 수심 8.5m! (맑음) #1") == true)
+    }
+    
+    @Test
+    func 이모지가_있으면_유효하지_않다() {
+        #expect(RecordMemo.isValid("바다가 맑았다🌊") == false)
+        #expect(RecordMemo.isValid("최고👍🏻") == false)
+        #expect(RecordMemo.isValid("1️⃣번 구역") == false)
+    }
 }

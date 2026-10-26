@@ -13,6 +13,8 @@ enum TrashTypeName {
     static let maximumLength = 20
     
     static func isValid(_ name: String) -> Bool {
-        (minimumLength...maximumLength).contains(InputText.trimmed(name).count)
+        let trimmedName = InputText.trimmed(name)
+        return (minimumLength...maximumLength).contains(trimmedName.count)
+            && trimmedName.allSatisfy { $0.isHangul || $0.isEnglishLetter || $0.isASCIIDigit || $0 == " " || $0 == "·" }
     }
 }

@@ -12,6 +12,8 @@ enum RecordMemo {
     static let maximumLength = 500
     
     static func isValid(_ memo: String) -> Bool {
-        InputText.trimmed(memo).count <= maximumLength
+        let trimmedMemo = InputText.trimmed(memo)
+        return trimmedMemo.count <= maximumLength
+            && !trimmedMemo.contains(where: \.isEmoji)
     }
 }

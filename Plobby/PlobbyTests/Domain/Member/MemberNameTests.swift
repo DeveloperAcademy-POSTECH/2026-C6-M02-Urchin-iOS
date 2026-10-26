@@ -40,4 +40,16 @@ struct MemberNameTests {
     func 가운데_공백은_길이에_포함한다() {
         #expect(MemberName.isValid("포항 물잡이단") == false)
     }
+    
+    @Test
+    func 한글이_아니면_허용하지_않는다() {
+        #expect(MemberName.isValid("Romy") == false)
+        #expect(MemberName.isValid("은지1") == false)
+        #expect(MemberName.isValid("은지🐟") == false)
+    }
+    
+    @Test
+    func 자음이나_모음만_있으면_허용하지_않는다() {
+        #expect(MemberName.isValid("ㅇㅈ") == false)
+    }
 }
