@@ -21,13 +21,13 @@ struct NicknameTests {
     }
     
     @Test
-    func 오십_글자_닉네임은_유효하다() {
-        #expect(Nickname.isValid(String(repeating: "가", count: 50)) == true)
+    func 열_글자_닉네임은_유효하다() {
+        #expect(Nickname.isValid(String(repeating: "가", count: 10)) == true)
     }
     
     @Test
-    func 오십한_글자_이상이면_유효하지_않다() {
-        #expect(Nickname.isValid(String(repeating: "가", count: 51)) == false)
+    func 열한_글자_이상이면_유효하지_않다() {
+        #expect(Nickname.isValid(String(repeating: "가", count: 11)) == false)
     }
     
     @Test

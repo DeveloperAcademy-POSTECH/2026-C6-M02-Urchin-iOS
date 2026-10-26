@@ -10,7 +10,7 @@ import Foundation
 enum Nickname {
     
     static let minimumLength = 2
-    static let maximumLength = 50
+    static let maximumLength = 10
     
     static func isValid(_ nickname: String) -> Bool {
         let trimmedNickname = InputText.trimmed(nickname)
