@@ -16,4 +16,13 @@ enum InputText {
     static func isBlank(_ text: String) -> Bool {
         trimmed(text).isEmpty
     }
+    
+    static func isValid(
+        _ text: String,
+        length: ClosedRange<Int>,
+        allowing isAllowed: (Character) -> Bool
+    ) -> Bool {
+        let trimmedText = trimmed(text)
+        return length.contains(trimmedText.count) && trimmedText.allSatisfy(isAllowed)
+    }
 }

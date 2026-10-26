@@ -13,8 +13,8 @@ enum Nickname {
     static let maximumLength = 10
     
     static func isValid(_ nickname: String) -> Bool {
-        let trimmedNickname = InputText.trimmed(nickname)
-        return (minimumLength...maximumLength).contains(trimmedNickname.count)
-            && trimmedNickname.allSatisfy { $0.isHangul || $0.isEnglishLetter || $0.isASCIIDigit }
+        InputText.isValid(nickname, length: minimumLength...maximumLength) {
+            $0.isHangul || $0.isEnglishLetter || $0.isASCIIDigit
+        }
     }
 }
