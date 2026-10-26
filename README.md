@@ -5,16 +5,16 @@
 📌 Todo: 추가하기 ~.~
 
 ## 🔨 Tech Stack
-📌 Todo: 우리 프로젝트에 맞춰 수정하기 ~.~
 | Category | Tools & Technologies |
 | :--- | :--- |
 | **IDE** | Xcode 26.x |
 | **Minimum Deployment Target** | iOS 26.4 |
 | **Language** | Swift 6 |
 | **UI Framework** | SwiftUI |
-| **Architecture** | MVI |
-| **Network** | Alamofire |
+| **Architecture** | TCA (The Composable Architecture) |
+| **Backend** | Supabase |
 | **Concurrency** | Swift Concurrency |
+| **Test** | Swift Testing |
 | **Package Manager** | Swift Package Manager (SPM) |
 
 ## 🛠️ Architecture
@@ -24,8 +24,22 @@
 
 ## 📂 Foldering
 ```
-📌 Todo: 추가하기 ~.~
+Plobby
+├── Plobby
+│   ├── App            # 앱 진입점(PlobbyApp), 루트 화면, 탭 구성, 딥링크·푸시 진입 처리
+│   ├── Features       # 화면 단위 기능. 기능별 폴더에 Reducer와 View를 한 쌍으로 관리 (ex. Feed/, Record/)
+│   ├── Domain         # 데이터 모델(Entity)과 규칙(제목 생성, 입력 검증 등). 순수 Swift만 사용
+│   ├── Clients        # 외부와 통신하는 Dependency Client. Client별 폴더에 인터페이스, live 구현, DTO 관리
+│   ├── Core           # 색·글꼴, 여러 기능이 같이 쓰는 공용 UI 컴포넌트와 Extension
+│   └── Resources      # Assets(이미지·색), 문자열 등 리소스
+├── PlobbyTests        # 유닛 테스트 (Domain 규칙, Reducer TestStore)
+└── PlobbyUITests      # UI 테스트
 ```
+
+- `import Supabase`는 `Clients/` 안에서만 사용합니다.
+- DTO는 `Clients/` 밖으로 내보내지 않고, Feature에서는 `Domain/`의 Entity만 사용합니다.
+- `Domain/`은 SwiftUI, TCA, Supabase를 import하지 않습니다.
+- `Core/`는 특정 Feature를 참조하지 않습니다.
 
 ## 📌 Convention
 ### Code Style
@@ -83,8 +97,8 @@ ex) feat/#3-login
 6. `merge` 후 팀원에게 알리고, 모든 팀원은 로컬 `develop`을 최신화합니다.
 
 ## 🧑‍💻 Team Members
-| | | | | | |
-| :--: | :--: | :--: | :--: | :--: | :--: |
-| [김예빈](https://github.com/ErinKYB) | [박정민](https://github.com/LanaKee) | [이선우](https://github.com/dlsundn) | [이은지](https://github.com/oeunji) | 정지나 | [허승준](https://github.com/dev-domo) |
-| 에린(Erin) | 라나키(Lanakee) | 신디(Cindy) | 로시(Rossi) | 지나(Jina) | 더스틴(Dustin) |
-| Designer | Developer | Designer | Developer | Designer | Developer |
+| | | | | |
+| :--: | :--: | :--: | :--: | :--: |
+| [김예빈](https://github.com/ErinKYB) | [이선우](https://github.com/dlsundn) | [이은지](https://github.com/oeunji) | [정지나](https://github.com/J1naChung) | [허승준](https://github.com/dev-domo) |
+| 에린(Erin) | 신디(Cindy) | 로시(Rossi) | 지나(Jina) | 더스틴(Dustin) |
+| Designer | iOS · Backend | iOS | Designer | iOS · Backend |
