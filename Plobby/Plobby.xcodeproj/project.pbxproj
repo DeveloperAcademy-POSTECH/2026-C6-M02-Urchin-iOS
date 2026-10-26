@@ -40,7 +40,6 @@
 			membershipExceptions = (
 				Clients/.gitkeep,
 				Core/DesignSystem/.gitkeep,
-				Domain/.gitkeep,
 				Features/.gitkeep,
 			);
 			target = DA1A4DA43089FEAF00AEAB52 /* Plobby */;
