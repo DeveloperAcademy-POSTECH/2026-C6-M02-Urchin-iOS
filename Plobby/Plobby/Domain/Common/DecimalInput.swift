@@ -26,8 +26,8 @@ enum DecimalInput {
 
         let fractionPart = parts[1]
         guard !fractionPart.isEmpty,
-                fractionPart.count <= maximumFractionDigits,
-                fractionPart.allSatisfy(\.isASCIIDigit)
+              fractionPart.count <= maximumFractionDigits,
+              fractionPart.allSatisfy(\.isASCIIDigit)
         else { return nil }
 
         return Double("\(integerPart).\(fractionPart)")
