@@ -10,7 +10,7 @@ import Foundation
 
 /// Apple 요청에는 해시값, Supabase에는 원래 값 보내기
 enum AppleNonce {
-    static let hexFormat = "%02x"
+    private static let hexFormat = "%02x"
     
     static func sha256(_ input: String) -> String {
         SHA256.hash(data: Data(input.utf8))

@@ -5,8 +5,9 @@
 //  Created by 더스틴 on 10/27/26.
 //
 
-import ComposableArchitecture
 import Foundation
+
+import ComposableArchitecture
 
 @Reducer
 struct OnboardingFeature {

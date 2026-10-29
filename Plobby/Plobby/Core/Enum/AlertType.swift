@@ -12,29 +12,25 @@ enum AlertType {
     
     var title: String {
         switch self {
-        case .signInFailed:
-            "로그인하지 못했어요"
+        case .signInFailed: "로그인하지 못했어요"
         }
     }
     
     var message: String? {
         switch self {
-        case .signInFailed:
-            "잠시 후 다시 시도해 주세요."
+        case .signInFailed: "잠시 후 다시 시도해 주세요."
         }
     }
     
     var buttonType: ButtonType {
         switch self {
-        case .signInFailed:
-            .confirm
+        case .signInFailed: .confirm
         }
     }
     
     var confirmTitle: String {
         switch self {
-        case .signInFailed:
-            "확인"
+        case .signInFailed: "확인"
         }
     }
 }

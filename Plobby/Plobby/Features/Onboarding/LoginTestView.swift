@@ -6,12 +6,17 @@
 //
 
 import AuthenticationServices
-import ComposableArchitecture
-
 import SwiftUI
 
+import ComposableArchitecture
+
 struct LoginTestView: View {
+    
+    // MARK: - properties
+    
     @Bindable var store: StoreOf<OnboardingFeature>
+    
+    // MARK: - body
     
     var body: some View {
         VStack(spacing: 16) {

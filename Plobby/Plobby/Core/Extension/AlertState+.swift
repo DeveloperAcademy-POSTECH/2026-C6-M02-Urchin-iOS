@@ -5,9 +5,9 @@
 //  Created by 더스틴 on 10/29/26.
 //
 
-import ComposableArchitecture
-
 import Foundation
+
+import ComposableArchitecture
 
 extension AlertState {
     static func make(
@@ -35,8 +35,7 @@ extension AlertState {
         cancel cancelAction: Action? = nil
     ) -> [ButtonState<Action>] {
         switch type.buttonType {
-        case .confirm:
-            ButtonState.make(type.confirmTitle, action: confirmAction)
+        case .confirm: ButtonState.make(type.confirmTitle, action: confirmAction)
         }
     }
 }
