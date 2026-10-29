@@ -41,21 +41,21 @@ struct InputTextTests {
     
     @Test
     func 빈_문자열은_빈_값이다() {
-        #expect(InputText.isBlank("") == true)
+        #expect(InputText.isBlank(""))
     }
     
     @Test
     func 공백만_있으면_빈_값이다() {
-        #expect(InputText.isBlank("   ") == true)
+        #expect(InputText.isBlank("   "))
     }
     
     @Test
     func 줄바꿈과_탭만_있으면_빈_값이다() {
-        #expect(InputText.isBlank("\n\t ") == true)
+        #expect(InputText.isBlank("\n\t "))
     }
     
     @Test
     func 글자가_하나라도_있으면_빈_값이_아니다() {
-        #expect(InputText.isBlank(" 가 ") == false)
+        #expect(!InputText.isBlank(" 가 "))
     }
 }
