@@ -25,22 +25,18 @@ struct WaterDepthTests {
         #expect(WaterDepth.isValid(8.5) == true)
     }
     
-    @Test
-    func 최소_수심보다_얕으면_유효하지_않다() {
-        #expect(WaterDepth.isValid(0) == false)
-        #expect(WaterDepth.isValid(0.09) == false)
-        #expect(WaterDepth.isValid(-1) == false)
+    @Test(arguments: [0, 0.09, -1])
+    func 최소_수심보다_얕으면_유효하지_않다(meters: Double) {
+        #expect(WaterDepth.isValid(meters) == false)
     }
     
-    @Test
-    func 최대_수심보다_깊으면_유효하지_않다() {
-        #expect(WaterDepth.isValid(100) == false)
-        #expect(WaterDepth.isValid(99.91) == false)
+    @Test(arguments: [100, 99.91])
+    func 최대_수심보다_깊으면_유효하지_않다(meters: Double) {
+        #expect(WaterDepth.isValid(meters) == false)
     }
     
-    @Test
-    func 숫자가_아니면_유효하지_않다() {
-        #expect(WaterDepth.isValid(.nan) == false)
-        #expect(WaterDepth.isValid(.infinity) == false)
+    @Test(arguments: [Double.nan, .infinity])
+    func 숫자가_아니면_유효하지_않다(meters: Double) {
+        #expect(WaterDepth.isValid(meters) == false)
     }
 }

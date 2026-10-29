@@ -25,21 +25,18 @@ struct WaterTemperatureTests {
         #expect(WaterTemperature.isValid(18.5) == true)
     }
     
-    @Test
-    func 최저_수온보다_낮으면_유효하지_않다() {
-        #expect(WaterTemperature.isValid(-0.1) == false)
-        #expect(WaterTemperature.isValid(-5) == false)
+    @Test(arguments: [-0.1, -5])
+    func 최저_수온보다_낮으면_유효하지_않다(celsius: Double) {
+        #expect(WaterTemperature.isValid(celsius) == false)
     }
     
-    @Test
-    func 최고_수온보다_높으면_유효하지_않다() {
-        #expect(WaterTemperature.isValid(40.1) == false)
-        #expect(WaterTemperature.isValid(100) == false)
+    @Test(arguments: [40.1, 100])
+    func 최고_수온보다_높으면_유효하지_않다(celsius: Double) {
+        #expect(WaterTemperature.isValid(celsius) == false)
     }
     
-    @Test
-    func 숫자가_아니면_유효하지_않다() {
-        #expect(WaterTemperature.isValid(.nan) == false)
-        #expect(WaterTemperature.isValid(.infinity) == false)
+    @Test(arguments: [Double.nan, .infinity])
+    func 숫자가_아니면_유효하지_않다(celsius: Double) {
+        #expect(WaterTemperature.isValid(celsius) == false)
     }
 }

@@ -30,10 +30,9 @@ struct NicknameTests {
         #expect(Nickname.isValid(String(repeating: "가", count: 11)) == false)
     }
     
-    @Test
-    func 비어_있거나_공백만_있으면_유효하지_않다() {
-        #expect(Nickname.isValid("") == false)
-        #expect(Nickname.isValid("   ") == false)
+    @Test(arguments: ["", "   "])
+    func 비어_있거나_공백만_있으면_유효하지_않다(nickname: String) {
+        #expect(Nickname.isValid(nickname) == false)
     }
     
     @Test
@@ -52,10 +51,9 @@ struct NicknameTests {
         #expect(Nickname.isValid("포 항") == false)
     }
     
-    @Test
-    func 특수문자와_이모지는_허용하지_않는다() {
-        #expect(Nickname.isValid("포항_다이버") == false)
-        #expect(Nickname.isValid("포항🐟") == false)
+    @Test(arguments: ["포항_다이버", "포항🐟"])
+    func 특수문자와_이모지는_허용하지_않는다(nickname: String) {
+        #expect(Nickname.isValid(nickname) == false)
     }
     
     @Test

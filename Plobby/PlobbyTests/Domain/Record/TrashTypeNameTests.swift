@@ -25,10 +25,9 @@ struct TrashTypeNameTests {
         #expect(TrashTypeName.isValid(String(repeating: "가", count: 21)) == false)
     }
     
-    @Test
-    func 비어_있거나_공백만_있으면_유효하지_않다() {
-        #expect(TrashTypeName.isValid("") == false)
-        #expect(TrashTypeName.isValid("   ") == false)
+    @Test(arguments: ["", "   "])
+    func 비어_있거나_공백만_있으면_유효하지_않다(name: String) {
+        #expect(TrashTypeName.isValid(name) == false)
     }
     
     @Test
@@ -46,10 +45,8 @@ struct TrashTypeNameTests {
         #expect(TrashTypeName.isValid("PET 병·캔 2") == true)
     }
     
-    @Test
-    func 가운뎃점_외_특수문자와_이모지는_허용하지_않는다() {
-        #expect(TrashTypeName.isValid("병/캔") == false)
-        #expect(TrashTypeName.isValid("병.캔") == false)
-        #expect(TrashTypeName.isValid("병🍾") == false)
+    @Test(arguments: ["병/캔", "병.캔", "병🍾"])
+    func 가운뎃점_외_특수문자와_이모지는_허용하지_않는다(name: String) {
+        #expect(TrashTypeName.isValid(name) == false)
     }
 }

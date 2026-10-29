@@ -25,22 +25,18 @@ struct CollectedWeightTests {
         #expect(CollectedWeight.isValid(kilograms: 12.5) == true)
     }
     
-    @Test
-    func 최소_무게보다_가벼우면_유효하지_않다() {
-        #expect(CollectedWeight.isValid(kilograms: 0) == false)
-        #expect(CollectedWeight.isValid(kilograms: 0.09) == false)
-        #expect(CollectedWeight.isValid(kilograms: -1) == false)
+    @Test(arguments: [0, 0.09, -1])
+    func 최소_무게보다_가벼우면_유효하지_않다(kilograms: Double) {
+        #expect(CollectedWeight.isValid(kilograms: kilograms) == false)
     }
     
-    @Test
-    func 최대_무게보다_무거우면_유효하지_않다() {
-        #expect(CollectedWeight.isValid(kilograms: 1000) == false)
-        #expect(CollectedWeight.isValid(kilograms: 999.91) == false)
+    @Test(arguments: [1000, 999.91])
+    func 최대_무게보다_무거우면_유효하지_않다(kilograms: Double) {
+        #expect(CollectedWeight.isValid(kilograms: kilograms) == false)
     }
     
-    @Test
-    func 숫자가_아니면_유효하지_않다() {
-        #expect(CollectedWeight.isValid(kilograms: .nan) == false)
-        #expect(CollectedWeight.isValid(kilograms: .infinity) == false)
+    @Test(arguments: [Double.nan, .infinity])
+    func 숫자가_아니면_유효하지_않다(kilograms: Double) {
+        #expect(CollectedWeight.isValid(kilograms: kilograms) == false)
     }
 }

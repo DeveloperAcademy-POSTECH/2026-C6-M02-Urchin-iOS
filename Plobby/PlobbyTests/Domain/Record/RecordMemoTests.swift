@@ -10,10 +10,9 @@ import Testing
 
 struct RecordMemoTests {
     
-    @Test
-    func 비어_있거나_공백만_있어도_유효하다() {
-        #expect(RecordMemo.isValid("") == true)
-        #expect(RecordMemo.isValid("   ") == true)
+    @Test(arguments: ["", "   "])
+    func 비어_있거나_공백만_있어도_유효하다(memo: String) {
+        #expect(RecordMemo.isValid(memo) == true)
     }
     
     @Test
@@ -31,10 +30,12 @@ struct RecordMemoTests {
         #expect(RecordMemo.isValid("  " + String(repeating: "가", count: 500) + "\n") == true)
     }
     
-    @Test
-    func 가운데_공백과_줄바꿈은_길이에_포함한다() {
-        #expect(RecordMemo.isValid(String(repeating: "가", count: 250) + " " + String(repeating: "가", count: 250)) == false)
-        #expect(RecordMemo.isValid(String(repeating: "가", count: 250) + "\n" + String(repeating: "가", count: 250)) == false)
+    @Test(arguments: [
+        String(repeating: "가", count: 250) + " " + String(repeating: "가", count: 250),
+        String(repeating: "가", count: 250) + "\n" + String(repeating: "가", count: 250)
+    ])
+    func 가운데_공백과_줄바꿈은_길이에_포함한다(memo: String) {
+        #expect(RecordMemo.isValid(memo) == false)
     }
     
     @Test
@@ -42,10 +43,8 @@ struct RecordMemoTests {
         #expect(RecordMemo.isValid("Plastic 3개, 수심 8.5m! (맑음) #1") == true)
     }
     
-    @Test
-    func 이모지가_있으면_유효하지_않다() {
-        #expect(RecordMemo.isValid("바다가 맑았다🌊") == false)
-        #expect(RecordMemo.isValid("최고👍🏻") == false)
-        #expect(RecordMemo.isValid("1️⃣번 구역") == false)
+    @Test(arguments: ["바다가 맑았다🌊", "최고👍🏻", "1️⃣번 구역"])
+    func 이모지가_있으면_유효하지_않다(memo: String) {
+        #expect(RecordMemo.isValid(memo) == false)
     }
 }

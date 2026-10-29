@@ -40,24 +40,19 @@ struct DecimalInputTests {
         #expect(DecimalInput.number(from: " 8.5 ", locale: koreanLocale) == 8.5)
     }
     
-    @Test
-    func 비어_있거나_공백만_있으면_변환하지_않는다() {
-        #expect(DecimalInput.number(from: "", locale: koreanLocale) == nil)
-        #expect(DecimalInput.number(from: "   ", locale: koreanLocale) == nil)
+    @Test(arguments: ["", "   "])
+    func 비어_있거나_공백만_있으면_변환하지_않는다(text: String) {
+        #expect(DecimalInput.number(from: text, locale: koreanLocale) == nil)
     }
     
-    @Test
-    func 숫자가_아닌_문자가_있으면_변환하지_않는다() {
-        #expect(DecimalInput.number(from: "8a", locale: koreanLocale) == nil)
-        #expect(DecimalInput.number(from: "-1", locale: koreanLocale) == nil)
-        #expect(DecimalInput.number(from: "1,000", locale: koreanLocale) == nil)
-        #expect(DecimalInput.number(from: "½", locale: koreanLocale) == nil)
+    @Test(arguments: ["8a", "-1", "1,000", "½"])
+    func 숫자가_아닌_문자가_있으면_변환하지_않는다(text: String) {
+        #expect(DecimalInput.number(from: text, locale: koreanLocale) == nil)
     }
     
-    @Test
-    func 소수점_앞이나_뒤가_비어_있으면_변환하지_않는다() {
-        #expect(DecimalInput.number(from: ".5", locale: koreanLocale) == nil)
-        #expect(DecimalInput.number(from: "8.", locale: koreanLocale) == nil)
+    @Test(arguments: [".5", "8."])
+    func 소수점_앞이나_뒤가_비어_있으면_변환하지_않는다(text: String) {
+        #expect(DecimalInput.number(from: text, locale: koreanLocale) == nil)
     }
     
     @Test
