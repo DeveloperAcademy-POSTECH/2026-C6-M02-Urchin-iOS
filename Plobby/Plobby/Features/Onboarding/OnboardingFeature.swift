@@ -14,6 +14,10 @@ struct OnboardingFeature {
     
     @ObservableState
     struct State: Equatable {
+        var currentPage: OnboardingPage = .trashAmount
+        var currentPageIndex: Int {
+            OnboardingPage.allCases.firstIndex(of: currentPage) ?? 0
+        }
         var nonce: String?
         var isSigningIn = false
         var user: AuthUser?
@@ -25,7 +29,11 @@ struct OnboardingFeature {
     }
     
     enum Action {
+        case onAppear
+        case timerTicked
+        case screenTapped
         case appleButtonTapped
+        case browseButtonTapped
         case signInAppleCompleted(Result<AppleCredential, AppleSignInError>)
         case signInResponse(Result<AuthUser, any Error>)
         case alert(PresentationAction<Alert>)
@@ -35,17 +43,32 @@ struct OnboardingFeature {
         }
     }
     
+    @Dependency(\.continuousClock) var clock
     @Dependency(\.authClient) var authClient
     
     private nonisolated enum CancelID {
         case signIn
+        case timer
     }
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .onAppear:
+                return startTimer()
+
+            case .timerTicked:
+                state.currentPage = state.currentPage.next
+                return .none
+
+            case .screenTapped:
+                state.currentPage = state.currentPage.next
+                return startTimer()
+                
             case .appleButtonTapped:
-                state.nonce = UUID().uuidString
+                return .none
+                
+            case .browseButtonTapped:
                 return .none
                 
             case .signInAppleCompleted(.failure(.canceled)):
@@ -87,5 +110,19 @@ struct OnboardingFeature {
             }
         }
         .ifLet(\.$alert, action: \.alert)
+    }
+}
+
+// MARK: - Functions
+
+extension OnboardingFeature {
+    
+    private func startTimer() -> Effect<Action> {
+        .run { send in
+            for await _ in await clock.timer(interval: .seconds(3)) {
+                await send(.timerTicked)
+            }
+        }
+        .cancellable(id: CancelID.timer, cancelInFlight: true)
     }
 }
