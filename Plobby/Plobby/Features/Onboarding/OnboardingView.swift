@@ -5,6 +5,7 @@
 //  Created by 이은지 on 10/30/26.
 //
 
+import AuthenticationServices
 import SwiftUI
 
 import ComposableArchitecture
@@ -19,17 +20,9 @@ struct OnboardingView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            indicator
-            
-            Spacer()
-
-            pageDescription
+            pageContent
             appleLoginButton
             browseButton
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            store.send(.screenTapped)
         }
         .onAppear {
             store.send(.onAppear)
@@ -40,6 +33,21 @@ struct OnboardingView: View {
 // MARK: - Subviews
 
 extension OnboardingView {
+    
+    private var pageContent: some View {
+        VStack(alignment: .center, spacing: 0) {
+            indicator
+
+            Spacer()
+
+            pageDescription
+        }
+        .frame(maxWidth: .infinity)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            store.send(.screenTapped)
+        }
+    }
     
     private var indicator: some View {
         OnboardingPageIndicator(
@@ -65,9 +73,19 @@ extension OnboardingView {
     }
     
     private var appleLoginButton: some View {
-        AppleLoginButton {
+        SignInWithAppleButton(.signIn) { request in
             store.send(.appleButtonTapped)
+            request.requestedScopes = [.fullName]
+            request.nonce = store.hashedNonce
+        } onCompletion: { result in
+            store.send(.signInAppleCompleted(result.appleCredential))
         }
+        .frame(height: 51)
+        .overlay {
+            AppleLoginButton()
+                .allowsHitTesting(false)
+        }
+        .disabled(store.isSigningIn)
         .padding(.horizontal, 38.5)
         .padding(.bottom, 17)
     }

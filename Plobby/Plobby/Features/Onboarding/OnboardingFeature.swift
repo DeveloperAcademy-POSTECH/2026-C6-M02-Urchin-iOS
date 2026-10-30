@@ -66,6 +66,7 @@ struct OnboardingFeature {
                 return startTimer()
                 
             case .appleButtonTapped:
+                state.nonce = UUID().uuidString
                 return .none
                 
             case .browseButtonTapped:
@@ -99,7 +100,7 @@ struct OnboardingFeature {
                 state.user = user
                 return .none
                 
-            case .signInResponse(.failure):
+            case let .signInResponse(.failure(error)):
                 state.isSigningIn = false
                 state.nonce = nil
                 state.alert = AlertState.make(.signInFailed)
