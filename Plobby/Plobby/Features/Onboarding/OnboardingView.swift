@@ -14,7 +14,7 @@ struct OnboardingView: View {
     
     // MARK: - Properties
     
-    let store: StoreOf<OnboardingFeature>
+    @Bindable var store: StoreOf<OnboardingFeature>
     
     // MARK: - Body
     
@@ -24,6 +24,7 @@ struct OnboardingView: View {
             appleLoginButton
             browseButton
         }
+        .alert($store.scope(state: \.alert, action: \.alert))
         .onAppear {
             store.send(.onAppear)
         }
