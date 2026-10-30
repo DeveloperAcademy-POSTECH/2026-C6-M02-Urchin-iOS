@@ -83,7 +83,7 @@ extension OnboardingView {
         }
         .frame(height: 51)
         .overlay {
-            AppleLoginButton()
+            AppleLoginLabel()
                 .allowsHitTesting(false)
         }
         .disabled(store.isSigningIn)

@@ -1,5 +1,5 @@
 //
-//  AppleLoginButton.swift
+//  AppleLoginLabel.swift
 //  Plobby
 //
 //  Created by 이은지 on 10/30/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AppleLoginButton: View {
+struct AppleLoginLabel: View {
 
     // MARK: - Body
 
@@ -23,7 +23,7 @@ struct AppleLoginButton: View {
 
 // MARK: - Subviews
 
-extension AppleLoginButton {
+extension AppleLoginLabel {
 
     private var label: some View {
         HStack(alignment: .center, spacing: 16) {
