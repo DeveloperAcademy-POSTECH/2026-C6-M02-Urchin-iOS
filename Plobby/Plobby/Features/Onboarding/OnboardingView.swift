@@ -1,0 +1,93 @@
+//
+//  OnboardingView.swift
+//  Plobby
+//
+//  Created by 이은지 on 10/30/26.
+//
+
+import SwiftUI
+
+import ComposableArchitecture
+
+struct OnboardingView: View {
+    
+    // MARK: - Properties
+    
+    let store: StoreOf<OnboardingFeature>
+    
+    // MARK: - Body
+    
+    var body: some View {
+        VStack(alignment: .center, spacing: 0) {
+            indicator
+            
+            Spacer()
+
+            pageDescription
+            appleLoginButton
+            browseButton
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            store.send(.screenTapped)
+        }
+        .onAppear {
+            store.send(.onAppear)
+        }
+    }
+}
+
+// MARK: - Subviews
+
+extension OnboardingView {
+    
+    private var indicator: some View {
+        OnboardingPageIndicator(
+            currentIndex: store.currentPageIndex,
+            pageCount: OnboardingPage.allCases.count
+        )
+        .padding(.top, 20)
+        .padding(.horizontal, 65)
+    }
+    
+    private var pageDescription: some View {
+        VStack(alignment: .center, spacing: 12) {
+            Text(store.currentPage.title)
+                .font(.system(size: 28, weight: .bold))
+            
+            Text(store.currentPage.description)
+                .font(.system(size: 16, weight: .regular))
+        }
+        .multilineTextAlignment(.center)
+        .animation(.easeInOut(duration: 0.3), value: store.currentPage)
+        .padding(.horizontal, 20)
+        .padding(.bottom, 77)
+    }
+    
+    private var appleLoginButton: some View {
+        AppleLoginButton {
+            store.send(.appleButtonTapped)
+        }
+        .padding(.horizontal, 38.5)
+        .padding(.bottom, 17)
+    }
+    
+    private var browseButton: some View {
+        Button {
+            store.send(.browseButtonTapped)
+        } label: {
+            Text("회원가입 없이 둘러보기")
+                .font(.system(size: 14, weight: .regular))
+                .foregroundStyle(.gray)
+        }
+        .padding(.bottom, 17)
+    }
+}
+
+#Preview {
+    OnboardingView(
+        store: Store(initialState: OnboardingFeature.State()) {
+            OnboardingFeature()
+        }
+    )
+}
