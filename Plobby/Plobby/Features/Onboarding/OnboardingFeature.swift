@@ -12,11 +12,6 @@ import ComposableArchitecture
 @Reducer
 struct OnboardingFeature {
     
-    enum SignInResult {
-        case member(AuthUser)
-        case newUser(AuthUser, fullName: String?)
-    }
-    
     // MARK: - State
     
     @ObservableState
@@ -63,11 +58,6 @@ struct OnboardingFeature {
     
     @Dependency(\.continuousClock) var clock
     @Dependency(\.authClient) var authClient
-    
-    private nonisolated enum CancelID {
-        case signIn
-        case timer
-    }
     
     // MARK: - Body
     
@@ -151,6 +141,11 @@ struct OnboardingFeature {
 // MARK: - Functions
 
 extension OnboardingFeature {
+    
+    private nonisolated enum CancelID {
+        case signIn
+        case timer
+    }
     
     private func startTimer() -> Effect<Action> {
         .run { send in
