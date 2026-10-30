@@ -87,6 +87,7 @@ extension OnboardingView {
                 .allowsHitTesting(false)
         }
         .disabled(store.isSigningIn)
+        .accessibilityHidden(true)
         .padding(.horizontal, 38.5)
         .padding(.bottom, 17)
     }
