@@ -17,13 +17,14 @@ struct OnboardingFeature {
     @ObservableState
     struct State: Equatable {
         var currentPage: OnboardingPage = .trashAmount
-        var currentPageIndex: Int {
-            OnboardingPage.allCases.firstIndex(of: currentPage) ?? 0
-        }
         var nonce: String?
         var isSigningIn = false
         var pendingFullName: String?
         @Presents var alert: AlertState<Action.Alert>?
+        
+        var currentPageIndex: Int {
+            OnboardingPage.allCases.firstIndex(of: currentPage) ?? 0
+        }
         
         var hashedNonce: String? {
             nonce.map(AppleNonce.sha256)
@@ -90,27 +91,28 @@ struct OnboardingFeature {
                 
             case .signInAppleCompleted(.failure):
                 state.nonce = nil
-                state.alert = AlertState.make(.signInFailed)
+                state.alert = .make(.signInFailed)
                 return .none
                 
             case let .signInAppleCompleted(.success(credential)):
+                state.pendingFullName = credential.fullName ?? state.pendingFullName
+                
                 guard let nonce = state.nonce else {
-                    state.alert = AlertState.make(.signInFailed)
+                    state.alert = .make(.signInFailed)
                     return .none
                 }
-
+                
                 state.isSigningIn = true
-                state.pendingFullName = credential.fullName ?? state.pendingFullName
-
+                
                 let fullName = state.pendingFullName
-
+                
                 return .run { send in
                     await send(.signInResponse(Result {
                         let user = try await authClient.signInWithApple(credential.idToken, nonce)
-
+                        
                         do {
                             let isMember = try await authClient.fetchIsMember(user.id)
-
+                            
                             return isMember ? .member(user) : .newUser(user, fullName: fullName)
                         } catch {
                             try? await authClient.signOut()
@@ -118,7 +120,6 @@ struct OnboardingFeature {
                         }
                     }))
                 }
-                .cancellable(id: CancelID.signIn, cancelInFlight: true)
                 
             case let .signInResponse(.success(.member(user))):
                 state.isSigningIn = false
@@ -135,7 +136,7 @@ struct OnboardingFeature {
             case .signInResponse(.failure):
                 state.isSigningIn = false
                 state.nonce = nil
-                state.alert = AlertState.make(.signInFailed)
+                state.alert = .make(.signInFailed)
                 return .none
 
             case .alert, .delegate:
@@ -151,13 +152,14 @@ struct OnboardingFeature {
 extension OnboardingFeature {
     
     private nonisolated enum CancelID {
-        case signIn
         case timer
     }
     
+    private static let pageInterval: Duration = .seconds(3)
+    
     private func startTimer() -> Effect<Action> {
         .run { send in
-            for await _ in await clock.timer(interval: .seconds(3)) {
+            for await _ in await clock.timer(interval: OnboardingFeature.pageInterval) {
                 await send(.timerTicked)
             }
         }
