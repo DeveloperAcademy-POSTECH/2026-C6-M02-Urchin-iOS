@@ -6,11 +6,20 @@
 //
 
 import SwiftUI
-import SwiftData
+
+import ComposableArchitecture
 
 struct ContentView: View {
+    
+    // MARK: - Properties
+    
+    @State private var store = Store(initialState: OnboardingFeature.State()) {
+        OnboardingFeature()
+    }
 
+    // MARK: - body
+    
     var body: some View {
-        
+        LoginTestView(store: store)
     }
 }
