@@ -5,8 +5,6 @@
 //  Created by 이은지 on 10/30/26.
 //
 
-import Foundation
-
 enum OnboardingPage: CaseIterable {
     
     case trashAmount, record, photo, together
