@@ -20,7 +20,7 @@ extension AlertState {
                 TextState(type.title)
             },
             actions: {
-                return makeActions(.signInFailed)
+                return makeActions(type, confirm: confirmAction, cancel: cancelAction)
             },
             message: type.message.map { message in
                 { TextState(message) }
