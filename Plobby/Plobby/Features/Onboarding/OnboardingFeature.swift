@@ -80,6 +80,8 @@ struct OnboardingFeature {
                 return .none
                 
             case .browseButtonTapped:
+                guard !state.isSigningIn else { return .none }
+                
                 return .send(.delegate(.browseWithoutSignUp))
                 
             case .signInAppleCompleted(.failure(.canceled)):
@@ -105,9 +107,15 @@ struct OnboardingFeature {
                 return .run { send in
                     await send(.signInResponse(Result {
                         let user = try await authClient.signInWithApple(credential.idToken, nonce)
-                        let isMember = try await authClient.fetchIsMember(user.id)
 
-                        return isMember ? .member(user) : .newUser(user, fullName: fullName)
+                        do {
+                            let isMember = try await authClient.fetchIsMember(user.id)
+
+                            return isMember ? .member(user) : .newUser(user, fullName: fullName)
+                        } catch {
+                            try? await authClient.signOut()
+                            throw error
+                        }
                     }))
                 }
                 .cancellable(id: CancelID.signIn, cancelInFlight: true)

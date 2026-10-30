@@ -13,6 +13,7 @@ import Supabase
 struct AuthClient {
     var signInWithApple: @Sendable (_ idToken: String, _ nonce: String) async throws -> AuthUser
     var fetchIsMember: @Sendable (_ userID: UUID) async throws -> Bool
+    var signOut: @Sendable () async throws -> Void
 }
 
 extension AuthClient: DependencyKey {
@@ -37,6 +38,11 @@ extension AuthClient: DependencyKey {
                     .count
 
                 return (count ?? 0) > 0
+            },
+            signOut: {
+                @Dependency(\.supabaseClient) var supabase
+
+                try await supabase.auth.signOut(scope: .local)
             }
         )
     }()
