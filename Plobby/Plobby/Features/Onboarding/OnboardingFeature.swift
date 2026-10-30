@@ -12,6 +12,13 @@ import ComposableArchitecture
 @Reducer
 struct OnboardingFeature {
     
+    enum SignInResult {
+        case member(AuthUser)
+        case newUser(AuthUser, fullName: String?)
+    }
+    
+    // MARK: - State
+    
     @ObservableState
     struct State: Equatable {
         var currentPage: OnboardingPage = .trashAmount
@@ -20,13 +27,15 @@ struct OnboardingFeature {
         }
         var nonce: String?
         var isSigningIn = false
-        var user: AuthUser?
+        var pendingFullName: String?
         @Presents var alert: AlertState<Action.Alert>?
         
         var hashedNonce: String? {
             nonce.map(AppleNonce.sha256)
         }
     }
+    
+    // MARK: - Action
     
     enum Action {
         case onAppear
@@ -35,13 +44,22 @@ struct OnboardingFeature {
         case appleButtonTapped
         case browseButtonTapped
         case signInAppleCompleted(Result<AppleCredential, AppleSignInError>)
-        case signInResponse(Result<AuthUser, any Error>)
+        case signInResponse(Result<SignInResult, any Error>)
         case alert(PresentationAction<Alert>)
-        
+        case delegate(Delegate)
+
         enum Alert {
             case confirm
         }
+
+        enum Delegate {
+            case signedIn(AuthUser)
+            case needsSignUp(AuthUser, fullName: String?)
+            case browseWithoutSignUp
+        }
     }
+    
+    // MARK: - Dependency
     
     @Dependency(\.continuousClock) var clock
     @Dependency(\.authClient) var authClient
@@ -50,6 +68,8 @@ struct OnboardingFeature {
         case signIn
         case timer
     }
+    
+    // MARK: - Body
     
     var body: some Reducer<State, Action> {
         Reduce { state, action in
@@ -70,7 +90,7 @@ struct OnboardingFeature {
                 return .none
                 
             case .browseButtonTapped:
-                return .none
+                return .send(.delegate(.browseWithoutSignUp))
                 
             case .signInAppleCompleted(.failure(.canceled)):
                 state.nonce = nil
@@ -86,27 +106,41 @@ struct OnboardingFeature {
                     state.alert = AlertState.make(.signInFailed)
                     return .none
                 }
+
                 state.isSigningIn = true
+                state.pendingFullName = credential.fullName ?? state.pendingFullName
+
+                let fullName = state.pendingFullName
+
                 return .run { send in
                     await send(.signInResponse(Result {
-                        try await authClient.signInWithApple(credential.idToken, nonce)
+                        let user = try await authClient.signInWithApple(credential.idToken, nonce)
+                        let isMember = try await authClient.fetchIsMember(user.id)
+
+                        return isMember ? .member(user) : .newUser(user, fullName: fullName)
                     }))
                 }
                 .cancellable(id: CancelID.signIn, cancelInFlight: true)
                 
-            case let .signInResponse(.success(user)):
+            case let .signInResponse(.success(.member(user))):
                 state.isSigningIn = false
                 state.nonce = nil
-                state.user = user
-                return .none
-                
-            case let .signInResponse(.failure(error)):
+                state.pendingFullName = nil
+                return .send(.delegate(.signedIn(user)))
+
+            case let .signInResponse(.success(.newUser(user, fullName))):
+                state.isSigningIn = false
+                state.nonce = nil
+                state.pendingFullName = nil
+                return .send(.delegate(.needsSignUp(user, fullName: fullName)))
+
+            case .signInResponse(.failure):
                 state.isSigningIn = false
                 state.nonce = nil
                 state.alert = AlertState.make(.signInFailed)
                 return .none
-                
-            case .alert:
+
+            case .alert, .delegate:
                 return .none
             }
         }

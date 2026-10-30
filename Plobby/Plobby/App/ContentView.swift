@@ -17,9 +17,9 @@ struct ContentView: View {
         OnboardingFeature()
     }
 
-    // MARK: - body
+    // MARK: - Body
     
     var body: some View {
-        LoginTestView(store: store)
+        OnboardingView(store: store)
     }
 }
