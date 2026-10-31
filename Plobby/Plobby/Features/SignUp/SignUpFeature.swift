@@ -33,6 +33,10 @@ struct SignUpFeature {
         var path = StackState<Path.State>()
         @Presents var alert: AlertState<Action.Alert>?
         
+        var isNicknameFormatInvalid: Bool {
+            !nickname.isEmpty && !Nickname.isValid(nickname)
+        }
+        
         var canCheckNickname: Bool {
             Nickname.isValid(nickname) && !isCheckingNickname
         }
@@ -77,6 +81,8 @@ struct SignUpFeature {
                 return .none
                 
             case let .nicknameChanged(nickname):
+                guard nickname != state.nickname else { return .none }
+                
                 state.nickname = nickname
                 state.isCheckingNickname = false
                 state.isNicknameAvailable = nil

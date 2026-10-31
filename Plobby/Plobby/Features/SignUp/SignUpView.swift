@@ -17,6 +17,7 @@ struct SignUpView: View {
     @Bindable var store: StoreOf<SignUpFeature>
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var previewImage: UIImage?
+    @State private var nicknameText = ""
     
     // MARK: - Body
 
@@ -121,8 +122,14 @@ extension SignUpView {
             HStack(spacing: 8) {
                 TextField(
                     "닉네임을 입력해주세요",
-                    text: $store.nickname.sending(\.nicknameChanged)
+                    text: $nicknameText
                 )
+                .onChange(of: nicknameText) { _, text in
+                    let nickname = String(text.prefix(Nickname.maximumLength))
+                    
+                    nicknameText = nickname
+                    store.send(.nicknameChanged(nickname))
+                }
                 .font(.system(size: 16, weight: .regular))
 
                 Button {
@@ -145,7 +152,11 @@ extension SignUpView {
                     .stroke(Color.gray.opacity(0.3))
             }
 
-            if let isAvailable = store.isNicknameAvailable {
+            if store.isNicknameFormatInvalid {
+                Text("\(Nickname.minimumLength)~\(Nickname.maximumLength)자의 한글, 영문, 숫자만 입력할 수 있어요")
+                    .font(.system(size: 12, weight: .regular))
+                    .foregroundStyle(.red)
+            } else if let isAvailable = store.isNicknameAvailable {
                 Text(isAvailable ? "사용 가능한 닉네임이에요" : "이미 사용 중인 닉네임이에요")
                     .font(.system(size: 12, weight: .regular))
                     .foregroundStyle(isAvailable ? .green : .red)
