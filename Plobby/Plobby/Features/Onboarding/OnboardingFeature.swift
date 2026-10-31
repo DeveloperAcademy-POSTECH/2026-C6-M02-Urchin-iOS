@@ -104,22 +104,11 @@ struct OnboardingFeature {
                 
                 state.isSigningIn = true
                 
-                let fullName = state.pendingFullName
-                
-                return .run { send in
-                    await send(.signInResponse(Result {
-                        let user = try await authClient.signInWithApple(credential.idToken, nonce)
-                        
-                        do {
-                            let isMember = try await authClient.fetchIsMember(user.id)
-                            
-                            return isMember ? .member(user) : .newUser(user, fullName: fullName)
-                        } catch {
-                            try? await authClient.signOut()
-                            throw error
-                        }
-                    }))
-                }
+                return signIn(
+                    idToken: credential.idToken,
+                    nonce: nonce,
+                    fullName: state.pendingFullName
+                )
                 
             case let .signInResponse(.success(.member(user))):
                 state.isSigningIn = false
@@ -156,6 +145,29 @@ extension OnboardingFeature {
     }
     
     private static let pageInterval: Duration = .seconds(3)
+    
+    private func signIn(
+        idToken: String,
+        nonce: String,
+        fullName: String?
+    ) -> Effect<Action> {
+        .run { send in
+            await send(.signInResponse(Result {
+                let user = try await authClient.signInWithApple(idToken, nonce)
+                
+                do {
+                    let isMember = try await authClient.fetchIsMember(user.id)
+                    
+                    return isMember ?
+                        .member(user) :
+                        .newUser(user, fullName: fullName)
+                } catch {
+                    try? await authClient.signOut()
+                    throw error
+                }
+            }))
+        }
+    }
     
     private func startTimer() -> Effect<Action> {
         .run { send in
