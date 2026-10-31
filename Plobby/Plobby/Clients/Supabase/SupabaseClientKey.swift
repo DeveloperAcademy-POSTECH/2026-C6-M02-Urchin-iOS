@@ -8,9 +8,9 @@
 import Dependencies
 import Supabase
 
-struct SupabaseClientKey: DependencyKey {
+nonisolated struct SupabaseClientKey: DependencyKey {
     
-    static var liveValue: SupabaseClient = {
+    static let liveValue: SupabaseClient = {
         SupabaseClient(
             supabaseURL: Secrets.supabaseURL,
             supabaseKey: Secrets.supabaseKey,
