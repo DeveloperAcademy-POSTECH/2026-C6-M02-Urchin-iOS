@@ -5,6 +5,7 @@
 //  Created by 이은지 on 10/30/26.
 //
 
+import PhotosUI
 import SwiftUI
 
 import ComposableArchitecture
@@ -14,17 +15,22 @@ struct SignUpView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<SignUpFeature>
-
+    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var previewImage: UIImage?
+    
     // MARK: - Body
 
     var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-            VStack {
-                Text("회원가입 화면이지롱")
-
-                Button("다음") {
-                    store.send(.nextButtonTapped)
-                }
+            VStack(spacing: 0) {
+                title
+                profileImagePicker
+                nameSection
+                nicknameSection
+                
+                Spacer()
+                
+                nextButton
             }
         } destination: { store in
             switch store.case {
@@ -35,5 +41,121 @@ struct SignUpView: View {
                 CompleteView(store: store)
             }
         }
+        .task(id: selectedPhoto) {
+            guard
+                let data = try? await selectedPhoto?.loadTransferable(type: Data.self),
+                let image = UIImage(data: data)
+            else { return }
+            
+            previewImage = image
+            store.send(.profileImageSelected(data))
+        }
+    }
+}
+
+// MARK: - Subviews
+
+extension SignUpView {
+    
+    private var title: some View {
+        Text("플로비에서 사용할\n프로필을 등록해주세요")
+            .font(.system(size: 26, weight: .semibold))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, 21)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 51)
+    }
+
+    private var profileImagePicker: some View {
+        PhotosPicker(selection: $selectedPhoto, matching: .images) {
+            profileImage
+                .frame(width: 200, height: 200)
+                .clipShape(Circle())
+                .padding(.bottom, 50)
+        }
+    }
+
+    @ViewBuilder
+    private var profileImage: some View {
+        if let previewImage {
+            Image(uiImage: previewImage)
+                .resizable()
+                .scaledToFill()
+        } else {
+            Circle()
+                .fill(Color.gray.opacity(0.15))
+                .overlay {
+                    Image(systemName: "plus.circle")
+                        .font(.system(size: 32, weight: .light))
+                        .foregroundStyle(.gray)
+                }
+        }
+    }
+    
+    private var nameSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("이름")
+                .font(.system(size: 16, weight: .semibold))
+
+            Text(store.fullName ?? "")
+                .font(.system(size: 16, weight: .regular))
+                .padding(.horizontal, 20)
+                .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(.black)
+                }
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 4)
+    }
+
+    private var nicknameSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("닉네임")
+                .font(.system(size: 16, weight: .semibold))
+
+            HStack(spacing: 8) {
+                TextField(
+                    "닉네임을 입력해주세요",
+                    text: $store.nickname.sending(\.nicknameChanged)
+                )
+                .font(.system(size: 16, weight: .regular))
+
+                Button {
+                    store.send(.nicknameCheckButtonTapped)
+                } label: {
+                    Text("중복확인")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(store.canCheckNickname ? Color.black : Color.gray)
+                        .padding(.horizontal, 10)
+                        .frame(height: 34)
+                        .background(Color.gray.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
+                }
+                .disabled(!store.canCheckNickname)
+            }
+            .padding(.leading, 20)
+            .padding(.trailing, 8)
+            .frame(height: 50)
+            .overlay {
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.gray.opacity(0.3))
+            }
+
+            if let isAvailable = store.isNicknameAvailable {
+                Text(isAvailable ? "사용 가능한 닉네임이에요" : "이미 사용 중인 닉네임이에요")
+                    .font(.system(size: 12, weight: .regular))
+                    .foregroundStyle(isAvailable ? .green : .red)
+            }
+        }
+        .padding(.horizontal, 20)
+    }
+    
+    private var nextButton: some View {
+        NormalButton(text: "다음") {
+            store.send(.nextButtonTapped)
+        }
+        .disabled(store.isNicknameAvailable != true)
+        .padding(.horizontal, 20)
     }
 }
