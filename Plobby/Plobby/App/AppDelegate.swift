@@ -14,7 +14,7 @@ import FirebaseMessaging
 final class AppDelegate: NSObject, UIApplicationDelegate {
 
     // MARK: - UIApplicationDelegate
-
+    
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
@@ -25,7 +25,11 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         // TODO: 알림 기능 구현 때 PushClient로 옮기기
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-            print("[Push] 권한 granted: \(granted), error: \(String(describing: error))")
+            if let error {
+                PlobbyLogger.error(error)
+            }
+
+            PlobbyLogger.debug("푸시 권한 허용 여부: \(granted)")
         }
         application.registerForRemoteNotifications()
 
@@ -44,15 +48,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFailToRegisterForRemoteNotificationsWithError error: Error
     ) {
-        print(
-            "[Push] APNs 등록 실패: \(error)"
-        )
+        PlobbyLogger.error(error)
     }
 }
 
 // MARK: - UNUserNotificationCenterDelegate
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
+    
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
@@ -70,7 +73,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 // MARK: - MessagingDelegate
 
 extension AppDelegate: MessagingDelegate {
+    
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("[Push] FCM 토큰: \(fcmToken ?? "nil")")
+        PlobbyLogger.debug("FCM 토큰 수신 여부: \(fcmToken != nil)")
     }
 }
