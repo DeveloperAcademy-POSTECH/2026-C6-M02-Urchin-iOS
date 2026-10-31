@@ -26,12 +26,20 @@ struct ContentView: View {
     var body: some View {
         switch store.state {
         case .onboarding:
-            if let store = store.scope(state: \.onboarding, action: \.onboarding) {
+            if let store = store.scope(
+                state: \.onboarding,
+                action: \.onboarding)
+            {
                 OnboardingView(store: store)
             }
 
         case .signUp:
-            SignUpView()
+            if let store = store.scope(
+                state: \.signUp,
+                action: \.signUp)
+            {
+                SignUpView(store: store)
+            }
 
         case .home:
             HomeView()

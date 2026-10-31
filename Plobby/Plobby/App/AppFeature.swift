@@ -15,7 +15,7 @@ struct AppFeature {
     @ObservableState
     enum State: Equatable {
         case onboarding(OnboardingFeature.State)
-        case signUp(AuthUser, fullName: String?)
+        case signUp(SignUpFeature.State)
         case home(MembershipStatus)
     }
     
@@ -23,6 +23,7 @@ struct AppFeature {
     
     enum Action {
         case onboarding(OnboardingFeature.Action)
+        case signUp(SignUpFeature.Action)
     }
     
     // MARK: - Body
@@ -35,19 +36,26 @@ struct AppFeature {
                 return .none
 
             case let .onboarding(.delegate(.needsSignUp(user, fullName))):
-                state = .signUp(user, fullName: fullName)
+                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
                 return .none
 
             case .onboarding(.delegate(.browseWithoutSignUp)):
                 state = .home(.guest)
                 return .none
 
-            case .onboarding:
+            case let .signUp(.delegate(.completed(user))):
+                state = .home(.member(user))
+                return .none
+
+            case .onboarding, .signUp:
                 return .none
             }
         }
         .ifCaseLet(\.onboarding, action: \.onboarding) {
             OnboardingFeature()
+        }
+        .ifCaseLet(\.signUp, action: \.signUp) {
+            SignUpFeature()
         }
     }
 }

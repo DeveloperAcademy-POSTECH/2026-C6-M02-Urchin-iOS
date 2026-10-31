@@ -53,9 +53,14 @@ struct SignUpFeature {
         case nicknameCheckResponse(Result<Bool, any Error>)
         case nextButtonTapped
         case path(StackActionOf<Path>)
+        case delegate(Delegate)
         
         enum Alert {
             case confirm
+        }
+        
+        enum Delegate {
+            case completed(AuthUser)
         }
     }
     
@@ -112,7 +117,10 @@ struct SignUpFeature {
                 state.path.append(.complete(CompleteFeature.State()))
                 return .none
 
-            case .path, .alert:
+            case .path(.element(id: _, action: .complete(.completeButtonTapped))):
+                return .send(.delegate(.completed(state.user)))
+
+            case .path, .alert, .delegate:
                 return .none
             }
         }
