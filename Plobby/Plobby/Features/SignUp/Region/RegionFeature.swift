@@ -14,12 +14,21 @@ struct RegionFeature {
     
     @ObservableState
     struct State: Equatable {
-        var selectedSea = 0
+        var selectedSea: Sea = .all
+        var searchText = ""
+        
+        var regions: [String] {
+            guard !searchText.isEmpty else { return selectedSea.regions }
+
+            return selectedSea.regions.filter { $0.contains(searchText) }
+        }
     }
 
     // MARK: - Action
     
     enum Action {
+        case seaTapped(Sea)
+        case searchTextChanged(String)
         case nextButtonTapped
     }
 
@@ -28,7 +37,16 @@ struct RegionFeature {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .nextButtonTapped: .none
+            case let .seaTapped(sea):
+                state.selectedSea = sea
+                return .none
+                
+            case let .searchTextChanged(text):
+                state.searchText = text
+                return .none
+                
+            case .nextButtonTapped:
+                return .none
             }
         }
     }
