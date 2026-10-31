@@ -108,17 +108,37 @@ extension RegionView {
     }
     
     private var regionList: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                ForEach(store.regions, id: \.self) { region in
-                    Text(region)
-                        .font(.system(size: 16, weight: .regular))
-                        .frame(maxWidth: .infinity, minHeight: 54, alignment: .leading)
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(store.regions, id: \.self) { region in
+                regionButton(region)
+            }
+        }
+        .padding(.horizontal, 22)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+    }
+    
+    private func regionButton(_ region: String) -> some View {
+        let isSelected = store.selectedRegions.contains(region)
+        
+        return Button {
+            store.send(.regionTapped(region))
+        } label: {
+            HStack(spacing: 8) {
+                Text(region)
+                    .font(.system(size: 16, weight: isSelected ? .semibold : .regular))
+                
+                Spacer()
+                
+                if isSelected {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 14, weight: .semibold))
                 }
             }
-            .padding(.horizontal, 22)
+            .foregroundStyle(.black)
+            .frame(height: 54)
+            .contentShape(Rectangle())
         }
-        .frame(maxWidth: .infinity)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
     
     private var nextButton: some View {

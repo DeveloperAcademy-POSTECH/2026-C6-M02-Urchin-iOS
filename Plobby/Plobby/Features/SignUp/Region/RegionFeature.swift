@@ -16,6 +16,7 @@ struct RegionFeature {
     struct State: Equatable {
         var selectedSea: Sea = .all
         var searchText = ""
+        var selectedRegions: Set<String> = []
         
         var regions: [String] {
             guard !searchText.isEmpty else { return selectedSea.regions }
@@ -29,6 +30,7 @@ struct RegionFeature {
     enum Action {
         case seaTapped(Sea)
         case searchTextChanged(String)
+        case regionTapped(String)
         case nextButtonTapped
     }
 
@@ -45,9 +47,28 @@ struct RegionFeature {
                 state.searchText = text
                 return .none
                 
+            case let .regionTapped(region):
+                if state.selectedRegions.remove(region) != nil {
+                    return .none
+                }
+                
+                guard state.selectedRegions.count < RegionFeature.maximumRegionCount else {
+                    return .none
+                }
+                
+                state.selectedRegions.insert(region)
+                return .none
+                
             case .nextButtonTapped:
                 return .none
             }
         }
     }
+}
+
+// MARK: - Functions
+
+extension RegionFeature {
+
+    private static let maximumRegionCount = 3
 }
