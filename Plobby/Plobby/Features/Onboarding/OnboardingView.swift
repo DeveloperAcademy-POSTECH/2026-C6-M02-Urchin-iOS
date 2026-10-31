@@ -103,11 +103,3 @@ extension OnboardingView {
         .padding(.bottom, 17)
     }
 }
-
-#Preview {
-    OnboardingView(
-        store: Store(initialState: OnboardingFeature.State()) {
-            OnboardingFeature()
-        }
-    )
-}

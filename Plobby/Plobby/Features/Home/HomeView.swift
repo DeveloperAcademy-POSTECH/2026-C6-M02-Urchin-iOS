@@ -15,7 +15,3 @@ struct HomeView: View {
         Text("홈화면이지롱")
     }
 }
-
-#Preview {
-    HomeView()
-}
