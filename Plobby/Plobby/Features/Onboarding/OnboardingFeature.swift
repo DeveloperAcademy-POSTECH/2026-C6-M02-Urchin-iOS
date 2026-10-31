@@ -153,14 +153,14 @@ extension OnboardingFeature {
     ) -> Effect<Action> {
         .run { send in
             await send(.signInResponse(Result {
-                let user = try await authClient.signInWithApple(idToken, nonce)
+                let user = try await authClient.signInWithApple(idToken, nonce, fullName)
                 
                 do {
                     let isMember = try await authClient.fetchIsMember(user.id)
                     
                     return isMember ?
                         .member(user) :
-                        .newUser(user, fullName: fullName)
+                        .newUser(user, fullName: user.fullName)
                 } catch {
                     try? await authClient.signOut()
                     throw error

@@ -11,7 +11,7 @@ import Dependencies
 import Supabase
 
 struct AuthClient {
-    var signInWithApple: @Sendable (_ idToken: String, _ nonce: String) async throws -> AuthUser
+    var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
     var fetchIsMember: @Sendable (_ userID: UUID) async throws -> Bool
     var fetchIsNicknameAvailable: @Sendable (_ nickname: String) async throws -> Bool
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
@@ -21,13 +21,24 @@ struct AuthClient {
 extension AuthClient: DependencyKey {
     static let liveValue: AuthClient = {
         .init(
-            signInWithApple: { idToken, nonce in
+            signInWithApple: { idToken, nonce, fullName in
                 @Dependency(\.supabaseClient) var supabase
 
                 let session = try await supabase.auth.signInWithIdToken(
                     credentials: OpenIDConnectCredentials(provider: .apple, idToken: idToken, nonce: nonce)
                 )
-                return AuthUser(id: session.user.id, email: session.user.email)
+
+                if let fullName {
+                    _ = try? await supabase.auth.update(
+                        user: UserAttributes(data: ["full_name": .string(fullName)])
+                    )
+                }
+
+                return AuthUser(
+                    id: session.user.id,
+                    email: session.user.email,
+                    fullName: fullName ?? session.user.userMetadata["full_name"]?.stringValue
+                )
             },
             fetchIsMember: { userID in
                 @Dependency(\.supabaseClient) var supabase
