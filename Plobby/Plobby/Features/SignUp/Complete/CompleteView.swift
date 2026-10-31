@@ -18,10 +18,17 @@ struct CompleteView: View {
     // MARK: - Body
     
     var body: some View {
-        Text("회원가입 완료 화면이지롱")
-        
-        Button("완료") {
-            print("완료~~")
+        VStack(spacing: 0) {
+            Text("회원가입이 완료되었습니다.")
+                .font(.system(size: 26, weight: .semibold))
+                .padding(.top, 85)
+            
+            Spacer()
+
+            NormalButton(text: "완료") {
+                store.send(.completeButtonTapped)
+            }
+            .padding(.horizontal, 20)
         }
     }
 }
