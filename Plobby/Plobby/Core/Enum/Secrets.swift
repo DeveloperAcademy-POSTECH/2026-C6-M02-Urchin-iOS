@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Secrets {
+nonisolated enum Secrets {
     static let supabaseURL: URL = {
         guard
             let value = Bundle.main.object(forInfoDictionaryKey: "SUPABASE_URL") as? String,
