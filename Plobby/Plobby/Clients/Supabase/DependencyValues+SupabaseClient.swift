@@ -10,7 +10,7 @@ import Supabase
 
 extension DependencyValues {
     
-    var supabaseClient: SupabaseClient {
+    nonisolated var supabaseClient: SupabaseClient {
         get { self[SupabaseClientKey.self] }
         set { self[SupabaseClientKey.self] = newValue }
     }
