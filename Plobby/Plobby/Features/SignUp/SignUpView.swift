@@ -43,13 +43,16 @@ struct SignUpView: View {
         }
         .task(id: selectedPhoto) {
             guard
-                let data = try? await selectedPhoto?.loadTransferable(type: Data.self),
-                let image = UIImage(data: data)
+                let data = try? await selectedPhoto?.loadTransferable(type: Data.self)
             else { return }
             
-            previewImage = image
+            selectedPhoto = nil
             store.send(.profileImageSelected(data))
         }
+        .task(id: store.profileImage) {
+            previewImage = store.profileImage.flatMap(UIImage.init(data:))
+        }
+        .alert($store.scope(state: \.alert, action: \.alert))
     }
 }
 
