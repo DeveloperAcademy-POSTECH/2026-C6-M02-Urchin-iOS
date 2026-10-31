@@ -14,7 +14,7 @@ struct SignUpFeature {
     
     // MARK: - Path
     
-    @Reducer(state: .equatable)
+    @Reducer
     enum Path {
         case region(RegionFeature)
         case complete(CompleteFeature)
@@ -116,3 +116,7 @@ extension SignUpFeature {
         .cancellable(id: CancelID.nicknameCheck, cancelInFlight: true)
     }
 }
+
+// MARK: - Conformance
+
+extension SignUpFeature.Path.State: Equatable {}
