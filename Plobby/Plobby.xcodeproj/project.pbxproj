@@ -646,6 +646,8 @@
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.5.1;
 			};
+			traits = (
+			);
 		};
 		DA1A4DD4308A01BF00AEAB52 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -654,6 +656,8 @@
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.26.2;
 			};
+			traits = (
+			);
 		};
 /* End XCRemoteSwiftPackageReference section */
 
