@@ -39,7 +39,6 @@
 		DA1A4DD03089FF0000AEAB52 /* Exceptions for "Plobby" folder in "Plobby" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Core/DesignSystem/.gitkeep,
 				Info.plist,
 			);
 			target = DA1A4DA43089FEAF00AEAB52 /* Plobby */;

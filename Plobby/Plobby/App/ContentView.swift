@@ -42,7 +42,12 @@ struct ContentView: View {
             }
 
         case .home:
-            HomeView()
+            if let store = store.scope(
+                state: \.home,
+                action: \.home)
+            {
+                HomeView(store: store)
+            }
         }
     }
 }
