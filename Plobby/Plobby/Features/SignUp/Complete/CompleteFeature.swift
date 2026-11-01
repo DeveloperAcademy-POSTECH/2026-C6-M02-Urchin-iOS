@@ -13,9 +13,7 @@ struct CompleteFeature {
     // MARK: - State
     
     @ObservableState
-    struct State: Equatable {
-        
-    }
+    struct State: Equatable {}
 
     // MARK: - Action
     
@@ -26,10 +24,6 @@ struct CompleteFeature {
     // MARK: - Body
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            switch action {
-            case .completeButtonTapped: .none
-            }
-        }
+        EmptyReducer()
     }
 }
