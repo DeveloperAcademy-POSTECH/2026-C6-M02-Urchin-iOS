@@ -5,6 +5,8 @@
 //  Created by 이은지 on 10/31/26.
 //
 
+import Foundation
+
 import ComposableArchitecture
 
 @Reducer
@@ -16,12 +18,16 @@ struct RegionFeature {
     struct State: Equatable {
         var selectedSea: Sea = .all
         var searchText = ""
-        var selectedRegions: Set<String> = []
+        var selectedBeachIDs: Set<UUID> = []
         
-        var regions: [String] {
-            guard !searchText.isEmpty else { return selectedSea.regions }
-
-            return selectedSea.regions.filter { $0.contains(searchText) }
+        var beaches: [Beach] {
+            let beaches = selectedSea == .all
+                ? Beach.all
+                : Beach.all.filter { $0.region == selectedSea.title }
+            
+            guard !searchText.isEmpty else { return beaches }
+            
+            return beaches.filter { $0.name.contains(searchText) }
         }
     }
 
@@ -30,7 +36,7 @@ struct RegionFeature {
     enum Action {
         case seaTapped(Sea)
         case searchTextChanged(String)
-        case regionTapped(String)
+        case beachTapped(UUID)
         case nextButtonTapped
     }
 
@@ -47,16 +53,16 @@ struct RegionFeature {
                 state.searchText = text
                 return .none
                 
-            case let .regionTapped(region):
-                if state.selectedRegions.remove(region) != nil {
+            case let .beachTapped(id):
+                if state.selectedBeachIDs.remove(id) != nil {
                     return .none
                 }
                 
-                guard state.selectedRegions.count < RegionFeature.maximumRegionCount else {
+                guard state.selectedBeachIDs.count < RegionFeature.maximumBeachCount else {
                     return .none
                 }
                 
-                state.selectedRegions.insert(region)
+                state.selectedBeachIDs.insert(id)
                 return .none
                 
             case .nextButtonTapped:
@@ -70,5 +76,5 @@ struct RegionFeature {
 
 extension RegionFeature {
 
-    private static let maximumRegionCount = 3
+    private static let maximumBeachCount = 3
 }

@@ -58,7 +58,7 @@ extension RegionView {
 
             HStack(spacing: 0) {
                 seaList
-                regionList
+                beachList
             }
         }
         .frame(height: 432)
@@ -107,24 +107,24 @@ extension RegionView {
         }
     }
     
-    private var regionList: some View {
+    private var beachList: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(store.regions, id: \.self) { region in
-                regionButton(region)
+            ForEach(store.beaches) { beach in
+                beachButton(beach)
             }
         }
         .padding(.horizontal, 22)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
     
-    private func regionButton(_ region: String) -> some View {
-        let isSelected = store.selectedRegions.contains(region)
+    private func beachButton(_ beach: Beach) -> some View {
+        let isSelected = store.selectedBeachIDs.contains(beach.id)
         
         return Button {
-            store.send(.regionTapped(region))
+            store.send(.beachTapped(beach.id))
         } label: {
             HStack(spacing: 8) {
-                Text(region)
+                Text(beach.name)
                     .font(.system(size: 16, weight: isSelected ? .semibold : .regular))
                 
                 Spacer()
