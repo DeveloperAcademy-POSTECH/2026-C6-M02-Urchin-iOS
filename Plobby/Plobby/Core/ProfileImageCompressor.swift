@@ -11,7 +11,7 @@ nonisolated enum ProfileImageCompressor {
     
     private static let maximumDimension: CGFloat = 1024
     private static let compressionQuality: CGFloat = 0.8
-    static let maximumByteCount = 2 * 1024 * 1024
+    private static let maximumByteCount = 2 * 1024 * 1024
     
     static func compressedJPEG(
         from data: Data,
