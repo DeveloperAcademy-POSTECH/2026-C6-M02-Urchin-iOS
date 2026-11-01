@@ -40,6 +40,10 @@ struct SignUpFeature {
         var canCheckNickname: Bool {
             Nickname.isValid(nickname) && !isCheckingNickname
         }
+        
+        var canGoNext: Bool {
+            isNicknameAvailable == true
+        }
     }
 
     // MARK: - Action
@@ -110,6 +114,8 @@ struct SignUpFeature {
                 return .none
                 
             case .nextButtonTapped:
+                guard state.canGoNext else { return .none }
+                
                 state.path.append(.region(RegionFeature.State()))
                 return .none
 

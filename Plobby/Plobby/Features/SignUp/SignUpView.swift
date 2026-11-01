@@ -169,7 +169,7 @@ extension SignUpView {
         NormalButton(text: "다음") {
             store.send(.nextButtonTapped)
         }
-        .disabled(store.isNicknameAvailable != true)
+        .disabled(!store.canGoNext)
         .padding(.horizontal, 20)
     }
 }
