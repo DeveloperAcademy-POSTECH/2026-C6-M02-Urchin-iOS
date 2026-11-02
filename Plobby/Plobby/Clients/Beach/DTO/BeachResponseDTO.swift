@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BeachResponseDTO: Decodable, Identifiable, Equatable {
+nonisolated struct BeachResponseDTO: Decodable, Identifiable, Equatable, Sendable {
     let id: UUID
     let name: String
     let region: BeachRegion
