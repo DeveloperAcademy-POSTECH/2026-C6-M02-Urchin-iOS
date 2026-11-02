@@ -10,6 +10,10 @@
 		B59025573093367600AE351D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = B59025563093367600AE351D /* FirebaseMessaging */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
+		EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */; };
+		EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */; };
+		EC0D4B893098E1D0000E7BB7 /* BeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */; };
+		EC0D4B8B3098E1D0000E7BB7 /* BeachRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -96,6 +100,10 @@
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachClient.swift; sourceTree = "<group>"; };
+		EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+BeachClient.swift"; sourceTree = "<group>"; };
+		EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BeachResponseDTO.swift"; sourceTree = "<group>"; };
+		EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BeachRegion.swift"; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -211,6 +219,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EC0D4B823098E19A000E7BB7 /* Beach */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B853098E1C1000E7BB7 /* DTO */,
+				EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */,
+				EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */,
+			);
+			path = Beach;
+			sourceTree = "<group>";
+		};
+		EC0D4B853098E1C1000E7BB7 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */,
+				EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 		ECE6F2813098338400C4916C /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +283,7 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				EC0D4B823098E19A000E7BB7 /* Beach */,
 				ECE6F28A3098338400C4916C /* Auth */,
 				ECE6F28D3098338400C4916C /* Supabase */,
 			);
@@ -694,6 +722,10 @@
 				ECE6F2E43098338400C4916C /* Beach.swift in Sources */,
 				ECE6F2E53098338400C4916C /* Sea.swift in Sources */,
 				ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */,
+				EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */,
+				EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */,
+				EC0D4B893098E1D0000E7BB7 /* BeachResponseDTO.swift in Sources */,
+				EC0D4B8B3098E1D0000E7BB7 /* BeachRegion.swift in Sources */,
 				ECE6F2E73098338400C4916C /* InputText.swift in Sources */,
 				ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */,
 				ECE6F2E93098338400C4916C /* Nickname.swift in Sources */,
