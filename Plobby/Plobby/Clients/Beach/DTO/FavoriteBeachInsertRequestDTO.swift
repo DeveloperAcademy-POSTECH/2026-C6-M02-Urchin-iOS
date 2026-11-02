@@ -7,7 +7,7 @@
 
 import Foundation
 
-nonisolated struct FavoriteBeachInsertRequestDTO: Encodable {
+nonisolated struct FavoriteBeachInsertRequestDTO: Encodable, Sendable {
     let userId: UUID
     let beachId: UUID
 
