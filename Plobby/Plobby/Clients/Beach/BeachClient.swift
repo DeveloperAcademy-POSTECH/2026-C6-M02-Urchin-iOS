@@ -12,6 +12,7 @@ import Supabase
 
 struct BeachClient {
     var fetchBeaches: @Sendable (_ since: Date?) async throws -> [BeachResponseDTO]
+    var fetchFavoriteBeaches: @Sendable () async throws -> [FavoriteBeachResponseDTO]
 }
 
 extension BeachClient: DependencyKey {
@@ -28,6 +29,19 @@ extension BeachClient: DependencyKey {
 
                 return try await query
                     .order("updated_at")
+                    .execute()
+                    .value
+            },
+            fetchFavoriteBeaches: {
+                @Dependency(\.supabaseClient) var supabase
+
+                let userID = try await supabase.auth.session.user.id
+
+                return try await supabase
+                    .from("favorite_beaches")
+                    .select("beach_id, created_at, beach:beaches(*)")
+                    .eq("user_id", value: userID)
+                    .order("created_at")
                     .execute()
                     .value
             }

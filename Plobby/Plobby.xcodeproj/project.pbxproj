@@ -14,6 +14,7 @@
 		EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */; };
 		EC0D4B893098E1D0000E7BB7 /* BeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */; };
 		EC0D4B8B3098E1D0000E7BB7 /* BeachRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */; };
+		EC0D4B8D3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -104,6 +105,7 @@
 		EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+BeachClient.swift"; sourceTree = "<group>"; };
 		EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BeachResponseDTO.swift"; sourceTree = "<group>"; };
 		EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BeachRegion.swift"; sourceTree = "<group>"; };
+		EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteBeachResponseDTO.swift"; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			children = (
 				EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */,
 				EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */,
+				EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -726,6 +729,7 @@
 				EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */,
 				EC0D4B893098E1D0000E7BB7 /* BeachResponseDTO.swift in Sources */,
 				EC0D4B8B3098E1D0000E7BB7 /* BeachRegion.swift in Sources */,
+				EC0D4B8D3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift in Sources */,
 				ECE6F2E73098338400C4916C /* InputText.swift in Sources */,
 				ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */,
 				ECE6F2E93098338400C4916C /* Nickname.swift in Sources */,
