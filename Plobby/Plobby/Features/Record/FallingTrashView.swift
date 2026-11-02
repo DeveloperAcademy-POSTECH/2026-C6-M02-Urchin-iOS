@@ -13,11 +13,16 @@ struct FallingTrashView: View {
 
     // MARK: - Properties
 
-    @State private var scene: FallingTrashScene = {
+    @State private var scene: FallingTrashScene
+
+    // MARK: - Init
+
+    init(assetCounts: [String: Int]) {
         let scene = FallingTrashScene()
         scene.scaleMode = .resizeFill
-        return scene
-    }()
+        scene.assetCounts = assetCounts
+        _scene = State(initialValue: scene)
+    }
 
     // MARK: - Body
 
@@ -31,13 +36,15 @@ final class FallingTrashScene: SKScene {
 
     // MARK: - Properties
 
-    private let largeAssetNames = [
+    static var assetNames: [String] { largeAssetNames + smallAssetNames + [netAssetName] }
+
+    private static let largeAssetNames = [
         "temp_trash_fridge",
         "temp_trash_washer",
         "temp_trash_monitor",
         "temp_trash_tire"
     ]
-    private let smallAssetNames = [
+    private static let smallAssetNames = [
         "temp_trash_jug_yellow",
         "temp_trash_water_jug_blue",
         "temp_trash_water_bottle_blue",
@@ -51,12 +58,13 @@ final class FallingTrashScene: SKScene {
         "temp_trash_spoon",
         "temp_trash_fork"
     ]
-    private let netAssetName = "temp_trash_net"
+    private static let netAssetName = "temp_trash_net"
     private let tireAssetName = "temp_trash_tire"
-    private let smallAssetCopies = 2
     private let dropInterval: TimeInterval = 0.12
     private let boundaryCategory: UInt32 = 1 << 0
     private let trashCategory: UInt32 = 1 << 1
+
+    var assetCounts: [String: Int] = [:]
 
     // MARK: - Lifecycle
 
@@ -88,8 +96,9 @@ extension FallingTrashScene {
     }
 
     private func startDropping() {
-        let smallAssets = Array(repeating: smallAssetNames, count: smallAssetCopies).flatMap { $0 }.shuffled()
-        let assetNames = largeAssetNames.shuffled() + smallAssets + [netAssetName]
+        let assetNames = selectedAssets(from: Self.largeAssetNames).shuffled()
+            + selectedAssets(from: Self.smallAssetNames).shuffled()
+            + selectedAssets(from: [Self.netAssetName])
         let wait = SKAction.wait(forDuration: dropInterval)
         let actions = assetNames.flatMap { assetName in
             [wait, SKAction.run { [weak self] in self?.dropItem(named: assetName) }]
@@ -98,8 +107,14 @@ extension FallingTrashScene {
         run(.sequence(actions))
     }
 
+    private func selectedAssets(from names: [String]) -> [String] {
+        names.flatMap { Array(repeating: $0, count: assetCounts[$0, default: 0]) }
+    }
+
     private func dropItem(named assetName: String) {
         let node = SKSpriteNode(imageNamed: assetName)
+        node.setScale(DesignScale.fitRatio(for: size))
+        
         let halfWidth = node.size.width / 2
 
         guard size.width > node.size.width else { return }
@@ -118,7 +133,7 @@ extension FallingTrashScene {
         body.usesPreciseCollisionDetection = true
         body.categoryBitMask = trashCategory
 
-        if assetName == netAssetName {
+        if assetName == Self.netAssetName {
             body.categoryBitMask = 0
             body.collisionBitMask = boundaryCategory
             node.zPosition = 1

@@ -217,6 +217,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EC0D4B813098B886000E7BB7 /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */,
+				EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
 		ECE6F2813098338400C4916C /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -444,8 +453,7 @@
 				ECE6F2B53098338400C4916C /* Home */,
 				ECE6F2BC3098338400C4916C /* Onboarding */,
 				ECE6F2C53098338400C4916C /* SignUp */,
-				EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */,
-				EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */,
+				EC0D4B813098B886000E7BB7 /* Record */,
 			);
 			path = Features;
 			sourceTree = "<group>";
