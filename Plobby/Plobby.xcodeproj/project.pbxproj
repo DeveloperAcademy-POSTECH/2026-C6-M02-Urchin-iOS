@@ -10,6 +10,69 @@
 		B59025573093367600AE351D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = B59025563093367600AE351D /* FirebaseMessaging */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
+		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
+		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
+		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
+		ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2803098338400C4916C /* PlobbyApp.swift */; };
+		ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2823098338400C4916C /* AppleCredential+.swift */; };
+		ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2833098338400C4916C /* AppleSignInError+.swift */; };
+		ECE6F2D33098338400C4916C /* Result+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2843098338400C4916C /* Result+.swift */; };
+		ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2863098338400C4916C /* AppleNonce.swift */; };
+		ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2873098338400C4916C /* AppleSignInError.swift */; };
+		ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2883098338400C4916C /* AuthClient.swift */; };
+		ECE6F2D73098338400C4916C /* DependencyValues+AuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2893098338400C4916C /* DependencyValues+AuthClient.swift */; };
+		ECE6F2D83098338400C4916C /* DependencyValues+SupabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28B3098338400C4916C /* DependencyValues+SupabaseClient.swift */; };
+		ECE6F2D93098338400C4916C /* SupabaseClientKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28C3098338400C4916C /* SupabaseClientKey.swift */; };
+		ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28F3098338400C4916C /* PlobbyLogger.swift */; };
+		ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */; };
+		ECE6F2DC3098338400C4916C /* NormalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2923098338400C4916C /* NormalButton.swift */; };
+		ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2943098338400C4916C /* AlertType.swift */; };
+		ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2953098338400C4916C /* Secrets.swift */; };
+		ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2973098338400C4916C /* AlertState+.swift */; };
+		ECE6F2E03098338400C4916C /* ButtonState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2983098338400C4916C /* ButtonState+.swift */; };
+		ECE6F2E13098338400C4916C /* Character+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2993098338400C4916C /* Character+.swift */; };
+		ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29E3098338400C4916C /* AppleCredential.swift */; };
+		ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29F3098338400C4916C /* AuthUser.swift */; };
+		ECE6F2E43098338400C4916C /* Beach.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A13098338400C4916C /* Beach.swift */; };
+		ECE6F2E53098338400C4916C /* Sea.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A23098338400C4916C /* Sea.swift */; };
+		ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A43098338400C4916C /* DecimalInput.swift */; };
+		ECE6F2E73098338400C4916C /* InputText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A53098338400C4916C /* InputText.swift */; };
+		ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A73098338400C4916C /* MembershipStatus.swift */; };
+		ECE6F2E93098338400C4916C /* Nickname.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A83098338400C4916C /* Nickname.swift */; };
+		ECE6F2EA3098338400C4916C /* SignInResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A93098338400C4916C /* SignInResult.swift */; };
+		ECE6F2EB3098338400C4916C /* SignUpProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AA3098338400C4916C /* SignUpProfile.swift */; };
+		ECE6F2EC3098338400C4916C /* CollectedWeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AC3098338400C4916C /* CollectedWeight.swift */; };
+		ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AD3098338400C4916C /* RecordMemo.swift */; };
+		ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AE3098338400C4916C /* TrashTypeName.swift */; };
+		ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AF3098338400C4916C /* WaterDepth.swift */; };
+		ECE6F2F03098338400C4916C /* WaterTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B03098338400C4916C /* WaterTemperature.swift */; };
+		ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B33098338400C4916C /* HomeFeature.swift */; };
+		ECE6F2F23098338400C4916C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B43098338400C4916C /* HomeView.swift */; };
+		ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */; };
+		ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */; };
+		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
+		ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BA3098338400C4916C /* OnboardingPage.swift */; };
+		ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BB3098338400C4916C /* OnboardingView.swift */; };
+		ECE6F2F83098338400C4916C /* CompleteFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BD3098338400C4916C /* CompleteFeature.swift */; };
+		ECE6F2F93098338400C4916C /* CompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BE3098338400C4916C /* CompleteView.swift */; };
+		ECE6F2FA3098338400C4916C /* RegionFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C03098338400C4916C /* RegionFeature.swift */; };
+		ECE6F2FB3098338400C4916C /* RegionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C13098338400C4916C /* RegionView.swift */; };
+		ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C33098338400C4916C /* SignUpFeature.swift */; };
+		ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C43098338400C4916C /* SignUpView.swift */; };
+		ECE6F2FE3098338400C4916C /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F29B3098338400C4916C /* Config.xcconfig */; };
+		ECE6F2FF3098338400C4916C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F29C3098338400C4916C /* GoogleService-Info.plist */; };
+		ECE6F3003098338400C4916C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F2C73098338400C4916C /* Assets.xcassets */; };
+		ECE6F3013098338400C4916C /* beaches.json in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F2C83098338400C4916C /* beaches.json */; };
+		ECE6F310309833A900C4916C /* DecimalInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F303309833A900C4916C /* DecimalInputTests.swift */; };
+		ECE6F311309833A900C4916C /* InputTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F304309833A900C4916C /* InputTextTests.swift */; };
+		ECE6F312309833A900C4916C /* NicknameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F306309833A900C4916C /* NicknameTests.swift */; };
+		ECE6F313309833A900C4916C /* CollectedWeightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F308309833A900C4916C /* CollectedWeightTests.swift */; };
+		ECE6F314309833A900C4916C /* RecordMemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F309309833A900C4916C /* RecordMemoTests.swift */; };
+		ECE6F315309833A900C4916C /* TrashTypeNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30A309833A900C4916C /* TrashTypeNameTests.swift */; };
+		ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30B309833A900C4916C /* WaterDepthTests.swift */; };
+		ECE6F317309833A900C4916C /* WaterTemperatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30C309833A900C4916C /* WaterTemperatureTests.swift */; };
+		ECE6F31B309833AE00C4916C /* PlobbyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F318309833AE00C4916C /* PlobbyUITests.swift */; };
+		ECE6F31C309833AE00C4916C /* PlobbyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,39 +96,72 @@
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
+		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		ECE6F2803098338400C4916C /* PlobbyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyApp.swift; sourceTree = "<group>"; };
+		ECE6F2823098338400C4916C /* AppleCredential+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleCredential+.swift"; sourceTree = "<group>"; };
+		ECE6F2833098338400C4916C /* AppleSignInError+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleSignInError+.swift"; sourceTree = "<group>"; };
+		ECE6F2843098338400C4916C /* Result+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+.swift"; sourceTree = "<group>"; };
+		ECE6F2863098338400C4916C /* AppleNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleNonce.swift; sourceTree = "<group>"; };
+		ECE6F2873098338400C4916C /* AppleSignInError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInError.swift; sourceTree = "<group>"; };
+		ECE6F2883098338400C4916C /* AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClient.swift; sourceTree = "<group>"; };
+		ECE6F2893098338400C4916C /* DependencyValues+AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+AuthClient.swift"; sourceTree = "<group>"; };
+		ECE6F28B3098338400C4916C /* DependencyValues+SupabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+SupabaseClient.swift"; sourceTree = "<group>"; };
+		ECE6F28C3098338400C4916C /* SupabaseClientKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClientKey.swift; sourceTree = "<group>"; };
+		ECE6F28F3098338400C4916C /* PlobbyLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyLogger.swift; sourceTree = "<group>"; };
+		ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageCompressor.swift; sourceTree = "<group>"; };
+		ECE6F2923098338400C4916C /* NormalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalButton.swift; sourceTree = "<group>"; };
+		ECE6F2943098338400C4916C /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
+		ECE6F2953098338400C4916C /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		ECE6F2973098338400C4916C /* AlertState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertState+.swift"; sourceTree = "<group>"; };
+		ECE6F2983098338400C4916C /* ButtonState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonState+.swift"; sourceTree = "<group>"; };
+		ECE6F2993098338400C4916C /* Character+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+.swift"; sourceTree = "<group>"; };
+		ECE6F29B3098338400C4916C /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		ECE6F29C3098338400C4916C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		ECE6F29E3098338400C4916C /* AppleCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCredential.swift; sourceTree = "<group>"; };
+		ECE6F29F3098338400C4916C /* AuthUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUser.swift; sourceTree = "<group>"; };
+		ECE6F2A13098338400C4916C /* Beach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Beach.swift; sourceTree = "<group>"; };
+		ECE6F2A23098338400C4916C /* Sea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sea.swift; sourceTree = "<group>"; };
+		ECE6F2A43098338400C4916C /* DecimalInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalInput.swift; sourceTree = "<group>"; };
+		ECE6F2A53098338400C4916C /* InputText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputText.swift; sourceTree = "<group>"; };
+		ECE6F2A73098338400C4916C /* MembershipStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipStatus.swift; sourceTree = "<group>"; };
+		ECE6F2A83098338400C4916C /* Nickname.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nickname.swift; sourceTree = "<group>"; };
+		ECE6F2A93098338400C4916C /* SignInResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInResult.swift; sourceTree = "<group>"; };
+		ECE6F2AA3098338400C4916C /* SignUpProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpProfile.swift; sourceTree = "<group>"; };
+		ECE6F2AC3098338400C4916C /* CollectedWeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectedWeight.swift; sourceTree = "<group>"; };
+		ECE6F2AD3098338400C4916C /* RecordMemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMemo.swift; sourceTree = "<group>"; };
+		ECE6F2AE3098338400C4916C /* TrashTypeName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTypeName.swift; sourceTree = "<group>"; };
+		ECE6F2AF3098338400C4916C /* WaterDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepth.swift; sourceTree = "<group>"; };
+		ECE6F2B03098338400C4916C /* WaterTemperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterTemperature.swift; sourceTree = "<group>"; };
+		ECE6F2B33098338400C4916C /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
+		ECE6F2B43098338400C4916C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginLabel.swift; sourceTree = "<group>"; };
+		ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageIndicator.swift; sourceTree = "<group>"; };
+		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
+		ECE6F2BA3098338400C4916C /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
+		ECE6F2BB3098338400C4916C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		ECE6F2BD3098338400C4916C /* CompleteFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteFeature.swift; sourceTree = "<group>"; };
+		ECE6F2BE3098338400C4916C /* CompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteView.swift; sourceTree = "<group>"; };
+		ECE6F2C03098338400C4916C /* RegionFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionFeature.swift; sourceTree = "<group>"; };
+		ECE6F2C13098338400C4916C /* RegionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionView.swift; sourceTree = "<group>"; };
+		ECE6F2C33098338400C4916C /* SignUpFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFeature.swift; sourceTree = "<group>"; };
+		ECE6F2C43098338400C4916C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		ECE6F2C73098338400C4916C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ECE6F2C83098338400C4916C /* beaches.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = beaches.json; sourceTree = "<group>"; };
+		ECE6F2CA3098338400C4916C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ECE6F2CB3098338400C4916C /* Plobby.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Plobby.entitlements; sourceTree = "<group>"; };
+		ECE6F303309833A900C4916C /* DecimalInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalInputTests.swift; sourceTree = "<group>"; };
+		ECE6F304309833A900C4916C /* InputTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextTests.swift; sourceTree = "<group>"; };
+		ECE6F306309833A900C4916C /* NicknameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameTests.swift; sourceTree = "<group>"; };
+		ECE6F308309833A900C4916C /* CollectedWeightTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectedWeightTests.swift; sourceTree = "<group>"; };
+		ECE6F309309833A900C4916C /* RecordMemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMemoTests.swift; sourceTree = "<group>"; };
+		ECE6F30A309833A900C4916C /* TrashTypeNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTypeNameTests.swift; sourceTree = "<group>"; };
+		ECE6F30B309833A900C4916C /* WaterDepthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepthTests.swift; sourceTree = "<group>"; };
+		ECE6F30C309833A900C4916C /* WaterTemperatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterTemperatureTests.swift; sourceTree = "<group>"; };
+		ECE6F318309833AE00C4916C /* PlobbyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITests.swift; sourceTree = "<group>"; };
+		ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		DA1A4DD03089FF0000AEAB52 /* Exceptions for "Plobby" folder in "Plobby" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Core/DesignSystem/.gitkeep,
-				Info.plist,
-			);
-			target = DA1A4DA43089FEAF00AEAB52 /* Plobby */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		DA1A4DA73089FEAF00AEAB52 /* Plobby */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				DA1A4DD03089FF0000AEAB52 /* Exceptions for "Plobby" folder in "Plobby" target */,
-			);
-			path = Plobby;
-			sourceTree = "<group>";
-		};
-		DA1A4DB73089FEB100AEAB52 /* PlobbyTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PlobbyTests;
-			sourceTree = "<group>";
-		};
-		DA1A4DC13089FEB100AEAB52 /* PlobbyUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PlobbyUITests;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		DA1A4DA23089FEAF00AEAB52 /* Frameworks */ = {
@@ -98,9 +194,9 @@
 		DA1A4D9C3089FEAF00AEAB52 = {
 			isa = PBXGroup;
 			children = (
-				DA1A4DA73089FEAF00AEAB52 /* Plobby */,
-				DA1A4DB73089FEB100AEAB52 /* PlobbyTests */,
-				DA1A4DC13089FEB100AEAB52 /* PlobbyUITests */,
+				ECE6F2CC3098338400C4916C /* Plobby */,
+				ECE6F30F309833A900C4916C /* PlobbyTests */,
+				ECE6F31A309833AE00C4916C /* PlobbyUITests */,
 				DA1A4DA63089FEAF00AEAB52 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,6 +209,316 @@
 				DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		ECE6F2813098338400C4916C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F27D3098338400C4916C /* AppDelegate.swift */,
+				ECE6F27E3098338400C4916C /* AppFeature.swift */,
+				ECE6F27F3098338400C4916C /* ContentView.swift */,
+				ECE6F2803098338400C4916C /* PlobbyApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		ECE6F2853098338400C4916C /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2823098338400C4916C /* AppleCredential+.swift */,
+				ECE6F2833098338400C4916C /* AppleSignInError+.swift */,
+				ECE6F2843098338400C4916C /* Result+.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		ECE6F28A3098338400C4916C /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2853098338400C4916C /* Extension */,
+				ECE6F2863098338400C4916C /* AppleNonce.swift */,
+				ECE6F2873098338400C4916C /* AppleSignInError.swift */,
+				ECE6F2883098338400C4916C /* AuthClient.swift */,
+				ECE6F2893098338400C4916C /* DependencyValues+AuthClient.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		ECE6F28D3098338400C4916C /* Supabase */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F28B3098338400C4916C /* DependencyValues+SupabaseClient.swift */,
+				ECE6F28C3098338400C4916C /* SupabaseClientKey.swift */,
+			);
+			path = Supabase;
+			sourceTree = "<group>";
+		};
+		ECE6F28E3098338400C4916C /* Clients */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F28A3098338400C4916C /* Auth */,
+				ECE6F28D3098338400C4916C /* Supabase */,
+			);
+			path = Clients;
+			sourceTree = "<group>";
+		};
+		ECE6F2913098338400C4916C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F28F3098338400C4916C /* PlobbyLogger.swift */,
+				ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		ECE6F2933098338400C4916C /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2923098338400C4916C /* NormalButton.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		ECE6F2963098338400C4916C /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2943098338400C4916C /* AlertType.swift */,
+				ECE6F2953098338400C4916C /* Secrets.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
+		ECE6F29A3098338400C4916C /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2973098338400C4916C /* AlertState+.swift */,
+				ECE6F2983098338400C4916C /* ButtonState+.swift */,
+				ECE6F2993098338400C4916C /* Character+.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		ECE6F29D3098338400C4916C /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2913098338400C4916C /* Common */,
+				ECE6F2933098338400C4916C /* DesignSystem */,
+				ECE6F2963098338400C4916C /* Enum */,
+				ECE6F29A3098338400C4916C /* Extension */,
+				ECE6F29B3098338400C4916C /* Config.xcconfig */,
+				ECE6F29C3098338400C4916C /* GoogleService-Info.plist */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		ECE6F2A03098338400C4916C /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F29E3098338400C4916C /* AppleCredential.swift */,
+				ECE6F29F3098338400C4916C /* AuthUser.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		ECE6F2A33098338400C4916C /* Beach */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2A13098338400C4916C /* Beach.swift */,
+				ECE6F2A23098338400C4916C /* Sea.swift */,
+			);
+			path = Beach;
+			sourceTree = "<group>";
+		};
+		ECE6F2A63098338400C4916C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2A43098338400C4916C /* DecimalInput.swift */,
+				ECE6F2A53098338400C4916C /* InputText.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		ECE6F2AB3098338400C4916C /* Member */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2A73098338400C4916C /* MembershipStatus.swift */,
+				ECE6F2A83098338400C4916C /* Nickname.swift */,
+				ECE6F2A93098338400C4916C /* SignInResult.swift */,
+				ECE6F2AA3098338400C4916C /* SignUpProfile.swift */,
+			);
+			path = Member;
+			sourceTree = "<group>";
+		};
+		ECE6F2B13098338400C4916C /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2AC3098338400C4916C /* CollectedWeight.swift */,
+				ECE6F2AD3098338400C4916C /* RecordMemo.swift */,
+				ECE6F2AE3098338400C4916C /* TrashTypeName.swift */,
+				ECE6F2AF3098338400C4916C /* WaterDepth.swift */,
+				ECE6F2B03098338400C4916C /* WaterTemperature.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
+		ECE6F2B23098338400C4916C /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2A63098338400C4916C /* Common */,
+				ECE6F2A03098338400C4916C /* Auth */,
+				ECE6F2A33098338400C4916C /* Beach */,
+				ECE6F2AB3098338400C4916C /* Member */,
+				ECE6F2B13098338400C4916C /* Record */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		ECE6F2B53098338400C4916C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2B33098338400C4916C /* HomeFeature.swift */,
+				ECE6F2B43098338400C4916C /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		ECE6F2B83098338400C4916C /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */,
+				ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		ECE6F2BC3098338400C4916C /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2B83098338400C4916C /* Subviews */,
+				ECE6F2B93098338400C4916C /* OnboardingFeature.swift */,
+				ECE6F2BA3098338400C4916C /* OnboardingPage.swift */,
+				ECE6F2BB3098338400C4916C /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		ECE6F2BF3098338400C4916C /* Complete */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2BD3098338400C4916C /* CompleteFeature.swift */,
+				ECE6F2BE3098338400C4916C /* CompleteView.swift */,
+			);
+			path = Complete;
+			sourceTree = "<group>";
+		};
+		ECE6F2C23098338400C4916C /* Region */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2C03098338400C4916C /* RegionFeature.swift */,
+				ECE6F2C13098338400C4916C /* RegionView.swift */,
+			);
+			path = Region;
+			sourceTree = "<group>";
+		};
+		ECE6F2C53098338400C4916C /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2BF3098338400C4916C /* Complete */,
+				ECE6F2C23098338400C4916C /* Region */,
+				ECE6F2C33098338400C4916C /* SignUpFeature.swift */,
+				ECE6F2C43098338400C4916C /* SignUpView.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		ECE6F2C63098338400C4916C /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2B53098338400C4916C /* Home */,
+				ECE6F2BC3098338400C4916C /* Onboarding */,
+				ECE6F2C53098338400C4916C /* SignUp */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		ECE6F2C93098338400C4916C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2C73098338400C4916C /* Assets.xcassets */,
+				ECE6F2C83098338400C4916C /* beaches.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		ECE6F2CC3098338400C4916C /* Plobby */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F2813098338400C4916C /* App */,
+				ECE6F28E3098338400C4916C /* Clients */,
+				ECE6F29D3098338400C4916C /* Core */,
+				ECE6F2B23098338400C4916C /* Domain */,
+				ECE6F2C63098338400C4916C /* Features */,
+				ECE6F2C93098338400C4916C /* Resources */,
+				ECE6F2CA3098338400C4916C /* Info.plist */,
+				ECE6F2CB3098338400C4916C /* Plobby.entitlements */,
+			);
+			path = Plobby;
+			sourceTree = "<group>";
+		};
+		ECE6F305309833A900C4916C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F303309833A900C4916C /* DecimalInputTests.swift */,
+				ECE6F304309833A900C4916C /* InputTextTests.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		ECE6F307309833A900C4916C /* Member */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F306309833A900C4916C /* NicknameTests.swift */,
+			);
+			path = Member;
+			sourceTree = "<group>";
+		};
+		ECE6F30D309833A900C4916C /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F308309833A900C4916C /* CollectedWeightTests.swift */,
+				ECE6F309309833A900C4916C /* RecordMemoTests.swift */,
+				ECE6F30A309833A900C4916C /* TrashTypeNameTests.swift */,
+				ECE6F30B309833A900C4916C /* WaterDepthTests.swift */,
+				ECE6F30C309833A900C4916C /* WaterTemperatureTests.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
+		ECE6F30E309833A900C4916C /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F305309833A900C4916C /* Common */,
+				ECE6F307309833A900C4916C /* Member */,
+				ECE6F30D309833A900C4916C /* Record */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		ECE6F30F309833A900C4916C /* PlobbyTests */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F30E309833A900C4916C /* Domain */,
+			);
+			path = PlobbyTests;
+			sourceTree = "<group>";
+		};
+		ECE6F31A309833AE00C4916C /* PlobbyUITests */ = {
+			isa = PBXGroup;
+			children = (
+				ECE6F318309833AE00C4916C /* PlobbyUITests.swift */,
+				ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */,
+			);
+			path = PlobbyUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -129,9 +535,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				DA1A4DA73089FEAF00AEAB52 /* Plobby */,
 			);
 			name = Plobby;
 			packageProductDependencies = (
@@ -156,9 +559,6 @@
 			dependencies = (
 				DA1A4DB63089FEB100AEAB52 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				DA1A4DB73089FEB100AEAB52 /* PlobbyTests */,
-			);
 			name = PlobbyTests;
 			packageProductDependencies = (
 			);
@@ -178,9 +578,6 @@
 			);
 			dependencies = (
 				DA1A4DC03089FEB100AEAB52 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				DA1A4DC13089FEB100AEAB52 /* PlobbyUITests */,
 			);
 			name = PlobbyUITests;
 			packageProductDependencies = (
@@ -243,6 +640,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECE6F2FE3098338400C4916C /* Config.xcconfig in Resources */,
+				ECE6F2FF3098338400C4916C /* GoogleService-Info.plist in Resources */,
+				ECE6F3003098338400C4916C /* Assets.xcassets in Resources */,
+				ECE6F3013098338400C4916C /* beaches.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +668,55 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */,
+				ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */,
+				ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */,
+				ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */,
+				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
+				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
+				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
+				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
+				ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */,
+				ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */,
+				ECE6F2D73098338400C4916C /* DependencyValues+AuthClient.swift in Sources */,
+				ECE6F2D83098338400C4916C /* DependencyValues+SupabaseClient.swift in Sources */,
+				ECE6F2D93098338400C4916C /* SupabaseClientKey.swift in Sources */,
+				ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */,
+				ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */,
+				ECE6F2DC3098338400C4916C /* NormalButton.swift in Sources */,
+				ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */,
+				ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */,
+				ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */,
+				ECE6F2E03098338400C4916C /* ButtonState+.swift in Sources */,
+				ECE6F2E13098338400C4916C /* Character+.swift in Sources */,
+				ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */,
+				ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */,
+				ECE6F2E43098338400C4916C /* Beach.swift in Sources */,
+				ECE6F2E53098338400C4916C /* Sea.swift in Sources */,
+				ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */,
+				ECE6F2E73098338400C4916C /* InputText.swift in Sources */,
+				ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */,
+				ECE6F2E93098338400C4916C /* Nickname.swift in Sources */,
+				ECE6F2EA3098338400C4916C /* SignInResult.swift in Sources */,
+				ECE6F2EB3098338400C4916C /* SignUpProfile.swift in Sources */,
+				ECE6F2EC3098338400C4916C /* CollectedWeight.swift in Sources */,
+				ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */,
+				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
+				ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */,
+				ECE6F2F03098338400C4916C /* WaterTemperature.swift in Sources */,
+				ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */,
+				ECE6F2F23098338400C4916C /* HomeView.swift in Sources */,
+				ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */,
+				ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */,
+				ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */,
+				ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */,
+				ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */,
+				ECE6F2F83098338400C4916C /* CompleteFeature.swift in Sources */,
+				ECE6F2F93098338400C4916C /* CompleteView.swift in Sources */,
+				ECE6F2FA3098338400C4916C /* RegionFeature.swift in Sources */,
+				ECE6F2FB3098338400C4916C /* RegionView.swift in Sources */,
+				ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */,
+				ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +724,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECE6F310309833A900C4916C /* DecimalInputTests.swift in Sources */,
+				ECE6F311309833A900C4916C /* InputTextTests.swift in Sources */,
+				ECE6F312309833A900C4916C /* NicknameTests.swift in Sources */,
+				ECE6F313309833A900C4916C /* CollectedWeightTests.swift in Sources */,
+				ECE6F314309833A900C4916C /* RecordMemoTests.swift in Sources */,
+				ECE6F315309833A900C4916C /* TrashTypeNameTests.swift in Sources */,
+				ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */,
+				ECE6F317309833A900C4916C /* WaterTemperatureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +739,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECE6F31B309833AE00C4916C /* PlobbyUITests.swift in Sources */,
+				ECE6F31C309833AE00C4916C /* PlobbyUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,8 +885,7 @@
 		};
 		DA1A4DC93089FEB100AEAB52 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = DA1A4DA73089FEAF00AEAB52 /* Plobby */;
-			baseConfigurationReferenceRelativePath = Core/Config.xcconfig;
+			baseConfigurationReference = ECE6F29B3098338400C4916C /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -466,8 +925,7 @@
 		};
 		DA1A4DCA3089FEB100AEAB52 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = DA1A4DA73089FEAF00AEAB52 /* Plobby */;
-			baseConfigurationReferenceRelativePath = Core/Config.xcconfig;
+			baseConfigurationReference = ECE6F29B3098338400C4916C /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -646,6 +1104,8 @@
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.5.1;
 			};
+			traits = (
+			);
 		};
 		DA1A4DD4308A01BF00AEAB52 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -654,6 +1114,8 @@
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.26.2;
 			};
+			traits = (
+			);
 		};
 /* End XCRemoteSwiftPackageReference section */
 

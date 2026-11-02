@@ -15,14 +15,16 @@ struct AppFeature {
     @ObservableState
     enum State: Equatable {
         case onboarding(OnboardingFeature.State)
-        case signUp(AuthUser, fullName: String?)
-        case home(MembershipStatus)
+        case signUp(SignUpFeature.State)
+        case home(HomeFeature.State)
     }
     
     // MARK: - Action
     
     enum Action {
         case onboarding(OnboardingFeature.Action)
+        case signUp(SignUpFeature.Action)
+        case home(HomeFeature.Action)
     }
     
     // MARK: - Body
@@ -31,23 +33,33 @@ struct AppFeature {
         Reduce { state, action in
             switch action {
             case let .onboarding(.delegate(.signedIn(user))):
-                state = .home(.member(user))
+                state = .home(HomeFeature.State(status: .member(user)))
                 return .none
 
             case let .onboarding(.delegate(.needsSignUp(user, fullName))):
-                state = .signUp(user, fullName: fullName)
+                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
                 return .none
 
             case .onboarding(.delegate(.browseWithoutSignUp)):
-                state = .home(.guest)
+                state = .home(HomeFeature.State(status: .guest))
                 return .none
 
-            case .onboarding:
+            case let .signUp(.delegate(.completed(user))):
+                state = .home(HomeFeature.State(status: .member(user)))
+                return .none
+
+            case .onboarding, .signUp:
                 return .none
             }
         }
         .ifCaseLet(\.onboarding, action: \.onboarding) {
             OnboardingFeature()
+        }
+        .ifCaseLet(\.signUp, action: \.signUp) {
+            SignUpFeature()
+        }
+        .ifCaseLet(\.home, action: \.home) {
+            HomeFeature()
         }
     }
 }

@@ -7,11 +7,23 @@
 
 import SwiftUI
 
+import ComposableArchitecture
+
 struct HomeView: View {
+    
+    // MARK: - Properties
+    
+    let store: StoreOf<HomeFeature>
     
     // MARK: - Body
     
     var body: some View {
-        Text("홈화면이지롱")
+        switch store.status {
+        case .member:
+            Text("회원 홈화면이지롱")
+            
+        case .guest:
+            Text("비회원 홈화면이지롱")
+        }
     }
 }
