@@ -10,6 +10,7 @@
 		B59025573093367600AE351D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = B59025563093367600AE351D /* FirebaseMessaging */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
+		EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -96,6 +97,7 @@
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashView.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -437,6 +439,7 @@
 				ECE6F2B53098338400C4916C /* Home */,
 				ECE6F2BC3098338400C4916C /* Onboarding */,
 				ECE6F2C53098338400C4916C /* SignUp */,
+				EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 				ECE6F2E93098338400C4916C /* Nickname.swift in Sources */,
 				ECE6F2EA3098338400C4916C /* SignInResult.swift in Sources */,
 				ECE6F2EB3098338400C4916C /* SignUpProfile.swift in Sources */,
+				EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */,
 				ECE6F2EC3098338400C4916C /* CollectedWeight.swift in Sources */,
 				ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
