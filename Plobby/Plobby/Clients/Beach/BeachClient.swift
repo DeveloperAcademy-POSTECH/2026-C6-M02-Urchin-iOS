@@ -14,6 +14,7 @@ struct BeachClient {
     var fetchBeaches: @Sendable (_ since: Date?) async throws -> [BeachResponseDTO]
     var fetchFavoriteBeaches: @Sendable () async throws -> [FavoriteBeachResponseDTO]
     var submitFavoriteBeach: @Sendable (_ beachID: UUID) async throws -> Void
+    var removeFavoriteBeach: @Sendable (_ beachID: UUID) async throws -> Void
 }
 
 extension BeachClient: DependencyKey {
@@ -54,6 +55,18 @@ extension BeachClient: DependencyKey {
                 try await supabase
                     .from("favorite_beaches")
                     .insert(FavoriteBeachInsertRequestDTO(userId: userID, beachId: beachID))
+                    .execute()
+            },
+            removeFavoriteBeach: { beachID in
+                @Dependency(\.supabaseClient) var supabase
+
+                let userID = try await supabase.auth.session.user.id
+
+                try await supabase
+                    .from("favorite_beaches")
+                    .delete()
+                    .eq("user_id", value: userID)
+                    .eq("beach_id", value: beachID)
                     .execute()
             }
         )
