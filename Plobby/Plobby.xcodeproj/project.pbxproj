@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		B59025573093367600AE351D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = B59025563093367600AE351D /* FirebaseMessaging */; };
+		B59027033098E2F800AE351D /* NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027023098E2F800AE351D /* NotificationClient.swift */; };
+		B59027053098E35B00AE351D /* DependencyValues+NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */; };
+		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
@@ -93,6 +96,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B59027023098E2F800AE351D /* NotificationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationClient.swift; sourceTree = "<group>"; };
+		B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+NotificationClient.swift"; sourceTree = "<group>"; };
+		B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,6 +197,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B59027013098E2AD00AE351D /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				B59027063098E63200AE351D /* DTO */,
+				B59027023098E2F800AE351D /* NotificationClient.swift */,
+				B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		B59027063098E63200AE351D /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				B59027073098E6B500AE351D /* Request */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		B59027073098E6B500AE351D /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
 		DA1A4D9C3089FEAF00AEAB52 = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +288,7 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				B59027013098E2AD00AE351D /* Notification */,
 				ECE6F28A3098338400C4916C /* Auth */,
 				ECE6F28D3098338400C4916C /* Supabase */,
 			);
@@ -680,9 +713,11 @@
 				ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */,
 				ECE6F2D73098338400C4916C /* DependencyValues+AuthClient.swift in Sources */,
 				ECE6F2D83098338400C4916C /* DependencyValues+SupabaseClient.swift in Sources */,
+				B59027053098E35B00AE351D /* DependencyValues+NotificationClient.swift in Sources */,
 				ECE6F2D93098338400C4916C /* SupabaseClientKey.swift in Sources */,
 				ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */,
 				ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */,
+				B59027033098E2F800AE351D /* NotificationClient.swift in Sources */,
 				ECE6F2DC3098338400C4916C /* NormalButton.swift in Sources */,
 				ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */,
 				ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */,
@@ -697,6 +732,7 @@
 				ECE6F2E73098338400C4916C /* InputText.swift in Sources */,
 				ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */,
 				ECE6F2E93098338400C4916C /* Nickname.swift in Sources */,
+				B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */,
 				ECE6F2EA3098338400C4916C /* SignInResult.swift in Sources */,
 				ECE6F2EB3098338400C4916C /* SignUpProfile.swift in Sources */,
 				ECE6F2EC3098338400C4916C /* CollectedWeight.swift in Sources */,
