@@ -30,7 +30,7 @@ struct RecordFlowFeatureTests {
     func 기록을_저장하면_리워드로_이동한다() async {
         let store = makeStore(step: .form(RecordFormFeature.State(recordType: .plogging)))
 
-        await store.send(\.step.form.saveButtonTapped)
+        await store.send(\.step.form.completeTapped)
         await store.receive(\.step.form.delegate.recordCreated) {
             $0.step = .reward(RecordRewardFeature.State(recordID: UUID(0)))
         }
@@ -61,7 +61,7 @@ struct RecordFlowFeatureTests {
     func 기록하기에서_닫으면_기록_플로우가_종료된다() async {
         let store = makeStore(step: .form(RecordFormFeature.State(recordType: .plogging)))
 
-        await store.send(\.step.form.closeButtonTapped)
+        await store.send(\.step.form.closeTapped)
         await store.receive(\.step.form.delegate.closed)
         await store.receive(\.delegate.closed)
     }
