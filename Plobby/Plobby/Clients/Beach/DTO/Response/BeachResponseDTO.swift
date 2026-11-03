@@ -11,14 +11,26 @@ nonisolated struct BeachResponseDTO: Decodable, Identifiable, Equatable, Sendabl
     let id: UUID
     let name: String
     let region: BeachRegion
+    let address: String
     let latitude: Double
     let longitude: Double
     let createdAt: Date
     let updatedAt: Date
 
     enum CodingKeys: String, CodingKey {
-        case id, name, region, latitude, longitude
+        case id, name, region, address, latitude, longitude
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+    }
+
+    func toDomain() -> Beach {
+        Beach(
+            id: id,
+            region: region.displayName,
+            name: name,
+            address: address,
+            latitude: latitude,
+            longitude: longitude
+        )
     }
 }

@@ -11,6 +11,7 @@ struct Beach: Identifiable, Equatable, Decodable {
     let id: UUID
     let region: String
     let name: String
+    let address: String
     let latitude: Double
     let longitude: Double
 }
