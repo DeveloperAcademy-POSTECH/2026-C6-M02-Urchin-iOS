@@ -282,11 +282,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EC0D4B813098B886000E7BB7 /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */,
+				EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
 		DA5B0FA430988669003FEDF9 /* Record */ = {
 			isa = PBXGroup;
 			children = (
-        EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */,
-				EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */,
 				DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */,
 				DA5B0FA330988669003FEDF9 /* RecordClient.swift */,
 			);
