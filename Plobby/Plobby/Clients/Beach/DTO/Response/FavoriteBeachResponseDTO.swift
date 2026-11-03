@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct FavoriteBeachResponseDTO: Decodable, Equatable {
-    let beachId: UUID
+nonisolated struct FavoriteBeachResponseDTO: Decodable, Equatable, Sendable {
+    let beachID: UUID
     let createdAt: Date
     let beach: BeachResponseDTO
 
     enum CodingKeys: String, CodingKey {
-        case beachId = "beach_id"
+        case beachID = "beach_id"
         case createdAt = "created_at"
         case beach
     }
