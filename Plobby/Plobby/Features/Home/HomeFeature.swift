@@ -38,10 +38,6 @@ struct HomeFeature {
         }
     }
 
-    // MARK: - Dependency
-
-    @Dependency(\.continuousClock) var clock
-
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
@@ -101,11 +97,11 @@ extension HomeFeature {
     }
 
     private func startTimer() -> Effect<Action> {
-        .run { send in
-            for await _ in await clock.timer(interval: HomeFeature.bannerInterval) {
-                await send(.timerTicked, animation: .easeInOut)
-            }
-        }
-        .cancellable(id: CancelID.timer, cancelInFlight: true)
+        .timer(
+            id: CancelID.timer,
+            interval: HomeFeature.bannerInterval,
+            action: .timerTicked,
+            animation: .easeInOut
+        )
     }
 }
