@@ -17,6 +17,7 @@ struct AuthClient {
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
     var signOut: @Sendable (_ token: String?) async throws -> Void
     var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason, _ detail: String?) async throws -> Void
+    var withdraw: @Sendable (_ reason: WithdrawalReason, _ detail: String?, _ authorizationCode: String) async throws -> Void
 }
 
 extension AuthClient: DependencyKey {
@@ -94,6 +95,24 @@ extension AuthClient: DependencyKey {
                     .from("withdrawal_feedback")
                     .insert(WithdrawalFeedbackInsertRequestDTO(reason: reason, detail: detailToSave))
                     .execute()
+            },
+            withdraw: { reason, detail, authorizationCode in
+                @Dependency(\.supabaseClient) var supabase
+                @Dependency(\.authClient) var authClient
+
+                // 1. 탈퇴 사유 저장
+                try await authClient.submitWithdrawalFeedback(reason, detail)
+
+                // 2. 회원 탈퇴
+                try await supabase.functions.invoke(
+                    "delete-account",
+                    options: FunctionInvokeOptions(
+                        body: DeleteAccountRequestDTO(authorizationCode: authorizationCode)
+                    )
+                )
+
+                // 3. 앱에 남은 로그인 세션 정리
+                try? await supabase.auth.signOut(scope: .local)
             }
         )
     }()

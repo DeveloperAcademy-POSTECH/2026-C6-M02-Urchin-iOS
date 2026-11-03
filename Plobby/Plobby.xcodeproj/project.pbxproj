@@ -44,6 +44,7 @@
 		ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2863098338400C4916C /* AppleNonce.swift */; };
 		ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2873098338400C4916C /* AppleSignInError.swift */; };
 		ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2883098338400C4916C /* AuthClient.swift */; };
+		EC0D4B993098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B983098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift */; };
 		EC0D4B953098E1D0000E7BB7 /* WithdrawalReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B943098E1D0000E7BB7 /* WithdrawalReason.swift */; };
 		EC0D4B933098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B923098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift */; };
 		EC0D4B913098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B903098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift */; };
@@ -157,6 +158,7 @@
 		ECE6F2863098338400C4916C /* AppleNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleNonce.swift; sourceTree = "<group>"; };
 		ECE6F2873098338400C4916C /* AppleSignInError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInError.swift; sourceTree = "<group>"; };
 		ECE6F2883098338400C4916C /* AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClient.swift; sourceTree = "<group>"; };
+		EC0D4B983098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountRequestDTO.swift; sourceTree = "<group>"; };
 		EC0D4B943098E1D0000E7BB7 /* WithdrawalReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalReason.swift; sourceTree = "<group>"; };
 		EC0D4B923098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalFeedbackInsertRequestDTO.swift; sourceTree = "<group>"; };
 		EC0D4B903098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignupRequestDTO.swift; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 		ECDDD9AB3099782800FB04D5 /* Request */ = {
 			isa = PBXGroup;
 			children = (
+				EC0D4B983098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift */,
 				EC0D4B943098E1D0000E7BB7 /* WithdrawalReason.swift */,
 				EC0D4B923098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift */,
 				EC0D4B903098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift */,
@@ -855,6 +858,7 @@
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
 				ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */,
 				ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */,
+				EC0D4B993098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift in Sources */,
 				EC0D4B953098E1D0000E7BB7 /* WithdrawalReason.swift in Sources */,
 				EC0D4B933098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift in Sources */,
 				EC0D4B913098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift in Sources */,
