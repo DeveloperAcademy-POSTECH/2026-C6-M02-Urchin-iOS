@@ -16,6 +16,7 @@ struct AuthClient {
     var fetchIsNicknameAvailable: @Sendable (_ nickname: String) async throws -> Bool
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
     var signOut: @Sendable () async throws -> Void
+    var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason, _ detail: String?) async throws -> Void
 }
 
 extension AuthClient: DependencyKey {
@@ -70,6 +71,17 @@ extension AuthClient: DependencyKey {
                 @Dependency(\.supabaseClient) var supabase
 
                 try await supabase.auth.signOut(scope: .local)
+            },
+            submitWithdrawalFeedback: { reason, detail in
+                @Dependency(\.supabaseClient) var supabase
+
+                let trimmed = detail?.trimmingCharacters(in: .whitespacesAndNewlines)
+                let detailToSave = (reason == .other && trimmed?.isEmpty == false) ? trimmed : nil
+
+                try await supabase
+                    .from("withdrawal_feedback")
+                    .insert(WithdrawalFeedbackInsertRequestDTO(reason: reason, detail: detailToSave))
+                    .execute()
             }
         )
     }()

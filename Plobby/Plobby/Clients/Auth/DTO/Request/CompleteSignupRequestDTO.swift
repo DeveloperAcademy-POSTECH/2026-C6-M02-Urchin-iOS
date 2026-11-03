@@ -20,7 +20,6 @@ nonisolated struct CompleteSignupRequestDTO: Encodable, Sendable {
         case beachIDs = "p_beach_ids"
     }
 
-    // 자동 합성은 nil 키를 생략해서, RPC 파라미터가 빠지지 않도록 null로 인코딩해요.
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
