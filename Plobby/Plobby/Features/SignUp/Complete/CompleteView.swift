@@ -30,5 +30,6 @@ struct CompleteView: View {
             }
             .padding(.horizontal, 20)
         }
+        .navigationBarBackButtonHidden()
     }
 }
