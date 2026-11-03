@@ -13,7 +13,7 @@ struct HomeView: View {
 
     // MARK: - Properties
 
-    @Bindable var store: StoreOf<HomeFeature>
+    let store: StoreOf<HomeFeature>
 
     // MARK: - Body
 

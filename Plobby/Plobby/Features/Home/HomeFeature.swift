@@ -58,9 +58,9 @@ struct HomeFeature {
                 return .none
 
             case let .bannerChanged(banner):
-                guard banner != state.currentBanner else { return .none }
-
-                state.currentBanner = banner
+                if banner != state.currentBanner {
+                    state.currentBanner = banner
+                }
                 return .none
 
             case .bannerDragStarted:
