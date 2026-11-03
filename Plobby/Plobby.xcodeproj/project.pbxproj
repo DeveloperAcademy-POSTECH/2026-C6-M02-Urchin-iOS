@@ -14,6 +14,10 @@
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
+		EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */; };
+		EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */; };
+		EC0D4B803098B739000E7BB7 /* TrashSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */; };
+		EC7608AE30996DF40061AAAD /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7608AD30996DF40061AAAD /* ImageAsset.swift */; };
 		DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FA330988669003FEDF9 /* RecordClient.swift */; };
 		DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */; };
 		DA5B0FB93098DA53003FEDF9 /* DependencyValues+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */; };
@@ -114,6 +118,10 @@
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashView.swift; sourceTree = "<group>"; };
+		EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignScale.swift; sourceTree = "<group>"; };
+		EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashSelectionView.swift; sourceTree = "<group>"; };
+		EC7608AD30996DF40061AAAD /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		DA5B0FA330988669003FEDF9 /* RecordClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordClient.swift; sourceTree = "<group>"; };
 		DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecord.swift; sourceTree = "<group>"; };
 		DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+Record.swift"; sourceTree = "<group>"; };
@@ -274,6 +282,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EC0D4B813098B886000E7BB7 /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */,
+				EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
 		DA5B0FA430988669003FEDF9 /* Record */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,6 +368,8 @@
 			isa = PBXGroup;
 			children = (
 				ECE6F2923098338400C4916C /* NormalButton.swift */,
+				EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */,
+				EC7608AD30996DF40061AAAD /* ImageAsset.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -520,6 +539,7 @@
 				ECE6F2B53098338400C4916C /* Home */,
 				ECE6F2BC3098338400C4916C /* Onboarding */,
 				ECE6F2C53098338400C4916C /* SignUp */,
+				EC0D4B813098B886000E7BB7 /* Record */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -762,6 +782,7 @@
 				ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */,
 				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
+				EC7608AE30996DF40061AAAD /* ImageAsset.swift in Sources */,
 				DA5B0FD83098E17F003FEDF9 /* RecordReport.swift in Sources */,
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
@@ -781,6 +802,7 @@
 				ECE6F2DC3098338400C4916C /* NormalButton.swift in Sources */,
 				DA5B0FC93098DF6F003FEDF9 /* RecordLike.swift in Sources */,
 				ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */,
+				EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */,
 				ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */,
 				ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */,
 				ECE6F2E03098338400C4916C /* ButtonState+.swift in Sources */,
@@ -793,10 +815,12 @@
 				ECE6F2E73098338400C4916C /* InputText.swift in Sources */,
 				ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */,
 				ECE6F2E93098338400C4916C /* Nickname.swift in Sources */,
+				EC0D4B803098B739000E7BB7 /* TrashSelectionView.swift in Sources */,
 				B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */,
 				B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */,
 				ECE6F2EA3098338400C4916C /* SignInResult.swift in Sources */,
 				ECE6F2EB3098338400C4916C /* SignUpProfile.swift in Sources */,
+				EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */,
 				ECE6F2EC3098338400C4916C /* CollectedWeight.swift in Sources */,
 				ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
