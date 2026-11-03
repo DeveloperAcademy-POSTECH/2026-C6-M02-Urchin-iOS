@@ -8,7 +8,7 @@
 import ComposableArchitecture
 
 @Reducer
-struct RecordFeature {
+struct RecordFlowFeature {
 
     @ObservableState
     struct State: Equatable {

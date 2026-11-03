@@ -19,7 +19,7 @@ struct MainTabFeature {
         var home: HomeFeature.State
         var map = MapFeature.State()
         var my = MyFeature.State()
-        @Presents var record: RecordFeature.State?
+        @Presents var record: RecordFlowFeature.State?
     }
     
     // MARK: - Action
@@ -30,7 +30,7 @@ struct MainTabFeature {
         case home(HomeFeature.Action)
         case map(MapFeature.Action)
         case my(MyFeature.Action)
-        case record(PresentationAction<RecordFeature.Action>)
+        case record(PresentationAction<RecordFlowFeature.Action>)
     }
     
     // MARK: - Body
@@ -68,7 +68,7 @@ struct MainTabFeature {
             }
         }
         .ifLet(\.$record, action: \.record) {
-            RecordFeature()
+            RecordFlowFeature()
         }
     }
 }
