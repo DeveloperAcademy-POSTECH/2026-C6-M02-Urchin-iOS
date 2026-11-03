@@ -101,7 +101,6 @@
 		ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AD3098338400C4916C /* RecordMemo.swift */; };
 		ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AE3098338400C4916C /* TrashTypeName.swift */; };
 		ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AF3098338400C4916C /* WaterDepth.swift */; };
-		ECE6F2F03098338400C4916C /* WaterTemperature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B03098338400C4916C /* WaterTemperature.swift */; };
 		ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B33098338400C4916C /* HomeFeature.swift */; };
 		ECE6F2F23098338400C4916C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B43098338400C4916C /* HomeView.swift */; };
 		ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */; };
@@ -125,7 +124,6 @@
 		ECE6F314309833A900C4916C /* RecordMemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F309309833A900C4916C /* RecordMemoTests.swift */; };
 		ECE6F315309833A900C4916C /* TrashTypeNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30A309833A900C4916C /* TrashTypeNameTests.swift */; };
 		ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30B309833A900C4916C /* WaterDepthTests.swift */; };
-		ECE6F317309833A900C4916C /* WaterTemperatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30C309833A900C4916C /* WaterTemperatureTests.swift */; };
 		ECE6F31B309833AE00C4916C /* PlobbyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F318309833AE00C4916C /* PlobbyUITests.swift */; };
 		ECE6F31C309833AE00C4916C /* PlobbyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
@@ -241,7 +239,6 @@
 		ECE6F2AD3098338400C4916C /* RecordMemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMemo.swift; sourceTree = "<group>"; };
 		ECE6F2AE3098338400C4916C /* TrashTypeName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTypeName.swift; sourceTree = "<group>"; };
 		ECE6F2AF3098338400C4916C /* WaterDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepth.swift; sourceTree = "<group>"; };
-		ECE6F2B03098338400C4916C /* WaterTemperature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterTemperature.swift; sourceTree = "<group>"; };
 		ECE6F2B33098338400C4916C /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		ECE6F2B43098338400C4916C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginLabel.swift; sourceTree = "<group>"; };
@@ -266,7 +263,6 @@
 		ECE6F309309833A900C4916C /* RecordMemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMemoTests.swift; sourceTree = "<group>"; };
 		ECE6F30A309833A900C4916C /* TrashTypeNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTypeNameTests.swift; sourceTree = "<group>"; };
 		ECE6F30B309833A900C4916C /* WaterDepthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepthTests.swift; sourceTree = "<group>"; };
-		ECE6F30C309833A900C4916C /* WaterTemperatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterTemperatureTests.swift; sourceTree = "<group>"; };
 		ECE6F318309833AE00C4916C /* PlobbyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITests.swift; sourceTree = "<group>"; };
 		ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdateRequestDTO.swift; sourceTree = "<group>"; };
@@ -692,7 +688,6 @@
 				ECE6F2AD3098338400C4916C /* RecordMemo.swift */,
 				ECE6F2AE3098338400C4916C /* TrashTypeName.swift */,
 				ECE6F2AF3098338400C4916C /* WaterDepth.swift */,
-				ECE6F2B03098338400C4916C /* WaterTemperature.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -830,7 +825,6 @@
 				ECE6F309309833A900C4916C /* RecordMemoTests.swift */,
 				ECE6F30A309833A900C4916C /* TrashTypeNameTests.swift */,
 				ECE6F30B309833A900C4916C /* WaterDepthTests.swift */,
-				ECE6F30C309833A900C4916C /* WaterTemperatureTests.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -1096,7 +1090,6 @@
 				ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
 				ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */,
-				ECE6F2F03098338400C4916C /* WaterTemperature.swift in Sources */,
 				DA5B0FDA3098E2FC003FEDF9 /* SupabaseClient+.swift in Sources */,
 				ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */,
 				ECE6F2F23098338400C4916C /* HomeView.swift in Sources */,
@@ -1127,7 +1120,6 @@
 				ECE6F314309833A900C4916C /* RecordMemoTests.swift in Sources */,
 				ECE6F315309833A900C4916C /* TrashTypeNameTests.swift in Sources */,
 				ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */,
-				ECE6F317309833A900C4916C /* WaterTemperatureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
