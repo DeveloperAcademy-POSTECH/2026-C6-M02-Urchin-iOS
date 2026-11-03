@@ -14,6 +14,8 @@ struct UserClient {
     var fetchIsNicknameAvailable: @Sendable (_ nickname: String) async throws -> Bool
     var fetchMyProfile: @Sendable () async throws -> Profile?
     var updateMyProfile: @Sendable (_ nickname: String, _ profileImageKey: String?) async throws -> Profile
+    var submitBlock: @Sendable (_ userID: UUID) async throws -> Void
+    var removeBlock: @Sendable (_ userID: UUID) async throws -> Void
 }
 
 extension UserClient: DependencyKey {
@@ -57,6 +59,33 @@ extension UserClient: DependencyKey {
                     .value
 
                 return profile.toDomain()
+            },
+            submitBlock: { blockedID in
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                let userID = try await supabaseClient.auth.session.user.id
+
+                try await supabaseClient
+                    .from("user_blocks")
+                    .upsert(
+                        UserBlockInsertRequestDTO(blockerID: userID, blockedID: blockedID),
+                        onConflict: "blocker_id,blocked_id",
+                        returning: .minimal,
+                        ignoreDuplicates: true
+                    )
+                    .execute()
+            },
+            removeBlock: { blockedID in
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                let userID = try await supabaseClient.auth.session.user.id
+
+                try await supabaseClient
+                    .from("user_blocks")
+                    .delete(returning: .minimal)
+                    .eq("blocker_id", value: userID)
+                    .eq("blocked_id", value: blockedID)
+                    .execute()
             }
         )
     }()
