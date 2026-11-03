@@ -15,7 +15,7 @@ struct AuthClient {
     var fetchIsMember: @Sendable (_ userID: UUID) async throws -> Bool
     var fetchIsNicknameAvailable: @Sendable (_ nickname: String) async throws -> Bool
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
-    var signOut: @Sendable () async throws -> Void
+    var signOut: @Sendable (_ token: String?) async throws -> Void
     var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason, _ detail: String?) async throws -> Void
 }
 
@@ -67,8 +67,20 @@ extension AuthClient: DependencyKey {
                     .rpc("complete_signup", params: CompleteSignupRequestDTO(from: profile))
                     .execute()
             },
-            signOut: {
+            signOut: { token in
                 @Dependency(\.supabaseClient) var supabase
+
+                if let token {
+                    do {
+                        try await supabase
+                            .from("device_tokens")
+                            .delete()
+                            .eq("token", value: token)
+                            .execute()
+                    } catch {
+                        PlobbyLogger.error(error)
+                    }
+                }
 
                 try await supabase.auth.signOut(scope: .local)
             },

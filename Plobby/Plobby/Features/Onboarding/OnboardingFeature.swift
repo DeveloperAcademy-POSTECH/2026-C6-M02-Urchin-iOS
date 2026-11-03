@@ -162,7 +162,7 @@ extension OnboardingFeature {
                         .member(user) :
                         .newUser(user, fullName: user.fullName)
                 } catch {
-                    try? await authClient.signOut()
+                    try? await authClient.signOut(nil)
                     throw error
                 }
             }))
