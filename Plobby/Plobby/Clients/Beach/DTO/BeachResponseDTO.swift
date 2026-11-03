@@ -22,4 +22,15 @@ nonisolated struct BeachResponseDTO: Decodable, Identifiable, Equatable, Sendabl
         case createdAt = "created_at"
         case updatedAt = "updated_at"
     }
+
+    func toDomain() -> Beach {
+        Beach(
+            id: id,
+            region: region.displayName,
+            name: name,
+            address: address,
+            latitude: latitude,
+            longitude: longitude
+        )
+    }
 }
