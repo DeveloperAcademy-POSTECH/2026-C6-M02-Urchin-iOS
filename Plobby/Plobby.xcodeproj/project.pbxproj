@@ -14,6 +14,12 @@
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
+		EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */; };
+		EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */; };
+		EC0D4B893098E1D0000E7BB7 /* BeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */; };
+		EC0D4B8B3098E1D0000E7BB7 /* BeachRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */; };
+		EC0D4B8D3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */; };
+		EC0D4B8F3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B8E3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift */; };
 		EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */; };
 		EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */; };
 		EC0D4B803098B739000E7BB7 /* TrashSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */; };
@@ -118,6 +124,12 @@
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachClient.swift; sourceTree = "<group>"; };
+		EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+BeachClient.swift"; sourceTree = "<group>"; };
+		EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BeachResponseDTO.swift"; sourceTree = "<group>"; };
+		EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BeachRegion.swift"; sourceTree = "<group>"; };
+		EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteBeachResponseDTO.swift"; sourceTree = "<group>"; };
+		EC0D4B8E3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteBeachInsertRequestDTO.swift"; sourceTree = "<group>"; };
 		EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashView.swift; sourceTree = "<group>"; };
 		EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignScale.swift; sourceTree = "<group>"; };
 		EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashSelectionView.swift; sourceTree = "<group>"; };
@@ -282,6 +294,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EC0D4B823098E19A000E7BB7 /* Beach */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B853098E1C1000E7BB7 /* DTO */,
+				EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */,
+				EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */,
+			);
+			path = Beach;
+			sourceTree = "<group>";
+		};
+		EC0D4B853098E1C1000E7BB7 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */,
+				EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */,
+				EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */,
+				EC0D4B8E3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 		EC0D4B813098B886000E7BB7 /* Record */ = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +379,7 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				EC0D4B823098E19A000E7BB7 /* Beach */,
 				DA5B0FA730988747003FEDF9 /* DTO */,
 				B59027013098E2AD00AE351D /* Notification */,
 				ECE6F28A3098338400C4916C /* Auth */,
@@ -812,6 +846,12 @@
 				ECE6F2E43098338400C4916C /* Beach.swift in Sources */,
 				ECE6F2E53098338400C4916C /* Sea.swift in Sources */,
 				ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */,
+				EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */,
+				EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */,
+				EC0D4B893098E1D0000E7BB7 /* BeachResponseDTO.swift in Sources */,
+				EC0D4B8B3098E1D0000E7BB7 /* BeachRegion.swift in Sources */,
+				EC0D4B8D3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift in Sources */,
+				EC0D4B8F3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift in Sources */,
 				ECE6F2E73098338400C4916C /* InputText.swift in Sources */,
 				ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */,
 				ECE6F2E93098338400C4916C /* Nickname.swift in Sources */,
