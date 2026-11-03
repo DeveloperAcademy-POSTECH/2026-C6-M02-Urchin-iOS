@@ -487,12 +487,28 @@
 		EC0D4B853098E1C1000E7BB7 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				0C85205B1EDE45B9842C383C /* Request */,
+				BEE45B407ABC457A8D4F6D44 /* Response */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		0C85205B1EDE45B9842C383C /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B8E3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		BEE45B407ABC457A8D4F6D44 /* Response */ = {
+			isa = PBXGroup;
+			children = (
 				EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */,
 				EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */,
 				EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */,
-				EC0D4B8E3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift */,
 			);
-			path = DTO;
+			path = Response;
 			sourceTree = "<group>";
 		};
 		ECDDD9AA3099781C00FB04D5 /* DTO */ = {
