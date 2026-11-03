@@ -24,6 +24,22 @@
 		DA5B0FE13099A001003FEDF9 /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FE23099A001003FEDF9 /* RecordType.swift */; };
 		DA5B0FE33099A001003FEDF9 /* RecordDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FE43099A001003FEDF9 /* RecordDetail.swift */; };
 		DA5B0FE53099A001003FEDF9 /* RecordSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FE63099A001003FEDF9 /* RecordSummary.swift */; };
+		DA5B106430997215003FEDF9 /* CreateRecordRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105530997215003FEDF9 /* CreateRecordRequestDTO.swift */; };
+		DA5B106530997215003FEDF9 /* DeletedAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105630997215003FEDF9 /* DeletedAtUpdateRequestDTO.swift */; };
+		DA5B106630997215003FEDF9 /* RecordLikeInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105730997215003FEDF9 /* RecordLikeInsertRequestDTO.swift */; };
+		DA5B106730997215003FEDF9 /* RecordPhotoRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105830997215003FEDF9 /* RecordPhotoRequestDTO.swift */; };
+		DA5B106830997215003FEDF9 /* RecordReportInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105930997215003FEDF9 /* RecordReportInsertRequestDTO.swift */; };
+		DA5B106930997215003FEDF9 /* RecordTrashRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105A30997215003FEDF9 /* RecordTrashRequestDTO.swift */; };
+		DA5B106A30997215003FEDF9 /* ReportReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105B30997215003FEDF9 /* ReportReason.swift */; };
+		DA5B106B30997215003FEDF9 /* UpdateRecordRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105C30997215003FEDF9 /* UpdateRecordRequestDTO.swift */; };
+		DA5B106C30997215003FEDF9 /* RecordDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105E30997215003FEDF9 /* RecordDetailResponseDTO.swift */; };
+		DA5B106D30997215003FEDF9 /* RecordPhotoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B105F30997215003FEDF9 /* RecordPhotoResponseDTO.swift */; };
+		DA5B106E30997215003FEDF9 /* RecordSummaryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B106030997215003FEDF9 /* RecordSummaryResponseDTO.swift */; };
+		DA5B106F30997215003FEDF9 /* RecordTrashResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B106130997215003FEDF9 /* RecordTrashResponseDTO.swift */; };
+		DA5B107730997758003FEDF9 /* MainTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B107330997758003FEDF9 /* MainTab.swift */; };
+		DA5B107830997758003FEDF9 /* MainTabFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B107430997758003FEDF9 /* MainTabFeature.swift */; };
+		DA5B107930997758003FEDF9 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B107530997758003FEDF9 /* MainTabView.swift */; };
+		DA5B107B3099798F003FEDF9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA5B107A3099798F003FEDF9 /* GoogleService-Info.plist */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -74,7 +90,6 @@
 		ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C33098338400C4916C /* SignUpFeature.swift */; };
 		ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C43098338400C4916C /* SignUpView.swift */; };
 		ECE6F2FE3098338400C4916C /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F29B3098338400C4916C /* Config.xcconfig */; };
-		ECE6F2FF3098338400C4916C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F29C3098338400C4916C /* GoogleService-Info.plist */; };
 		ECE6F3003098338400C4916C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F2C73098338400C4916C /* Assets.xcassets */; };
 		ECE6F3013098338400C4916C /* beaches.json in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F2C83098338400C4916C /* beaches.json */; };
 		ECE6F310309833A900C4916C /* DecimalInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F303309833A900C4916C /* DecimalInputTests.swift */; };
@@ -124,6 +139,22 @@
 		DA5B0FE23099A001003FEDF9 /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
 		DA5B0FE43099A001003FEDF9 /* RecordDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetail.swift; sourceTree = "<group>"; };
 		DA5B0FE63099A001003FEDF9 /* RecordSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSummary.swift; sourceTree = "<group>"; };
+		DA5B105530997215003FEDF9 /* CreateRecordRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRecordRequestDTO.swift; sourceTree = "<group>"; };
+		DA5B105630997215003FEDF9 /* DeletedAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletedAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
+		DA5B105730997215003FEDF9 /* RecordLikeInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordLikeInsertRequestDTO.swift; sourceTree = "<group>"; };
+		DA5B105830997215003FEDF9 /* RecordPhotoRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPhotoRequestDTO.swift; sourceTree = "<group>"; };
+		DA5B105930997215003FEDF9 /* RecordReportInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordReportInsertRequestDTO.swift; sourceTree = "<group>"; };
+		DA5B105A30997215003FEDF9 /* RecordTrashRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTrashRequestDTO.swift; sourceTree = "<group>"; };
+		DA5B105B30997215003FEDF9 /* ReportReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportReason.swift; sourceTree = "<group>"; };
+		DA5B105C30997215003FEDF9 /* UpdateRecordRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRecordRequestDTO.swift; sourceTree = "<group>"; };
+		DA5B105E30997215003FEDF9 /* RecordDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailResponseDTO.swift; sourceTree = "<group>"; };
+		DA5B105F30997215003FEDF9 /* RecordPhotoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPhotoResponseDTO.swift; sourceTree = "<group>"; };
+		DA5B106030997215003FEDF9 /* RecordSummaryResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSummaryResponseDTO.swift; sourceTree = "<group>"; };
+		DA5B106130997215003FEDF9 /* RecordTrashResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTrashResponseDTO.swift; sourceTree = "<group>"; };
+		DA5B107330997758003FEDF9 /* MainTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTab.swift; sourceTree = "<group>"; };
+		DA5B107430997758003FEDF9 /* MainTabFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabFeature.swift; sourceTree = "<group>"; };
+		DA5B107530997758003FEDF9 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		DA5B107A3099798F003FEDF9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -146,7 +177,6 @@
 		ECE6F2983098338400C4916C /* ButtonState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonState+.swift"; sourceTree = "<group>"; };
 		ECE6F2993098338400C4916C /* Character+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+.swift"; sourceTree = "<group>"; };
 		ECE6F29B3098338400C4916C /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		ECE6F29C3098338400C4916C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ECE6F29E3098338400C4916C /* AppleCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCredential.swift; sourceTree = "<group>"; };
 		ECE6F29F3098338400C4916C /* AuthUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUser.swift; sourceTree = "<group>"; };
 		ECE6F2A13098338400C4916C /* Beach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Beach.swift; sourceTree = "<group>"; };
@@ -192,9 +222,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		DA5B0FA730988747003FEDF9 /* DTO */ = {
+		DA5B107C30997CDB003FEDF9 /* Map */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DTO;
+			path = Map;
+			sourceTree = "<group>";
+		};
+		DA5B107F30997D21003FEDF9 /* My */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = My;
+			sourceTree = "<group>";
+		};
+		DA5B108230997D35003FEDF9 /* Record */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Record;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -283,6 +323,51 @@
 			path = Record;
 			sourceTree = "<group>";
 		};
+		DA5B105D30997215003FEDF9 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				DA5B105530997215003FEDF9 /* CreateRecordRequestDTO.swift */,
+				DA5B105630997215003FEDF9 /* DeletedAtUpdateRequestDTO.swift */,
+				DA5B105730997215003FEDF9 /* RecordLikeInsertRequestDTO.swift */,
+				DA5B105830997215003FEDF9 /* RecordPhotoRequestDTO.swift */,
+				DA5B105930997215003FEDF9 /* RecordReportInsertRequestDTO.swift */,
+				DA5B105A30997215003FEDF9 /* RecordTrashRequestDTO.swift */,
+				DA5B105B30997215003FEDF9 /* ReportReason.swift */,
+				DA5B105C30997215003FEDF9 /* UpdateRecordRequestDTO.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		DA5B106230997215003FEDF9 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				DA5B105E30997215003FEDF9 /* RecordDetailResponseDTO.swift */,
+				DA5B105F30997215003FEDF9 /* RecordPhotoResponseDTO.swift */,
+				DA5B106030997215003FEDF9 /* RecordSummaryResponseDTO.swift */,
+				DA5B106130997215003FEDF9 /* RecordTrashResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		DA5B106330997215003FEDF9 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				DA5B105D30997215003FEDF9 /* Request */,
+				DA5B106230997215003FEDF9 /* Response */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		DA5B107630997758003FEDF9 /* MainTab */ = {
+			isa = PBXGroup;
+			children = (
+				DA5B107330997758003FEDF9 /* MainTab.swift */,
+				DA5B107430997758003FEDF9 /* MainTabFeature.swift */,
+				DA5B107530997758003FEDF9 /* MainTabView.swift */,
+			);
+			path = MainTab;
+			sourceTree = "<group>";
+		};
 		ECE6F2813098338400C4916C /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -329,7 +414,7 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
-				DA5B0FA730988747003FEDF9 /* DTO */,
+				DA5B106330997215003FEDF9 /* DTO */,
 				B59027013098E2AD00AE351D /* Notification */,
 				ECE6F28A3098338400C4916C /* Auth */,
 				ECE6F28D3098338400C4916C /* Supabase */,
@@ -377,12 +462,12 @@
 		ECE6F29D3098338400C4916C /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				DA5B107A3099798F003FEDF9 /* GoogleService-Info.plist */,
 				ECE6F2913098338400C4916C /* Common */,
 				ECE6F2933098338400C4916C /* DesignSystem */,
 				ECE6F2963098338400C4916C /* Enum */,
 				ECE6F29A3098338400C4916C /* Extension */,
 				ECE6F29B3098338400C4916C /* Config.xcconfig */,
-				ECE6F29C3098338400C4916C /* GoogleService-Info.plist */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -517,6 +602,10 @@
 		ECE6F2C63098338400C4916C /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				DA5B108230997D35003FEDF9 /* Record */,
+				DA5B107F30997D21003FEDF9 /* My */,
+				DA5B107C30997CDB003FEDF9 /* Map */,
+				DA5B107630997758003FEDF9 /* MainTab */,
 				ECE6F2B53098338400C4916C /* Home */,
 				ECE6F2BC3098338400C4916C /* Onboarding */,
 				ECE6F2C53098338400C4916C /* SignUp */,
@@ -620,7 +709,9 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				DA5B0FA730988747003FEDF9 /* DTO */,
+				DA5B107C30997CDB003FEDF9 /* Map */,
+				DA5B107F30997D21003FEDF9 /* My */,
+				DA5B108230997D35003FEDF9 /* Record */,
 			);
 			name = Plobby;
 			packageProductDependencies = (
@@ -727,8 +818,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECE6F2FE3098338400C4916C /* Config.xcconfig in Resources */,
-				ECE6F2FF3098338400C4916C /* GoogleService-Info.plist in Resources */,
 				ECE6F3003098338400C4916C /* Assets.xcassets in Resources */,
+				DA5B107B3099798F003FEDF9 /* GoogleService-Info.plist in Resources */,
 				ECE6F3013098338400C4916C /* beaches.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -779,6 +870,21 @@
 				DA5B0FE53099A001003FEDF9 /* RecordSummary.swift in Sources */,
 				B59027033098E2F800AE351D /* NotificationClient.swift in Sources */,
 				ECE6F2DC3098338400C4916C /* NormalButton.swift in Sources */,
+				DA5B106430997215003FEDF9 /* CreateRecordRequestDTO.swift in Sources */,
+				DA5B106530997215003FEDF9 /* DeletedAtUpdateRequestDTO.swift in Sources */,
+				DA5B106630997215003FEDF9 /* RecordLikeInsertRequestDTO.swift in Sources */,
+				DA5B106730997215003FEDF9 /* RecordPhotoRequestDTO.swift in Sources */,
+				DA5B106830997215003FEDF9 /* RecordReportInsertRequestDTO.swift in Sources */,
+				DA5B106930997215003FEDF9 /* RecordTrashRequestDTO.swift in Sources */,
+				DA5B106A30997215003FEDF9 /* ReportReason.swift in Sources */,
+				DA5B106B30997215003FEDF9 /* UpdateRecordRequestDTO.swift in Sources */,
+				DA5B106C30997215003FEDF9 /* RecordDetailResponseDTO.swift in Sources */,
+				DA5B107730997758003FEDF9 /* MainTab.swift in Sources */,
+				DA5B107830997758003FEDF9 /* MainTabFeature.swift in Sources */,
+				DA5B107930997758003FEDF9 /* MainTabView.swift in Sources */,
+				DA5B106D30997215003FEDF9 /* RecordPhotoResponseDTO.swift in Sources */,
+				DA5B106E30997215003FEDF9 /* RecordSummaryResponseDTO.swift in Sources */,
+				DA5B106F30997215003FEDF9 /* RecordTrashResponseDTO.swift in Sources */,
 				DA5B0FC93098DF6F003FEDF9 /* RecordLike.swift in Sources */,
 				ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */,
 				ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */,
