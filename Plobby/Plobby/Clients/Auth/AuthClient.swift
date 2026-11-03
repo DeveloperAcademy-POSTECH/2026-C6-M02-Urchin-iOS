@@ -12,8 +12,6 @@ import Supabase
 
 struct AuthClient {
     var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
-    var fetchIsMember: @Sendable (_ userID: UUID) async throws -> Bool
-    var fetchIsNicknameAvailable: @Sendable (_ nickname: String) async throws -> Bool
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
     var signOut: @Sendable () async throws -> Void
 }
@@ -39,25 +37,6 @@ extension AuthClient: DependencyKey {
                     email: session.user.email,
                     fullName: fullName ?? session.user.userMetadata["full_name"]?.stringValue
                 )
-            },
-            fetchIsMember: { userID in
-                @Dependency(\.supabaseClient) var supabase
-
-                let count = try await supabase
-                    .from("profiles")
-                    .select("user_id", head: true, count: .exact)
-                    .eq("user_id", value: userID)
-                    .execute()
-                    .count
-
-                return (count ?? 0) > 0
-            },
-            // TODO: - Supabase 닉네임 중복 확인 API 연동
-            fetchIsNicknameAvailable: { _ in
-                try await Task.sleep(for: .milliseconds(500))
-
-                return true   // 사용 가능
-                // return false   // 중복
             },
             // TODO: - Supabase 회원가입 요청 API 연동
             signUp: { _ in

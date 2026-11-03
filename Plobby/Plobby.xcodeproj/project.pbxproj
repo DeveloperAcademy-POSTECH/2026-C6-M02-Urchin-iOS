@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21ECFACF111E9F703BA57978 /* BlockedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C528DE8674E08CD648B87 /* BlockedUser.swift */; };
+		24C6452813AA7BFB5C379537 /* CheckNicknameRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FC37464B922253D6A55F95 /* CheckNicknameRequestDTO.swift */; };
+		31E66B8D80D430AAAC9A21D8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CA15540443FE5BE6EF51E8 /* Profile.swift */; };
+		34FBF121843E575A8727FBCF /* BlockedUserResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */; };
+		6C58EF6B7AEFD90EBE7571E4 /* ProfileResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22117CDC3BC2454F4CDAC201 /* ProfileResponseDTO.swift */; };
+		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
+		A29D1CFD3712AA87F7389274 /* DependencyValues+UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */; };
+		A6BFBCB3BD04AAB29D26FEE2 /* UserBlockInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */; };
 		B59025573093367600AE351D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = B59025563093367600AE351D /* FirebaseMessaging */; };
 		B59027033098E2F800AE351D /* NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027023098E2F800AE351D /* NotificationClient.swift */; };
 		B59027053098E35B00AE351D /* DependencyValues+NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */; };
@@ -14,6 +22,7 @@
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
+		E86CC8B62B313EB83983CBD5 /* ProfileUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */; };
 		EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */; };
 		EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */; };
 		EC0D4B893098E1D0000E7BB7 /* BeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */; };
@@ -117,6 +126,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B83BBF957568508C43BBA03 /* UserClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserClient.swift; sourceTree = "<group>"; };
+		22117CDC3BC2454F4CDAC201 /* ProfileResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponseDTO.swift; sourceTree = "<group>"; };
+		7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockInsertRequestDTO.swift; sourceTree = "<group>"; };
+		72FC37464B922253D6A55F95 /* CheckNicknameRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNicknameRequestDTO.swift; sourceTree = "<group>"; };
+		AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+UserClient.swift"; sourceTree = "<group>"; };
+		B1CA15540443FE5BE6EF51E8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		B52C528DE8674E08CD648B87 /* BlockedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUser.swift; sourceTree = "<group>"; };
 		B59027023098E2F800AE351D /* NotificationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationClient.swift; sourceTree = "<group>"; };
 		B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+NotificationClient.swift"; sourceTree = "<group>"; };
 		B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
@@ -209,6 +225,8 @@
 		ECE6F30C309833A900C4916C /* WaterTemperatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterTemperatureTests.swift; sourceTree = "<group>"; };
 		ECE6F318309833AE00C4916C /* PlobbyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITests.swift; sourceTree = "<group>"; };
 		ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdateRequestDTO.swift; sourceTree = "<group>"; };
+		F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserResponseDTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -247,6 +265,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0388DE9EE55A49C7010C48BD /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				22117CDC3BC2454F4CDAC201 /* ProfileResponseDTO.swift */,
+				F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		3BC523B89D31C094B9AD61AE /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				3D2FDD0C0B449878EE5700D1 /* Request */,
+				0388DE9EE55A49C7010C48BD /* Response */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		3D2FDD0C0B449878EE5700D1 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				72FC37464B922253D6A55F95 /* CheckNicknameRequestDTO.swift */,
+				EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */,
+				7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
 		B59027013098E2AD00AE351D /* Notification */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,6 +318,16 @@
 				B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */,
 			);
 			path = Request;
+			sourceTree = "<group>";
+		};
+		AE9DC5DE336979B9888653B5 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				3BC523B89D31C094B9AD61AE /* DTO */,
+				0B83BBF957568508C43BBA03 /* UserClient.swift */,
+				AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		DA1A4D9C3089FEAF00AEAB52 = {
@@ -384,6 +440,7 @@
 				B59027013098E2AD00AE351D /* Notification */,
 				ECE6F28A3098338400C4916C /* Auth */,
 				ECE6F28D3098338400C4916C /* Supabase */,
+				AE9DC5DE336979B9888653B5 /* User */,
 				DA5B0FA430988669003FEDF9 /* Record */,
 			);
 			path = Clients;
@@ -471,7 +528,9 @@
 			isa = PBXGroup;
 			children = (
 				ECE6F2A73098338400C4916C /* MembershipStatus.swift */,
+				B52C528DE8674E08CD648B87 /* BlockedUser.swift */,
 				ECE6F2A83098338400C4916C /* Nickname.swift */,
+				B1CA15540443FE5BE6EF51E8 /* Profile.swift */,
 				ECE6F2A93098338400C4916C /* SignInResult.swift */,
 				ECE6F2AA3098338400C4916C /* SignUpProfile.swift */,
 			);
@@ -808,6 +867,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B75290473133F917916BA5D /* UserClient.swift in Sources */,
+				A29D1CFD3712AA87F7389274 /* DependencyValues+UserClient.swift in Sources */,
+				24C6452813AA7BFB5C379537 /* CheckNicknameRequestDTO.swift in Sources */,
+				E86CC8B62B313EB83983CBD5 /* ProfileUpdateRequestDTO.swift in Sources */,
+				A6BFBCB3BD04AAB29D26FEE2 /* UserBlockInsertRequestDTO.swift in Sources */,
+				6C58EF6B7AEFD90EBE7571E4 /* ProfileResponseDTO.swift in Sources */,
+				34FBF121843E575A8727FBCF /* BlockedUserResponseDTO.swift in Sources */,
 				ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */,
 				DA5B0FB93098DA53003FEDF9 /* DependencyValues+Record.swift in Sources */,
 				ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */,
@@ -855,6 +921,8 @@
 				ECE6F2E73098338400C4916C /* InputText.swift in Sources */,
 				ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */,
 				ECE6F2E93098338400C4916C /* Nickname.swift in Sources */,
+				21ECFACF111E9F703BA57978 /* BlockedUser.swift in Sources */,
+				31E66B8D80D430AAAC9A21D8 /* Profile.swift in Sources */,
 				EC0D4B803098B739000E7BB7 /* TrashSelectionView.swift in Sources */,
 				B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */,
 				B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */,
