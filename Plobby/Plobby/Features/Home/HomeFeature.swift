@@ -30,6 +30,7 @@ struct HomeFeature {
         case bannerDragStarted
         case bannerDragEnded
         case recordButtonTapped
+        case notificationButtonTapped
         case delegate(Delegate)
 
         enum Delegate {
@@ -70,6 +71,10 @@ struct HomeFeature {
 
             case .recordButtonTapped:
                 return .send(.delegate(.recordStarted(state.currentBanner)))
+
+            // TODO: 알림 화면 이동
+            case .notificationButtonTapped:
+                return .none
 
             case .delegate:
                 return .none

@@ -36,6 +36,8 @@ extension HomeView {
 
     private func content(scale: CGFloat) -> some View {
         VStack(spacing: 0) {
+            header
+
             recordBanner(height: 240 * scale)
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
@@ -50,6 +52,25 @@ extension HomeView {
                 Text("비회원 홈화면이지롱")
             }
         }
+    }
+
+    private var header: some View {
+        HStack {
+            Text("홈")
+                .font(.system(size: 20, weight: .semibold))
+
+            Spacer()
+
+            Button {
+                store.send(.notificationButtonTapped)
+            } label: {
+                Image(systemName: "bell")
+                    .font(.system(size: 24, weight: .regular))
+                    .foregroundStyle(.black)
+            }
+        }
+        .frame(height: 56)
+        .padding(.horizontal, 20)
     }
 
     private func recordBanner(height: CGFloat) -> some View {
