@@ -40,6 +40,9 @@
 		DA5B107830997758003FEDF9 /* MainTabFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B107430997758003FEDF9 /* MainTabFeature.swift */; };
 		DA5B107930997758003FEDF9 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B107530997758003FEDF9 /* MainTabView.swift */; };
 		DA5B107B3099798F003FEDF9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA5B107A3099798F003FEDF9 /* GoogleService-Info.plist */; };
+		DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10DF30998932003FEDF9 /* MapFeature.swift */; };
+		DA5B10E430998932003FEDF9 /* MyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E230998932003FEDF9 /* MyFeature.swift */; };
+		DA5B10E730998932003FEDF9 /* RecordFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E530998932003FEDF9 /* RecordFeature.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -155,6 +158,9 @@
 		DA5B107430997758003FEDF9 /* MainTabFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabFeature.swift; sourceTree = "<group>"; };
 		DA5B107530997758003FEDF9 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		DA5B107A3099798F003FEDF9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DA5B10DF30998932003FEDF9 /* MapFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFeature.swift; sourceTree = "<group>"; };
+		DA5B10E230998932003FEDF9 /* MyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFeature.swift; sourceTree = "<group>"; };
+		DA5B10E530998932003FEDF9 /* RecordFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFeature.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -220,24 +226,6 @@
 		ECE6F318309833AE00C4916C /* PlobbyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITests.swift; sourceTree = "<group>"; };
 		ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		DA5B107C30997CDB003FEDF9 /* Map */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Map;
-			sourceTree = "<group>";
-		};
-		DA5B107F30997D21003FEDF9 /* My */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = My;
-			sourceTree = "<group>";
-		};
-		DA5B108230997D35003FEDF9 /* Record */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Record;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		DA1A4DA23089FEAF00AEAB52 /* Frameworks */ = {
@@ -366,6 +354,30 @@
 				DA5B107530997758003FEDF9 /* MainTabView.swift */,
 			);
 			path = MainTab;
+			sourceTree = "<group>";
+		};
+		DA5B10E030998932003FEDF9 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				DA5B10DF30998932003FEDF9 /* MapFeature.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		DA5B10E330998932003FEDF9 /* My */ = {
+			isa = PBXGroup;
+			children = (
+				DA5B10E230998932003FEDF9 /* MyFeature.swift */,
+			);
+			path = My;
+			sourceTree = "<group>";
+		};
+		DA5B10E630998932003FEDF9 /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				DA5B10E530998932003FEDF9 /* RecordFeature.swift */,
+			);
+			path = Record;
 			sourceTree = "<group>";
 		};
 		ECE6F2813098338400C4916C /* App */ = {
@@ -602,9 +614,9 @@
 		ECE6F2C63098338400C4916C /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				DA5B108230997D35003FEDF9 /* Record */,
-				DA5B107F30997D21003FEDF9 /* My */,
-				DA5B107C30997CDB003FEDF9 /* Map */,
+				DA5B10E630998932003FEDF9 /* Record */,
+				DA5B10E330998932003FEDF9 /* My */,
+				DA5B10E030998932003FEDF9 /* Map */,
 				DA5B107630997758003FEDF9 /* MainTab */,
 				ECE6F2B53098338400C4916C /* Home */,
 				ECE6F2BC3098338400C4916C /* Onboarding */,
@@ -707,11 +719,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				DA5B107C30997CDB003FEDF9 /* Map */,
-				DA5B107F30997D21003FEDF9 /* My */,
-				DA5B108230997D35003FEDF9 /* Record */,
 			);
 			name = Plobby;
 			packageProductDependencies = (
@@ -852,6 +859,7 @@
 				DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */,
 				ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */,
 				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
+				DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
 				DA5B0FD83098E17F003FEDF9 /* RecordReport.swift in Sources */,
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
@@ -862,6 +870,7 @@
 				ECE6F2D83098338400C4916C /* DependencyValues+SupabaseClient.swift in Sources */,
 				B59027053098E35B00AE351D /* DependencyValues+NotificationClient.swift in Sources */,
 				ECE6F2D93098338400C4916C /* SupabaseClientKey.swift in Sources */,
+				DA5B10E430998932003FEDF9 /* MyFeature.swift in Sources */,
 				ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */,
 				ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */,
 				DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */,
@@ -918,6 +927,7 @@
 				ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */,
 				ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */,
 				ECE6F2F83098338400C4916C /* CompleteFeature.swift in Sources */,
+				DA5B10E730998932003FEDF9 /* RecordFeature.swift in Sources */,
 				ECE6F2F93098338400C4916C /* CompleteView.swift in Sources */,
 				ECE6F2FA3098338400C4916C /* RegionFeature.swift in Sources */,
 				ECE6F2FB3098338400C4916C /* RegionView.swift in Sources */,
