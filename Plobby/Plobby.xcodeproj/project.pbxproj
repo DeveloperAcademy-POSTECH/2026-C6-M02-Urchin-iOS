@@ -313,6 +313,8 @@
 				EC0D4B8E3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift */,
 			);
 			path = DTO;
+			sourceTree = "<group>";
+		};
 		EC0D4B813098B886000E7BB7 /* Record */ = {
 			isa = PBXGroup;
 			children = (
