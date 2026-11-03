@@ -40,18 +40,6 @@ extension AuthClient: DependencyKey {
                     fullName: fullName ?? session.user.userMetadata["full_name"]?.stringValue
                 )
             },
-            fetchIsMember: { userID in
-                @Dependency(\.supabaseClient) var supabase
-
-                let count = try await supabase
-                    .from("profiles")
-                    .select("user_id", head: true, count: .exact)
-                    .eq("user_id", value: userID)
-                    .execute()
-                    .count
-
-                return (count ?? 0) > 0
-            },
             signUp: { profile in
                 @Dependency(\.supabaseClient) var supabase
 

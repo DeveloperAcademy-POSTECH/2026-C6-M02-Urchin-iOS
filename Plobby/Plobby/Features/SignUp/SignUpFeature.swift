@@ -72,6 +72,7 @@ struct SignUpFeature {
     
     // MARK: - Dependency
     
+    @Dependency(\.authClient) var authClient
     @Dependency(\.userClient) var userClient
 
     // MARK: - Body
