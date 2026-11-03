@@ -138,6 +138,8 @@
 		68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */; };
 		ECE6F31B309833AE00C4916C /* PlobbyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F318309833AE00C4916C /* PlobbyUITests.swift */; };
 		ECE6F31C309833AE00C4916C /* PlobbyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */; };
+		6C922A2E679C44E28DA507F7 /* AppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B876495304224301BF46BD28 /* AppNotification.swift */; };
+		662D32B75B344538B44995C7 /* NotificationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -291,6 +293,8 @@
 		ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserResponseDTO.swift; sourceTree = "<group>"; };
+		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
+		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -373,6 +377,7 @@
 			isa = PBXGroup;
 			children = (
 				B59027073098E6B500AE351D /* Request */,
+				AE634BCD9D00428DBE65DAEB /* Response */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -766,6 +771,7 @@
 				ECE6F2A03098338400C4916C /* Auth */,
 				ECE6F2A33098338400C4916C /* Beach */,
 				ECE6F2AB3098338400C4916C /* Member */,
+				DA035E537AB44E9EB3D534B7 /* Notification */,
 				ECE6F2B13098338400C4916C /* Record */,
 			);
 			path = Domain;
@@ -938,6 +944,22 @@
 				ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */,
 			);
 			path = PlobbyUITests;
+			sourceTree = "<group>";
+		};
+		AE634BCD9D00428DBE65DAEB /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		DA035E537AB44E9EB3D534B7 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				B876495304224301BF46BD28 /* AppNotification.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1173,6 +1195,8 @@
 				31E66B8D80D430AAAC9A21D8 /* Profile.swift in Sources */,
 				EC0D4B803098B739000E7BB7 /* TrashSelectionView.swift in Sources */,
 				B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */,
+				662D32B75B344538B44995C7 /* NotificationResponseDTO.swift in Sources */,
+				6C922A2E679C44E28DA507F7 /* AppNotification.swift in Sources */,
 				B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */,
 				ECE6F2EA3098338400C4916C /* SignInResult.swift in Sources */,
 				ECE6F2EB3098338400C4916C /* SignUpProfile.swift in Sources */,
