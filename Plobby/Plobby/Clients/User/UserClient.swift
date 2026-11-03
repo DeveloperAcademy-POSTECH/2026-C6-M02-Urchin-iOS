@@ -16,6 +16,7 @@ struct UserClient {
     var updateMyProfile: @Sendable (_ nickname: String, _ profileImageKey: String?) async throws -> Profile
     var submitBlock: @Sendable (_ userID: UUID) async throws -> Void
     var removeBlock: @Sendable (_ userID: UUID) async throws -> Void
+    var fetchBlockedUsers: @Sendable () async throws -> [BlockedUser]
 }
 
 extension UserClient: DependencyKey {
@@ -86,6 +87,21 @@ extension UserClient: DependencyKey {
                     .eq("blocker_id", value: userID)
                     .eq("blocked_id", value: blockedID)
                     .execute()
+            },
+            fetchBlockedUsers: {
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                let userID = try await supabaseClient.auth.session.user.id
+
+                let blockedUsers: [BlockedUserResponseDTO] = try await supabaseClient
+                    .from("user_blocks")
+                    .select(BlockedUserResponseDTO.selectQuery)
+                    .eq("blocker_id", value: userID)
+                    .order("created_at", ascending: false)
+                    .execute()
+                    .value
+
+                return blockedUsers.compactMap { $0.toDomain() }
             }
         )
     }()
