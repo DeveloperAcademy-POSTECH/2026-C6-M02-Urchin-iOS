@@ -72,7 +72,7 @@ struct SignUpFeature {
     
     // MARK: - Dependency
     
-    @Dependency(\.authClient) var authClient
+    @Dependency(\.userClient) var userClient
 
     // MARK: - Body
     
@@ -175,7 +175,7 @@ extension SignUpFeature {
     private func checkNickname(_ nickname: String) -> Effect<Action> {
         .run { send in
             await send(.nicknameCheckResponse(Result {
-                try await authClient.fetchIsNicknameAvailable(nickname)
+                try await userClient.fetchIsNicknameAvailable(nickname)
             }))
         }
         .cancellable(id: CancelID.nicknameCheck, cancelInFlight: true)

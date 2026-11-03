@@ -59,7 +59,8 @@ struct OnboardingFeature {
     
     @Dependency(\.continuousClock) var clock
     @Dependency(\.authClient) var authClient
-    
+    @Dependency(\.userClient) var userClient
+
     // MARK: - Body
     
     var body: some Reducer<State, Action> {
@@ -156,9 +157,9 @@ extension OnboardingFeature {
                 let user = try await authClient.signInWithApple(idToken, nonce, fullName)
                 
                 do {
-                    let isMember = try await authClient.fetchIsMember(user.id)
-                    
-                    return isMember ?
+                    let profile = try await userClient.fetchMyProfile()
+
+                    return profile != nil ?
                         .member(user) :
                         .newUser(user, fullName: user.fullName)
                 } catch {
