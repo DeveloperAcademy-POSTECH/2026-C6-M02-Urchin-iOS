@@ -58,7 +58,7 @@ extension BeachClient: DependencyKey {
 
                 try await supabase
                     .from("favorite_beaches")
-                    .insert(FavoriteBeachInsertRequestDTO(userId: userID, beachId: beachID))
+                    .insert(FavoriteBeachInsertRequestDTO(userID: userID, beachID: beachID))
                     .execute()
             },
             removeFavoriteBeach: { beachID in

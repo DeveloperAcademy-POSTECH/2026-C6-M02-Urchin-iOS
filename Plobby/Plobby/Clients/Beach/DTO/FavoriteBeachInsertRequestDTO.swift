@@ -8,11 +8,11 @@
 import Foundation
 
 nonisolated struct FavoriteBeachInsertRequestDTO: Encodable, Sendable {
-    let userId: UUID
-    let beachId: UUID
+    let userID: UUID
+    let beachID: UUID
 
     enum CodingKeys: String, CodingKey {
-        case userId = "user_id"
-        case beachId = "beach_id"
+        case userID = "user_id"
+        case beachID = "beach_id"
     }
 }
