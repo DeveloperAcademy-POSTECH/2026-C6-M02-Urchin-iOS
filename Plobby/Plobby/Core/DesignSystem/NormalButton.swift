@@ -15,6 +15,7 @@ struct NormalButton: View {
     @Environment(\.isEnabled) private var isEnabled
     
     let text: String
+    var backgroundColor: Color = .black
     let action: () -> Void
     
     // MARK: - Body
@@ -32,7 +33,7 @@ struct NormalButton: View {
                 .frame(height: 51)
                 .background(
                     isEnabled
-                    ? Color.black
+                    ? backgroundColor
                     : Color.gray.opacity(0.1),
                     in: RoundedRectangle(cornerRadius: 4)
                 )
