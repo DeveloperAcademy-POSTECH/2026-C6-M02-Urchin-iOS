@@ -100,10 +100,8 @@ extension AuthClient: DependencyKey {
                 @Dependency(\.supabaseClient) var supabase
                 @Dependency(\.authClient) var authClient
 
-                // 1. 탈퇴 사유 저장
                 try await authClient.submitWithdrawalFeedback(reason, detail)
 
-                // 2. 회원 탈퇴
                 try await supabase.functions.invoke(
                     "delete-account",
                     options: FunctionInvokeOptions(
@@ -111,7 +109,6 @@ extension AuthClient: DependencyKey {
                     )
                 )
 
-                // 3. 앱에 남은 로그인 세션 정리
                 try? await supabase.auth.signOut(scope: .local)
             }
         )
