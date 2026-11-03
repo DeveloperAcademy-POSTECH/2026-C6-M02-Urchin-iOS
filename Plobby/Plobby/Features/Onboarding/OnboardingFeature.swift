@@ -57,7 +57,6 @@ struct OnboardingFeature {
     
     // MARK: - Dependency
     
-    @Dependency(\.continuousClock) var clock
     @Dependency(\.authClient) var authClient
     @Dependency(\.userClient) var userClient
 
@@ -171,11 +170,10 @@ extension OnboardingFeature {
     }
     
     private func startTimer() -> Effect<Action> {
-        .run { send in
-            for await _ in await clock.timer(interval: OnboardingFeature.pageInterval) {
-                await send(.timerTicked)
-            }
-        }
-        .cancellable(id: CancelID.timer, cancelInFlight: true)
+        .timer(
+            id: CancelID.timer,
+            interval: OnboardingFeature.pageInterval,
+            action: .timerTicked
+        )
     }
 }

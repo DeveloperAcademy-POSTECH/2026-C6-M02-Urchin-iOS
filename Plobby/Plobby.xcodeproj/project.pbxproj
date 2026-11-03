@@ -97,6 +97,7 @@
 		ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2973098338400C4916C /* AlertState+.swift */; };
 		ECE6F2E03098338400C4916C /* ButtonState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2983098338400C4916C /* ButtonState+.swift */; };
 		ECE6F2E13098338400C4916C /* Character+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2993098338400C4916C /* Character+.swift */; };
+		EC0D4BA13098E1D0000E7BB7 /* Effect+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */; };
 		ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29E3098338400C4916C /* AppleCredential.swift */; };
 		ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29F3098338400C4916C /* AuthUser.swift */; };
 		ECE6F2E43098338400C4916C /* Beach.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A13098338400C4916C /* Beach.swift */; };
@@ -245,6 +246,7 @@
 		ECE6F2973098338400C4916C /* AlertState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertState+.swift"; sourceTree = "<group>"; };
 		ECE6F2983098338400C4916C /* ButtonState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ButtonState+.swift"; sourceTree = "<group>"; };
 		ECE6F2993098338400C4916C /* Character+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+.swift"; sourceTree = "<group>"; };
+		EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Effect+.swift"; sourceTree = "<group>"; };
 		ECE6F29B3098338400C4916C /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		ECE6F29E3098338400C4916C /* AppleCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCredential.swift; sourceTree = "<group>"; };
 		ECE6F29F3098338400C4916C /* AuthUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUser.swift; sourceTree = "<group>"; };
@@ -681,6 +683,7 @@
 				ECE6F2973098338400C4916C /* AlertState+.swift */,
 				ECE6F2983098338400C4916C /* ButtonState+.swift */,
 				ECE6F2993098338400C4916C /* Character+.swift */,
+				EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1155,6 +1158,7 @@
 				ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */,
 				ECE6F2E03098338400C4916C /* ButtonState+.swift in Sources */,
 				ECE6F2E13098338400C4916C /* Character+.swift in Sources */,
+				EC0D4BA13098E1D0000E7BB7 /* Effect+.swift in Sources */,
 				ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */,
 				ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */,
 				ECE6F2E43098338400C4916C /* Beach.swift in Sources */,
