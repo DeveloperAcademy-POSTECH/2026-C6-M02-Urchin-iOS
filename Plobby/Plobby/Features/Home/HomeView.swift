@@ -13,19 +13,27 @@ struct HomeView: View {
 
     // MARK: - Properties
 
-    let store: StoreOf<HomeFeature>
+    @Bindable var store: StoreOf<HomeFeature>
 
     // MARK: - Body
 
     var body: some View {
-        GeometryReader { proxy in
-            content(scale: DesignScale.fitRatio(for: screenSize(of: proxy)))
-        }
-        .onAppear {
-            store.send(.onAppear)
-        }
-        .onDisappear {
-            store.send(.onDisappear)
+        NavigationStack {
+            GeometryReader { proxy in
+                content(scale: DesignScale.fitRatio(for: screenSize(of: proxy)))
+            }
+            .toolbar(.hidden, for: .navigationBar)
+            .onAppear {
+                store.send(.onAppear)
+            }
+            .onDisappear {
+                store.send(.onDisappear)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.favoriteBeachPicker, action: \.favoriteBeachPicker)
+            ) { store in
+                FavoriteBeachView(store: store)
+            }
         }
     }
 }

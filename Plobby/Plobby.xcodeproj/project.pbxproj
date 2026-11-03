@@ -114,6 +114,7 @@
 		ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AF3098338400C4916C /* WaterDepth.swift */; };
 		ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B33098338400C4916C /* HomeFeature.swift */; };
 		ECE6F2F23098338400C4916C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B43098338400C4916C /* HomeView.swift */; };
+		EC0D4BA53098E1D0000E7BB7 /* FavoriteBeachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA43098E1D0000E7BB7 /* FavoriteBeachView.swift */; };
 		ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */; };
 		ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */; };
 		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
@@ -123,6 +124,7 @@
 		ECE6F2F93098338400C4916C /* CompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BE3098338400C4916C /* CompleteView.swift */; };
 		ECE6F2FA3098338400C4916C /* RegionFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C03098338400C4916C /* RegionFeature.swift */; };
 		ECE6F2FB3098338400C4916C /* RegionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C13098338400C4916C /* RegionView.swift */; };
+		EC0D4BA33098E1D0000E7BB7 /* RegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA23098E1D0000E7BB7 /* RegionPicker.swift */; };
 		ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C33098338400C4916C /* SignUpFeature.swift */; };
 		ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C43098338400C4916C /* SignUpView.swift */; };
 		ECE6F2FE3098338400C4916C /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F29B3098338400C4916C /* Config.xcconfig */; };
@@ -266,6 +268,7 @@
 		ECE6F2AF3098338400C4916C /* WaterDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepth.swift; sourceTree = "<group>"; };
 		ECE6F2B33098338400C4916C /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		ECE6F2B43098338400C4916C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		EC0D4BA43098E1D0000E7BB7 /* FavoriteBeachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachView.swift; sourceTree = "<group>"; };
 		ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginLabel.swift; sourceTree = "<group>"; };
 		ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageIndicator.swift; sourceTree = "<group>"; };
 		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
@@ -275,6 +278,7 @@
 		ECE6F2BE3098338400C4916C /* CompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteView.swift; sourceTree = "<group>"; };
 		ECE6F2C03098338400C4916C /* RegionFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionFeature.swift; sourceTree = "<group>"; };
 		ECE6F2C13098338400C4916C /* RegionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionView.swift; sourceTree = "<group>"; };
+		EC0D4BA23098E1D0000E7BB7 /* RegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPicker.swift; sourceTree = "<group>"; };
 		ECE6F2C33098338400C4916C /* SignUpFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFeature.swift; sourceTree = "<group>"; };
 		ECE6F2C43098338400C4916C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		ECE6F2C73098338400C4916C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -782,6 +786,7 @@
 			children = (
 				ECE6F2B33098338400C4916C /* HomeFeature.swift */,
 				ECE6F2B43098338400C4916C /* HomeView.swift */,
+				EC0D4BA43098E1D0000E7BB7 /* FavoriteBeachView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -820,6 +825,7 @@
 			children = (
 				ECE6F2C03098338400C4916C /* RegionFeature.swift */,
 				ECE6F2C13098338400C4916C /* RegionView.swift */,
+				EC0D4BA23098E1D0000E7BB7 /* RegionPicker.swift */,
 			);
 			path = Region;
 			sourceTree = "<group>";
@@ -1211,6 +1217,7 @@
 				DA5B0FDA3098E2FC003FEDF9 /* SupabaseClient+.swift in Sources */,
 				ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */,
 				ECE6F2F23098338400C4916C /* HomeView.swift in Sources */,
+				EC0D4BA53098E1D0000E7BB7 /* FavoriteBeachView.swift in Sources */,
 				ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */,
 				ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */,
 				DA5B0FBB3098DCCD003FEDF9 /* UpdatedRecord.swift in Sources */,
@@ -1223,6 +1230,7 @@
 				ECE6F2F93098338400C4916C /* CompleteView.swift in Sources */,
 				ECE6F2FA3098338400C4916C /* RegionFeature.swift in Sources */,
 				ECE6F2FB3098338400C4916C /* RegionView.swift in Sources */,
+				EC0D4BA33098E1D0000E7BB7 /* RegionPicker.swift in Sources */,
 				ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */,
 				ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */,
 			);
