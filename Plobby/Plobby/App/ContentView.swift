@@ -41,12 +41,12 @@ struct ContentView: View {
                 SignUpView(store: store)
             }
 
-        case .home:
+        case .mainTab:
             if let store = store.scope(
-                state: \.home,
-                action: \.home)
+                state: \.mainTab,
+                action: \.mainTab)
             {
-                HomeView(store: store)
+                MainTabView(store: store)
             }
         }
     }

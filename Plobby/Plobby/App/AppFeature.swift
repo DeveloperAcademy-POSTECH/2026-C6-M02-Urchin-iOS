@@ -16,7 +16,7 @@ struct AppFeature {
     enum State: Equatable {
         case onboarding(OnboardingFeature.State)
         case signUp(SignUpFeature.State)
-        case home(HomeFeature.State)
+        case mainTab(MainTabFeature.State)
     }
     
     // MARK: - Action
@@ -24,7 +24,7 @@ struct AppFeature {
     enum Action {
         case onboarding(OnboardingFeature.Action)
         case signUp(SignUpFeature.Action)
-        case home(HomeFeature.Action)
+        case mainTab(MainTabFeature.Action)
     }
     
     // MARK: - Body
@@ -33,7 +33,7 @@ struct AppFeature {
         Reduce { state, action in
             switch action {
             case let .onboarding(.delegate(.signedIn(user))):
-                state = .home(HomeFeature.State(status: .member(user)))
+                state = .mainTab(MainTabFeature.State(home: HomeFeature.State(status: .member(user))))
                 return .none
 
             case let .onboarding(.delegate(.needsSignUp(user, fullName))):
@@ -41,14 +41,14 @@ struct AppFeature {
                 return .none
 
             case .onboarding(.delegate(.browseWithoutSignUp)):
-                state = .home(HomeFeature.State(status: .guest))
+                state = .mainTab(MainTabFeature.State(home: HomeFeature.State(status: .guest)))
                 return .none
 
             case let .signUp(.delegate(.completed(user))):
-                state = .home(HomeFeature.State(status: .member(user)))
+                state = .mainTab(MainTabFeature.State(home: HomeFeature.State(status: .member(user))))
                 return .none
 
-            case .onboarding, .signUp:
+            case .onboarding, .signUp, .mainTab:
                 return .none
             }
         }
@@ -58,8 +58,8 @@ struct AppFeature {
         .ifCaseLet(\.signUp, action: \.signUp) {
             SignUpFeature()
         }
-        .ifCaseLet(\.home, action: \.home) {
-            HomeFeature()
+        .ifCaseLet(\.mainTab, action: \.mainTab) {
+            MainTabFeature()
         }
     }
 }
