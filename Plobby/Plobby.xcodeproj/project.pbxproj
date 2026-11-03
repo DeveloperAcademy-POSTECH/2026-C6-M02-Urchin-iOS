@@ -13,6 +13,7 @@
 		EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */; };
 		EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */; };
 		EC0D4B803098B739000E7BB7 /* TrashSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */; };
+		EC7608AE30996DF40061AAAD /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7608AD30996DF40061AAAD /* ImageAsset.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -102,6 +103,7 @@
 		EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashView.swift; sourceTree = "<group>"; };
 		EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignScale.swift; sourceTree = "<group>"; };
 		EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashSelectionView.swift; sourceTree = "<group>"; };
+		EC7608AD30996DF40061AAAD /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 			children = (
 				ECE6F2923098338400C4916C /* NormalButton.swift */,
 				EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */,
+				EC7608AD30996DF40061AAAD /* ImageAsset.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -691,6 +694,7 @@
 				ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */,
 				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
+				EC7608AE30996DF40061AAAD /* ImageAsset.swift in Sources */,
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
 				ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */,

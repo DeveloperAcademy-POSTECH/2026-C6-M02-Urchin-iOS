@@ -17,7 +17,7 @@ struct FallingTrashView: View {
 
     // MARK: - Init
 
-    init(assetCounts: [String: Int]) {
+    init(assetCounts: [ImageAsset: Int]) {
         let scene = FallingTrashScene()
         scene.scaleMode = .resizeFill
         scene.assetCounts = assetCounts
@@ -36,35 +36,11 @@ final class FallingTrashScene: SKScene {
 
     // MARK: - Properties
 
-    static var assetNames: [String] { largeAssetNames + smallAssetNames + [netAssetName] }
-
-    private static let largeAssetNames = [
-        "temp_trash_fridge",
-        "temp_trash_washer",
-        "temp_trash_monitor",
-        "temp_trash_tire"
-    ]
-    private static let smallAssetNames = [
-        "temp_trash_jug_yellow",
-        "temp_trash_water_jug_blue",
-        "temp_trash_water_bottle_blue",
-        "temp_trash_bottle_brown",
-        "temp_trash_bottle_orange",
-        "temp_trash_bottle_green",
-        "temp_trash_can_orange",
-        "temp_trash_can_green",
-        "temp_trash_container_pink",
-        "temp_trash_tube",
-        "temp_trash_spoon",
-        "temp_trash_fork"
-    ]
-    private static let netAssetName = "temp_trash_net"
-    private let tireAssetName = "temp_trash_tire"
     private let dropInterval: TimeInterval = 0.12
     private let boundaryCategory: UInt32 = 1 << 0
     private let trashCategory: UInt32 = 1 << 1
 
-    var assetCounts: [String: Int] = [:]
+    var assetCounts: [ImageAsset: Int] = [:]
 
     // MARK: - Lifecycle
 
@@ -96,23 +72,23 @@ extension FallingTrashScene {
     }
 
     private func startDropping() {
-        let assetNames = selectedAssets(from: Self.largeAssetNames).shuffled()
-            + selectedAssets(from: Self.smallAssetNames).shuffled()
-            + selectedAssets(from: [Self.netAssetName])
+        let assets = selectedAssets(from: ImageAsset.large).shuffled()
+            + selectedAssets(from: ImageAsset.small).shuffled()
+            + selectedAssets(from: [.net])
         let wait = SKAction.wait(forDuration: dropInterval)
-        let actions = assetNames.flatMap { assetName in
-            [wait, SKAction.run { [weak self] in self?.dropItem(named: assetName) }]
+        let actions = assets.flatMap { asset in
+            [wait, SKAction.run { [weak self] in self?.dropItem(asset) }]
         }
 
         run(.sequence(actions))
     }
 
-    private func selectedAssets(from names: [String]) -> [String] {
-        names.flatMap { Array(repeating: $0, count: assetCounts[$0, default: 0]) }
+    private func selectedAssets(from assets: [ImageAsset]) -> [ImageAsset] {
+        assets.flatMap { Array(repeating: $0, count: assetCounts[$0, default: 0]) }
     }
 
-    private func dropItem(named assetName: String) {
-        let node = SKSpriteNode(imageNamed: assetName)
+    private func dropItem(_ asset: ImageAsset) {
+        let node = SKSpriteNode(imageNamed: asset.rawValue)
         node.setScale(DesignScale.fitRatio(for: size))
         
         let halfWidth = node.size.width / 2
@@ -124,7 +100,7 @@ extension FallingTrashScene {
             y: size.height + node.size.height
         )
 
-        let body = assetName == tireAssetName
+        let body = asset == .tire
             ? SKPhysicsBody(circleOfRadius: halfWidth)
             : SKPhysicsBody(rectangleOf: node.size)
         body.restitution = 0.2
@@ -133,7 +109,7 @@ extension FallingTrashScene {
         body.usesPreciseCollisionDetection = true
         body.categoryBitMask = trashCategory
 
-        if assetName == Self.netAssetName {
+        if asset == .net {
             body.categoryBitMask = 0
             body.collisionBitMask = boundaryCategory
             node.zPosition = 1

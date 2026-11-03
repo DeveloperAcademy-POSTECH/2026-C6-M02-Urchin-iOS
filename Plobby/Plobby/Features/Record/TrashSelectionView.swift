@@ -13,16 +13,16 @@ struct TrashSelectionView: View {
     
     // MARK: - Properties
     
-    @State private var assetCounts: [String: Int] = [:]
+    @State private var assetCounts: [ImageAsset: Int] = [:]
     @State private var isDropping = false
     
     // MARK: - Body
     
     var body: some View {
         NavigationStack {
-            List(FallingTrashScene.assetNames, id: \.self) { assetName in
-                Stepper(value: countBinding(for: assetName), in: 0...10) {
-                    Text("\(assetName.replacingOccurrences(of: "temp_trash_", with: "")) \(assetCounts[assetName, default: 0])")
+            List(ImageAsset.allCases, id: \.self) { asset in
+                Stepper(value: countBinding(for: asset), in: 0...10) {
+                    Text("\(asset.rawValue.replacingOccurrences(of: "temp_trash_", with: "")) \(assetCounts[asset, default: 0])")
                 }
             }
             .navigationTitle("쓰레기 선택")
@@ -38,10 +38,10 @@ struct TrashSelectionView: View {
 
     // MARK: - Functions
 
-    private func countBinding(for assetName: String) -> Binding<Int> {
+    private func countBinding(for asset: ImageAsset) -> Binding<Int> {
         Binding(
-            get: { assetCounts[assetName, default: 0] },
-            set: { assetCounts[assetName] = $0 }
+            get: { assetCounts[asset, default: 0] },
+            set: { assetCounts[asset] = $0 }
         )
     }
 }
