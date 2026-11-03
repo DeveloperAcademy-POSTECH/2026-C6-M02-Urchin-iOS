@@ -59,12 +59,12 @@ extension AuthClient: DependencyKey {
                 return true   // 사용 가능
                 // return false   // 중복
             },
-            // TODO: - Supabase 회원가입 요청 API 연동
-            signUp: { _ in
-                try await Task.sleep(for: .milliseconds(500))
+            signUp: { profile in
+                @Dependency(\.supabaseClient) var supabase
 
-                // 실패 테스트
-                // throw URLError(.badServerResponse)
+                try await supabase
+                    .rpc("complete_signup", params: CompleteSignupRequestDTO(from: profile))
+                    .execute()
             },
             signOut: {
                 @Dependency(\.supabaseClient) var supabase
