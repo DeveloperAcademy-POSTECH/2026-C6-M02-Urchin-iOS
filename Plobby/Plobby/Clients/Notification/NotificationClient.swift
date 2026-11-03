@@ -33,7 +33,7 @@ extension NotificationClient: DependencyKey {
                     .execute()
                     .value
 
-                return notifications.compactMap { $0.toDomain() }
+                return notifications.map { $0.toDomain() }
             },
             updateReadAt: { notificationID in
                 @Dependency(\.supabaseClient) var supabaseClient

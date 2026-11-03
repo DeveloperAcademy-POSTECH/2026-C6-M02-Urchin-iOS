@@ -14,7 +14,7 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
         """
 
     let id: UUID
-    let type: String
+    let type: NotificationType
     let recordID: UUID
     let readAt: Date?
     let createdAt: Date
@@ -32,16 +32,14 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
         case recordDeleted = "record_deleted"
     }
 
-    func toDomain() -> AppNotification? {
+    func toDomain() -> AppNotification {
         let kind: AppNotification.Kind
 
         switch type {
-        case "like":
+        case .like:
             kind = .like(likerNickname: actorNickname)
-        case "beach_record":
+        case .beachRecord:
             kind = .newRecordAtFavoriteBeach(beachName: beachName)
-        default:
-            return nil
         }
 
         return AppNotification(
@@ -52,5 +50,13 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
             isRecordDeleted: recordDeleted,
             createdAt: createdAt
         )
+    }
+}
+
+nonisolated extension NotificationResponseDTO {
+
+    enum NotificationType: String, Decodable, Sendable {
+        case like
+        case beachRecord = "beach_record"
     }
 }
