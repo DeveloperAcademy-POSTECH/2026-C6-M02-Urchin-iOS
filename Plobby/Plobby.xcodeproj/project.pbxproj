@@ -101,7 +101,6 @@
 		ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29E3098338400C4916C /* AppleCredential.swift */; };
 		ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29F3098338400C4916C /* AuthUser.swift */; };
 		ECE6F2E43098338400C4916C /* Beach.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A13098338400C4916C /* Beach.swift */; };
-		ECE6F2E53098338400C4916C /* Sea.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A23098338400C4916C /* Sea.swift */; };
 		ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A43098338400C4916C /* DecimalInput.swift */; };
 		ECE6F2E73098338400C4916C /* InputText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A53098338400C4916C /* InputText.swift */; };
 		ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A73098338400C4916C /* MembershipStatus.swift */; };
@@ -255,7 +254,6 @@
 		ECE6F29E3098338400C4916C /* AppleCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCredential.swift; sourceTree = "<group>"; };
 		ECE6F29F3098338400C4916C /* AuthUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUser.swift; sourceTree = "<group>"; };
 		ECE6F2A13098338400C4916C /* Beach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Beach.swift; sourceTree = "<group>"; };
-		ECE6F2A23098338400C4916C /* Sea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sea.swift; sourceTree = "<group>"; };
 		ECE6F2A43098338400C4916C /* DecimalInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalInput.swift; sourceTree = "<group>"; };
 		ECE6F2A53098338400C4916C /* InputText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputText.swift; sourceTree = "<group>"; };
 		ECE6F2A73098338400C4916C /* MembershipStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipStatus.swift; sourceTree = "<group>"; };
@@ -723,7 +721,6 @@
 			isa = PBXGroup;
 			children = (
 				ECE6F2A13098338400C4916C /* Beach.swift */,
-				ECE6F2A23098338400C4916C /* Sea.swift */,
 			);
 			path = Beach;
 			sourceTree = "<group>";
@@ -1190,7 +1187,6 @@
 				ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */,
 				ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */,
 				ECE6F2E43098338400C4916C /* Beach.swift in Sources */,
-				ECE6F2E53098338400C4916C /* Sea.swift in Sources */,
 				ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */,
 				EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */,
 				EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */,

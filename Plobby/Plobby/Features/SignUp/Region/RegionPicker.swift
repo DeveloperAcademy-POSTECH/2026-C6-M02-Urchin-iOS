@@ -22,7 +22,7 @@ struct RegionPicker: View {
             searchField
 
             HStack(spacing: 0) {
-                seaList
+                regionList
                 beachList
             }
         }
@@ -51,10 +51,12 @@ extension RegionPicker {
         .background(Color.gray.opacity(0.08))
     }
 
-    private var seaList: some View {
+    private var regionList: some View {
         VStack(spacing: 0) {
-            ForEach(Sea.allCases, id: \.self) { sea in
-                seaButton(sea)
+            regionButton(nil)
+
+            ForEach(BeachRegion.allCases, id: \.self) { region in
+                regionButton(region)
             }
         }
         .frame(width: 98)
@@ -62,13 +64,13 @@ extension RegionPicker {
         .background(Color.gray.opacity(0.08))
     }
 
-    private func seaButton(_ sea: Sea) -> some View {
-        let isSelected = store.selectedSea == sea
+    private func regionButton(_ region: BeachRegion?) -> some View {
+        let isSelected = store.selectedRegion == region
 
         return Button {
-            store.send(.seaTapped(sea))
+            store.send(.regionTapped(region))
         } label: {
-            Text(sea.title)
+            Text(region?.displayName ?? "전체")
                 .font(.system(size: 16, weight: isSelected ? .semibold : .regular))
                 .foregroundStyle(isSelected ? Color.black : Color.gray)
                 .frame(maxWidth: .infinity)
