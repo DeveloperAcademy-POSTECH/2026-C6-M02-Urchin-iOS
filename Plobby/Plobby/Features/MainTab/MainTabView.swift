@@ -31,13 +31,41 @@ struct MainTabView: View {
                 Text("마이")
             }
             
-            Tab("기록", systemImage: "plus", value: .record, role: .search) {
+            Tab("기록", systemImage: store.isRecordMenuPresented ? "xmark" : "plus", value: .record, role: .search) {
                 EmptyView()
             }
         }
         .tint(.primary)
-        .sheet(isPresented: $store.isRecordSheetPresented.sending(\.recordSheetPresentedChanged)) {
-            Text("기록 작성")
+        .overlay(alignment: .bottomTrailing) {
+            if store.isRecordMenuPresented {
+                recordMenu
+            }
+        }
+        .animation(.spring(duration: 0.25), value: store.isRecordMenuPresented)
+        .fullScreenCover(item: $store.scope(state: \.recordFlow, action: \.recordFlow)) { store in
+            RecordView(store: store)
+        }
+    }
+}
+// MARK: - Subviews
+
+extension MainTabView {
+    
+    private var recordMenu: some View {
+        ZStack(alignment: .bottomTrailing) {
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    store.send(.recordMenuDismissed)
+                }
+                .transition(.opacity)
+            
+            RecordMenuView { recordType in
+                store.send(.recordTypeSelected(recordType))
+            }
+            .padding(.trailing, 16)
+            .padding(.bottom, 64)
+            .transition(.scale(scale: 0.8, anchor: .bottomTrailing).combined(with: .opacity))
         }
     }
 }
