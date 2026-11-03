@@ -14,6 +14,16 @@
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
+		DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FA330988669003FEDF9 /* RecordClient.swift */; };
+		DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */; };
+		DA5B0FB93098DA53003FEDF9 /* DependencyValues+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */; };
+		DA5B0FBB3098DCCD003FEDF9 /* UpdatedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FBA3098DCCC003FEDF9 /* UpdatedRecord.swift */; };
+		DA5B0FC93098DF6F003FEDF9 /* RecordLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FC83098DF6E003FEDF9 /* RecordLike.swift */; };
+		DA5B0FD83098E17F003FEDF9 /* RecordReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FD73098E17D003FEDF9 /* RecordReport.swift */; };
+		DA5B0FDA3098E2FC003FEDF9 /* SupabaseClient+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FD93098E2F7003FEDF9 /* SupabaseClient+.swift */; };
+		DA5B0FE13099A001003FEDF9 /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FE23099A001003FEDF9 /* RecordType.swift */; };
+		DA5B0FE33099A001003FEDF9 /* RecordDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FE43099A001003FEDF9 /* RecordDetail.swift */; };
+		DA5B0FE53099A001003FEDF9 /* RecordSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FE63099A001003FEDF9 /* RecordSummary.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -104,6 +114,16 @@
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA5B0FA330988669003FEDF9 /* RecordClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordClient.swift; sourceTree = "<group>"; };
+		DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecord.swift; sourceTree = "<group>"; };
+		DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+Record.swift"; sourceTree = "<group>"; };
+		DA5B0FBA3098DCCC003FEDF9 /* UpdatedRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedRecord.swift; sourceTree = "<group>"; };
+		DA5B0FC83098DF6E003FEDF9 /* RecordLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordLike.swift; sourceTree = "<group>"; };
+		DA5B0FD73098E17D003FEDF9 /* RecordReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordReport.swift; sourceTree = "<group>"; };
+		DA5B0FD93098E2F7003FEDF9 /* SupabaseClient+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SupabaseClient+.swift"; sourceTree = "<group>"; };
+		DA5B0FE23099A001003FEDF9 /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
+		DA5B0FE43099A001003FEDF9 /* RecordDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetail.swift; sourceTree = "<group>"; };
+		DA5B0FE63099A001003FEDF9 /* RecordSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSummary.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -170,6 +190,14 @@
 		ECE6F318309833AE00C4916C /* PlobbyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITests.swift; sourceTree = "<group>"; };
 		ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		DA5B0FA730988747003FEDF9 /* DTO */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DTO;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		DA1A4DA23089FEAF00AEAB52 /* Frameworks */ = {
@@ -246,6 +274,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		DA5B0FA430988669003FEDF9 /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */,
+				DA5B0FA330988669003FEDF9 /* RecordClient.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
 		ECE6F2813098338400C4916C /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,6 +319,7 @@
 		ECE6F28D3098338400C4916C /* Supabase */ = {
 			isa = PBXGroup;
 			children = (
+				DA5B0FD93098E2F7003FEDF9 /* SupabaseClient+.swift */,
 				ECE6F28B3098338400C4916C /* DependencyValues+SupabaseClient.swift */,
 				ECE6F28C3098338400C4916C /* SupabaseClientKey.swift */,
 			);
@@ -291,9 +329,11 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				DA5B0FA730988747003FEDF9 /* DTO */,
 				B59027013098E2AD00AE351D /* Notification */,
 				ECE6F28A3098338400C4916C /* Auth */,
 				ECE6F28D3098338400C4916C /* Supabase */,
+				DA5B0FA430988669003FEDF9 /* Record */,
 			);
 			path = Clients;
 			sourceTree = "<group>";
@@ -388,6 +428,13 @@
 		ECE6F2B13098338400C4916C /* Record */ = {
 			isa = PBXGroup;
 			children = (
+				DA5B0FD73098E17D003FEDF9 /* RecordReport.swift */,
+				DA5B0FC83098DF6E003FEDF9 /* RecordLike.swift */,
+				DA5B0FBA3098DCCC003FEDF9 /* UpdatedRecord.swift */,
+				DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */,
+				DA5B0FE23099A001003FEDF9 /* RecordType.swift */,
+				DA5B0FE43099A001003FEDF9 /* RecordDetail.swift */,
+				DA5B0FE63099A001003FEDF9 /* RecordSummary.swift */,
 				ECE6F2AC3098338400C4916C /* CollectedWeight.swift */,
 				ECE6F2AD3098338400C4916C /* RecordMemo.swift */,
 				ECE6F2AE3098338400C4916C /* TrashTypeName.swift */,
@@ -572,6 +619,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				DA5B0FA730988747003FEDF9 /* DTO */,
+			);
 			name = Plobby;
 			packageProductDependencies = (
 				DA1A4DD2308A009900AEAB52 /* Supabase */,
@@ -705,11 +755,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */,
+				DA5B0FB93098DA53003FEDF9 /* DependencyValues+Record.swift in Sources */,
 				ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */,
 				ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */,
+				DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */,
 				ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */,
 				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
+				DA5B0FD83098E17F003FEDF9 /* RecordReport.swift in Sources */,
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
 				ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */,
@@ -720,8 +773,13 @@
 				ECE6F2D93098338400C4916C /* SupabaseClientKey.swift in Sources */,
 				ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */,
 				ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */,
+				DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */,
+				DA5B0FE13099A001003FEDF9 /* RecordType.swift in Sources */,
+				DA5B0FE33099A001003FEDF9 /* RecordDetail.swift in Sources */,
+				DA5B0FE53099A001003FEDF9 /* RecordSummary.swift in Sources */,
 				B59027033098E2F800AE351D /* NotificationClient.swift in Sources */,
 				ECE6F2DC3098338400C4916C /* NormalButton.swift in Sources */,
+				DA5B0FC93098DF6F003FEDF9 /* RecordLike.swift in Sources */,
 				ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */,
 				ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */,
 				ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */,
@@ -744,10 +802,12 @@
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
 				ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */,
 				ECE6F2F03098338400C4916C /* WaterTemperature.swift in Sources */,
+				DA5B0FDA3098E2FC003FEDF9 /* SupabaseClient+.swift in Sources */,
 				ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */,
 				ECE6F2F23098338400C4916C /* HomeView.swift in Sources */,
 				ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */,
 				ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */,
+				DA5B0FBB3098DCCD003FEDF9 /* UpdatedRecord.swift in Sources */,
 				ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */,
 				ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */,
 				ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */,
@@ -1144,8 +1204,6 @@
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.5.1;
 			};
-			traits = (
-			);
 		};
 		DA1A4DD4308A01BF00AEAB52 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1154,8 +1212,6 @@
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.26.2;
 			};
-			traits = (
-			);
 		};
 /* End XCRemoteSwiftPackageReference section */
 
