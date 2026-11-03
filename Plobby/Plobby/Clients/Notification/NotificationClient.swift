@@ -13,6 +13,7 @@ import Supabase
 struct NotificationClient {
     var fetchNotifications: @Sendable () async throws -> [AppNotification]
     var updateReadAt: @Sendable (_ notificationID: UUID) async throws -> Void
+    var updateAllReadAt: @Sendable () async throws -> Void
     var submitDeviceToken: @Sendable (_ token: String) async throws -> Void
 }
 
@@ -43,6 +44,18 @@ extension NotificationClient: DependencyKey {
                     .from("notifications")
                     .update(ReadAtUpdateRequestDTO(readAt: .now), returning: .minimal)
                     .eq("id", value: notificationID)
+                    .eq("user_id", value: userID)
+                    .is("read_at", value: nil)
+                    .execute()
+            },
+            updateAllReadAt: {
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                let userID = try await supabaseClient.currentUserID()
+
+                try await supabaseClient
+                    .from("notifications")
+                    .update(ReadAtUpdateRequestDTO(readAt: .now), returning: .minimal)
                     .eq("user_id", value: userID)
                     .is("read_at", value: nil)
                     .execute()
