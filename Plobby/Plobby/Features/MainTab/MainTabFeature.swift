@@ -15,22 +15,23 @@ struct MainTabFeature {
     @ObservableState
     struct State: Equatable {
         var selectedTab: MainTab = .home
-        var isRecordSheetPresented = false
+        var isRecordMenuPresented = false
         var home: HomeFeature.State
         var map = MapFeature.State()
         var my = MyFeature.State()
-        @Presents var record: RecordFlowFeature.State?
+        @Presents var recordFlow: RecordFlowFeature.State?
     }
     
     // MARK: - Action
     
     enum Action {
         case tabSelected(MainTab)
-        case recordSheetPresentedChanged(Bool)
+        case recordMenuDismissed
+        case recordTypeSelected(RecordType)
         case home(HomeFeature.Action)
         case map(MapFeature.Action)
         case my(MyFeature.Action)
-        case record(PresentationAction<RecordFlowFeature.Action>)
+        case recordFlow(PresentationAction<RecordFlowFeature.Action>)
     }
     
     // MARK: - Body
@@ -49,13 +50,21 @@ struct MainTabFeature {
         Reduce { state, action in
             switch action {
             case .tabSelected(.record):
-                state.isRecordSheetPresented = true
+                state.isRecordMenuPresented.toggle()
                 return .none
             case let .tabSelected(tab):
                 state.selectedTab = tab
+                state.isRecordMenuPresented = false
                 return .none
-            case let .recordSheetPresentedChanged(isPresented):
-                state.isRecordSheetPresented = isPresented
+            case .recordMenuDismissed:
+                state.isRecordMenuPresented = false
+                return .none
+            case let .recordTypeSelected(recordType):
+                state.isRecordMenuPresented = false
+                state.recordFlow = RecordFlowFeature.State(recordType: recordType)
+                return .none
+            case .recordFlow(.presented(.delegate(.closed))):
+                state.recordFlow = nil
                 return .none
             case .home:
                 return .none
@@ -63,11 +72,11 @@ struct MainTabFeature {
                 return .none
             case .my:
                 return .none
-            case .record:
+            case .recordFlow:
                 return .none
             }
         }
-        .ifLet(\.$record, action: \.record) {
+        .ifLet(\.$recordFlow, action: \.recordFlow) {
             RecordFlowFeature()
         }
     }
