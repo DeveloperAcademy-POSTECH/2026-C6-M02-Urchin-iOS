@@ -22,17 +22,6 @@
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
-		E86CC8B62B313EB83983CBD5 /* ProfileUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */; };
-		EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */; };
-		EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */; };
-		EC0D4B893098E1D0000E7BB7 /* BeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */; };
-		EC0D4B8B3098E1D0000E7BB7 /* BeachRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */; };
-		EC0D4B8D3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */; };
-		EC0D4B8F3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B8E3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift */; };
-		EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */; };
-		EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */; };
-		EC0D4B803098B739000E7BB7 /* TrashSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */; };
-		EC7608AE30996DF40061AAAD /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7608AD30996DF40061AAAD /* ImageAsset.swift */; };
 		DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FA330988669003FEDF9 /* RecordClient.swift */; };
 		DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */; };
 		DA5B0FB93098DA53003FEDF9 /* DependencyValues+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */; };
@@ -62,6 +51,7 @@
 		DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10DF30998932003FEDF9 /* MapFeature.swift */; };
 		DA5B10E430998932003FEDF9 /* MyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E230998932003FEDF9 /* MyFeature.swift */; };
 		DA5B10E730998932003FEDF9 /* RecordFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E530998932003FEDF9 /* RecordFeature.swift */; };
+		E86CC8B62B313EB83983CBD5 /* ProfileUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */; };
 		EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */; };
 		EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */; };
 		EC0D4B803098B739000E7BB7 /* TrashSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */; };
@@ -339,6 +329,16 @@
 			path = Request;
 			sourceTree = "<group>";
 		};
+		AE9DC5DE336979B9888653B5 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				3BC523B89D31C094B9AD61AE /* DTO */,
+				0B83BBF957568508C43BBA03 /* UserClient.swift */,
+				AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		B59027013098E2AD00AE351D /* Notification */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,16 +366,6 @@
 			path = Request;
 			sourceTree = "<group>";
 		};
-		AE9DC5DE336979B9888653B5 /* User */ = {
-			isa = PBXGroup;
-			children = (
-				3BC523B89D31C094B9AD61AE /* DTO */,
-				0B83BBF957568508C43BBA03 /* UserClient.swift */,
-				AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */,
-			);
-			path = User;
-			sourceTree = "<group>";
-		};
 		DA1A4D9C3089FEAF00AEAB52 = {
 			isa = PBXGroup;
 			children = (
@@ -399,6 +389,7 @@
 		DA5B0FA430988669003FEDF9 /* Record */ = {
 			isa = PBXGroup;
 			children = (
+				DA5B106330997215003FEDF9 /* DTO */,
 				DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */,
 				DA5B0FA330988669003FEDF9 /* RecordClient.swift */,
 			);
@@ -436,32 +427,6 @@
 			children = (
 				DA5B105D30997215003FEDF9 /* Request */,
 				DA5B106230997215003FEDF9 /* Response */,
-		EC0D4B813098B886000E7BB7 /* Record */ = {
-			isa = PBXGroup;
-			children = (
-				EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */,
-				EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */,
-			);
-			path = Record;
-			sourceTree = "<group>";
-		};
-		EC0D4B823098E19A000E7BB7 /* Beach */ = {
-			isa = PBXGroup;
-			children = (
-				EC0D4B853098E1C1000E7BB7 /* DTO */,
-				EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */,
-				EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */,
-			);
-			path = Beach;
-			sourceTree = "<group>";
-		};
-		EC0D4B853098E1C1000E7BB7 /* DTO */ = {
-			isa = PBXGroup;
-			children = (
-				EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */,
-				EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */,
-				EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */,
-				EC0D4B8E3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -498,6 +463,38 @@
 				DA5B10E530998932003FEDF9 /* RecordFeature.swift */,
 			);
 			path = Record;
+			sourceTree = "<group>";
+		};
+		EC0D4B813098B886000E7BB7 /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */,
+				EC0D4B7F3098B739000E7BB7 /* TrashSelectionView.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
+		EC0D4B823098E19A000E7BB7 /* Beach */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B853098E1C1000E7BB7 /* DTO */,
+				EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */,
+				EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */,
+			);
+			path = Beach;
+			sourceTree = "<group>";
+		};
+		EC0D4B853098E1C1000E7BB7 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D4B883098E1D0000E7BB7 /* BeachResponseDTO.swift */,
+				EC0D4B8A3098E1D0000E7BB7 /* BeachRegion.swift */,
+				EC0D4B8C3098E1D0000E7BB7 /* FavoriteBeachResponseDTO.swift */,
+				EC0D4B8E3098E1D0000E7BB7 /* FavoriteBeachInsertRequestDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 		ECDDD9AA3099781C00FB04D5 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -564,9 +561,7 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
-				DA5B106330997215003FEDF9 /* DTO */,
 				EC0D4B823098E19A000E7BB7 /* Beach */,
-				DA5B0FA730988747003FEDF9 /* DTO */,
 				B59027013098E2AD00AE351D /* Notification */,
 				ECE6F28A3098338400C4916C /* Auth */,
 				ECE6F28D3098338400C4916C /* Supabase */,
