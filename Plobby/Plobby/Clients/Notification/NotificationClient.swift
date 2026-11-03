@@ -21,7 +21,7 @@ extension NotificationClient: DependencyKey {
             updateReadAt: { notificationID in
                 @Dependency(\.supabaseClient) var supabaseClient
 
-                let userID = try await supabaseClient.auth.session.user.id
+                let userID = try await supabaseClient.currentUserID()
 
                 try await supabaseClient
                     .from("notifications")
