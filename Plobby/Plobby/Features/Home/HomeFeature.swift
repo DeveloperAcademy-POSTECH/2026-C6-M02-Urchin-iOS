@@ -18,6 +18,11 @@ struct HomeFeature {
     struct State: Equatable {
         let status: MembershipStatus
         var currentBanner: RecordType = .plobbing
+        var favoriteBeaches: [Beach] = []
+
+        var canAddFavoriteBeach: Bool {
+            favoriteBeaches.count < HomeFeature.maximumFavoriteBeachCount
+        }
     }
 
     // MARK: - Action
@@ -31,6 +36,7 @@ struct HomeFeature {
         case bannerDragEnded
         case recordButtonTapped
         case notificationButtonTapped
+        case addFavoriteBeachButtonTapped
         case delegate(Delegate)
 
         enum Delegate {
@@ -72,6 +78,10 @@ struct HomeFeature {
             case .notificationButtonTapped:
                 return .none
 
+            // TODO: 관심 해변 추가 화면 이동
+            case .addFavoriteBeachButtonTapped:
+                return .none
+
             case .delegate:
                 return .none
             }
@@ -84,6 +94,7 @@ struct HomeFeature {
 extension HomeFeature {
 
     static let banners: [RecordType] = [.plobbing, .plogging]
+    static let maximumFavoriteBeachCount = 3
 
     private nonisolated enum CancelID {
         case timer

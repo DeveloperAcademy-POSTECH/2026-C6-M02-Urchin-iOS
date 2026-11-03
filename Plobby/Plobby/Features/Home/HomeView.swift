@@ -37,10 +37,8 @@ extension HomeView {
     private func content(scale: CGFloat) -> some View {
         VStack(spacing: 0) {
             header
-
             recordBanner(height: 240 * scale)
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
+            favoriteBeachSection
 
             Spacer()
 
@@ -73,6 +71,62 @@ extension HomeView {
         .padding(.horizontal, 20)
     }
 
+    private var favoriteBeachSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("관심 해변")
+                    .font(.system(size: 20, weight: .semibold))
+
+                Spacer()
+
+                Text("\(store.favoriteBeaches.count)/\(HomeFeature.maximumFavoriteBeachCount)")
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(.gray)
+            }
+            .padding(.horizontal, 20)
+
+            ScrollView(.horizontal) {
+                HStack(spacing: 16) {
+                    ForEach(store.favoriteBeaches) { beach in
+                        favoriteBeachChip(beach)
+                    }
+
+                    if store.canAddFavoriteBeach {
+                        addFavoriteBeachButton
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+            .scrollIndicators(.hidden)
+        }
+        .padding(.top, 40)
+    }
+
+    private func favoriteBeachChip(_ beach: Beach) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "star.fill")
+                .foregroundStyle(.green)
+
+            Text(beach.name)
+                .foregroundStyle(.black)
+        }
+        .modifier(BeachChipStyle())
+    }
+
+    private var addFavoriteBeachButton: some View {
+        Button {
+            store.send(.addFavoriteBeachButtonTapped)
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "plus")
+
+                Text("추가")
+            }
+            .foregroundStyle(.gray)
+            .modifier(BeachChipStyle())
+        }
+    }
+
     private func recordBanner(height: CGFloat) -> some View {
         ZStack(alignment: .bottom) {
             ScrollView(.horizontal) {
@@ -102,6 +156,8 @@ extension HomeView {
         }
         .frame(height: height)
         .clipShape(RoundedRectangle(cornerRadius: 16))
+        .padding(.horizontal, 20)
+        .padding(.top, 16)
     }
 
     private func screenSize(of proxy: GeometryProxy) -> CGSize {
@@ -161,6 +217,23 @@ extension HomeView {
         Text(store.currentBanner.participantText)
             .font(.system(size: 11, weight: .regular))
             .foregroundStyle(.gray)
+    }
+}
+
+// MARK: - BeachChipStyle
+
+private struct BeachChipStyle: ViewModifier {
+
+    func body(content: Content) -> some View {
+        content
+            .font(.system(size: 15, weight: .medium))
+            .padding(.horizontal, 16)
+            .frame(height: 44)
+            .background(Color.gray.opacity(0.06), in: RoundedRectangle(cornerRadius: 10))
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+            }
     }
 }
 
