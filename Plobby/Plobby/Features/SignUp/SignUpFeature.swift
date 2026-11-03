@@ -30,6 +30,7 @@ struct SignUpFeature {
         var nickname = ""
         var isCheckingNickname = false
         var isNicknameAvailable: Bool?
+        var isSigningUp = false
         var path = StackState<Path.State>()
         @Presents var alert: AlertState<Action.Alert>?
         
@@ -56,6 +57,7 @@ struct SignUpFeature {
         case nicknameCheckButtonTapped
         case nicknameCheckResponse(Result<Bool, any Error>)
         case nextButtonTapped
+        case signUpResponse(Result<Void, any Error>)
         case path(StackActionOf<Path>)
         case delegate(Delegate)
         
@@ -71,6 +73,7 @@ struct SignUpFeature {
     // MARK: - Dependency
     
     @Dependency(\.authClient) var authClient
+    @Dependency(\.userClient) var userClient
 
     // MARK: - Body
     
@@ -119,8 +122,27 @@ struct SignUpFeature {
                 state.path.append(.region(RegionFeature.State()))
                 return .none
 
-            case .path(.element(id: _, action: .region(.nextButtonTapped))):
+            case let .path(.element(id: id, action: .region(.nextButtonTapped))):
+                guard !state.isSigningUp else { return .none }
+                
+                state.isSigningUp = true
+                
+                return signUp(SignUpProfile(
+                    userID: state.user.id,
+                    profileImage: state.profileImage,
+                    name: state.fullName,
+                    nickname: state.nickname,
+                    favoriteBeachIDs: Array(state.path[id: id]?.region?.selectedBeachIDs ?? [])
+                ))
+                
+            case .signUpResponse(.success):
+                state.isSigningUp = false
                 state.path.append(.complete(CompleteFeature.State()))
+                return .none
+                
+            case .signUpResponse(.failure):
+                state.isSigningUp = false
+                state.alert = .make(.signUpFailed)
                 return .none
 
             case .path(.element(id: _, action: .complete(.completeButtonTapped))):
@@ -154,10 +176,18 @@ extension SignUpFeature {
     private func checkNickname(_ nickname: String) -> Effect<Action> {
         .run { send in
             await send(.nicknameCheckResponse(Result {
-                try await authClient.fetchIsNicknameAvailable(nickname)
+                try await userClient.fetchIsNicknameAvailable(nickname)
             }))
         }
         .cancellable(id: CancelID.nicknameCheck, cancelInFlight: true)
+    }
+    
+    private func signUp(_ profile: SignUpProfile) -> Effect<Action> {
+        .run { send in
+            await send(.signUpResponse(Result {
+                try await authClient.signUp(profile)
+            }))
+        }
     }
 }
 

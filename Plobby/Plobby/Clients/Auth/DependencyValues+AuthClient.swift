@@ -9,7 +9,7 @@ import Dependencies
 
 extension DependencyValues {
     
-    var authClient: AuthClient {
+    nonisolated var authClient: AuthClient {
         get { self[AuthClient.self] }
         set { self[AuthClient.self] = newValue }
     }

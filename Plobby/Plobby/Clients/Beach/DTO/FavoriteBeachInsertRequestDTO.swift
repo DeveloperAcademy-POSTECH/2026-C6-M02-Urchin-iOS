@@ -1,0 +1,18 @@
+//
+//  FavoriteBeachInsertRequestDTO.swift
+//  Plobby
+//
+//  Created by 이은지 on 11/3/26.
+//
+
+import Foundation
+
+nonisolated struct FavoriteBeachInsertRequestDTO: Encodable, Sendable {
+    let userId: UUID
+    let beachId: UUID
+
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case beachId = "beach_id"
+    }
+}

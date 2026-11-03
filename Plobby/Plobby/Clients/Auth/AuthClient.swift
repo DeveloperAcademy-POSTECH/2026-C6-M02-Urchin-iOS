@@ -12,10 +12,10 @@ import Supabase
 
 struct AuthClient {
     var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
-    var fetchIsMember: @Sendable (_ userID: UUID) async throws -> Bool
-    var fetchIsNicknameAvailable: @Sendable (_ nickname: String) async throws -> Bool
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
-    var signOut: @Sendable () async throws -> Void
+    var signOut: @Sendable (_ token: String?) async throws -> Void
+    var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason, _ detail: String?) async throws -> Void
+    var withdraw: @Sendable (_ reason: WithdrawalReason, _ detail: String?, _ authorizationCode: String) async throws -> Void
 }
 
 extension AuthClient: DependencyKey {
@@ -40,36 +40,55 @@ extension AuthClient: DependencyKey {
                     fullName: fullName ?? session.user.userMetadata["full_name"]?.stringValue
                 )
             },
-            fetchIsMember: { userID in
+            signUp: { profile in
                 @Dependency(\.supabaseClient) var supabase
 
-                let count = try await supabase
-                    .from("profiles")
-                    .select("user_id", head: true, count: .exact)
-                    .eq("user_id", value: userID)
+                try await supabase
+                    .rpc("complete_signup", params: CompleteSignupRequestDTO(from: profile))
                     .execute()
-                    .count
-
-                return (count ?? 0) > 0
             },
-            // TODO: - Supabase 닉네임 중복 확인 API 연동
-            fetchIsNicknameAvailable: { _ in
-                try await Task.sleep(for: .milliseconds(500))
-
-                return true   // 사용 가능
-                // return false   // 중복
-            },
-            // TODO: - Supabase 회원가입 요청 API 연동
-            signUp: { _ in
-                try await Task.sleep(for: .milliseconds(500))
-
-                // 실패 테스트
-                // throw URLError(.badServerResponse)
-            },
-            signOut: {
+            signOut: { token in
                 @Dependency(\.supabaseClient) var supabase
+
+                if let token {
+                    do {
+                        try await supabase
+                            .from("device_tokens")
+                            .delete()
+                            .eq("token", value: token)
+                            .execute()
+                    } catch {
+                        PlobbyLogger.error(error)
+                    }
+                }
 
                 try await supabase.auth.signOut(scope: .local)
+            },
+            submitWithdrawalFeedback: { reason, detail in
+                @Dependency(\.supabaseClient) var supabase
+
+                let trimmed = detail?.trimmingCharacters(in: .whitespacesAndNewlines)
+                let detailToSave = (reason == .other && trimmed?.isEmpty == false) ? trimmed : nil
+
+                try await supabase
+                    .from("withdrawal_feedback")
+                    .insert(WithdrawalFeedbackInsertRequestDTO(reason: reason, detail: detailToSave))
+                    .execute()
+            },
+            withdraw: { reason, detail, authorizationCode in
+                @Dependency(\.supabaseClient) var supabase
+                @Dependency(\.authClient) var authClient
+
+                try await authClient.submitWithdrawalFeedback(reason, detail)
+
+                try await supabase.functions.invoke(
+                    "delete-account",
+                    options: FunctionInvokeOptions(
+                        body: DeleteAccountRequestDTO(authorizationCode: authorizationCode)
+                    )
+                )
+
+                try? await supabase.auth.signOut(scope: .local)
             }
         )
     }()
