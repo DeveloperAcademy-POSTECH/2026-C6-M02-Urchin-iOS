@@ -98,12 +98,13 @@ struct PhotosPickerFeatureTests {
         state.selection = PhotoSelection(Array(photos.prefix(5)))
         let store = makeStore(state: state, clock: clock)
 
-        await store.send(.assetTapped("f")) {
-            $0.toastMessage = PhotosPickerFeature.limitExceededMessage
+        await store.send(.assetTapped("f"))
+        await store.receive(\.toast.show) {
+            $0.toast.toastMessage = PhotosPickerFeature.limitExceededMessage
         }
-        await clock.advance(by: PhotosPickerFeature.toastDuration)
-        await store.receive(\.toastDismissed) {
-            $0.toastMessage = nil
+        await clock.advance(by: ToastFeature.toastDuration)
+        await store.receive(\.toast.toastDismissed) {
+            $0.toast.toastMessage = nil
         }
     }
 
@@ -120,12 +121,13 @@ struct PhotosPickerFeatureTests {
         await store.send(.assetTapped("b")) {
             $0.selection = PhotoSelection([self.photos[0], self.photos[1]], limit: 2)
         }
-        await store.send(.assetTapped("c")) {
-            $0.toastMessage = PhotosPickerFeature.limitExceededMessage
+        await store.send(.assetTapped("c"))
+        await store.receive(\.toast.show) {
+            $0.toast.toastMessage = PhotosPickerFeature.limitExceededMessage
         }
-        await clock.advance(by: PhotosPickerFeature.toastDuration)
-        await store.receive(\.toastDismissed) {
-            $0.toastMessage = nil
+        await clock.advance(by: ToastFeature.toastDuration)
+        await store.receive(\.toast.toastDismissed) {
+            $0.toast.toastMessage = nil
         }
     }
 
