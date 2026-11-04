@@ -22,8 +22,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
         UNUserNotificationCenter.current().delegate = self
 
-        // TODO: 알림 기능 구현 때 PushClient로 옮기기
         Messaging.messaging().delegate = self
+
+        // TODO: 권한 요청 시점이 정해지면 AppFeature의 pushClient.requestAuthorization으로 옮기기
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if let error {
                 PlobbyLogger.error(error)
@@ -63,11 +64,19 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         [.banner, .list, .sound]
     }
 
-    // TODO: 알림 기능 구현 때 userInfo의 record_id로 기록 상세 이동 (루트 Store로 전달)
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse
-    ) async {}
+    ) async {
+        let userInfo = response.notification.request.content.userInfo
+
+        guard
+            let value = userInfo["record_id"] as? String,
+            let recordID = UUID(uuidString: value)
+        else { return }
+
+        PushEvents.tappedRecordIDStream.continuation.yield(recordID)
+    }
 }
 
 // MARK: - MessagingDelegate
@@ -76,5 +85,9 @@ extension AppDelegate: MessagingDelegate {
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         PlobbyLogger.debug("FCM 토큰 수신 여부: \(fcmToken != nil)")
+
+        guard let fcmToken else { return }
+
+        PushEvents.tokenStream.continuation.yield(fcmToken)
     }
 }
