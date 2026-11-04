@@ -80,12 +80,15 @@ extension RegionPicker {
     }
 
     private var beachList: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ForEach(store.beaches) { beach in
-                beachButton(beach)
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 0) {
+                ForEach(store.beaches) { beach in
+                    beachButton(beach)
+                }
             }
+            .padding(.horizontal, 22)
         }
-        .padding(.horizontal, 22)
+        .scrollIndicators(.hidden)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 
