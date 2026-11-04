@@ -25,3 +25,9 @@ extension SharedKey where Self == FileStorageKey<[Beach]>.Default {
         ]
     }
 }
+
+extension SharedKey where Self == AppStorageKey<Date?>.Default {
+
+    /// 해변 목록을 마지막으로 동기화한 시각. 값 변경은 AppFeature에서만 해요.
+    static var beachesSyncedAt: Self { Self[.appStorage("beachesSyncedAt"), default: nil] }
+}

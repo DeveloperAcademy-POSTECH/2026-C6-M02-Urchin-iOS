@@ -32,11 +32,14 @@ struct AppFeature {
         case mainTab(MainTabFeature.Action)
     }
 
+    private static let beachSyncInterval: TimeInterval = 60 * 60 * 24
+
     // MARK: - Dependency
 
     @Dependency(\.pushClient) var pushClient
     @Dependency(\.notificationClient) var notificationClient
     @Dependency(\.beachClient) var beachClient
+    @Dependency(\.date.now) var now
     
     // MARK: - Body
     
@@ -139,12 +142,18 @@ extension AppFeature {
     }
 
     private func syncBeaches() -> Effect<Action> {
-        .run { _ in
+        @Shared(.beachesSyncedAt) var beachesSyncedAt
+        if let beachesSyncedAt, now.timeIntervalSince(beachesSyncedAt) < Self.beachSyncInterval {
+            return .none
+        }
+
+        return .run { _ in
             let beaches = try await beachClient.fetchBeaches(nil)
             guard !beaches.isEmpty else { return }
 
             @Shared(.beaches) var allBeaches
             $allBeaches.withLock { $0 = beaches }
+            $beachesSyncedAt.withLock { $0 = now }
         } catch: { error, _ in
             PlobbyLogger.error(error)
         }
