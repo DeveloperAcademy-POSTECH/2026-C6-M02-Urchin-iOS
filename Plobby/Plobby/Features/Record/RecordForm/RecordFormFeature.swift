@@ -47,8 +47,8 @@ struct RecordFormFeature {
     enum Destination {
         case photoPicker(PhotosPickerFeature)
         case locationPicker(LocationPickerFeature)
-        case datePicker(DatePickerSheetFeature)
-        case timePicker(TimePickerSheetFeature)
+        case datePicker(DatePickerFeature)
+        case timePicker(TimePickerFeature)
         case trashPicker(TrashPickerFeature)
         case alert(AlertState<Alert>)
 
@@ -133,16 +133,20 @@ struct RecordFormFeature {
                 return .none
                 
             case let .dateTapped(field):
-                state.destination = .datePicker(DatePickerSheetFeature.State(
+                state.destination = .datePicker(DatePickerFeature.State(
                     field: field,
-                    date: state.period[field] ?? now
+                    date: state.period[field] ?? now,
+                    today: now,
+                    calendar: calendar
                 ))
                 return .none
                 
             case let .timeTapped(field):
-                state.destination = .timePicker(TimePickerSheetFeature.State(
+                state.destination = .timePicker(TimePickerFeature.State(
                     field: field,
-                    date: state.period[field] ?? now
+                    date: state.period[field] ?? now,
+                    now: now,
+                    calendar: calendar
                 ))
                 return .none
                 
@@ -203,13 +207,13 @@ struct RecordFormFeature {
                 return .none
                 
             case let .destination(.presented(.datePicker(.delegate(.confirmed(field, date))))):
-                state.period[field] = combine(day: date, time: state.period[field] ?? date)
+                state.period[field] = calendar.date(on: date, settingTimeOf: state.period[field] ?? date)
                 state.periodError = periodError(for: state.period)
                 state.destination = nil
                 return .none
                 
             case let .destination(.presented(.timePicker(.delegate(.confirmed(field, time))))):
-                state.period[field] = combine(day: state.period[field] ?? now, time: time)
+                state.period[field] = calendar.date(on: state.period[field] ?? now, settingTimeOf: time)
                 state.periodError = periodError(for: state.period)
                 state.destination = nil
                 return .none
@@ -316,17 +320,6 @@ extension RecordFormFeature {
         }
 
         return nil
-    }
-
-    private func combine(day: Date, time: Date) -> Date {
-        let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
-
-        return calendar.date(
-            bySettingHour: timeComponents.hour ?? 0,
-            minute: timeComponents.minute ?? 0,
-            second: 0,
-            of: day
-        ) ?? day
     }
 
     private func submit() -> Effect<Action> {
