@@ -59,7 +59,12 @@ extension HomeView {
             }
         }
     }
+}
 
+// MARK: - 헤더
+
+extension HomeView {
+    
     private var header: some View {
         HStack {
             Text("홈")
@@ -78,50 +83,12 @@ extension HomeView {
         .frame(height: 56)
         .padding(.horizontal, 20)
     }
+}
 
-    private var favoriteBeachSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Text("관심 해변")
-                    .font(.system(size: 20, weight: .semibold))
+// MARK: - 기록하기 배너
 
-                Spacer()
-
-                Text("\(store.favoriteBeaches.count)/\(HomeFeature.maximumFavoriteBeachCount)")
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundStyle(.gray)
-            }
-            .padding(.horizontal, 20)
-
-            ScrollView(.horizontal) {
-                HStack(spacing: 16) {
-                    ForEach(store.favoriteBeaches) { beach in
-                        favoriteBeachChip(beach)
-                    }
-
-                    if store.canAddFavoriteBeach {
-                        addFavoriteBeachButton
-                    }
-                }
-                .padding(.horizontal, 20)
-            }
-            .scrollIndicators(.hidden)
-        }
-        .padding(.top, 40)
-    }
-
-    private func favoriteBeachChip(_ beach: Beach) -> some View {
-        BeachChip(title: beach.name, systemImage: "star.fill")
-    }
-
-    private var addFavoriteBeachButton: some View {
-        Button {
-            store.send(.addFavoriteBeachButtonTapped)
-        } label: {
-            BeachChip(title: "추가", systemImage: "plus", iconColor: .gray, textColor: .gray)
-        }
-    }
-
+extension HomeView {
+    
     private func recordBanner(height: CGFloat) -> some View {
         ZStack(alignment: .bottom) {
             ScrollView(.horizontal) {
@@ -144,7 +111,6 @@ extension HomeView {
             VStack(spacing: 0) {
                 bannerIndicator
                 recordButton
-                currentParticipantCount
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 12)
@@ -207,11 +173,53 @@ extension HomeView {
         }
         .padding(.bottom, 4)
     }
+}
+
+// MARK: - 관심 해변
+
+extension HomeView {
     
-    private var currentParticipantCount: some View {
-        Text(store.currentBanner.participantText)
-            .font(.system(size: 11, weight: .regular))
-            .foregroundStyle(.gray)
+    private var favoriteBeachSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("관심 해변")
+                    .font(.system(size: 20, weight: .semibold))
+
+                Spacer()
+
+                Text("\(store.favoriteBeaches.count)/\(HomeFeature.maximumFavoriteBeachCount)")
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(.gray)
+            }
+            .padding(.horizontal, 20)
+
+            ScrollView(.horizontal) {
+                HStack(spacing: 16) {
+                    ForEach(store.favoriteBeaches) { beach in
+                        favoriteBeachChip(beach)
+                    }
+
+                    if store.canAddFavoriteBeach {
+                        addFavoriteBeachButton
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+            .scrollIndicators(.hidden)
+        }
+        .padding(.top, 40)
+    }
+
+    private func favoriteBeachChip(_ beach: Beach) -> some View {
+        BeachChip(title: beach.name, systemImage: "star.fill")
+    }
+
+    private var addFavoriteBeachButton: some View {
+        Button {
+            store.send(.addFavoriteBeachButtonTapped)
+        } label: {
+            BeachChip(title: "추가", systemImage: "plus", iconColor: .gray, textColor: .gray)
+        }
     }
 }
 
@@ -261,14 +269,6 @@ private extension RecordType {
         switch self {
         case .plobbing: "플로빙 기록하기"
         case .plogging: "플로깅 기록하기"
-        }
-    }
-
-    // TODO: 오늘 참여 인원 API 연동
-    var participantText: String {
-        switch self {
-        case .plobbing: "오늘 46명이 플로빙에 함께했어요"
-        case .plogging: "오늘 23명이 플로깅에 함께했어요"
         }
     }
 }
