@@ -67,9 +67,7 @@ struct TimePickerFeature {
         }
         
         mutating func applyLatestTime() {
-            guard let latest = latestTime else {
-                return
-            }
+            guard let latest = latestTime else { return }
             
             meridiemWheel.update(
                 values: latest.meridiem == .am ? [.am] : TimePickerFeature.meridiems,
