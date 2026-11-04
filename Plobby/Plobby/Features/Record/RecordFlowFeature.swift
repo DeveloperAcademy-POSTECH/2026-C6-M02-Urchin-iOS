@@ -15,7 +15,12 @@ struct RecordFlowFeature {
     @ObservableState
     struct State: Equatable {
         let recordType: RecordType
-        var step: Step.State = .photoPicker(PhotosPickerFeature.State())
+        var step: Step.State
+        
+        init(recordType: RecordType, step: Step.State? = nil) {
+            self.recordType = recordType
+            self.step = step ?? .photoPicker(PhotosPickerFeature.State(recordType: recordType))
+        }
     }
     
     // MARK: - Step

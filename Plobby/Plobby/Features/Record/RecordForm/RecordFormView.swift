@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 import ComposableArchitecture
 
@@ -110,7 +111,7 @@ private extension RecordFormView {
 
     var navigationBar: some View {
         ZStack {
-            Text(title)
+            Text(store.recordType.title)
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(Color.formPrimaryText)
 
@@ -130,15 +131,6 @@ private extension RecordFormView {
         }
         .padding(.horizontal, 20)
         .frame(height: 56)
-    }
-
-    var title: String {
-        switch store.recordType {
-        case .plogging:
-            return "플로깅 기록하기"
-        case .plobbing:
-            return "플로빙 기록하기"
-        }
     }
 }
 
@@ -193,34 +185,79 @@ private extension RecordFormView {
     }
 
     func photoThumbnail(_ photo: PhotoAsset, isRepresentative: Bool) -> some View {
-        Group {
-            if let image = UIImage(data: photo.imageData) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-            } else {
-                Color.formFieldBackground
+        PhotoThumbnailView(assetID: photo.id, size: CGSize(width: 100, height: 100))
+            .overlay(alignment: .bottom) {
+                representativeLabel(isRepresentative: isRepresentative)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .overlay(alignment: .topTrailing) {
+                photoDeleteButton(photo.id)
+            }
+            .onDrag {
+                NSItemProvider(object: photo.id as NSString)
+            }
+            .onDrop(of: [.text], delegate: PhotoDropDelegate { sourceID in
+                store.send(.photoMoved(sourceID, to: photo.id), animation: .default)
+            })
+    }
+
+    @ViewBuilder
+    func representativeLabel(isRepresentative: Bool) -> some View {
+        if isRepresentative {
+            Text("대표사진")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 22)
+                .background(Color.black)
+        }
+    }
+
+    var photoCornerInset: CGFloat {
+        8 * (1 - 1 / 2.squareRoot())
+    }
+
+    func photoDeleteButton(_ photoID: PhotoAsset.ID) -> some View {
+        Button {
+            store.send(.photoDeleteTapped(photoID), animation: .default)
+        } label: {
+            Image(systemName: "xmark")
+                .font(.system(size: 7, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: 14, height: 14)
+                .background(Color.black, in: Circle())
+                .frame(width: 32, height: 32)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .alignmentGuide(.top) { $0[VerticalAlignment.center] - photoCornerInset }
+        .alignmentGuide(.trailing) { $0[HorizontalAlignment.center] + photoCornerInset }
+        .accessibilityLabel("사진 삭제")
+    }
+}
+
+// MARK: - Photo Drop Delegate
+
+private struct PhotoDropDelegate: DropDelegate {
+
+    let onDrop: @MainActor @Sendable (PhotoAsset.ID) -> Void
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        DropProposal(operation: .move)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        guard let provider = info.itemProviders(for: [.text]).first else {
+            return false
+        }
+
+        _ = provider.loadObject(ofClass: NSString.self) { object, _ in
+            guard let sourceID = object as? String else { return }
+            Task { @MainActor in
+                onDrop(sourceID)
             }
         }
-        .frame(width: 100, height: 100)
-        .overlay(alignment: .bottom) {
-            if isRepresentative {
-                Text("대표사진")
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 22)
-                    .background(Color.black)
-            }
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .contextMenu {
-            Button(role: .destructive) {
-                store.send(.photoDeleteTapped(photo.id))
-            } label: {
-                Label("삭제", systemImage: "trash")
-            }
-        }
+        return true
     }
 }
 

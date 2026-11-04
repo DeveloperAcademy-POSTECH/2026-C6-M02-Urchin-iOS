@@ -17,6 +17,9 @@
 		33D77A682F5247E18DA0679F /* PushEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008552DBBD644BB8938C1F8C /* PushEvents.swift */; };
 		34FBF121843E575A8727FBCF /* BlockedUserResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */; };
 		44553F7E8DF0475F4F9BF678 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80273A7BC92A464F26671A60 /* DatePickerView.swift */; };
+		49C55E872A91D91FB1E0434A /* RecordFormFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */; };
+		49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */; };
+		4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */; };
 		662D32B75B344538B44995C7 /* NotificationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */; };
 		6654B8A74949402D91998335 /* PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19CD6EEB73AF4C7797870AF0 /* PushClient.swift */; };
 		68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */; };
@@ -28,12 +31,15 @@
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
 		A29D1CFD3712AA87F7389274 /* DependencyValues+UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */; };
 		A6BFBCB3BD04AAB29D26FEE2 /* UserBlockInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */; };
+		AC79ACD85403DD13EBC9ACCD /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95366258A2DD2CD25A307CDD /* CameraPicker.swift */; };
 		B59025573093367600AE351D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = B59025563093367600AE351D /* FirebaseMessaging */; };
 		B59027033098E2F800AE351D /* NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027023098E2F800AE351D /* NotificationClient.swift */; };
 		B59027053098E35B00AE351D /* DependencyValues+NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */; };
 		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
+		B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */; };
+		BDA985C8CDA5A070AC9A1B00 /* PhotosPickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */; };
 		DA032D05309B0DEE00D97C80 /* DayOfWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA032D04309B0DE500D97C80 /* DayOfWeek.swift */; };
 		DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9CF6309A13A1006D2504 /* TrashPickerFeature.swift */; };
 		DA0A9CF9309A13DD006D2504 /* TimePickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9CF8309A13D4006D2504 /* TimePickerFeature.swift */; };
@@ -43,6 +49,10 @@
 		DA0A9D01309A1520006D2504 /* PhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9D00309A151E006D2504 /* PhotoAsset.swift */; };
 		DA0A9D03309A155A006D2504 /* TrashSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9D02309A1555006D2504 /* TrashSelection.swift */; };
 		DA0A9D05309A1586006D2504 /* PeriodField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9D04309A1583006D2504 /* PeriodField.swift */; };
+		DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75A309B1BB1003400FB /* PhotoAuthorization.swift */; };
+		DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */; };
+		DA0BB75F309B1C5D003400FB /* PhotoSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */; };
+		DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
 		DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FA330988669003FEDF9 /* RecordClient.swift */; };
@@ -87,6 +97,7 @@
 		DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD23099F0A30064A2F4 /* RecordFormView.swift */; };
 		DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */; };
 		DA688DD73099F0F50064A2F4 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */; };
+		DAEC87A4309B7F2A0086965E /* ToastFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87A3309B7F2A0086965E /* ToastFeature.swift */; };
 		E86CC8B62B313EB83983CBD5 /* ProfileUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */; };
 		EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */; };
 		EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */; };
@@ -182,15 +193,20 @@
 
 /* Begin PBXFileReference section */
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
+		033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PhotoLibraryClient.swift"; sourceTree = "<group>"; };
+		0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoThumbnailView.swift; sourceTree = "<group>"; };
 		0B83BBF957568508C43BBA03 /* UserClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserClient.swift; sourceTree = "<group>"; };
 		19CD6EEB73AF4C7797870AF0 /* PushClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushClient.swift; sourceTree = "<group>"; };
 		1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFlowFeatureTests.swift; sourceTree = "<group>"; };
 		22117CDC3BC2454F4CDAC201 /* ProfileResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponseDTO.swift; sourceTree = "<group>"; };
+		4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerFeatureTests.swift; sourceTree = "<group>"; };
 		684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerFeatureTests.swift; sourceTree = "<group>"; };
+		6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormFeatureTests.swift; sourceTree = "<group>"; };
 		7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockInsertRequestDTO.swift; sourceTree = "<group>"; };
 		72FC37464B922253D6A55F95 /* CheckNicknameRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNicknameRequestDTO.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
+		95366258A2DD2CD25A307CDD /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
 		9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
 		9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PushClient.swift"; sourceTree = "<group>"; };
 		A683DF52E8FC8F413240B638 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
@@ -204,6 +220,7 @@
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
 		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
 		BCA7146257B2B7E18DD4D375 /* TimePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerFeatureTests.swift; sourceTree = "<group>"; };
+		CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastFeatureTests.swift; sourceTree = "<group>"; };
 		DA032D04309B0DE500D97C80 /* DayOfWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOfWeek.swift; sourceTree = "<group>"; };
 		DA0A9CF6309A13A1006D2504 /* TrashPickerFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashPickerFeature.swift; sourceTree = "<group>"; };
 		DA0A9CF8309A13D4006D2504 /* TimePickerFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerFeature.swift; sourceTree = "<group>"; };
@@ -213,6 +230,10 @@
 		DA0A9D00309A151E006D2504 /* PhotoAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAsset.swift; sourceTree = "<group>"; };
 		DA0A9D02309A1555006D2504 /* TrashSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashSelection.swift; sourceTree = "<group>"; };
 		DA0A9D04309A1583006D2504 /* PeriodField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodField.swift; sourceTree = "<group>"; };
+		DA0BB75A309B1BB1003400FB /* PhotoAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAuthorization.swift; sourceTree = "<group>"; };
+		DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
+		DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelection.swift; sourceTree = "<group>"; };
+		DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryClient.swift; sourceTree = "<group>"; };
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -258,6 +279,7 @@
 		DA688DD23099F0A30064A2F4 /* RecordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormView.swift; sourceTree = "<group>"; };
 		DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRewardView.swift; sourceTree = "<group>"; };
 		DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
+		DAEC87A3309B7F2A0086965E /* ToastFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastFeature.swift; sourceTree = "<group>"; };
 		E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeOfDay.swift; sourceTree = "<group>"; };
 		E8B11A53BEC65644616587EA /* RecordMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMenuView.swift; sourceTree = "<group>"; };
 		EC0D4B7B309884DE000E7BB7 /* FallingTrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashView.swift; sourceTree = "<group>"; };
@@ -376,6 +398,15 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
+		2C961EE4DC443EB6481C85E1 /* Photo */ = {
+			isa = PBXGroup;
+			children = (
+				DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */,
+				DA0BB75A309B1BB1003400FB /* PhotoAuthorization.swift */,
+			);
+			path = Photo;
+			sourceTree = "<group>";
+		};
 		3BC523B89D31C094B9AD61AE /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -464,6 +495,7 @@
 		C5EBA3F73C437547E4DE6366 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				F6CC0869FBFC561A2BB5CAC8 /* Common */,
 				E117113459A087098044178D /* Record */,
 			);
 			path = Features;
@@ -517,6 +549,15 @@
 				DA0A9CF6309A13A1006D2504 /* TrashPickerFeature.swift */,
 			);
 			path = TrashPicker;
+			sourceTree = "<group>";
+		};
+		DA0BB759309B1BAB003400FB /* Photo */ = {
+			isa = PBXGroup;
+			children = (
+				DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */,
+				033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */,
+			);
+			path = Photo;
 			sourceTree = "<group>";
 		};
 		DA1A4D9C3089FEAF00AEAB52 = {
@@ -668,6 +709,7 @@
 			isa = PBXGroup;
 			children = (
 				DA688DD03099F0480064A2F4 /* PhotosPickerView.swift */,
+				95366258A2DD2CD25A307CDD /* CameraPicker.swift */,
 				DA688DC63099CF950064A2F4 /* PhotosPickerFeature.swift */,
 			);
 			path = PhotosPicker;
@@ -676,6 +718,8 @@
 		E117113459A087098044178D /* Record */ = {
 			isa = PBXGroup;
 			children = (
+				4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */,
+				6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */,
 				684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */,
 				1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */,
 				BCA7146257B2B7E18DD4D375 /* TimePickerFeatureTests.swift */,
@@ -725,6 +769,8 @@
 			isa = PBXGroup;
 			children = (
 				ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */,
+				0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */,
+				DAEC87A3309B7F2A0086965E /* ToastFeature.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -776,6 +822,7 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				DA0BB759309B1BAB003400FB /* Photo */,
 				EC0D4B823098E19A000E7BB7 /* Beach */,
 				B59027013098E2AD00AE351D /* Notification */,
 				84C514248E87412C8FC65AA2 /* Push */,
@@ -884,6 +931,7 @@
 		ECE6F2B13098338400C4916C /* Record */ = {
 			isa = PBXGroup;
 			children = (
+				DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */,
 				DA032D04309B0DE500D97C80 /* DayOfWeek.swift */,
 				DA0A9D04309A1583006D2504 /* PeriodField.swift */,
 				DA0A9D02309A1555006D2504 /* TrashSelection.swift */,
@@ -913,6 +961,7 @@
 				ECE6F2A33098338400C4916C /* Beach */,
 				ECE6F2AB3098338400C4916C /* Member */,
 				DA035E537AB44E9EB3D534B7 /* Notification */,
+				2C961EE4DC443EB6481C85E1 /* Photo */,
 				ECE6F2B13098338400C4916C /* Record */,
 			);
 			path = Domain;
@@ -1073,6 +1122,14 @@
 			path = PlobbyUITests;
 			sourceTree = "<group>";
 		};
+		F6CC0869FBFC561A2BB5CAC8 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1162,10 +1219,10 @@
 				};
 			};
 			buildConfigurationList = DA1A4DA03089FEAF00AEAB52 /* Build configuration list for PBXProject "Plobby" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
+				ko,
 				Base,
 			);
 			mainGroup = DA1A4D9C3089FEAF00AEAB52;
@@ -1239,6 +1296,7 @@
 				ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */,
 				DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */,
 				ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */,
+				DAEC87A4309B7F2A0086965E /* ToastFeature.swift in Sources */,
 				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
 				DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */,
 				DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */,
@@ -1249,10 +1307,13 @@
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
 				ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */,
+				DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */,
+				B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */,
 				ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */,
 				EC0D4B993098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift in Sources */,
 				EC0D4B953098E1D0000E7BB7 /* WithdrawalReason.swift in Sources */,
 				ECDDDAB4309AC1F800FB04D5 /* RegionPicker.swift in Sources */,
+				4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */,
 				EC0D4B933098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift in Sources */,
 				EC0D4B913098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift in Sources */,
 				DA0A9CFF309A1503006D2504 /* ActivityPeriod.swift in Sources */,
@@ -1278,6 +1339,7 @@
 				DA5B0FE53099A001003FEDF9 /* RecordSummary.swift in Sources */,
 				B59027033098E2F800AE351D /* NotificationClient.swift in Sources */,
 				ECE6F2DC3098338400C4916C /* NormalButton.swift in Sources */,
+				DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */,
 				EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */,
 				DA5B106430997215003FEDF9 /* CreateRecordRequestDTO.swift in Sources */,
 				DA5B106530997215003FEDF9 /* DeletedAtUpdateRequestDTO.swift in Sources */,
@@ -1289,6 +1351,7 @@
 				DA0A9D01309A1520006D2504 /* PhotoAsset.swift in Sources */,
 				DA688DC73099CF950064A2F4 /* PhotosPickerFeature.swift in Sources */,
 				DA5B106B30997215003FEDF9 /* UpdateRecordRequestDTO.swift in Sources */,
+				DA0BB75F309B1C5D003400FB /* PhotoSelection.swift in Sources */,
 				DA5B106C30997215003FEDF9 /* RecordDetailResponseDTO.swift in Sources */,
 				DA5B107730997758003FEDF9 /* MainTab.swift in Sources */,
 				DA5B107830997758003FEDF9 /* MainTabFeature.swift in Sources */,
@@ -1300,6 +1363,7 @@
 				DA5B0FC93098DF6F003FEDF9 /* RecordLike.swift in Sources */,
 				ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */,
 				DA688DD13099F0490064A2F4 /* PhotosPickerView.swift in Sources */,
+				AC79ACD85403DD13EBC9ACCD /* CameraPicker.swift in Sources */,
 				EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */,
 				ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */,
 				ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */,
@@ -1331,6 +1395,7 @@
 				EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */,
 				ECE6F2EC3098338400C4916C /* CollectedWeight.swift in Sources */,
 				ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */,
+				DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
 				DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */,
 				ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */,
@@ -1370,6 +1435,9 @@
 				ECE6F315309833A900C4916C /* TrashTypeNameTests.swift in Sources */,
 				ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */,
 				68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */,
+				49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */,
+				49C55E872A91D91FB1E0434A /* RecordFormFeatureTests.swift in Sources */,
+				BDA985C8CDA5A070AC9A1B00 /* PhotosPickerFeatureTests.swift in Sources */,
 				3172447EB0D6D8602AD55D82 /* TimePickerFeatureTests.swift in Sources */,
 				150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */,
 			);

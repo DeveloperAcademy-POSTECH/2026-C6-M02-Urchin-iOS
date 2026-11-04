@@ -65,6 +65,7 @@ struct RecordFormFeature {
         case closeTapped
         case cameraTapped
         case photoDeleteTapped(PhotoAsset.ID)
+        case photoMoved(PhotoAsset.ID, to: PhotoAsset.ID)
         case locationFieldTapped
         case dateTapped(PeriodField)
         case timeTapped(PeriodField)
@@ -118,12 +119,27 @@ struct RecordFormFeature {
                 }
                 
                 state.destination = .photoPicker(PhotosPickerFeature.State(
-                    maxSelectionCount: state.remainingPhotoCount
+                    recordType: state.recordType,
+                    alreadySelectedCount: state.photos.count
                 ))
                 return .none
                 
             case let .photoDeleteTapped(id):
                 state.photos.remove(id: id)
+                return .none
+                
+            case let .photoMoved(sourceID, targetID):
+                guard let source = state.photos.index(id: sourceID),
+                      let target = state.photos.index(id: targetID),
+                      source != target
+                else {
+                    return .none
+                }
+                
+                state.photos.move(
+                    fromOffsets: IndexSet(integer: source),
+                    toOffset: target > source ? target + 1 : target
+                )
                 return .none
                 
             case .locationFieldTapped:
