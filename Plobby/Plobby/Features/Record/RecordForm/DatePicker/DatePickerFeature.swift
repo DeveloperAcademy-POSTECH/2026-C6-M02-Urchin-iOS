@@ -1,5 +1,5 @@
 //
-//  TimePickerSheetFeature.swift
+//  DatePickerFeature.swift
 //  Plobby
 //
 //  Created by 더스틴 on 11/3/26.
@@ -10,7 +10,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct TimePickerSheetFeature {
+struct DatePickerFeature {
 
     @ObservableState
     struct State: Equatable {

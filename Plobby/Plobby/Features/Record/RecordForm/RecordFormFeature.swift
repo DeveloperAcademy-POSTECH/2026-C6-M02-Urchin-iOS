@@ -47,8 +47,8 @@ struct RecordFormFeature {
     enum Destination {
         case photoPicker(PhotosPickerFeature)
         case locationPicker(LocationPickerFeature)
-        case datePicker(DatePickerSheetFeature)
-        case timePicker(TimePickerSheetFeature)
+        case datePicker(DatePickerFeature)
+        case timePicker(TimePickerFeature)
         case trashPicker(TrashPickerFeature)
         case alert(AlertState<Alert>)
 
@@ -133,14 +133,14 @@ struct RecordFormFeature {
                 return .none
                 
             case let .dateTapped(field):
-                state.destination = .datePicker(DatePickerSheetFeature.State(
+                state.destination = .datePicker(DatePickerFeature.State(
                     field: field,
                     date: state.period[field] ?? now
                 ))
                 return .none
                 
             case let .timeTapped(field):
-                state.destination = .timePicker(TimePickerSheetFeature.State(
+                state.destination = .timePicker(TimePickerFeature.State(
                     field: field,
                     date: state.period[field] ?? now
                 ))
