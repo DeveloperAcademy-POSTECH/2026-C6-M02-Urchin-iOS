@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 import ComposableArchitecture
 
@@ -179,34 +180,75 @@ private extension RecordFormView {
     }
 
     func photoThumbnail(_ photo: PhotoAsset, isRepresentative: Bool) -> some View {
-        Group {
-            if let image = UIImage(data: photo.imageData) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-            } else {
-                Color.formFieldBackground
+        PhotoThumbnailView(assetID: photo.id, size: CGSize(width: 100, height: 100))
+            .overlay(alignment: .bottom) {
+                representativeLabel(isRepresentative: isRepresentative)
+            }
+            .overlay(alignment: .topTrailing) {
+                photoDeleteButton(photo.id)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .onDrag {
+                NSItemProvider(object: photo.id as NSString)
+            }
+            .onDrop(of: [.text], delegate: PhotoDropDelegate { sourceID in
+                store.send(.photoMoved(sourceID, to: photo.id), animation: .default)
+            })
+    }
+
+    @ViewBuilder
+    func representativeLabel(isRepresentative: Bool) -> some View {
+        if isRepresentative {
+            Text("대표사진")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 22)
+                .background(Color.black)
+        }
+    }
+
+    func photoDeleteButton(_ photoID: PhotoAsset.ID) -> some View {
+        Button {
+            store.send(.photoDeleteTapped(photoID), animation: .default)
+        } label: {
+            Image(systemName: "xmark")
+                .font(.system(size: 10, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: 20, height: 20)
+                .background(Color.black.opacity(0.6), in: Circle())
+                .padding(6)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("사진 삭제")
+    }
+}
+
+// MARK: - Photo Drop Delegate
+
+/// 사진 칸끼리 순서를 바꾸는 드롭이에요.
+/// 복사가 아닌 이동으로 받아서 드래그 중 우측 상단에 초록 + 표시가 뜨지 않아요.
+private struct PhotoDropDelegate: DropDelegate {
+
+    let onDrop: @MainActor @Sendable (PhotoAsset.ID) -> Void
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        DropProposal(operation: .move)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        guard let provider = info.itemProviders(for: [.text]).first else {
+            return false
+        }
+
+        _ = provider.loadObject(ofClass: NSString.self) { object, _ in
+            guard let sourceID = object as? String else { return }
+            Task { @MainActor in
+                onDrop(sourceID)
             }
         }
-        .frame(width: 100, height: 100)
-        .overlay(alignment: .bottom) {
-            if isRepresentative {
-                Text("대표사진")
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 22)
-                    .background(Color.black)
-            }
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .contextMenu {
-            Button(role: .destructive) {
-                store.send(.photoDeleteTapped(photo.id))
-            } label: {
-                Label("삭제", systemImage: "trash")
-            }
-        }
+        return true
     }
 }
 
@@ -541,7 +583,7 @@ private extension View {
     }
 }
 
-private extension Color {
+extension Color {
 
     static let formPrimaryText = Color(red: 0x25 / 255, green: 0x27 / 255, blue: 0x29 / 255)
     static let formSecondaryText = Color(red: 0x6B / 255, green: 0x72 / 255, blue: 0x80 / 255)
