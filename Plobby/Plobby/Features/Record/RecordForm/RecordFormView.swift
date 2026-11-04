@@ -216,7 +216,7 @@ private extension RecordFormView {
 
     var locationSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sectionTitle("활동 장소")
+            sectionTitle("활동 장소 *")
 
             Button {
                 store.send(.locationFieldTapped)
@@ -253,7 +253,7 @@ private extension RecordFormView {
 
     var periodSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sectionTitle("활동 날짜와 시간")
+            sectionTitle("활동 날짜와 시간 *")
 
             VStack(spacing: 0) {
                 periodRow(title: "시작", field: .start, date: store.period.start)
@@ -480,9 +480,19 @@ private extension RecordFormView {
 private extension RecordFormView {
 
     func sectionTitle(_ text: String) -> some View {
-        Text(text)
-            .font(.system(size: 17, weight: .semibold))
-            .foregroundStyle(Color.formPrimaryText)
+        let isRequired = text.hasSuffix("*")
+        let title = isRequired ? String(text.dropLast()) : text
+
+        return HStack(spacing: 0) {
+            Text(title)
+            requiredFieldLabel(isRequired: isRequired)
+        }
+        .font(.system(size: 17, weight: .semibold))
+        .foregroundStyle(Color.formPrimaryText)
+    }
+
+    func requiredFieldLabel(isRequired: Bool) -> some View {
+        isRequired ? Text("*").foregroundStyle(.red) : Text("")
     }
 
     func fieldCaption(_ text: String) -> some View {
