@@ -17,10 +17,10 @@ struct RecordFlowFeatureTests {
     // MARK: - 단계 전환
 
     @Test
-    func 사진_선택을_마치면_기록하기로_이동한다() async {
-        let store = makeStore(step: .photoPicker(PhotosPickerFeature.State()))
+    func 사진_선택을_건너뛰면_기록하기로_이동한다() async {
+        let store = makeStore(step: .photoPicker(PhotosPickerFeature.State(recordType: .plogging)))
 
-        await store.send(\.step.photoPicker.nextButtonTapped)
+        await store.send(\.step.photoPicker.bottomButtonTapped)
         await store.receive(\.step.photoPicker.delegate.finished) {
             $0.step = .form(RecordFormFeature.State(recordType: .plogging))
         }
@@ -61,9 +61,9 @@ struct RecordFlowFeatureTests {
 
     @Test
     func 사진_선택에서_닫으면_기록_플로우가_종료된다() async {
-        let store = makeStore(step: .photoPicker(PhotosPickerFeature.State()))
+        let store = makeStore(step: .photoPicker(PhotosPickerFeature.State(recordType: .plogging)))
 
-        await store.send(\.step.photoPicker.closeButtonTapped)
+        await store.send(\.step.photoPicker.closeTapped)
         await store.receive(\.step.photoPicker.delegate.cancelled)
         await store.receive(\.delegate.closed)
     }
