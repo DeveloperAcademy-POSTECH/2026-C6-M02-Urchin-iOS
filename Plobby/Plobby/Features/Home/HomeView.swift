@@ -47,6 +47,7 @@ extension HomeView {
             header
             recordBanner(height: 240 * scale)
             favoriteBeachSection
+            recentRecordSection
 
             Spacer()
 
@@ -223,6 +224,92 @@ extension HomeView {
     }
 }
 
+// MARK: - 새로 올라온 기록
+
+extension HomeView {
+
+    private var recentRecordSection: some View {
+        VStack(spacing: 0) {
+            recentRecordHeader
+            recentRecordList
+        }
+        .padding(.top, 40)
+    }
+
+    // TODO: coverPhotoKey, profileImageKey로 실제 이미지 불러오기
+    private func recentRecordCard(_ record: RecordSummary) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Color.clear
+                .aspectRatio(175 / 132, contentMode: .fit)
+                .overlay {
+                    Image(record.recordType.bannerImage)
+                        .resizable()
+                        .scaledToFill()
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+
+            Text(record.title)
+                .font(.system(size: 16, weight: .semibold))
+                .lineLimit(1)
+                .padding(.top, 8)
+
+            HStack(spacing: 10) {
+                Text(record.createdAt, format: .relative(presentation: .named))
+
+                HStack(spacing: 2) {
+                    Image(systemName: "heart")
+                    Text("\(record.likeCount)")
+                }
+            }
+            .font(.system(size: 12, weight: .regular))
+            .foregroundStyle(.gray)
+            .padding(.top, 10)
+
+            HStack(spacing: 6) {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .frame(width: 16, height: 16)
+
+                Text(record.nickname)
+                    .font(.system(size: 12, weight: .regular))
+                    .padding(.leading, 4)
+            }
+            .foregroundStyle(.gray)
+            .padding(.top, 8)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+extension HomeView {
+    
+    private var recentRecordHeader: some View {
+        HStack {
+            Text("새로 올라온 기록")
+                .font(.system(size: 20, weight: .semibold))
+
+            Spacer()
+
+            Button("더 보기") {
+                store.send(.moreRecentRecordsButtonTapped)
+            }
+            .font(.system(size: 13, weight: .regular))
+            .foregroundStyle(.gray)
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 16)
+    }
+    
+    private var recentRecordList: some View {
+        HStack(alignment: .top, spacing: 12) {
+            ForEach(store.recentRecords) { record in
+                recentRecordCard(record)
+            }
+        }
+        .padding(.horizontal, 20)
+    }
+}
+
 // MARK: - View
 
 private extension View {
@@ -270,5 +357,52 @@ private extension RecordType {
         case .plobbing: "플로빙 기록하기"
         case .plogging: "플로깅 기록하기"
         }
+    }
+}
+
+#Preview {
+    let records = [
+        RecordSummary.preview(title: "송도 해수욕장 플로깅 기록", recordType: .plogging, likeCount: 5, nickname: "바다별"),
+        RecordSummary.preview(title: "격포 해수욕장 플로빙 기록", recordType: .plobbing, likeCount: 3, nickname: "물비늘"),
+        RecordSummary.preview(title: "함덕 해수욕장 플로깅 기록", recordType: .plogging, likeCount: 12, nickname: "모래알")
+    ]
+
+    HomeView(
+        store: Store(initialState: HomeFeature.State()) {
+            HomeFeature()
+        } withDependencies: {
+            $0.recordClient.fetchRecords = { _, limit in Array(records.prefix(limit)) }
+        }
+    )
+}
+
+private extension RecordSummary {
+
+    static func preview(
+        title: String,
+        recordType: RecordType,
+        likeCount: Int,
+        nickname: String
+    ) -> RecordSummary {
+        RecordSummary(
+            id: UUID(),
+            userID: UUID(),
+            beachID: UUID(),
+            beachName: "해수욕장",
+            recordType: recordType,
+            title: title,
+            startedAt: .now,
+            endedAt: .now,
+            weightKg: nil,
+            depthM: nil,
+            trashCount: 0,
+            nickname: nickname,
+            profileImageKey: nil,
+            coverPhotoKey: nil,
+            trashNames: nil,
+            likeCount: likeCount,
+            likedByMe: false,
+            createdAt: .now.addingTimeInterval(-5 * 60 * 60)
+        )
     }
 }

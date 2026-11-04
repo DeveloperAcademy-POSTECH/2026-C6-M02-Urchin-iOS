@@ -19,6 +19,7 @@ struct HomeFeature {
         @Shared(.membershipStatus) var membershipStatus
         var currentBanner: RecordType = .plobbing
         var favoriteBeaches: [Beach] = []
+        var recentRecords: [RecordSummary] = []
         @Presents var favoriteBeachPicker: RegionFeature.State?
 
         var canAddFavoriteBeach: Bool {
@@ -38,6 +39,8 @@ struct HomeFeature {
         case recordButtonTapped
         case notificationButtonTapped
         case addFavoriteBeachButtonTapped
+        case moreRecentRecordsButtonTapped
+        case recentRecordsResponse([RecordSummary])
         case favoriteBeachPicker(PresentationAction<RegionFeature.Action>)
         case delegate(Delegate)
 
@@ -46,13 +49,17 @@ struct HomeFeature {
         }
     }
 
+    // MARK: - Dependency
+
+    @Dependency(\.recordClient) var recordClient
+
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return startTimer()
+                return .merge(startTimer(), fetchRecentRecords())
 
             case .onDisappear:
                 return .cancel(id: CancelID.timer)
@@ -97,6 +104,14 @@ struct HomeFeature {
             case .favoriteBeachPicker:
                 return .none
 
+            // TODO: 기록 목록 화면 이동
+            case .moreRecentRecordsButtonTapped:
+                return .none
+
+            case let .recentRecordsResponse(records):
+                state.recentRecords = records
+                return .none
+
             case .delegate:
                 return .none
             }
@@ -113,6 +128,7 @@ extension HomeFeature {
 
     static let banners: [RecordType] = [.plobbing, .plogging]
     static let maximumFavoriteBeachCount = 3
+    private static let recentRecordLimit = 2
 
     private nonisolated enum CancelID {
         case timer
@@ -132,5 +148,14 @@ extension HomeFeature {
             action: .timerTicked,
             animation: .easeInOut
         )
+    }
+
+    private func fetchRecentRecords() -> Effect<Action> {
+        .run { send in
+            let records = try await recordClient.fetchRecords(0, HomeFeature.recentRecordLimit)
+            await send(.recentRecordsResponse(records))
+        } catch: { error, _ in
+            PlobbyLogger.error(error)
+        }
     }
 }
