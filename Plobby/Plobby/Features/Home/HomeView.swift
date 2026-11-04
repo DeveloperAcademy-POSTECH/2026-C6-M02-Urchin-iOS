@@ -111,27 +111,14 @@ extension HomeView {
     }
 
     private func favoriteBeachChip(_ beach: Beach) -> some View {
-        HStack(spacing: 8) {
-            Image(systemName: "star.fill")
-                .foregroundStyle(.green)
-
-            Text(beach.name)
-                .foregroundStyle(.black)
-        }
-        .modifier(BeachChipStyle())
+        BeachChip(title: beach.name, systemImage: "star.fill")
     }
 
     private var addFavoriteBeachButton: some View {
         Button {
             store.send(.addFavoriteBeachButtonTapped)
         } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "plus")
-
-                Text("추가")
-            }
-            .foregroundStyle(.gray)
-            .modifier(BeachChipStyle())
+            BeachChip(title: "추가", systemImage: "plus", iconColor: .gray, textColor: .gray)
         }
     }
 
@@ -225,23 +212,6 @@ extension HomeView {
         Text(store.currentBanner.participantText)
             .font(.system(size: 11, weight: .regular))
             .foregroundStyle(.gray)
-    }
-}
-
-// MARK: - BeachChipStyle
-
-private struct BeachChipStyle: ViewModifier {
-
-    func body(content: Content) -> some View {
-        content
-            .font(.system(size: 15, weight: .medium))
-            .padding(.horizontal, 16)
-            .frame(height: 44)
-            .background(Color.gray.opacity(0.06), in: RoundedRectangle(cornerRadius: 10))
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-            }
     }
 }
 
