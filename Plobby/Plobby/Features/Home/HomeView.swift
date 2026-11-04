@@ -19,10 +19,8 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack {
-            GeometryReader { proxy in
-                content(scale: DesignScale.fitRatio(for: screenSize(of: proxy)))
-            }
-            .toolbar(.hidden, for: .navigationBar)
+            content
+                .toolbar(.hidden, for: .navigationBar)
             .onAppear {
                 store.send(.onAppear)
             }
@@ -42,11 +40,11 @@ struct HomeView: View {
 
 extension HomeView {
 
-    private func content(scale: CGFloat) -> some View {
+    private var content: some View {
         ScrollView {
             VStack(spacing: 0) {
                 header
-                recordBanner(height: 240 * scale)
+                recordBanner
                 favoriteBeachSection
                 recentRecordSection
                 recentRecordRowList
@@ -95,7 +93,7 @@ extension HomeView {
 
 extension HomeView {
     
-    private func recordBanner(height: CGFloat) -> some View {
+    private var recordBanner: some View {
         ZStack(alignment: .bottom) {
             ScrollView(.horizontal) {
                 HStack(spacing: 0) {
@@ -114,24 +112,19 @@ extension HomeView {
                 ended: { store.send(.bannerDragEnded) }
             )
 
-            VStack(spacing: 0) {
-                bannerIndicator
-                recordButton
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 12)
+            recordButton
+                .padding(.horizontal, 20)
+                .padding(.bottom, 16)
         }
-        .frame(height: height)
+        .overlay(alignment: .topTrailing) {
+            bannerIndicator
+                .padding(.top, 18)
+                .padding(.trailing, 10)
+        }
+        .aspectRatio(362 / 180, contentMode: .fit)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .padding(.horizontal, 20)
         .padding(.top, 16)
-    }
-
-    private func screenSize(of proxy: GeometryProxy) -> CGSize {
-        CGSize(
-            width: proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing,
-            height: proxy.size.height + proxy.safeAreaInsets.top + proxy.safeAreaInsets.bottom
-        )
     }
 
     private var bannerPosition: Binding<RecordType?> {
@@ -159,14 +152,13 @@ extension HomeView {
     }
 
     private var bannerIndicator: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             ForEach(HomeFeature.banners, id: \.self) { banner in
                 Circle()
                     .fill(banner == store.currentBanner ? Color.green : Color.gray.opacity(0.3))
-                    .frame(width: 10, height: 10)
+                    .frame(width: 8, height: 8)
             }
         }
-        .padding(.bottom, 14)
     }
     
     // TODO: 디자인 시스템 색상으로 교체
