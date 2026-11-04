@@ -11,4 +11,5 @@ struct Profile: Equatable {
     let userID: UUID
     let nickname: String
     let profileImageKey: String?
+    let profileImageURL: URL?
 }

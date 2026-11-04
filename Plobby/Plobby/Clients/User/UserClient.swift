@@ -43,7 +43,13 @@ extension UserClient: DependencyKey {
                     .execute()
                     .value
 
-                return profile?.toDomain()
+                guard let profile else { return nil }
+
+                let profileImageURL = try profile.profileImageKey.map {
+                    try supabaseClient.storage.from("Plobby Profile Bucket").getPublicURL(path: $0)
+                }
+
+                return profile.toDomain(profileImageURL: profileImageURL)
             },
             updateMyProfile: { nickname, profileImageKey in
                 @Dependency(\.supabaseClient) var supabaseClient
@@ -59,7 +65,11 @@ extension UserClient: DependencyKey {
                     .execute()
                     .value
 
-                return profile.toDomain()
+                let profileImageURL = try profile.profileImageKey.map {
+                    try supabaseClient.storage.from("Plobby Profile Bucket").getPublicURL(path: $0)
+                }
+
+                return profile.toDomain(profileImageURL: profileImageURL)
             },
             submitBlock: { blockedID in
                 @Dependency(\.supabaseClient) var supabaseClient
