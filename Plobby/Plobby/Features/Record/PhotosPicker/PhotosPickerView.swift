@@ -265,7 +265,7 @@ private extension PhotosPickerView {
 
     @ViewBuilder
     var toast: some View {
-        if let message = store.toastMessage {
+        if let message = store.toast.toastMessage {
             Text(message)
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(.white)

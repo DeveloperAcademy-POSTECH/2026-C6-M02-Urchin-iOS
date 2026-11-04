@@ -5,7 +5,6 @@
 //  Created by 더스틴 on 11/3/26.
 //
 
-import Foundation
 import UIKit
 
 import ComposableArchitecture
@@ -25,7 +24,7 @@ struct PhotosPickerFeature {
         var assets: IdentifiedArrayOf<PhotoAsset> = []
         var selection: PhotoSelection
         var isCameraPresented = false
-        var toastMessage: String?
+        var toast = ToastFeature.State()
         
         init(recordType: RecordType, alreadySelectedCount: Int = 0) {
             self.recordType = recordType
@@ -59,7 +58,7 @@ struct PhotosPickerFeature {
         case openSettingsTapped
         case bottomButtonTapped
         case closeTapped
-        case toastDismissed
+        case toast(ToastFeature.Action)
         case delegate(Delegate)
         
         @CasePathable
@@ -73,11 +72,14 @@ struct PhotosPickerFeature {
     
     @Dependency(\.photoLibraryClient) var photoLibraryClient
     @Dependency(\.openURL) var openURL
-    @Dependency(\.continuousClock) var clock
     
     // MARK: - Body
     
     var body: some Reducer<State, Action> {
+        Scope(state: \.toast, action: \.toast) {
+            ToastFeature()
+        }
+        
         Reduce { state, action in
             switch action {
             case .task:
@@ -126,7 +128,7 @@ struct PhotosPickerFeature {
                 }
                 
                 guard state.selection.toggle(asset) != .limitExceeded else {
-                    return showToast(Self.limitExceededMessage, state: &state)
+                    return .send(.toast(.show(Self.limitExceededMessage)))
                 }
                 
                 return .none
@@ -137,7 +139,7 @@ struct PhotosPickerFeature {
                 }
                 
                 guard !state.selection.isFull else {
-                    return showToast(Self.limitExceededMessage, state: &state)
+                    return .send(.toast(.show(Self.limitExceededMessage)))
                 }
                 
                 state.isCameraPresented = true
@@ -159,7 +161,7 @@ struct PhotosPickerFeature {
                 return .none
                 
             case .cameraSaveFailed:
-                return showToast(Self.cameraSaveFailedMessage, state: &state)
+                return .send(.toast(.show(Self.cameraSaveFailedMessage)))
                 
             case .openSettingsTapped:
                 guard let url = URL(string: UIApplication.openSettingsURLString) else {
@@ -176,11 +178,7 @@ struct PhotosPickerFeature {
             case .closeTapped:
                 return .send(.delegate(.cancelled))
                 
-            case .toastDismissed:
-                state.toastMessage = nil
-                return .none
-                
-            case .delegate:
+            case .toast, .delegate:
                 return .none
             }
         }
@@ -193,7 +191,6 @@ extension PhotosPickerFeature {
     
     static let limitExceededMessage = "이미지는 최대 \(PhotoSelection.maxCount)장까지 선택할 수 있어요."
     static let cameraSaveFailedMessage = "사진을 저장하지 못했어요. 다시 시도해주세요."
-    static let toastDuration: Duration = .seconds(2)
 }
 
 // MARK: - Functions
@@ -202,7 +199,6 @@ private extension PhotosPickerFeature {
     
     nonisolated private enum CancelID {
         case fetchAssets
-        case toast
     }
     
     func handlePhotoAuthorization(currentStatus: PhotoAuthorization) -> Effect<Action> {
@@ -239,15 +235,5 @@ private extension PhotosPickerFeature {
             await send(.assetsResponse(assets))
         }
         .cancellable(id: CancelID.fetchAssets, cancelInFlight: true)
-    }
-    
-    func showToast(_ message: String, state: inout State) -> Effect<Action> {
-        state.toastMessage = message
-        
-        return .run { send in
-            try await clock.sleep(for: Self.toastDuration)
-            await send(.toastDismissed)
-        }
-        .cancellable(id: CancelID.toast, cancelInFlight: true)
     }
 }
