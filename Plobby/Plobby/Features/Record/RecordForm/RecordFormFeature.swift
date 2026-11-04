@@ -256,11 +256,7 @@ extension RecordFormFeature {
     private func validate(_ state: inout State) -> Bool {
         state.isLocationErrorVisible = state.beach == nil
         state.periodError = periodError(for: state.period)
-
-        if state.recordType == .plobbing {
-            state.maxDepthError = maxDepthError(for: state.maxDepthText)
-        }
-
+        state.maxDepthError = maxDepthError(for: state.maxDepthText)
         state.totalWeightError = totalWeightError(for: state.totalWeightText)
 
         return canComplete(state)
@@ -270,12 +266,12 @@ extension RecordFormFeature {
         guard !state.isSubmitting,
               state.beach != nil,
               periodError(for: state.period) == nil,
+              maxDepthError(for: state.maxDepthText) == nil,
               totalWeightError(for: state.totalWeightText) == nil,
               !state.isMemoOverLimit
         else { return false }
 
-        guard state.recordType == .plobbing else { return true }
-        return maxDepthError(for: state.maxDepthText) == nil
+        return true
     }
 
     private func periodError(for period: ActivityPeriod) -> String? {
@@ -291,9 +287,7 @@ extension RecordFormFeature {
     }
 
     private func maxDepthError(for text: String) -> String? {
-        guard !InputText.isBlank(text) else {
-            return "최대 수심을 입력해 주세요."
-        }
+        guard !InputText.isBlank(text) else { return nil }
 
         guard let meters = DecimalInput.number(
             from: text,
