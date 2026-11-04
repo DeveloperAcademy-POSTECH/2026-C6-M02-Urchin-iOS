@@ -24,7 +24,9 @@ nonisolated extension Beach {
                 return []
             }
             
-            return try JSONDecoder().decode([Beach].self, from: Data(contentsOf: url))
+            return try JSONDecoder()
+                .decode([Beach].self, from: Data(contentsOf: url))
+                .sorted { $0.name < $1.name }
         } catch {
             PlobbyLogger.error(error)
             return []
