@@ -7,8 +7,6 @@
 
 import ComposableArchitecture
 
-/// 잠시 떴다가 사라지는 안내 문구.
-/// 부모 Feature에 Scope로 붙이고 `.send(.toast(.show("…")))`로 띄워요.
 @Reducer
 struct ToastFeature {
 
