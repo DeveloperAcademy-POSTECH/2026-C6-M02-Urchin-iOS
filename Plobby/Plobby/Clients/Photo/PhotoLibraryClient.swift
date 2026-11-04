@@ -11,18 +11,13 @@ import UIKit
 import Dependencies
 
 struct PhotoLibraryClient {
-    // 권한을 허용했는지 확인
+    
     var authorizationStatus: @Sendable () -> PhotoAuthorization
-    // 상태가 notDetermined일 때 호출
     var requestAuthorization: @Sendable () async -> PhotoAuthorization
-    // 상단 토글에 보여줄 폴더 목록, albumsResponse, 첫 폴더(최근 항목)를 기본 선택
     var fetchAlbums: @Sendable () async -> [PhotoAlbum]
-    // 고른 폴더의 사진을 최신순으로 가져옴. albumSelected → assetsResponse
     var fetchAssets: @Sendable (_ albumID: PhotoAlbum.ID) async -> [PhotoAsset]
     var thumbnail: @Sendable (_ assetID: PhotoAsset.ID, _ targetSize: CGSize) async -> UIImage?
-    // 기록을 저장하고 사진을 서버에 올릴 때
     var imageData: @Sendable (_ assetID: PhotoAsset.ID) async throws -> Data
-    // 카메라로 찍은 사진을 사진 보관함에 저장
     var saveImage: @Sendable (_ imageData: Data) async throws -> PhotoAsset
 }
 
