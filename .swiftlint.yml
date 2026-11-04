@@ -1,0 +1,48 @@
+# CodeRabbit 리뷰 전용 SwiftLint 설정입니다. 로컬 빌드에서는 사용하지 않습니다.
+# 팀 코딩 컨벤션 중 자동 검사가 가능한 규칙만 담고, 나머지는 .coderabbit.yaml의 리뷰 지시문으로 확인합니다.
+
+included:
+  - Plobby
+
+excluded:
+  - Plobby/Plobby.xcodeproj
+
+disabled_rules:
+  - todo
+  - trailing_whitespace
+  - identifier_name # 테스트 함수 이름을 한글_언더바로 작성하므로 끕니다.
+
+opt_in_rules:
+  - force_unwrapping                  # 강제 언래핑 지양
+  - empty_count                       # count == 0 대신 isEmpty
+  - sorted_imports                    # import 그룹 내 알파벳 정렬
+  - multiline_parameters              # 줄바꿈한 파라미터는 한 줄에 하나씩
+  - multiline_parameters_brackets
+  - unneeded_parentheses_in_closure_argument # 클로저 파라미터 괄호 금지
+
+line_length:
+  warning: 120
+  ignores_comments: true
+  ignores_urls: true
+
+custom_rules:
+  no_preview:
+    name: "Preview 제거"
+    regex: '#Preview|PreviewProvider'
+    message: "#Preview 코드는 PR에 올리지 말고 지워 주세요."
+    severity: warning
+  stack_explicit_alignment_spacing:
+    name: "Stack 생성 규칙"
+    regex: '\b(VStack|HStack)\s*\{'
+    message: "VStack/HStack은 alignment와 spacing을 명시해 주세요. (spacing이 필요 없으면 0)"
+    severity: warning
+  button_trailing_closure:
+    name: "Button 선언 방식"
+    regex: 'Button\(\s*action:'
+    message: "Button { } label: { } 형식으로 작성해 주세요."
+    severity: warning
+  expect_bool_literal:
+    name: "#expect Bool 비교"
+    regex: '#expect\(.*==\s*(true|false)\s*\)'
+    message: "#expect에서 Bool 결과를 true/false 리터럴과 비교하지 마세요."
+    severity: warning

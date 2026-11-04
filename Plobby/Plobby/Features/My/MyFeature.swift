@@ -12,7 +12,7 @@ struct MyFeature {
 
     @ObservableState
     struct State: Equatable {
-
+        @Shared(.membershipStatus) var membershipStatus
     }
 
     enum Action {

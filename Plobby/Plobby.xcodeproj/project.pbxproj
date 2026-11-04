@@ -10,6 +10,7 @@
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */; };
+		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		21ECFACF111E9F703BA57978 /* BlockedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C528DE8674E08CD648B87 /* BlockedUser.swift */; };
 		24C6452813AA7BFB5C379537 /* CheckNicknameRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FC37464B922253D6A55F95 /* CheckNicknameRequestDTO.swift */; };
 		3172447EB0D6D8602AD55D82 /* TimePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA7146257B2B7E18DD4D375 /* TimePickerFeatureTests.swift */; };
@@ -34,6 +35,7 @@
 		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		DA032D05309B0DEE00D97C80 /* DayOfWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA032D04309B0DE500D97C80 /* DayOfWeek.swift */; };
+		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
 		DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9CF6309A13A1006D2504 /* TrashPickerFeature.swift */; };
 		DA0A9CF9309A13DD006D2504 /* TimePickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9CF8309A13D4006D2504 /* TimePickerFeature.swift */; };
 		DA0A9CFB309A140D006D2504 /* DatePickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9CFA309A140D006D2504 /* DatePickerFeature.swift */; };
@@ -193,6 +195,7 @@
 		9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
 		9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PushClient.swift"; sourceTree = "<group>"; };
 		A683DF52E8FC8F413240B638 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
+		9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PushClient.swift"; sourceTree = "<group>"; };
 		AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+UserClient.swift"; sourceTree = "<group>"; };
 		B1CA15540443FE5BE6EF51E8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B52C528DE8674E08CD648B87 /* BlockedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUser.swift; sourceTree = "<group>"; };
@@ -200,6 +203,7 @@
 		B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+NotificationClient.swift"; sourceTree = "<group>"; };
 		B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDeviceTokenRequestDTO.swift; sourceTree = "<group>"; };
+		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
 		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
 		BCA7146257B2B7E18DD4D375 /* TimePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerFeatureTests.swift; sourceTree = "<group>"; };
 		DA032D04309B0DE500D97C80 /* DayOfWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOfWeek.swift; sourceTree = "<group>"; };
@@ -822,6 +826,7 @@
 				A683DF52E8FC8F413240B638 /* Calendar+.swift */,
 				ECE6F2993098338400C4916C /* Character+.swift */,
 				EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */,
+				B5D20E7B309AC47100981996 /* SharedKey+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1239,6 +1244,7 @@
 				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
 				DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */,
 				DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */,
+				B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
 				EC7608AE30996DF40061AAAD /* ImageAsset.swift in Sources */,
 				DA5B0FD83098E17F003FEDF9 /* RecordReport.swift in Sources */,

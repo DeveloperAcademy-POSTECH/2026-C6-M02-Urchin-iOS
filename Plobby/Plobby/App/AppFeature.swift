@@ -32,10 +32,14 @@ struct AppFeature {
         case mainTab(MainTabFeature.Action)
     }
 
+    private static let beachSyncInterval: TimeInterval = 60 * 60 * 24
+
     // MARK: - Dependency
 
     @Dependency(\.pushClient) var pushClient
     @Dependency(\.notificationClient) var notificationClient
+    @Dependency(\.beachClient) var beachClient
+    @Dependency(\.date.now) var now
     
     // MARK: - Body
     
@@ -45,11 +49,13 @@ struct AppFeature {
             case .task:
                 return .merge(
                     observeDeviceTokens(),
-                    observeTappedRecordIDs()
+                    observeTappedRecordIDs(),
+                    syncBeaches()
                 )
 
             case let .deviceTokenReceived(token):
-                guard case let .mainTab(mainTab) = state, case .member = mainTab.home.status else { return .none }
+                @Shared(.membershipStatus) var membershipStatus
+                guard case .member = membershipStatus else { return .none }
 
                 return submitDeviceToken(token)
 
@@ -59,7 +65,8 @@ struct AppFeature {
                 return .none
 
             case let .onboarding(.delegate(.signedIn(user))):
-                state = .mainTab(MainTabFeature.State(home: HomeFeature.State(status: .member(user))))
+                updateMembershipStatus(.member(user))
+                state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()
 
             case let .onboarding(.delegate(.needsSignUp(user, fullName))):
@@ -67,11 +74,13 @@ struct AppFeature {
                 return .none
 
             case .onboarding(.delegate(.browseWithoutSignUp)):
-                state = .mainTab(MainTabFeature.State(home: HomeFeature.State(status: .guest)))
+                updateMembershipStatus(.guest)
+                state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return .none
 
             case let .signUp(.delegate(.completed(user))):
-                state = .mainTab(MainTabFeature.State(home: HomeFeature.State(status: .member(user))))
+                updateMembershipStatus(.member(user))
+                state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()
 
             case .onboarding, .signUp, .mainTab:
@@ -93,6 +102,11 @@ struct AppFeature {
 // MARK: - Functions
 
 extension AppFeature {
+
+    private func updateMembershipStatus(_ status: MembershipStatus) {
+        @Shared(.membershipStatus) var membershipStatus
+        $membershipStatus.withLock { $0 = status }
+    }
 
     private func observeDeviceTokens() -> Effect<Action> {
         .run { send in
@@ -122,6 +136,24 @@ extension AppFeature {
         .run { _ in
             let token = try await pushClient.fetchToken()
             try await notificationClient.submitDeviceToken(token)
+        } catch: { error, _ in
+            PlobbyLogger.error(error)
+        }
+    }
+
+    private func syncBeaches() -> Effect<Action> {
+        @Shared(.beachesSyncedAt) var beachesSyncedAt
+        if let beachesSyncedAt, now.timeIntervalSince(beachesSyncedAt) < Self.beachSyncInterval {
+            return .none
+        }
+
+        return .run { _ in
+            let beaches = try await beachClient.fetchBeaches(nil)
+            guard !beaches.isEmpty else { return }
+
+            @Shared(.beaches) var allBeaches
+            $allBeaches.withLock { $0 = beaches }
+            $beachesSyncedAt.withLock { $0 = now }
         } catch: { error, _ in
             PlobbyLogger.error(error)
         }

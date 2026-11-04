@@ -16,14 +16,15 @@ struct RegionFeature {
     
     @ObservableState
     struct State: Equatable {
+        @Shared(.beaches) var allBeaches
         var selectedRegion: BeachRegion?
         var searchText = ""
         var selectedBeachIDs: Set<UUID> = []
         
         var beaches: [Beach] {
             let beaches = selectedRegion.map { region in
-                Beach.all.filter { $0.region == region.displayName }
-            } ?? Beach.all
+                allBeaches.filter { $0.region == region.displayName }
+            } ?? allBeaches
             
             guard !searchText.isEmpty else { return beaches }
             

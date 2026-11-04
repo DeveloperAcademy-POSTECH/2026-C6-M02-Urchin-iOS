@@ -30,7 +30,7 @@ extension BeachClient: DependencyKey {
                 }
 
                 let beaches: [BeachResponseDTO] = try await query
-                    .order("updated_at")
+                    .order("name")
                     .execute()
                     .value
 

@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "ko-KR"
+tone_instructions: >
+  1. 문제만 지적하지 말고 왜 문제인지 원인까지 설명해 주세요.
+  2. 개선 코드와 함께 관련 레퍼런스나 공식 문서를 제안해 주세요.
+  3. 사소한 취향 차이는 nitpick으로 구분해 주세요.
+  4. 잘된 부분은 가볍고 유쾌하게 칭찬해 주세요.
+  5. 함께 성장하는 동료 개발자처럼 피드백해 주세요.
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - develop
+      - main
+
+  path_filters:
+    - "!**/*.xcodeproj/**"
+    - "!**/*.xcassets/**"
+    - "!**/*.xcconfig"
+
+  path_instructions:
+    - path: "Plobby/**/*.swift"
+      instructions: |
+        팀 코딩 컨벤션(StyleShare 기반, 일부 재정의)입니다. SwiftLint가 잡지 못하는 아래 규칙을 확인해 주세요.
+
+        Swift 공통:
+        - 상속하지 않는 class에는 final을 붙입니다.
+        - guard 문은 위아래로 한 줄씩 띄웁니다. 단, 함수 첫 줄의 guard는 위를 띄우지 않습니다.
+        - Optional Binding은 `guard let number else { return }` 같은 shorthand를 사용합니다.
+        - 내부에서만 쓰는 프로퍼티·메서드는 private을 명시하고, fileprivate은 꼭 필요할 때만 씁니다.
+        - 함수 파라미터가 3개 이상이거나 120자를 넘으면 파라미터를 한 줄에 하나씩 줄바꿈합니다.
+        - switch의 모든 case가 한 줄 return이면 `case .main: return 0`처럼 붙여 쓰고, 로직이 있는 case는 개행하고 case 사이를 한 줄 띄웁니다.
+        - if-else로 묶인 return/값 대입은 가능하면 삼항연산자로 줄이고, 줄바꿈은 `?`와 `:` 앞에서 합니다.
+        - 빈 컬렉션은 `[]`, `[:]` 리터럴로 선언합니다.
+        - MARK 주석은 위아래로 한 줄씩 띄우고, 인라인 주석은 지양합니다. 공용 컴포넌트에는 문서화 주석을 씁니다.
+        - import는 Apple 프레임워크 → 내부 모듈 → 서드파티 순으로 그룹을 나누고 그룹 사이를 한 줄 띄웁니다.
+        - 강제 언래핑(!), try!, 불필요한 fatalError 사용을 지적해 주세요.
+        - Sendable, @MainActor, nonisolated 등 Swift 6 동시성 경고가 날 만한 코드를 지적해 주세요.
+
+        SwiftUI:
+        - 재사용·독립 상태·외부 프로퍼티·복잡한 로직이 있으면 struct Subview로, 단순한 하위 뷰는 extension의 private computed property(명사형 이름)로 분리합니다. @ViewBuilder 함수 사용은 지적해 주세요.
+        - 화면 단위 최상위 View만 `View` suffix를 쓰고, Button·Header 같은 컴포넌트는 suffix를 생략합니다.
+        - 크기 확장·정렬만을 위한 Spacer()는 지양하고 `.frame(maxWidth: .infinity)`를 씁니다.
+        - body의 depth는 3단계를 넘지 않게 하고, 넘으면 Subview로 분리합니다.
+
+        네이밍:
+        - 타입은 PascalCase, 변수는 lowerCamelCase 명사형입니다. 약어는 `ID`, `URL`처럼 대문자로 쓰되, 이름이 약어로 시작하면 `urlString`처럼 소문자로 시작합니다.
+        - 합성어는 한 단어로 취급합니다. (nickname, bookmark)
+        - Bool은 is/has/can/should를 사용하고, `isDelete`처럼 is + 동사원형은 쓰지 않습니다.
+        - 함수는 동사 + 목적어, modifier 함수는 with~/using~/on~ 같은 표현을 씁니다.
+
+    - path: "Plobby/Plobby/Clients/**"
+      instructions: |
+        - 함수 이름은 fetch/submit/update/remove 를 사용합니다. get/post/put/patch/delete 같은 HTTP Method 이름은 쓰지 않습니다.
+        - `import Supabase`는 Clients/ 안에서만 허용됩니다.
+        - DTO는 Clients/ 밖으로 노출되면 안 됩니다. Feature에는 Domain Entity로 변환해서 넘겨야 합니다.
+        - DTO는 DTO/Request, DTO/Response 폴더에 두고 이름은 ~RequestDTO, ~ResponseDTO로 끝나야 합니다.
+        - 성능: select("*") 대신 필요한 컬럼만 조회하는지, 반복문 안에서 쿼리를 날리는 N+1 패턴이 없는지, 목록 조회에 페이지네이션/정렬이 있는지 확인해 주세요.
+
+    - path: "Plobby/Plobby/Features/**"
+      instructions: |
+        - 기능별 폴더에 ~Feature(Reducer)와 ~View를 한 쌍으로 둡니다.
+        - Feature에서 DTO나 Supabase를 직접 사용하면 안 되고, Dependency Client와 Domain Entity만 사용합니다.
+        - 성능: State가 불필요하게 커지거나 자주 바뀌어 View가 과하게 다시 그려지지 않는지, 하위 View에 scope된 Store를 넘기는지 확인해 주세요.
+        - 성능: 오래 걸리는 Effect에 .cancellable(id:)이 있는지, Reducer 안에서 무거운 동기 작업을 하지 않는지 확인해 주세요.
+        - 성능: 긴 목록은 Lazy 컨테이너를 쓰는지, body 안에서 무거운 계산이나 포매터 생성이 반복되지 않는지 확인해 주세요.
+
+    - path: "Plobby/Plobby/Domain/**"
+      instructions: |
+        - Domain/은 순수 Swift만 사용합니다. SwiftUI, ComposableArchitecture, Supabase import를 지적해 주세요.
+        - 입력 검증, 제목 생성 같은 규칙 로직이 Domain에 있는지, 테스트 가능한 형태인지 확인해 주세요.
+
+    - path: "Plobby/Plobby/Core/**"
+      instructions: |
+        - Core/는 특정 Feature를 참조하면 안 됩니다.
+        - 공용 컴포넌트가 하드코딩된 색/폰트 대신 DesignSystem을 사용하는지 확인해 주세요.
+        - 성능: 이미지 압축·디코딩 같은 무거운 작업이 메인 스레드에서 돌지 않는지 확인해 주세요.
+
+    - path: "Plobby/PlobbyTests/**"
+      instructions: |
+        - Swift Testing(@Test, #expect)을 사용하고, `struct 대상이름Tests` + `@testable import Plobby` 형식을 따릅니다.
+        - 테스트 파일은 테스트 대상과 같은 폴더 구조에 둡니다. (Domain/Member/Nickname.swift → PlobbyTests/Domain/Member/NicknameTests.swift)
+        - 테스트 함수 이름은 `열한_글자_이상이면_유효하지_않다`처럼 한글과 _로 기대 동작을 서술합니다. 여러 함수를 테스트하면 `// MARK: - 함수이름`으로 구분합니다.
+        - 입력값만 바뀌는 테스트는 @Test(arguments:)로 묶고, 매개변수 이름은 대상 함수와 맞춥니다. 기대 결과가 다른 값끼리는 묶지 않습니다.
+        - 경계값은 상수를 참조하지 않고 숫자로 직접 쓰며, 최솟값·최댓값·최솟값 미만·최댓값 초과를 모두 검증하는지 확인해 주세요.
+        - Reducer 테스트는 TestStore로 상태 변화와 Effect를 빠짐없이 검증하는지 확인해 주세요.
+
+  tools:
+    swiftlint:
+      enabled: true
+    gitleaks:
+      enabled: true
+
+chat:
+  auto_reply: true
