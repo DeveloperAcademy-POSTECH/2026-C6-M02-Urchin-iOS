@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Beach: Identifiable, Equatable, Decodable {
+nonisolated struct Beach: Identifiable, Equatable, Codable, Sendable {
     let id: UUID
     let region: String
     let name: String
@@ -16,7 +16,7 @@ struct Beach: Identifiable, Equatable, Decodable {
     let longitude: Double
 }
 
-extension Beach {
+nonisolated extension Beach {
     static let all: [Beach] = {
         do {
             guard let url = Bundle.main.url(forResource: "beaches", withExtension: "json") else {
@@ -24,7 +24,9 @@ extension Beach {
                 return []
             }
             
-            return try JSONDecoder().decode([Beach].self, from: Data(contentsOf: url))
+            return try JSONDecoder()
+                .decode([Beach].self, from: Data(contentsOf: url))
+                .sorted { $0.name < $1.name }
         } catch {
             PlobbyLogger.error(error)
             return []
