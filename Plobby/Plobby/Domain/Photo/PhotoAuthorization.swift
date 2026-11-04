@@ -6,10 +6,14 @@
 //
 
 nonisolated enum PhotoAuthorization: Equatable, Sendable {
+    
     case notDetermined
     case authorized
     case limited
     case denied
+}
+
+extension PhotoAuthorization {
     
     var canReadLibrary: Bool {
         self == .authorized || self == .limited
