@@ -27,10 +27,21 @@ struct RecordFlowFeatureTests {
     }
 
     @Test
-    func 기록을_저장하면_리워드로_이동한다() async {
-        let store = makeStore(step: .form(RecordFormFeature.State(recordType: .plogging)))
+    func 필수_항목만_입력하고_저장하면_리워드로_이동한다() async {
+        var form = RecordFormFeature.State(recordType: .plobbing)
+        form.beach = Beach(id: UUID(), region: "포항", name: "영일대 해수욕장", address: "", latitude: 0, longitude: 0)
+        form.period = ActivityPeriod(start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 3600))
+        let store = makeStore(step: .form(form))
 
-        await store.send(\.step.form.completeTapped)
+        await store.send(\.step.form.completeTapped) {
+            $0.step.modify(\.form) { $0.isSubmitting = true }
+        }
+        await store.receive(\.step.form.submitResponse.success) {
+            $0.step.modify(\.form) {
+                $0.isSubmitting = false
+                $0.isCompleteEnabled = true
+            }
+        }
         await store.receive(\.step.form.delegate.recordCreated) {
             $0.step = .reward(RecordRewardFeature.State(recordID: UUID(0)))
         }
