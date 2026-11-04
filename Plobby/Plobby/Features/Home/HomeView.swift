@@ -61,6 +61,7 @@ extension HomeView {
 //                    Text("비회원 홈화면이지롱")
 //                }
             }
+            .padding(.bottom, 36)
         }
         .scrollIndicators(.hidden)
     }
