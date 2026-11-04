@@ -30,12 +30,12 @@ nonisolated struct CompleteSignupRequestDTO: Encodable, Sendable {
 }
 
 nonisolated extension CompleteSignupRequestDTO {
-    // TODO: 프로필 이미지 업로드 구현 후 profileImageKey 연결
-    init(from profile: SignUpProfile) {
+
+    init(from profile: SignUpProfile, profileImageKey: String?) {
         self.init(
             name: profile.name,
             nickname: profile.nickname,
-            profileImageKey: nil,
+            profileImageKey: profileImageKey,
             beachIDs: profile.favoriteBeachIDs
         )
     }

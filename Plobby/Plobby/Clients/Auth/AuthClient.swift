@@ -43,8 +43,27 @@ extension AuthClient: DependencyKey {
             signUp: { profile in
                 @Dependency(\.supabaseClient) var supabase
 
+                var profileImageKey: String?
+
+                if let profileImage = profile.profileImage {
+                    let path = "\(profile.userID.uuidString.lowercased())/profile.jpg"
+
+                    try await supabase.storage
+                        .from("Plobby Profile Bucket")
+                        .upload(
+                            path,
+                            data: profileImage,
+                            options: FileOptions(contentType: "image/jpeg", upsert: true)
+                        )
+
+                    profileImageKey = path
+                }
+
                 try await supabase
-                    .rpc("complete_signup", params: CompleteSignupRequestDTO(from: profile))
+                    .rpc(
+                        "complete_signup",
+                        params: CompleteSignupRequestDTO(from: profile, profileImageKey: profileImageKey)
+                    )
                     .execute()
             },
             signOut: { token in
