@@ -25,6 +25,14 @@ struct HomeFeature {
         var canAddFavoriteBeach: Bool {
             favoriteBeaches.count < HomeFeature.maximumFavoriteBeachCount
         }
+
+        var recentRecordCards: [RecordSummary] {
+            Array(recentRecords.prefix(HomeFeature.recentRecordCardCount))
+        }
+
+        var recentRecordRows: [RecordSummary] {
+            Array(recentRecords.dropFirst(HomeFeature.recentRecordCardCount))
+        }
     }
 
     // MARK: - Action
@@ -128,7 +136,8 @@ extension HomeFeature {
 
     static let banners: [RecordType] = [.plobbing, .plogging]
     static let maximumFavoriteBeachCount = 3
-    private static let recentRecordLimit = 2
+    static let recentRecordCardCount = 2
+    private static let recentRecordLimit = 5
 
     private nonisolated enum CancelID {
         case timer

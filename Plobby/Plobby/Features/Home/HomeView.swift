@@ -43,22 +43,24 @@ struct HomeView: View {
 extension HomeView {
 
     private func content(scale: CGFloat) -> some View {
-        VStack(spacing: 0) {
-            header
-            recordBanner(height: 240 * scale)
-            favoriteBeachSection
-            recentRecordSection
+        ScrollView {
+            VStack(spacing: 0) {
+                header
+                recordBanner(height: 240 * scale)
+                favoriteBeachSection
+                recentRecordSection
+                recentRecordRowList
+                
+                switch store.membershipStatus {
+                case .member:
+                    Text("회원 홈화면이지롱")
 
-            Spacer()
-
-            switch store.membershipStatus {
-            case .member:
-                Text("회원 홈화면이지롱")
-
-            case .guest:
-                Text("비회원 홈화면이지롱")
+                case .guest:
+                    Text("비회원 홈화면이지롱")
+                }
             }
         }
+        .scrollIndicators(.hidden)
     }
 }
 
@@ -237,47 +239,93 @@ extension HomeView {
     }
 
     // TODO: coverPhotoKey, profileImageKey로 실제 이미지 불러오기
+    /// - 가로 배치 카드
     private func recentRecordCard(_ record: RecordSummary) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            Color.clear
-                .aspectRatio(175 / 132, contentMode: .fit)
-                .overlay {
-                    Image(record.recordType.bannerImage)
-                        .resizable()
-                        .scaledToFill()
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+            recentRecordCardImage(record)
 
-            Text(record.title)
-                .font(.system(size: 16, weight: .semibold))
-                .lineLimit(1)
+            recentRecordTitle(record)
                 .padding(.top, 8)
 
-            HStack(spacing: 10) {
-                Text(record.createdAt, format: .relative(presentation: .named))
+            recentRecordMeta(record)
+                .padding(.top, 10)
 
-                HStack(spacing: 2) {
-                    Image(systemName: "heart")
-                    Text("\(record.likeCount)")
-                }
-            }
-            .font(.system(size: 12, weight: .regular))
-            .foregroundStyle(.gray)
-            .padding(.top, 10)
-
-            HStack(spacing: 6) {
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .frame(width: 16, height: 16)
-
-                Text(record.nickname)
-                    .font(.system(size: 12, weight: .regular))
-                    .padding(.leading, 4)
-            }
-            .foregroundStyle(.gray)
-            .padding(.top, 8)
+            recentRecordAuthor(record)
+                .padding(.top, 8)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    // TODO: coverPhotoKey로 실제 이미지 불러오기
+    /// - 세로 배치 행
+    private func recentRecordRow(_ record: RecordSummary) -> some View {
+        HStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 0) {
+                recentRecordTitle(record)
+
+                recentRecordMeta(record)
+                    .padding(.top, 10)
+
+                recentRecordAuthor(record)
+                    .padding(.top, 8)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            recentRecordRowImage(record)
+        }
+        .padding(.vertical, 13)
+    }
+
+    private func recentRecordCardImage(_ record: RecordSummary) -> some View {
+        Color.clear
+            .aspectRatio(175 / 132, contentMode: .fit)
+            .overlay {
+                Image(record.recordType.bannerImage)
+                    .resizable()
+                    .scaledToFill()
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func recentRecordRowImage(_ record: RecordSummary) -> some View {
+        Image(record.recordType.bannerImage)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 76, height: 76)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func recentRecordTitle(_ record: RecordSummary) -> some View {
+        Text(record.title)
+            .font(.system(size: 17, weight: .semibold))
+            .lineLimit(1)
+    }
+
+    /// - 몇 시간 전 · 좋아요 수
+    private func recentRecordMeta(_ record: RecordSummary) -> some View {
+        HStack(spacing: 8) {
+            Text(record.createdAt, format: .relative(presentation: .named))
+
+            HStack(spacing: 2) {
+                Image(systemName: "heart")
+                Text("\(record.likeCount)")
+            }
+        }
+        .font(.system(size: 13, weight: .regular))
+        .foregroundStyle(.gray)
+    }
+
+    private func recentRecordAuthor(_ record: RecordSummary) -> some View {
+        HStack(spacing: 6) {
+            Image(systemName: "person.crop.circle.fill")
+                .resizable()
+                .frame(width: 16, height: 16)
+
+            Text(record.nickname)
+                .font(.system(size: 12, weight: .regular))
+                .padding(.leading, 4)
+        }
+        .foregroundStyle(.gray)
     }
 }
 
@@ -302,11 +350,25 @@ extension HomeView {
     
     private var recentRecordList: some View {
         HStack(alignment: .top, spacing: 12) {
-            ForEach(store.recentRecords) { record in
+            ForEach(store.recentRecordCards) { record in
                 recentRecordCard(record)
             }
         }
         .padding(.horizontal, 20)
+    }
+
+    private var recentRecordRowList: some View {
+        VStack(spacing: 0) {
+            ForEach(store.recentRecordRows) { record in
+                recentRecordRow(record)
+
+                if record.id != store.recentRecordRows.last?.id {
+                    Divider()
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
     }
 }
 
@@ -364,7 +426,9 @@ private extension RecordType {
     let records = [
         RecordSummary.preview(title: "송도 해수욕장 플로깅 기록", recordType: .plogging, likeCount: 5, nickname: "바다별"),
         RecordSummary.preview(title: "격포 해수욕장 플로빙 기록", recordType: .plobbing, likeCount: 3, nickname: "물비늘"),
-        RecordSummary.preview(title: "함덕 해수욕장 플로깅 기록", recordType: .plogging, likeCount: 12, nickname: "모래알")
+        RecordSummary.preview(title: "광안리 해수욕장 플로깅 기록", recordType: .plogging, likeCount: 12, nickname: "바다마루"),
+        RecordSummary.preview(title: "안목 해수욕장 플로빙 기록", recordType: .plobbing, likeCount: 8, nickname: "마린웨이브"),
+        RecordSummary.preview(title: "협재 해수욕장 플로빙 기록", recordType: .plobbing, likeCount: 9, nickname: "아리")
     ]
 
     HomeView(
