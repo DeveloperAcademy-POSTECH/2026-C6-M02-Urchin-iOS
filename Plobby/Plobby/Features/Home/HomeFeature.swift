@@ -18,6 +18,12 @@ struct HomeFeature {
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
         var currentBanner: RecordType = .plobbing
+        var favoriteBeaches: [Beach] = []
+        @Presents var favoriteBeachPicker: RegionFeature.State?
+
+        var canAddFavoriteBeach: Bool {
+            favoriteBeaches.count < HomeFeature.maximumFavoriteBeachCount
+        }
     }
 
     // MARK: - Action
@@ -31,6 +37,8 @@ struct HomeFeature {
         case bannerDragEnded
         case recordButtonTapped
         case notificationButtonTapped
+        case addFavoriteBeachButtonTapped
+        case favoriteBeachPicker(PresentationAction<RegionFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
@@ -72,9 +80,31 @@ struct HomeFeature {
             case .notificationButtonTapped:
                 return .none
 
+            case .addFavoriteBeachButtonTapped:
+                state.favoriteBeachPicker = RegionFeature.State(
+                    selectedBeachIDs: Set(state.favoriteBeaches.map(\.id))
+                )
+                return .none
+
+            // TODO: BeachClient로 관심 해변 추가/삭제 요청
+            case .favoriteBeachPicker(.presented(.nextButtonTapped)):
+                guard let selectedBeachIDs = state.favoriteBeachPicker?.selectedBeachIDs else {
+                    return .none
+                }
+
+                state.favoriteBeaches = Beach.all.filter { selectedBeachIDs.contains($0.id) }
+                state.favoriteBeachPicker = nil
+                return .none
+
+            case .favoriteBeachPicker:
+                return .none
+
             case .delegate:
                 return .none
             }
+        }
+        .ifLet(\.$favoriteBeachPicker, action: \.favoriteBeachPicker) {
+            RegionFeature()
         }
     }
 }
@@ -84,6 +114,7 @@ struct HomeFeature {
 extension HomeFeature {
 
     static let banners: [RecordType] = [.plobbing, .plogging]
+    static let maximumFavoriteBeachCount = 3
 
     private nonisolated enum CancelID {
         case timer
