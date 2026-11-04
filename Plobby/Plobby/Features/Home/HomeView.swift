@@ -13,19 +13,27 @@ struct HomeView: View {
 
     // MARK: - Properties
 
-    let store: StoreOf<HomeFeature>
+    @Bindable var store: StoreOf<HomeFeature>
 
     // MARK: - Body
 
     var body: some View {
-        GeometryReader { proxy in
-            content(scale: DesignScale.fitRatio(for: screenSize(of: proxy)))
-        }
-        .onAppear {
-            store.send(.onAppear)
-        }
-        .onDisappear {
-            store.send(.onDisappear)
+        NavigationStack {
+            GeometryReader { proxy in
+                content(scale: DesignScale.fitRatio(for: screenSize(of: proxy)))
+            }
+            .toolbar(.hidden, for: .navigationBar)
+            .onAppear {
+                store.send(.onAppear)
+            }
+            .onDisappear {
+                store.send(.onDisappear)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.favoriteBeachPicker, action: \.favoriteBeachPicker)
+            ) { store in
+                FavoriteBeachView(store: store)
+            }
         }
     }
 }
@@ -37,10 +45,8 @@ extension HomeView {
     private func content(scale: CGFloat) -> some View {
         VStack(spacing: 0) {
             header
-
             recordBanner(height: 240 * scale)
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
+            favoriteBeachSection
 
             Spacer()
 
@@ -73,6 +79,49 @@ extension HomeView {
         .padding(.horizontal, 20)
     }
 
+    private var favoriteBeachSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("관심 해변")
+                    .font(.system(size: 20, weight: .semibold))
+
+                Spacer()
+
+                Text("\(store.favoriteBeaches.count)/\(HomeFeature.maximumFavoriteBeachCount)")
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundStyle(.gray)
+            }
+            .padding(.horizontal, 20)
+
+            ScrollView(.horizontal) {
+                HStack(spacing: 16) {
+                    ForEach(store.favoriteBeaches) { beach in
+                        favoriteBeachChip(beach)
+                    }
+
+                    if store.canAddFavoriteBeach {
+                        addFavoriteBeachButton
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+            .scrollIndicators(.hidden)
+        }
+        .padding(.top, 40)
+    }
+
+    private func favoriteBeachChip(_ beach: Beach) -> some View {
+        BeachChip(title: beach.name, systemImage: "star.fill")
+    }
+
+    private var addFavoriteBeachButton: some View {
+        Button {
+            store.send(.addFavoriteBeachButtonTapped)
+        } label: {
+            BeachChip(title: "추가", systemImage: "plus", iconColor: .gray, textColor: .gray)
+        }
+    }
+
     private func recordBanner(height: CGFloat) -> some View {
         ZStack(alignment: .bottom) {
             ScrollView(.horizontal) {
@@ -102,6 +151,8 @@ extension HomeView {
         }
         .frame(height: height)
         .clipShape(RoundedRectangle(cornerRadius: 16))
+        .padding(.horizontal, 20)
+        .padding(.top, 16)
     }
 
     private func screenSize(of proxy: GeometryProxy) -> CGSize {

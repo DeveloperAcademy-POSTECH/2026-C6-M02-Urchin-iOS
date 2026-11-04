@@ -24,6 +24,14 @@ struct ContentView: View {
     // MARK: - Body
     
     var body: some View {
+        content
+            .task {
+                await store.send(.task).finish()
+            }
+    }
+
+    @ViewBuilder
+    private var content: some View {
         switch store.state {
         case .onboarding:
             if let store = store.scope(

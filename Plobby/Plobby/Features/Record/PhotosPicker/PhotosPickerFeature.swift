@@ -14,7 +14,8 @@ struct PhotosPickerFeature {
     
     @ObservableState
     struct State: Equatable {
-        
+        var maxSelectionCount: Int = 5
+        var selectedPhotos: IdentifiedArrayOf<PhotoAsset> = []
     }
     
     // MARK: - Action
@@ -26,7 +27,7 @@ struct PhotosPickerFeature {
         
         @CasePathable
         enum Delegate {
-            case finished
+            case finished([PhotoAsset])
             case cancelled
         }
     }
@@ -37,7 +38,7 @@ struct PhotosPickerFeature {
         Reduce { state, action in
             switch action {
             case .nextButtonTapped:
-                return .send(.delegate(.finished))
+                return .send(.delegate(.finished(Array(state.selectedPhotos))))
             case .closeButtonTapped:
                 return .send(.delegate(.cancelled))
             case .delegate:

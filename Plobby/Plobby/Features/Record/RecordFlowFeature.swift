@@ -49,8 +49,11 @@ struct RecordFlowFeature {
         
         Reduce { state, action in
             switch action {
-            case .step(.photoPicker(.delegate(.finished))):
-                state.step = .form(.init(recordType: state.recordType))
+            case let .step(.photoPicker(.delegate(.finished(photos)))):
+                state.step = .form(.init(
+                    recordType: state.recordType,
+                    photos: IdentifiedArray(uniqueElements: photos)
+                ))
                 return .none
                 
             case let .step(.form(.delegate(.recordCreated(recordID)))):

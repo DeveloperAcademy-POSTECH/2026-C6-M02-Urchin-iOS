@@ -35,7 +35,12 @@ extension AlertState {
         cancel cancelAction: Action? = nil
     ) -> [ButtonState<Action>] {
         switch type.buttonType {
-        case .confirm: ButtonState.make(type.confirmTitle, action: confirmAction)
+        case .confirm:
+            ButtonState.make(type.confirmTitle, action: confirmAction)
+            
+        case .cancelConfirm:
+            ButtonState.make("취소", role: .cancel, action: cancelAction)
+            ButtonState.make(type.confirmTitle, action: confirmAction)
         }
     }
 }
