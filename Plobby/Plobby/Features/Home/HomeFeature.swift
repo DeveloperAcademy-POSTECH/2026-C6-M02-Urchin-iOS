@@ -48,6 +48,7 @@ struct HomeFeature {
         case notificationButtonTapped
         case addFavoriteBeachButtonTapped
         case moreRecentRecordsButtonTapped
+        case dailyTipBannerTapped
         case recentRecordsResponse([RecordSummary])
         case favoriteBeachPicker(PresentationAction<RegionFeature.Action>)
         case delegate(Delegate)
@@ -114,6 +115,10 @@ struct HomeFeature {
 
             // TODO: 기록 목록 화면 이동
             case .moreRecentRecordsButtonTapped:
+                return .none
+
+            // TODO: 하루 상식 상세 화면 이동
+            case .dailyTipBannerTapped:
                 return .none
 
             case let .recentRecordsResponse(records):

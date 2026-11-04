@@ -50,14 +50,16 @@ extension HomeView {
                 favoriteBeachSection
                 recentRecordSection
                 recentRecordRowList
-                
-                switch store.membershipStatus {
-                case .member:
-                    Text("회원 홈화면이지롱")
+                dailyTipBanner
 
-                case .guest:
-                    Text("비회원 홈화면이지롱")
-                }
+                // TODO: - 회원/비회원 분기처리
+//                switch store.membershipStatus {
+//                case .member:
+//                    Text("회원 홈화면이지롱")
+//
+//                case .guest:
+//                    Text("비회원 홈화면이지롱")
+//                }
             }
         }
         .scrollIndicators(.hidden)
@@ -369,6 +371,41 @@ extension HomeView {
         }
         .padding(.horizontal, 20)
         .padding(.top, 12)
+    }
+}
+
+// MARK: - 이용 가이드 배너
+
+extension HomeView {
+
+    private var dailyTipBanner: some View {
+        Button {
+            store.send(.dailyTipBannerTapped)
+        } label: {
+            Image(.homeDailyTipSeaUrchin)
+                .resizable()
+                .scaledToFit()
+                .overlay(alignment: .topLeading) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("하루 상식")
+                            .font(.system(size: 12, weight: .regular))
+                            .foregroundStyle(.gray)
+                            .padding(.top, 22)
+                            .padding(.leading, 20)
+                            .padding(.bottom, 8)
+
+                        Text("바다도 사막화가\n된다고?")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(.black)
+                            .multilineTextAlignment(.leading)
+                            .padding(.leading, 20)
+                            .padding(.bottom, 22)
+                    }
+                }
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 20)
+        .padding(.top, 24)
     }
 }
 
