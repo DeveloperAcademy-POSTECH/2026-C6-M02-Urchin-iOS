@@ -1,0 +1,6 @@
+<svg width="48" height="96" viewBox="0 0 48 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="48" width="96" height="48" rx="4" transform="rotate(90 48 0)" fill="#855C36"/>
+<circle cx="24" cy="20" r="8" transform="rotate(90 24 20)" fill="#64442D"/>
+<circle cx="24" cy="48" r="8" transform="rotate(90 24 48)" fill="#64442D"/>
+<circle cx="24" cy="76" r="8" transform="rotate(90 24 76)" fill="#64442D"/>
+</svg>

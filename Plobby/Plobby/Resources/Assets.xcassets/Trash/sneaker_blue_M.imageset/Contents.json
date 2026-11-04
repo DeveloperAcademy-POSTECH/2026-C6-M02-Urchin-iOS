@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "sneaker_blue_M.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
