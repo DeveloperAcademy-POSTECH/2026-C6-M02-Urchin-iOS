@@ -97,7 +97,7 @@ private extension RecordFormView {
 
     var navigationBar: some View {
         ZStack {
-            Text(title)
+            Text(store.recordType.title)
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(Color.formPrimaryText)
 
@@ -117,15 +117,6 @@ private extension RecordFormView {
         }
         .padding(.horizontal, 20)
         .frame(height: 56)
-    }
-
-    var title: String {
-        switch store.recordType {
-        case .plogging:
-            return "플로깅 기록하기"
-        case .plobbing:
-            return "플로빙 기록하기"
-        }
     }
 }
 
@@ -184,10 +175,10 @@ private extension RecordFormView {
             .overlay(alignment: .bottom) {
                 representativeLabel(isRepresentative: isRepresentative)
             }
+            .clipShape(RoundedRectangle(cornerRadius: 8))
             .overlay(alignment: .topTrailing) {
                 photoDeleteButton(photo.id)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 8))
             .onDrag {
                 NSItemProvider(object: photo.id as NSString)
             }
@@ -208,27 +199,31 @@ private extension RecordFormView {
         }
     }
 
+    var photoCornerInset: CGFloat {
+        8 * (1 - 1 / 2.squareRoot())
+    }
+
     func photoDeleteButton(_ photoID: PhotoAsset.ID) -> some View {
         Button {
             store.send(.photoDeleteTapped(photoID), animation: .default)
         } label: {
             Image(systemName: "xmark")
-                .font(.system(size: 10, weight: .bold))
+                .font(.system(size: 7, weight: .bold))
                 .foregroundStyle(.white)
-                .frame(width: 20, height: 20)
-                .background(Color.black.opacity(0.6), in: Circle())
-                .padding(6)
+                .frame(width: 14, height: 14)
+                .background(Color.black, in: Circle())
+                .frame(width: 32, height: 32)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .alignmentGuide(.top) { $0[VerticalAlignment.center] - photoCornerInset }
+        .alignmentGuide(.trailing) { $0[HorizontalAlignment.center] + photoCornerInset }
         .accessibilityLabel("사진 삭제")
     }
 }
 
 // MARK: - Photo Drop Delegate
 
-/// 사진 칸끼리 순서를 바꾸는 드롭이에요.
-/// 복사가 아닌 이동으로 받아서 드래그 중 우측 상단에 초록 + 표시가 뜨지 않아요.
 private struct PhotoDropDelegate: DropDelegate {
 
     let onDrop: @MainActor @Sendable (PhotoAsset.ID) -> Void
