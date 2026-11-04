@@ -73,6 +73,7 @@ struct PhotoSelection: Equatable, Sendable {
     @discardableResult
     mutating func append(_ asset: PhotoAsset) -> Bool {
         guard !isFull, !contains(asset.id) else { return false }
+        
         assets.append(asset)
         return true
     }
