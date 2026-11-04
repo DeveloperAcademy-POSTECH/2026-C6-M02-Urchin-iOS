@@ -10,3 +10,13 @@ nonisolated enum RecordType: String, Sendable {
     case plogging
     case plobbing
 }
+
+nonisolated extension RecordType {
+    
+    var name: String {
+        switch self {
+        case .plogging: "플로깅"
+        case .plobbing: "플로빙"
+        }
+    }
+}
