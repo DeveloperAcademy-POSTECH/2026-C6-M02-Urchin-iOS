@@ -7,7 +7,7 @@
 
 import Foundation
 
-nonisolated struct TimeOfDay: Equatable, Sendable {
+nonisolated struct TimeOfDay: Equatable, Comparable, Sendable {
     
     let hour24: Int
     let minute: Int

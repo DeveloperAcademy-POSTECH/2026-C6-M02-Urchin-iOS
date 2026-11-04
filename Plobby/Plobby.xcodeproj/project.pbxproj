@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */; };
-		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */; };
@@ -18,12 +16,10 @@
 		31E66B8D80D430AAAC9A21D8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CA15540443FE5BE6EF51E8 /* Profile.swift */; };
 		33D77A682F5247E18DA0679F /* PushEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008552DBBD644BB8938C1F8C /* PushEvents.swift */; };
 		34FBF121843E575A8727FBCF /* BlockedUserResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */; };
-		49C55E872A91D91FB1E0434A /* RecordFormFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */; };
-		4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */; };
-		662D32B75B344538B44995C7 /* NotificationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */; };
-		6654B8A74949402D91998335 /* PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19CD6EEB73AF4C7797870AF0 /* PushClient.swift */; };
-		68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */; };
 		44553F7E8DF0475F4F9BF678 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80273A7BC92A464F26671A60 /* DatePickerView.swift */; };
+		49C55E872A91D91FB1E0434A /* RecordFormFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */; };
+		49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */; };
+		4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */; };
 		662D32B75B344538B44995C7 /* NotificationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */; };
 		6654B8A74949402D91998335 /* PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19CD6EEB73AF4C7797870AF0 /* PushClient.swift */; };
 		68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */; };
@@ -41,9 +37,9 @@
 		B59027053098E35B00AE351D /* DependencyValues+NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */; };
 		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
+		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
 		B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */; };
 		BDA985C8CDA5A070AC9A1B00 /* PhotosPickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */; };
-		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
 		DA032D05309B0DEE00D97C80 /* DayOfWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA032D04309B0DE500D97C80 /* DayOfWeek.swift */; };
 		DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9CF6309A13A1006D2504 /* TrashPickerFeature.swift */; };
 		DA0A9CF9309A13DD006D2504 /* TimePickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9CF8309A13D4006D2504 /* TimePickerFeature.swift */; };
@@ -196,24 +192,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastFeatureTests.swift; sourceTree = "<group>"; };
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
 		033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PhotoLibraryClient.swift"; sourceTree = "<group>"; };
 		0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoThumbnailView.swift; sourceTree = "<group>"; };
-		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
 		0B83BBF957568508C43BBA03 /* UserClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserClient.swift; sourceTree = "<group>"; };
 		19CD6EEB73AF4C7797870AF0 /* PushClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushClient.swift; sourceTree = "<group>"; };
 		1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFlowFeatureTests.swift; sourceTree = "<group>"; };
 		22117CDC3BC2454F4CDAC201 /* ProfileResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponseDTO.swift; sourceTree = "<group>"; };
 		4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerFeatureTests.swift; sourceTree = "<group>"; };
-		6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormFeatureTests.swift; sourceTree = "<group>"; };
 		684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerFeatureTests.swift; sourceTree = "<group>"; };
+		6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormFeatureTests.swift; sourceTree = "<group>"; };
 		7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockInsertRequestDTO.swift; sourceTree = "<group>"; };
 		72FC37464B922253D6A55F95 /* CheckNicknameRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNicknameRequestDTO.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
 		95366258A2DD2CD25A307CDD /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
-		9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PushClient.swift"; sourceTree = "<group>"; };
 		9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
 		9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PushClient.swift"; sourceTree = "<group>"; };
 		A683DF52E8FC8F413240B638 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
@@ -227,6 +220,7 @@
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
 		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
 		BCA7146257B2B7E18DD4D375 /* TimePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerFeatureTests.swift; sourceTree = "<group>"; };
+		CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastFeatureTests.swift; sourceTree = "<group>"; };
 		DA032D04309B0DE500D97C80 /* DayOfWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOfWeek.swift; sourceTree = "<group>"; };
 		DA0A9CF6309A13A1006D2504 /* TrashPickerFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashPickerFeature.swift; sourceTree = "<group>"; };
 		DA0A9CF8309A13D4006D2504 /* TimePickerFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerFeature.swift; sourceTree = "<group>"; };
@@ -240,7 +234,6 @@
 		DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
 		DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelection.swift; sourceTree = "<group>"; };
 		DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryClient.swift; sourceTree = "<group>"; };
-		DA0BB771309B754C003400FB /* .gitattributes */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitattributes; sourceTree = "<group>"; };
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -396,14 +389,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F6CC0869FBFC561A2BB5CAC8 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
 		0388DE9EE55A49C7010C48BD /* Response */ = {
 			isa = PBXGroup;
 			children = (
@@ -734,7 +719,6 @@
 			isa = PBXGroup;
 			children = (
 				4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */,
-				1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */,
 				6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */,
 				684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */,
 				1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */,
@@ -1077,7 +1061,6 @@
 				ECE6F2C63098338400C4916C /* Features */,
 				ECE6F2C93098338400C4916C /* Resources */,
 				ECE6F2CA3098338400C4916C /* Info.plist */,
-				DA0BB771309B754C003400FB /* .gitattributes */,
 				ECE6F2CB3098338400C4916C /* Plobby.entitlements */,
 			);
 			path = Plobby;
@@ -1137,6 +1120,14 @@
 				ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */,
 			);
 			path = PlobbyUITests;
+			sourceTree = "<group>";
+		};
+		F6CC0869FBFC561A2BB5CAC8 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
