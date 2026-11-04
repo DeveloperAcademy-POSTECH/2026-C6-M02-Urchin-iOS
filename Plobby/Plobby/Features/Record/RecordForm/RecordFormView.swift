@@ -316,7 +316,7 @@ private extension RecordFormView {
         .buttonStyle(.plain)
     }
 
-    static func dateText(_ date: Date) -> String {
+    nonisolated static func dateText(_ date: Date) -> String {
         date.formatted(
             .dateTime
                 .year().month(.defaultDigits).day()
@@ -324,7 +324,7 @@ private extension RecordFormView {
         ) + " (\(date.formatted(.dateTime.weekday(.abbreviated).locale(Locale(identifier: "ko_KR")))))"
     }
 
-    static func timeText(_ date: Date) -> String {
+    nonisolated static func timeText(_ date: Date) -> String {
         date.formatted(
             .dateTime
                 .hour().minute()
