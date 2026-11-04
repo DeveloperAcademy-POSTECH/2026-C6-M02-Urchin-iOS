@@ -461,6 +461,8 @@
 				B876495304224301BF46BD28 /* AppNotification.swift */,
 			);
 			path = Notification;
+			sourceTree = "<group>";
+		};
 		DA0A9CF2309A125F006D2504 /* LocationPicker */ = {
 			isa = PBXGroup;
 			children = (
