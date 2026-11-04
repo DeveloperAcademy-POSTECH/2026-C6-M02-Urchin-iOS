@@ -16,7 +16,7 @@ struct HomeFeature {
 
     @ObservableState
     struct State: Equatable {
-        let status: MembershipStatus
+        @Shared(.membershipStatus) var membershipStatus
         var currentBanner: RecordType = .plobbing
     }
 

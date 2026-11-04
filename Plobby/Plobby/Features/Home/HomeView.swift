@@ -44,7 +44,7 @@ extension HomeView {
 
             Spacer()
 
-            switch store.status {
+            switch store.membershipStatus {
             case .member:
                 Text("회원 홈화면이지롱")
 
