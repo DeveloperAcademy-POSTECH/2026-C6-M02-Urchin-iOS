@@ -59,7 +59,21 @@ struct RecordFormView: View {
         ) { store in
             PhotosPickerView(store: store)
         }
-        // TODO: 장소·날짜·시간·쓰레기 선택 뷰 구현 후 sheet 연결
+        .sheet(
+            item: $store.scope(state: \.destination?.datePicker, action: \.destination.datePicker)
+        ) { store in
+            DatePickerView(store: store)
+                .presentationDetents([.height(DatePickerView.sheetHeight(weekCount: store.weekCount))])
+                .presentationCornerRadius(20)
+        }
+        .sheet(
+            item: $store.scope(state: \.destination?.timePicker, action: \.destination.timePicker)
+        ) { store in
+            TimePickerView(store: store)
+                .presentationDetents([.height(TimePickerView.sheetHeight)])
+                .presentationCornerRadius(20)
+        }
+        // TODO: 장소·쓰레기 선택 뷰 구현 후 sheet 연결
         .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
 }
@@ -541,7 +555,7 @@ private extension View {
     }
 }
 
-private extension Color {
+extension Color {
 
     static let formPrimaryText = Color(red: 0x25 / 255, green: 0x27 / 255, blue: 0x29 / 255)
     static let formSecondaryText = Color(red: 0x6B / 255, green: 0x72 / 255, blue: 0x80 / 255)
