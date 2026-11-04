@@ -1,0 +1,21 @@
+# 10스타 미만 레포는 CodeRabbit 자동 리뷰가 꺼져 있어, PR이 열리면 리뷰 요청 코멘트를 대신 남깁니다.
+# 스타가 10개 이상이 되면 이 워크플로우는 삭제해 주세요.
+name: CodeRabbit Trigger
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+    branches: [develop, main]
+
+jobs:
+  trigger:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - run: gh pr comment "$PR" --repo "$REPO" --body "@coderabbitai review"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
