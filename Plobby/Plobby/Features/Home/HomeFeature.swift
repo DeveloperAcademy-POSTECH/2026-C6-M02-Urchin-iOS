@@ -88,11 +88,9 @@ struct HomeFeature {
 
             // TODO: BeachClient로 관심 해변 추가/삭제 요청
             case .favoriteBeachPicker(.presented(.nextButtonTapped)):
-                guard let selectedBeachIDs = state.favoriteBeachPicker?.selectedBeachIDs else {
-                    return .none
-                }
+                guard let picker = state.favoriteBeachPicker else { return .none }
 
-                state.favoriteBeaches = Beach.all.filter { selectedBeachIDs.contains($0.id) }
+                state.favoriteBeaches = picker.allBeaches.filter { picker.selectedBeachIDs.contains($0.id) }
                 state.favoriteBeachPicker = nil
                 return .none
 
