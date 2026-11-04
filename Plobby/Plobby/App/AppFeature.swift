@@ -36,6 +36,7 @@ struct AppFeature {
 
     @Dependency(\.pushClient) var pushClient
     @Dependency(\.notificationClient) var notificationClient
+    @Dependency(\.beachClient) var beachClient
     
     // MARK: - Body
     
@@ -45,7 +46,8 @@ struct AppFeature {
             case .task:
                 return .merge(
                     observeDeviceTokens(),
-                    observeTappedRecordIDs()
+                    observeTappedRecordIDs(),
+                    syncBeaches()
                 )
 
             case let .deviceTokenReceived(token):
@@ -131,6 +133,18 @@ extension AppFeature {
         .run { _ in
             let token = try await pushClient.fetchToken()
             try await notificationClient.submitDeviceToken(token)
+        } catch: { error, _ in
+            PlobbyLogger.error(error)
+        }
+    }
+
+    private func syncBeaches() -> Effect<Action> {
+        .run { _ in
+            let beaches = try await beachClient.fetchBeaches(nil)
+            guard !beaches.isEmpty else { return }
+
+            @Shared(.beaches) var allBeaches
+            $allBeaches.withLock { $0 = beaches }
         } catch: { error, _ in
             PlobbyLogger.error(error)
         }
