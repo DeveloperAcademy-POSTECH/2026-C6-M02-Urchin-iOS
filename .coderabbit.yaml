@@ -1,6 +1,11 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 language: "ko-KR"
-tone_instructions: "한국어로, 간결하게 리뷰해 주세요. 지적할 때는 이유와 개선 코드를 함께 제시하고, 사소한 취향 차이는 nitpick으로 구분해 주세요."
+tone_instructions: >
+  1. 문제만 지적하지 말고 왜 문제인지 원인까지 설명해 주세요.
+  2. 개선 코드와 함께 관련 레퍼런스나 공식 문서를 제안해 주세요.
+  3. 사소한 취향 차이는 nitpick으로 구분해 주세요.
+  4. 잘된 부분은 가볍고 유쾌하게 칭찬해 주세요.
+  5. 함께 성장하는 동료 개발자처럼 피드백해 주세요.
 
 reviews:
   profile: "chill"
