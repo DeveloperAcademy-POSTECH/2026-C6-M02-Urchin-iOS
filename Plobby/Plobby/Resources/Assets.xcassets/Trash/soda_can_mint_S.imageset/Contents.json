@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "soda_can_mint_S.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
