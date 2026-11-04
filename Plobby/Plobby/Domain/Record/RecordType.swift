@@ -19,4 +19,8 @@ nonisolated extension RecordType {
         case .plobbing: "플로빙"
         }
     }
+    
+    var title: String {
+        self.name + " 기록하기"
+    }
 }
