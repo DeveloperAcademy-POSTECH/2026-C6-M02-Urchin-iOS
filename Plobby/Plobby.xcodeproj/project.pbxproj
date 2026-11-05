@@ -116,7 +116,6 @@
 		EC196746309C579100BC4C19 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196742309C579100BC4C19 /* Pretendard-Medium.otf */; };
 		EC196747309C579100BC4C19 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196744309C579100BC4C19 /* Pretendard-SemiBold.otf */; };
 		EC196749309C58BA00BC4C19 /* PlobbyTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC196748309C58BA00BC4C19 /* PlobbyTypography.swift */; };
-		EC7608AE30996DF40061AAAD /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7608AD30996DF40061AAAD /* ImageAsset.swift */; };
 		ECDDDAB4309AC1F800FB04D5 /* RegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
@@ -304,7 +303,6 @@
 		EC196743309C579100BC4C19 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		EC196744309C579100BC4C19 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		EC196748309C58BA00BC4C19 /* PlobbyTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyTypography.swift; sourceTree = "<group>"; };
-		EC7608AD30996DF40061AAAD /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPicker.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
@@ -862,7 +860,6 @@
 				ECE6F2923098338400C4916C /* PlobbyButton.swift */,
 				EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */,
 				EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */,
-				EC7608AD30996DF40061AAAD /* ImageAsset.swift */,
 				EC196748309C58BA00BC4C19 /* PlobbyTypography.swift */,
 			);
 			path = DesignSystem;
@@ -1321,7 +1318,6 @@
 				5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */,
 				B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
-				EC7608AE30996DF40061AAAD /* ImageAsset.swift in Sources */,
 				DA5B0FD83098E17F003FEDF9 /* RecordReport.swift in Sources */,
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
