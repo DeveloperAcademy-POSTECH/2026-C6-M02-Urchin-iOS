@@ -39,12 +39,8 @@ extension AlertState {
             ButtonState.make(type.confirmTitle, action: confirmAction)
             
         case .cancelConfirm:
-            ButtonState.make("취소", role: .cancel, action: cancelAction)
-            ButtonState.make(
-                type.confirmTitle,
-                role: type.isDestructive ? .destructive : nil,
-                action: confirmAction
-            )
+            ButtonState.make(type.cancelTitle, role: .cancel, action: cancelAction)
+            ButtonState.make(type.confirmTitle, action: confirmAction)
         }
     }
 }
