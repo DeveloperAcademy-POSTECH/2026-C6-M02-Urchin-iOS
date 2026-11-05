@@ -19,9 +19,13 @@ struct CollectionCardView: View {
     // MARK: - Body
 
     var body: some View {
-        FlipCard(angle: store.isFlipped ? 180 : 0, front: front, back: back)
-            .animation(.easeInOut(duration: 0.6), value: store.isFlipped)
-            .padding(.horizontal, 20)
+        FlipCard(
+            angle: store.isFlipped ? 180 : 0,
+            front: front,
+            back: back
+        )
+        .animation(.easeInOut(duration: 0.6), value: store.isFlipped)
+        .padding(.horizontal, 20)
     }
 }
 
@@ -401,11 +405,13 @@ extension TrashPileScene {
             y: min(max(target.y + halfHeight, halfHeight), size.height - halfHeight)
         )
 
-        node.position = CGPoint(x: landing.x, y: size.height + halfHeight)
+        node.position = CGPoint(x: landing.x, y: max(size.height - halfHeight, landing.y))
+        node.alpha = 0
         addChild(node)
 
-        let fall = SKAction.move(to: landing, duration: fallDuration)
-        fall.timingMode = .easeIn
+        let move = SKAction.move(to: landing, duration: fallDuration)
+        move.timingMode = .easeIn
+        let fall = SKAction.group([move, .fadeIn(withDuration: fallDuration * 0.4)])
         let bounceUp = SKAction.moveBy(x: 0, y: bounceHeight, duration: 0.08)
         bounceUp.timingMode = .easeOut
         let bounceDown = bounceUp.reversed()
