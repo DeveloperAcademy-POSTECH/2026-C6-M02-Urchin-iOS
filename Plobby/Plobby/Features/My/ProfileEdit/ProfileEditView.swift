@@ -228,7 +228,7 @@ extension ProfileEditView {
     private var nicknameMessage: some View {
         if store.isNicknameFormatInvalid {
             nicknameMessageText(
-                "한글, 영문, 숫자로만 조합해 \(Nickname.maximumLength)자 이내로 작성해주세요",
+                "\(Nickname.minimumLength)~\(Nickname.maximumLength)자의 한글, 영문, 숫자만 입력할 수 있어요",
                 color: Color(.currentError)
             )
         } else if let isAvailable = store.isNicknameAvailable {
