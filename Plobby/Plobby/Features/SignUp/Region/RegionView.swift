@@ -52,7 +52,7 @@ extension RegionView {
     }
     
     private var nextButton: some View {
-        NormalButton(text: "다음") {
+        PlobbyButton(text: "다음") {
             store.send(.nextButtonTapped)
         }
         .padding(.horizontal, 20)

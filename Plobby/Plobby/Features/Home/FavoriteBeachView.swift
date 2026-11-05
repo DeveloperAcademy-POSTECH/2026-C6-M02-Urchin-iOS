@@ -43,7 +43,7 @@ extension FavoriteBeachView {
     }
 
     private var saveButton: some View {
-        NormalButton(text: "저장") {
+        PlobbyButton(text: "저장") {
             store.send(.nextButtonTapped)
         }
         .padding(.horizontal, 20)

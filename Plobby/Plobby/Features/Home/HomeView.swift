@@ -153,12 +153,8 @@ extension HomeView {
         }
     }
     
-    // TODO: 디자인 시스템 색상으로 교체
     private var recordButton: some View {
-        NormalButton(
-            text: store.currentBanner.recordButtonTitle,
-            backgroundColor: .green
-        ) {
+        PlobbyButton(text: store.currentBanner.recordButtonTitle) {
             store.send(.recordButtonTapped)
         }
         .padding(.bottom, 4)

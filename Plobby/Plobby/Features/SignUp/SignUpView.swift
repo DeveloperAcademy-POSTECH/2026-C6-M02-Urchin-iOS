@@ -166,7 +166,7 @@ extension SignUpView {
     }
     
     private var nextButton: some View {
-        NormalButton(text: "다음") {
+        PlobbyButton(text: "다음") {
             store.send(.nextButtonTapped)
         }
         .disabled(!store.canGoNext)
