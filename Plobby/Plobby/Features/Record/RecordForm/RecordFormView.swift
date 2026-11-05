@@ -25,7 +25,30 @@ struct RecordFormView: View {
 
     // MARK: - Body
 
-    private var formContent: some View {
+    var body: some View {
+        formWithPickers
+            .fullScreenCover(
+                item: $store.scope(state: \.destination?.locationPicker, action: \.destination.locationPicker)
+            ) { store in
+                LocationPickerView(store: store)
+            }
+            .sheet(
+                item: $store.scope(state: \.destination?.trashPicker, action: \.destination.trashPicker)
+            ) { store in
+                TrashPickerView(store: store)
+                    .presentationDetents(belowNavigationBarDetents)
+                    .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(20)
+            }
+            .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+    }
+}
+
+// MARK: - Subviews
+
+private extension RecordFormView {
+
+    var formContent: some View {
         VStack(spacing: 0) {
             navigationBar
 
@@ -68,7 +91,7 @@ struct RecordFormView: View {
         }
     }
 
-    private var formWithPickers: some View {
+    var formWithPickers: some View {
         formContent
             .sheet(
                 item: $store.scope(state: \.destination?.photoPicker, action: \.destination.photoPicker)
@@ -89,24 +112,6 @@ struct RecordFormView: View {
                     .presentationDetents([.height(TimePickerView.sheetHeight)])
                     .presentationCornerRadius(20)
             }
-    }
-
-    var body: some View {
-        formWithPickers
-            .fullScreenCover(
-                item: $store.scope(state: \.destination?.locationPicker, action: \.destination.locationPicker)
-            ) { store in
-                LocationPickerView(store: store)
-            }
-            .sheet(
-                item: $store.scope(state: \.destination?.trashPicker, action: \.destination.trashPicker)
-            ) { store in
-                TrashPickerView(store: store)
-                    .presentationDetents(belowNavigationBarDetents)
-                    .presentationDragIndicator(.visible)
-                    .presentationCornerRadius(20)
-            }
-            .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
 }
 
