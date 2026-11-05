@@ -18,27 +18,37 @@ struct DatePickerFeature {
     struct State: Equatable {
         let field: PeriodField
         let today: Date
+        let allowedRange: ClosedRange<Date>
         var date: Date
         var month: Date
         var days: [Date?]
+        var isPreviousMonthEnabled: Bool
         var isNextMonthEnabled: Bool
         
         init(
             field: PeriodField,
             date: Date,
             today: Date,
+            allowedRange: ClosedRange<Date>,
             calendar: Calendar
         ) {
+            let date = date.clamped(to: allowedRange)
             let month = DatePickerFeature.startOfMonth(for: date, calendar: calendar)
             
             self.field = field
             self.today = today
+            self.allowedRange = allowedRange
             self.date = date
             self.month = month
             self.days = DatePickerFeature.days(in: month, calendar: calendar)
+            self.isPreviousMonthEnabled = DatePickerFeature.isPreviousMonthEnabled(
+                month: month,
+                allowedRange: allowedRange,
+                calendar: calendar
+            )
             self.isNextMonthEnabled = DatePickerFeature.isNextMonthEnabled(
                 month: month,
-                today: today,
+                allowedRange: allowedRange,
                 calendar: calendar
             )
         }
@@ -70,18 +80,26 @@ struct DatePickerFeature {
     // MARK: - body
     
     var body: some Reducer<State, Action> {
-        Reduce { state, action in
+        Reduce {
+            state,
+            action in
             switch action {
             case let .dayTapped(day):
-                guard !Self.isFuture(day, today: state.today, calendar: calendar) else {
+                guard Self.isSelectable(day, in: state.allowedRange, calendar: calendar) else {
                     return .none
                 }
                 
-                state.date = calendar.date(on: day, settingTimeOf: state.date)
+                state.date = calendar.date(
+                    on: day,
+                    settingTimeOf: state.date
+                ).clamped(to: state.allowedRange)
                 return .none
                 
             case .previousMonthTapped:
-                moveMonth(by: -1, state: &state)
+                if state.isPreviousMonthEnabled {
+                    moveMonth(by: -1, state: &state)
+                }
+                
                 return .none
                 
             case .nextMonthTapped:
@@ -118,15 +136,41 @@ extension DatePickerFeature {
         
         state.month = month
         state.days = Self.days(in: month, calendar: calendar)
-        state.isNextMonthEnabled = Self.isNextMonthEnabled(month: month, today: state.today, calendar: calendar)
+        state.isPreviousMonthEnabled = Self.isPreviousMonthEnabled(
+            month: month,
+            allowedRange: state.allowedRange,
+            calendar: calendar
+        )
+        state.isNextMonthEnabled = Self.isNextMonthEnabled(
+            month: month,
+            allowedRange: state.allowedRange,
+            calendar: calendar
+        )
     }
 
-    static func isFuture(_ day: Date, today: Date, calendar: Calendar) -> Bool {
-        calendar.compare(day, to: today, toGranularity: .day) == .orderedDescending
+    static func isSelectable(
+        _ day: Date,
+        in allowedRange: ClosedRange<Date>,
+        calendar: Calendar
+    ) -> Bool {
+        calendar.compare(day, to: allowedRange.lowerBound, toGranularity: .day) != .orderedAscending
+            && calendar.compare(day, to: allowedRange.upperBound, toGranularity: .day) != .orderedDescending
     }
     
-    static func isNextMonthEnabled(month: Date, today: Date, calendar: Calendar) -> Bool {
-        month < startOfMonth(for: today, calendar: calendar)
+    static func isPreviousMonthEnabled(
+        month: Date,
+        allowedRange: ClosedRange<Date>,
+        calendar: Calendar
+    ) -> Bool {
+        startOfMonth(for: allowedRange.lowerBound, calendar: calendar) < month
+    }
+    
+    static func isNextMonthEnabled(
+        month: Date,
+        allowedRange: ClosedRange<Date>,
+        calendar: Calendar
+    ) -> Bool {
+        month < startOfMonth(for: allowedRange.upperBound, calendar: calendar)
     }
     
     static func startOfMonth(for date: Date, calendar: Calendar) -> Date {
