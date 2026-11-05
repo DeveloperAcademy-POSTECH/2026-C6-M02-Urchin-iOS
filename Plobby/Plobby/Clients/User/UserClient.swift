@@ -13,7 +13,7 @@ import Supabase
 struct UserClient {
     var fetchIsNicknameAvailable: @Sendable (_ nickname: String) async throws -> Bool
     var fetchMyProfile: @Sendable () async throws -> Profile?
-    var updateMyProfile: @Sendable (_ nickname: String, _ profileImageKey: String?) async throws -> Profile
+    var updateMyProfile: @Sendable (_ nickname: String, _ profileImage: Data?) async throws -> Profile
     var submitBlock: @Sendable (_ userID: UUID) async throws -> Void
     var removeBlock: @Sendable (_ userID: UUID) async throws -> Void
     var fetchBlockedUsers: @Sendable () async throws -> [BlockedUser]
@@ -51,10 +51,16 @@ extension UserClient: DependencyKey {
 
                 return profile.toDomain(profileImageURL: profileImageURL)
             },
-            updateMyProfile: { nickname, profileImageKey in
+            updateMyProfile: { nickname, profileImage in
                 @Dependency(\.supabaseClient) var supabaseClient
 
                 let userID = try await supabaseClient.auth.session.user.id
+
+                var profileImageKey: String?
+
+                if let profileImage {
+                    profileImageKey = try await supabaseClient.uploadProfileImage(profileImage, userID: userID)
+                }
 
                 let profile: ProfileResponseDTO = try await supabaseClient
                     .from("profiles")
