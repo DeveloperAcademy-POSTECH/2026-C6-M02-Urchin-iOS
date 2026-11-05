@@ -153,7 +153,7 @@ struct RecordFormFeature {
 
         @CasePathable
         enum Delegate {
-            case recordCreated(UUID)
+            case recordCreated(recordID: UUID, beachName: String?, trash: TrashSelection, weightKg: Double?)
             case recordUpdated(UUID)
             case closed
         }
@@ -289,7 +289,12 @@ struct RecordFormFeature {
                 
                 switch state.mode {
                 case .create:
-                    return .send(.delegate(.recordCreated(recordID)))
+                    return .send(.delegate(.recordCreated(
+                        recordID: recordID,
+                        beachName: state.beach?.name,
+                        trash: state.trash,
+                        weightKg: DecimalInput.number(from: state.totalWeightText, locale: locale)
+                    )))
                 case .edit:
                     return .send(.delegate(.recordUpdated(recordID)))
                 }

@@ -18,15 +18,25 @@ struct RecordView: View {
     // MARK: - Body
     
     var body: some View {
-        switch store.scope(state: \.step, action: \.step).case {
-        case let .photoPicker(store):
-            PhotosPickerView(store: store)
-        case let .form(store):
-            RecordFormView(store: store)
-        case let .reward(store):
-            RecordRewardView(store: store)
-        case let .detail(store):
-            RecordDetailView(store: store)
+        ZStack {
+            switch store.scope(state: \.step, action: \.step).case {
+            case let .photoPicker(store):
+                PhotosPickerView(store: store)
+            case let .form(store):
+                // 리워드 화면이 다 덮은 뒤에 사라져서, 내려오는 동안 아래에 그대로 보여요
+                RecordFormView(store: store)
+                    .transition(.asymmetric(
+                        insertion: .identity,
+                        removal: .opacity.animation(.linear(duration: 0.01).delay(RecordRewardView.curtainDuration))
+                    ))
+            case let .reward(store):
+                RecordRewardView(store: store)
+                    .transition(.asymmetric(insertion: .move(edge: .top), removal: .identity))
+                    .zIndex(1)
+            case let .detail(store):
+                RecordDetailView(store: store)
+            }
         }
+        .animation(.easeInOut(duration: RecordRewardView.curtainDuration), value: store.step.is(\.reward))
     }
 }

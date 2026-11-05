@@ -26,6 +26,38 @@ struct RecordFormView: View {
     // MARK: - Body
 
     var body: some View {
+        formWithPickers
+            .fullScreenCover(
+                item: $store.scope(state: \.destination?.locationPicker, action: \.destination.locationPicker)
+            ) { store in
+                LocationPickerView(store: store)
+            }
+            .sheet(
+                item: $store.scope(state: \.destination?.trashPicker, action: \.destination.trashPicker)
+            ) { store in
+                TrashPickerView(store: store)
+                    .presentationDetents(belowNavigationBarDetents)
+                    .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(20)
+            }
+            .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+            .plobbyAlert(
+                isPresented: store.isExitAlertPresented,
+                title: "작성 중인 글을 나가시겠습니까?",
+                message: "지금 나가면 작성한 내용은 저장되지 않아요.",
+                secondaryTitle: "나가기",
+                primaryTitle: "계속 작성하기",
+                secondaryAction: { store.send(.exitAlertExitTapped) },
+                primaryAction: { store.send(.exitAlertContinueTapped) }
+            )
+    }
+}
+
+// MARK: - Subviews
+
+private extension RecordFormView {
+
+    var formContent: some View {
         VStack(spacing: 0) {
             navigationBar
 
@@ -66,48 +98,29 @@ struct RecordFormView: View {
         .onChange(of: focusedField) { oldField, newField in
             sendFocusChanged(from: oldField, to: newField)
         }
-        .sheet(
-            item: $store.scope(state: \.destination?.photoPicker, action: \.destination.photoPicker)
-        ) { store in
-            PhotosPickerView(store: store)
-        }
-        .sheet(
-            item: $store.scope(state: \.destination?.datePicker, action: \.destination.datePicker)
-        ) { store in
-            DatePickerView(store: store)
-                .presentationDetents([.height(DatePickerView.sheetHeight(weekCount: store.weekCount))])
-                .presentationCornerRadius(20)
-        }
-        .sheet(
-            item: $store.scope(state: \.destination?.timePicker, action: \.destination.timePicker)
-        ) { store in
-            TimePickerView(store: store)
-                .presentationDetents([.height(TimePickerView.sheetHeight)])
-                .presentationCornerRadius(20)
-        }
-        .fullScreenCover(
-            item: $store.scope(state: \.destination?.locationPicker, action: \.destination.locationPicker)
-        ) { store in
-            LocationPickerView(store: store)
-        }
-        .sheet(
-            item: $store.scope(state: \.destination?.trashPicker, action: \.destination.trashPicker)
-        ) { store in
-            TrashPickerView(store: store)
-                .presentationDetents(belowNavigationBarDetents)
-                .presentationDragIndicator(.visible)
-                .presentationCornerRadius(20)
-        }
-        .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
-        .plobbyAlert(
-            isPresented: store.isExitAlertPresented,
-            title: "작성 중인 글을 나가시겠습니까?",
-            message: "지금 나가면 작성한 내용은 저장되지 않아요.",
-            secondaryTitle: "나가기",
-            primaryTitle: "계속 작성하기",
-            secondaryAction: { store.send(.exitAlertExitTapped) },
-            primaryAction: { store.send(.exitAlertContinueTapped) }
-        )
+    }
+
+    var formWithPickers: some View {
+        formContent
+            .sheet(
+                item: $store.scope(state: \.destination?.photoPicker, action: \.destination.photoPicker)
+            ) { store in
+                PhotosPickerView(store: store)
+            }
+            .sheet(
+                item: $store.scope(state: \.destination?.datePicker, action: \.destination.datePicker)
+            ) { store in
+                DatePickerView(store: store)
+                    .presentationDetents([.height(DatePickerView.sheetHeight(weekCount: store.weekCount))])
+                    .presentationCornerRadius(20)
+            }
+            .sheet(
+                item: $store.scope(state: \.destination?.timePicker, action: \.destination.timePicker)
+            ) { store in
+                TimePickerView(store: store)
+                    .presentationDetents([.height(TimePickerView.sheetHeight)])
+                    .presentationCornerRadius(20)
+            }
     }
 }
 
