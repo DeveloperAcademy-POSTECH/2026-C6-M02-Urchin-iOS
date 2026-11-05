@@ -38,7 +38,6 @@ struct TrashPickerFeature {
             selection.etcMemo.count > TrashSelection.etcMemoMaximumLength
         }
 
-        /// 유효성 검사를 모두 통과해야 완료할 수 있어요.
         var isCompleteEnabled: Bool {
             !isEtcMemoOverLimit
         }
