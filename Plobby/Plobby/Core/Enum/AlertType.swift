@@ -13,6 +13,10 @@ enum AlertType {
     case signUpFailed
     case profileImageTooLarge
     case recordSubmitFailed
+    case recordDeleteConfirm
+    case recordDeleted
+    case recordDeleteFailed
+    case userBlockConfirm
     
     var title: String {
         switch self {
@@ -20,27 +24,44 @@ enum AlertType {
         case .signUpFailed: "회원가입을 완료하지 못했어요"
         case .profileImageTooLarge: "사진을 사용할 수 없어요"
         case .recordSubmitFailed: "기록을 저장하지 못했어요"
+        case .recordDeleteConfirm: "기록을 삭제할까요?"
+        case .recordDeleted: "삭제가 완료되었습니다"
+        case .recordDeleteFailed: "기록을 삭제하지 못했어요"
+        case .userBlockConfirm: "이 사용자를 차단할까요?"
         }
     }
     
     var message: String? {
         switch self {
-        case .signInFailed, .signUpFailed, .recordSubmitFailed: "잠시 후 다시 시도해 주세요."
+        case .signInFailed, .signUpFailed, .recordSubmitFailed, .recordDeleteFailed: "잠시 후 다시 시도해 주세요."
         case .profileImageTooLarge: "2MB 미만의 사진을 선택해 주세요."
+        case .recordDeleteConfirm: "삭제한 기록은 복구할 수 없어요."
+        case .recordDeleted: nil
+        case .userBlockConfirm: "차단하면 이 사용자의 기록이 더 이상 보이지 않아요."
         }
     }
     
     var buttonType: ButtonType {
         switch self {
-        case .signInFailed, .signUpFailed, .profileImageTooLarge: .confirm
-        case .recordSubmitFailed: .cancelConfirm
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed: .confirm
+        case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm: .cancelConfirm
         }
     }
     
     var confirmTitle: String {
         switch self {
-        case .signInFailed, .signUpFailed, .profileImageTooLarge: "확인"
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed: "확인"
         case .recordSubmitFailed: "다시 시도"
+        case .recordDeleteConfirm: "삭제"
+        case .userBlockConfirm: "차단"
+        }
+    }
+    
+    /// 되돌릴 수 없는 동작은 확인 버튼을 빨간색으로 보여줘요.
+    var isDestructive: Bool {
+        switch self {
+        case .recordDeleteConfirm, .userBlockConfirm: true
+        default: false
         }
     }
 }
