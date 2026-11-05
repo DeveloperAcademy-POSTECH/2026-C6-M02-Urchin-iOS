@@ -226,7 +226,8 @@ extension FallingTrashScene {
             body.collisionBitMask = floorCategory
             body.allowsRotation = false
             body.angularVelocity = 0
-            node.zRotation = x < size.width / 2 ? netTilt : -netTilt
+            // 그물 그림을 좌우·위아래로 뒤집어(180°) 기울여요
+            node.zRotation = (x < size.width / 2 ? netTilt : -netTilt) + .pi
             node.zPosition = 1
         }
 
