@@ -62,7 +62,7 @@ extension PlobbyButton {
         guard isEnabled else { return Color(.textDisabled) }
         
         switch style {
-        case .default: return Color(.textPrimary)
+        case .default: return Color(.gray0)
         case .alternative: return Color(.textPrimary)
         case .onlyText: return Color(.textSecondary)
         }
