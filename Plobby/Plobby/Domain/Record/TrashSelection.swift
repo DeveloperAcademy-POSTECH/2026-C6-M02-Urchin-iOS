@@ -38,7 +38,7 @@ nonisolated struct TrashSelection: Equatable, Sendable {
         counts.values.reduce(0, +)
     }
 
-    @MainActor var summary: String? {
+    var summary: String? {
         let categories = selectedCategories
         guard let first = categories.max(by: { self[$0] < self[$1] }) else { return nil }
 

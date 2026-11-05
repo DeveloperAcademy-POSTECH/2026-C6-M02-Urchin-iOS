@@ -20,7 +20,8 @@ nonisolated enum TrashCategory: String, Equatable, CaseIterable, Sendable {
     case etc
 }
 
-extension TrashCategory {
+nonisolated extension TrashCategory {
+    
     var name: String {
         switch self {
         case .glass: "유리"
