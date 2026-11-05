@@ -236,7 +236,11 @@ struct RecordFormFeature {
                 state.trash = selection
                 state.destination = nil
                 return .none
-                
+
+            case .destination(.presented(.trashPicker(.delegate(.cancelled)))):
+                state.destination = nil
+                return .none
+
             case .destination(.presented(.alert(.retrySubmitTapped))):
                 return .send(.completeTapped)
                 

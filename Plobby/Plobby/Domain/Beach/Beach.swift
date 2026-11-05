@@ -7,9 +7,9 @@
 
 import Foundation
 
-nonisolated struct Beach: Identifiable, Equatable, Codable, Sendable {
+nonisolated struct Beach: Identifiable, Equatable, Sendable {
     let id: UUID
-    let region: String
+    let region: Sea
     let name: String
     let address: String
     let latitude: Double

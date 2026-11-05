@@ -20,8 +20,12 @@ extension SharedKey where Self == FileStorageKey<[Beach]>.Default {
     /// 전체 해변 목록. 처음엔 번들 JSON, 앱 시작 시 서버 데이터로 교체해요. 값 변경은 AppFeature에서만 해요.
     static var beaches: Self {
         Self[
-            .fileStorage(.applicationSupportDirectory.appending(component: "beaches.json")),
-            default: Beach.all
+            .fileStorage(
+                .applicationSupportDirectory.appending(component: "beaches-v2.json"),
+                decode: BeachStorageDTO.decode,
+                encode: BeachStorageDTO.encode
+            ),
+            default: BeachStorageDTO.bundledBeaches
         ]
     }
 }
