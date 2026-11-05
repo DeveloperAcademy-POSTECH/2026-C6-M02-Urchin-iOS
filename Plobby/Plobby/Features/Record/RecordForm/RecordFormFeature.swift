@@ -78,7 +78,7 @@ struct RecordFormFeature {
 
         @CasePathable
         enum Delegate {
-            case recordCreated(UUID)
+            case recordCreated(recordID: UUID, beachName: String?, trash: TrashSelection, weightKg: Double?)
             case closed
         }
     }
@@ -143,9 +143,7 @@ struct RecordFormFeature {
                 return .none
                 
             case .locationFieldTapped:
-                state.destination = .locationPicker(LocationPickerFeature.State(
-                    selectedBeach: state.beach
-                ))
+                state.destination = .locationPicker(LocationPickerFeature.State())
                 return .none
                 
             case let .dateTapped(field):
@@ -195,7 +193,12 @@ struct RecordFormFeature {
                 
             case let .submitResponse(.success(recordID)):
                 state.isSubmitting = false
-                return .send(.delegate(.recordCreated(recordID)))
+                return .send(.delegate(.recordCreated(
+                    recordID: recordID,
+                    beachName: state.beach?.name,
+                    trash: state.trash,
+                    weightKg: DecimalInput.number(from: state.totalWeightText, locale: locale)
+                )))
                 
             case .submitResponse(.failure):
                 state.isSubmitting = false
