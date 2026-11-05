@@ -55,7 +55,7 @@ extension RegionPicker {
         VStack(spacing: 0) {
             regionButton(nil)
 
-            ForEach(BeachRegion.allCases, id: \.self) { region in
+            ForEach(Sea.allCases, id: \.self) { region in
                 regionButton(region)
             }
         }
@@ -64,13 +64,13 @@ extension RegionPicker {
         .background(Color.gray.opacity(0.08))
     }
 
-    private func regionButton(_ region: BeachRegion?) -> some View {
+    private func regionButton(_ region: Sea?) -> some View {
         let isSelected = store.selectedRegion == region
 
         return Button {
             store.send(.regionTapped(region))
         } label: {
-            Text(region?.displayName ?? "전체")
+            Text(region?.title ?? "전체")
                 .font(.system(size: 16, weight: isSelected ? .semibold : .regular))
                 .foregroundStyle(isSelected ? Color.black : Color.gray)
                 .frame(maxWidth: .infinity)

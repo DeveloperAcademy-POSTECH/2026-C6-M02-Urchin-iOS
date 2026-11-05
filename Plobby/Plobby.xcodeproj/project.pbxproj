@@ -21,6 +21,8 @@
 		49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */; };
 		4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */; };
 		5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1C0E7B2F4D4E8A9B3C6D12 /* TrashPickerView.swift */; };
+		5A1C0E7B2F4D4E8A9B3C6E03 /* LocationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1C0E7B2F4D4E8A9B3C6E02 /* LocationClient.swift */; };
+		5A1C0E7B2F4D4E8A9B3C6E05 /* DependencyValues+LocationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1C0E7B2F4D4E8A9B3C6E04 /* DependencyValues+LocationClient.swift */; };
 		662D32B75B344538B44995C7 /* NotificationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */; };
 		6654B8A74949402D91998335 /* PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19CD6EEB73AF4C7797870AF0 /* PushClient.swift */; };
 		68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */; };
@@ -57,6 +59,7 @@
 		DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
+		DA2C8CF2309C711C0042C67C /* LocationClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2C8CF1309C71180042C67C /* LocationClientError.swift */; };
 		DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FA330988669003FEDF9 /* RecordClient.swift */; };
 		DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */; };
 		DA5B0FB93098DA53003FEDF9 /* DependencyValues+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */; };
@@ -86,7 +89,6 @@
 		DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10DF30998932003FEDF9 /* MapFeature.swift */; };
 		DA5B10E430998932003FEDF9 /* MyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E230998932003FEDF9 /* MyFeature.swift */; };
 		DA5B10E730998932003FEDF9 /* RecordFlowFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */; };
-		DA688DBA3099BAE30064A2F4 /* BeachRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB53099BAE30064A2F4 /* BeachRegion.swift */; };
 		DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB63099BAE30064A2F4 /* BeachResponseDTO.swift */; };
 		DA688DBC3099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB73099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift */; };
 		DA688DBD3099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB83099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift */; };
@@ -100,6 +102,10 @@
 		DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */; };
 		DA688DD73099F0F50064A2F4 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */; };
 		DAEC87A4309B7F2A0086965E /* ToastFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87A3309B7F2A0086965E /* ToastFeature.swift */; };
+		DAEC87A8309C42CF0086965E /* LocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87A7309C42CA0086965E /* LocationPickerView.swift */; };
+		DAEC87AA309C49590086965E /* LocationAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87A9309C49530086965E /* LocationAuthorization.swift */; };
+		DAEC87AC309C4A520086965E /* PlaceSeaerchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87AB309C4A4D0086965E /* PlaceSeaerchResult.swift */; };
+		DAEC87AE309C4B1A0086965E /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87AD309C4B160086965E /* Coordinate.swift */; };
 		DAEC87A6309B9F260086965E /* TrashCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87A5309B9F240086965E /* TrashCategory.swift */; };
 		E86CC8B62B313EB83983CBD5 /* ProfileUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */; };
 		EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */; };
@@ -141,6 +147,8 @@
 		ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29E3098338400C4916C /* AppleCredential.swift */; };
 		ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29F3098338400C4916C /* AuthUser.swift */; };
 		ECE6F2E43098338400C4916C /* Beach.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A13098338400C4916C /* Beach.swift */; };
+		D1A0C0DE0000000000000B01 /* Sea.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B02 /* Sea.swift */; };
+		D1A0C0DE0000000000000B03 /* BeachStorageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */; };
 		ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A43098338400C4916C /* DecimalInput.swift */; };
 		ECE6F2E73098338400C4916C /* InputText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A53098338400C4916C /* InputText.swift */; };
 		ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A73098338400C4916C /* MembershipStatus.swift */; };
@@ -205,6 +213,8 @@
 		22117CDC3BC2454F4CDAC201 /* ProfileResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponseDTO.swift; sourceTree = "<group>"; };
 		4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerFeatureTests.swift; sourceTree = "<group>"; };
 		5A1C0E7B2F4D4E8A9B3C6D12 /* TrashPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashPickerView.swift; sourceTree = "<group>"; };
+		5A1C0E7B2F4D4E8A9B3C6E02 /* LocationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationClient.swift; sourceTree = "<group>"; };
+		5A1C0E7B2F4D4E8A9B3C6E04 /* DependencyValues+LocationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+LocationClient.swift"; sourceTree = "<group>"; };
 		684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerFeatureTests.swift; sourceTree = "<group>"; };
 		6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormFeatureTests.swift; sourceTree = "<group>"; };
 		7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockInsertRequestDTO.swift; sourceTree = "<group>"; };
@@ -243,6 +253,7 @@
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA2C8CF1309C71180042C67C /* LocationClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationClientError.swift; sourceTree = "<group>"; };
 		DA5B0FA330988669003FEDF9 /* RecordClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordClient.swift; sourceTree = "<group>"; };
 		DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecord.swift; sourceTree = "<group>"; };
 		DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+Record.swift"; sourceTree = "<group>"; };
@@ -272,7 +283,6 @@
 		DA5B10DF30998932003FEDF9 /* MapFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFeature.swift; sourceTree = "<group>"; };
 		DA5B10E230998932003FEDF9 /* MyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFeature.swift; sourceTree = "<group>"; };
 		DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFlowFeature.swift; sourceTree = "<group>"; };
-		DA688DB53099BAE30064A2F4 /* BeachRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachRegion.swift; sourceTree = "<group>"; };
 		DA688DB63099BAE30064A2F4 /* BeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachResponseDTO.swift; sourceTree = "<group>"; };
 		DA688DB73099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachInsertRequestDTO.swift; sourceTree = "<group>"; };
 		DA688DB83099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachResponseDTO.swift; sourceTree = "<group>"; };
@@ -286,6 +296,10 @@
 		DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRewardView.swift; sourceTree = "<group>"; };
 		DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
 		DAEC87A3309B7F2A0086965E /* ToastFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastFeature.swift; sourceTree = "<group>"; };
+		DAEC87A7309C42CA0086965E /* LocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerView.swift; sourceTree = "<group>"; };
+		DAEC87A9309C49530086965E /* LocationAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAuthorization.swift; sourceTree = "<group>"; };
+		DAEC87AB309C4A4D0086965E /* PlaceSeaerchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSeaerchResult.swift; sourceTree = "<group>"; };
+		DAEC87AD309C4B160086965E /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		DAEC87A5309B9F240086965E /* TrashCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashCategory.swift; sourceTree = "<group>"; };
 		E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeOfDay.swift; sourceTree = "<group>"; };
 		E8B11A53BEC65644616587EA /* RecordMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMenuView.swift; sourceTree = "<group>"; };
@@ -329,6 +343,8 @@
 		ECE6F29E3098338400C4916C /* AppleCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCredential.swift; sourceTree = "<group>"; };
 		ECE6F29F3098338400C4916C /* AuthUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUser.swift; sourceTree = "<group>"; };
 		ECE6F2A13098338400C4916C /* Beach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Beach.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000B02 /* Sea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sea.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachStorageDTO.swift; sourceTree = "<group>"; };
 		ECE6F2A43098338400C4916C /* DecimalInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalInput.swift; sourceTree = "<group>"; };
 		ECE6F2A53098338400C4916C /* InputText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputText.swift; sourceTree = "<group>"; };
 		ECE6F2A73098338400C4916C /* MembershipStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipStatus.swift; sourceTree = "<group>"; };
@@ -434,6 +450,16 @@
 			path = Request;
 			sourceTree = "<group>";
 		};
+		5A1C0E7B2F4D4E8A9B3C6E01 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				DA2C8CF1309C71180042C67C /* LocationClientError.swift */,
+				5A1C0E7B2F4D4E8A9B3C6E02 /* LocationClient.swift */,
+				5A1C0E7B2F4D4E8A9B3C6E04 /* DependencyValues+LocationClient.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
 		84C514248E87412C8FC65AA2 /* Push */ = {
 			isa = PBXGroup;
 			children = (
@@ -447,7 +473,6 @@
 		9B086B994F2A5DFEFABF5F20 /* Response */ = {
 			isa = PBXGroup;
 			children = (
-				DA688DB53099BAE30064A2F4 /* BeachRegion.swift */,
 				DA688DB63099BAE30064A2F4 /* BeachResponseDTO.swift */,
 				DA688DB83099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift */,
 			);
@@ -528,6 +553,7 @@
 		DA0A9CF2309A125F006D2504 /* LocationPicker */ = {
 			isa = PBXGroup;
 			children = (
+				DAEC87A7309C42CA0086965E /* LocationPickerView.swift */,
 				DA0A9CFC309A1421006D2504 /* LocationPickerFeature.swift */,
 			);
 			path = LocationPicker;
@@ -680,6 +706,7 @@
 			children = (
 				D78AFC30C51FAB5BF13B6604 /* Request */,
 				9B086B994F2A5DFEFABF5F20 /* Response */,
+				D1A0C0DE0000000000000B05 /* Storage */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -833,6 +860,7 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				5A1C0E7B2F4D4E8A9B3C6E01 /* Location */,
 				DA0BB759309B1BAB003400FB /* Photo */,
 				EC0D4B823098E19A000E7BB7 /* Beach */,
 				B59027013098E2AD00AE351D /* Notification */,
@@ -913,6 +941,7 @@
 			isa = PBXGroup;
 			children = (
 				ECE6F2A13098338400C4916C /* Beach.swift */,
+				D1A0C0DE0000000000000B02 /* Sea.swift */,
 			);
 			path = Beach;
 			sourceTree = "<group>";
@@ -942,6 +971,9 @@
 		ECE6F2B13098338400C4916C /* Record */ = {
 			isa = PBXGroup;
 			children = (
+				DAEC87AD309C4B160086965E /* Coordinate.swift */,
+				DAEC87AB309C4A4D0086965E /* PlaceSeaerchResult.swift */,
+				DAEC87A9309C49530086965E /* LocationAuthorization.swift */,
 				DAEC87A5309B9F240086965E /* TrashCategory.swift */,
 				DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */,
 				DA032D04309B0DE500D97C80 /* DayOfWeek.swift */,
@@ -1142,6 +1174,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		D1A0C0DE0000000000000B05 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1293,7 +1333,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */,
-				DA688DBA3099BAE30064A2F4 /* BeachRegion.swift in Sources */,
 				DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */,
 				DA688DBC3099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift in Sources */,
 				DA688DBD3099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift in Sources */,
@@ -1307,6 +1346,7 @@
 				34FBF121843E575A8727FBCF /* BlockedUserResponseDTO.swift in Sources */,
 				ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */,
 				DA5B0FB93098DA53003FEDF9 /* DependencyValues+Record.swift in Sources */,
+				DAEC87AA309C49590086965E /* LocationAuthorization.swift in Sources */,
 				ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */,
 				ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */,
 				DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */,
@@ -1323,6 +1363,9 @@
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
 				ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */,
 				DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */,
+				DA2C8CF2309C711C0042C67C /* LocationClientError.swift in Sources */,
+				5A1C0E7B2F4D4E8A9B3C6E03 /* LocationClient.swift in Sources */,
+				5A1C0E7B2F4D4E8A9B3C6E05 /* DependencyValues+LocationClient.swift in Sources */,
 				B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */,
 				EC196749309C58BA00BC4C19 /* PlobbyTypography.swift in Sources */,
 				ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */,
@@ -1330,6 +1373,7 @@
 				EC0D4B953098E1D0000E7BB7 /* WithdrawalReason.swift in Sources */,
 				ECDDDAB4309AC1F800FB04D5 /* RegionPicker.swift in Sources */,
 				4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */,
+				DAEC87A8309C42CF0086965E /* LocationPickerView.swift in Sources */,
 				EC0D4B933098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift in Sources */,
 				EC0D4B913098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift in Sources */,
 				DA0A9CFF309A1503006D2504 /* ActivityPeriod.swift in Sources */,
@@ -1369,6 +1413,7 @@
 				DA688DC73099CF950064A2F4 /* PhotosPickerFeature.swift in Sources */,
 				DA5B106B30997215003FEDF9 /* UpdateRecordRequestDTO.swift in Sources */,
 				DA0BB75F309B1C5D003400FB /* PhotoSelection.swift in Sources */,
+				DAEC87AE309C4B1A0086965E /* Coordinate.swift in Sources */,
 				DA5B106C30997215003FEDF9 /* RecordDetailResponseDTO.swift in Sources */,
 				DA5B107730997758003FEDF9 /* MainTab.swift in Sources */,
 				DA5B107830997758003FEDF9 /* MainTabFeature.swift in Sources */,
@@ -1392,6 +1437,8 @@
 				ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */,
 				ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */,
 				ECE6F2E43098338400C4916C /* Beach.swift in Sources */,
+				D1A0C0DE0000000000000B01 /* Sea.swift in Sources */,
+				D1A0C0DE0000000000000B03 /* BeachStorageDTO.swift in Sources */,
 				ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */,
 				EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */,
 				EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */,
@@ -1408,6 +1455,8 @@
 				ECE6F2EB3098338400C4916C /* SignUpProfile.swift in Sources */,
 				DA0A9CFD309A1421006D2504 /* LocationPickerFeature.swift in Sources */,
 				DA688DD73099F0F50064A2F4 /* RecordDetailView.swift in Sources */,
+				EC0D4B7C309884DE000E7BB7 /* FallingTrashView.swift in Sources */,
+				DAEC87AC309C4A520086965E /* PlaceSeaerchResult.swift in Sources */,
 				ECE6F2EC3098338400C4916C /* CollectedWeight.swift in Sources */,
 				ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */,
 				DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */,
