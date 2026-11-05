@@ -53,7 +53,7 @@ struct SignUpView: View {
         .task(id: store.profileImage) {
             previewImage = store.profileImage.flatMap(UIImage.init(data:))
         }
-        .alert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
     }
 }
 

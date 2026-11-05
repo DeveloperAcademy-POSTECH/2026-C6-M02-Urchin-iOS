@@ -24,7 +24,7 @@ struct OnboardingView: View {
             appleLoginButton
             browseButton
         }
-        .alert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
         .onAppear {
             store.send(.onAppear)
         }

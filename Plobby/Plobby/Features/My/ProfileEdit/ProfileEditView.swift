@@ -46,7 +46,7 @@ struct ProfileEditView: View {
         .task(id: store.selectedImage) {
             previewImage = store.selectedImage.flatMap(UIImage.init(data:))
         }
-        .alert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
     }
 }
 
