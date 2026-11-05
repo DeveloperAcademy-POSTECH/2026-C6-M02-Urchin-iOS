@@ -22,7 +22,7 @@ struct CollectionCardFeature {
     // MARK: - Action
 
     enum Action {
-        case categoryButtonTapped
+        case categorySelected(TrashCategory)
         case flipButtonTapped
     }
 
@@ -31,8 +31,8 @@ struct CollectionCardFeature {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            // TODO: 종류 선택 메뉴 연결
-            case .categoryButtonTapped:
+            case let .categorySelected(category):
+                state.selectedCategory = category
                 return .none
 
             // TODO: 카드 뒷면 뒤집기 연결

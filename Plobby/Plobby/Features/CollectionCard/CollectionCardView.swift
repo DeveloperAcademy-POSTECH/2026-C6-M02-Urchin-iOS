@@ -38,8 +38,12 @@ private extension CollectionCardView {
 
     var header: some View {
         HStack {
-            Button {
-                store.send(.categoryButtonTapped)
+            Menu {
+                ForEach(TrashCategory.allCases, id: \.self) { category in
+                    Button(category.name) {
+                        store.send(.categorySelected(category))
+                    }
+                }
             } label: {
                 HStack(spacing: 7) {
                     Text(store.selectedCategory.name)
@@ -48,7 +52,10 @@ private extension CollectionCardView {
                         .font(.system(size: 18, weight: .medium))
                 }
                 .foregroundStyle(Color(.gray0))
+                .fixedSize()
             }
+            // 메뉴가 닫히는 애니메이션 중 제목이 바뀌면 이전 폭으로 잘린 채 남는 iOS 26 문제를 피하려고, 선택이 바뀔 때마다 라벨을 새로 만들어요
+            .id(store.selectedCategory)
 
             Spacer()
 
