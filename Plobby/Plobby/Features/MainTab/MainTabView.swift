@@ -29,7 +29,7 @@ struct MainTabView: View {
                 }
 
                 Tab("마이", systemImage: "person", value: .my) {
-                    Text("마이")
+                    MyView(store: store.scope(state: \.my, action: \.my))
                 }
 
                 Tab("기록", systemImage: store.isRecordMenuPresented ? "xmark" : "plus", value: .record, role: .search) {
