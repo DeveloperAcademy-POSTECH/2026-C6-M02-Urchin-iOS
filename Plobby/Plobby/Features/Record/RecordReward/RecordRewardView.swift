@@ -266,7 +266,7 @@ private extension TrashSelection {
 
 // MARK: - TrashCategory
 
-private extension TrashCategory {
+extension TrashCategory {
 
     var imageNames: [String] {
         assetNames.flatMap { name in
