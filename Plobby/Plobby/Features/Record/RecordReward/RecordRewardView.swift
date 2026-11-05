@@ -14,7 +14,6 @@ struct RecordRewardView: View {
 
     // MARK: - Properties
 
-    /// 검정 화면이 위에서 내려와 덮는 시간
     static let curtainDuration: TimeInterval = 0.6
 
     let store: StoreOf<RecordRewardFeature>
@@ -54,7 +53,7 @@ struct RecordRewardView: View {
             .onAppear {
                 store.send(.onAppear)
                 scene.onFinished = {
-                    withAnimation(.easeInOut(duration: 0.8).delay(2)) {
+                    withAnimation(.easeInOut(duration: 0.5).delay(1)) {
                         isSummaryVisible = true
                     }
                 }
@@ -66,7 +65,6 @@ struct RecordRewardView: View {
 
 extension RecordRewardView {
 
-    // TODO: 디자인 확정 후 색상·여백 조정
     private var summary: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let nickname = store.nickname {
@@ -127,7 +125,6 @@ private final class FallingTrashScene: SKScene {
     private let floorCategory: UInt32 = 1 << 2
     private let floorNode = SKNode()
     private let netTilt: CGFloat = .pi / 3
-    // ponytail: 마지막 쓰레기가 바닥에 닿기까지 기다리는 고정 시간, 끊기면 물리 정지 감지로 교체
     private let settleDuration: TimeInterval = 1.5
 
     var imageNames: [String] = []
@@ -171,13 +168,11 @@ extension FallingTrashScene {
     }
 
     private func startDropping() {
-        // 큰 것부터 바닥에 깔리도록 L → M → S 순서로 떨어뜨리고, 그물은 맨 마지막에 덮어요
         let shuffled = imageNames.shuffled()
         let items = shuffled.filter { !isNet($0) }
         let ordered = ["_L", "_M", "_S"].flatMap { suffix in items.filter { $0.hasSuffix(suffix) } }
             + shuffled.filter(isNet)
 
-        // 많이 떨어뜨릴수록 간격을 줄여 전체 낙하가 maxDropDuration을 넘지 않게 해요
         let interval = min(dropInterval, maxDropDuration / Double(max(ordered.count, 1)))
         let wait = SKAction.wait(forDuration: interval)
         let drops = ordered.flatMap { name in
@@ -230,7 +225,7 @@ extension FallingTrashScene {
             body.collisionBitMask = floorCategory
             body.allowsRotation = false
             body.angularVelocity = 0
-            // 그물 그림을 좌우·위아래로 뒤집어(180°) 기울여요
+            
             node.zRotation = (x < size.width / 2 ? netTilt : -netTilt) + .pi
             node.zPosition = 1
         }
@@ -244,9 +239,7 @@ extension FallingTrashScene {
 // MARK: - TrashSelection
 
 private extension TrashSelection {
-
-    /// 종류별 개수만 맞추고, 그 종류 안의 에셋·크기는 랜덤으로 골라요
-    /// 화면에 떨어뜨릴 최대 개수, 넘으면 종류별 비율대로 줄이고 고른 종류는 최소 1개씩 남겨요
+    
     static let maximumDropCount = 50
 
     var imageNames: [String] {
