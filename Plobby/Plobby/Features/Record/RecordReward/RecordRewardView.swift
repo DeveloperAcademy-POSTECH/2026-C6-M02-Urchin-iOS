@@ -14,9 +14,13 @@ struct RecordRewardView: View {
 
     // MARK: - Properties
 
+    /// 검정 화면이 위에서 내려와 덮는 시간
+    static let curtainDuration: TimeInterval = 0.6
+
     let store: StoreOf<RecordRewardFeature>
 
     @State private var scene: FallingTrashScene
+    @State private var isSummaryVisible = false
 
     // MARK: - Init
 
@@ -26,6 +30,7 @@ struct RecordRewardView: View {
         let scene = FallingTrashScene()
         scene.scaleMode = .resizeFill
         scene.imageNames = store.trash.imageNames
+        scene.startDelay = Self.curtainDuration
         _scene = State(initialValue: scene)
     }
 
@@ -36,15 +41,23 @@ struct RecordRewardView: View {
             .ignoresSafeArea()
             .overlay(alignment: .topLeading) {
                 summary
-            }
-            .onAppear {
-                store.send(.onAppear)
+                    .opacity(isSummaryVisible ? 1 : 0)
             }
             .overlay(alignment: .bottom) {
                 PlobbyButton(text: "다음") {
                     store.send(.nextButtonTapped)
                 }
                 .padding(.horizontal, 20)
+                .opacity(isSummaryVisible ? 1 : 0)
+                .allowsHitTesting(isSummaryVisible)
+            }
+            .onAppear {
+                store.send(.onAppear)
+                scene.onFinished = {
+                    withAnimation(.easeInOut(duration: 0.8).delay(2)) {
+                        isSummaryVisible = true
+                    }
+                }
             }
     }
 }
@@ -112,8 +125,12 @@ private final class FallingTrashScene: SKScene {
     private let floorCategory: UInt32 = 1 << 2
     private let floorNode = SKNode()
     private let netTilt: CGFloat = .pi / 3
+    // ponytail: 마지막 쓰레기가 바닥에 닿기까지 기다리는 고정 시간, 끊기면 물리 정지 감지로 교체
+    private let settleDuration: TimeInterval = 1.5
 
     var imageNames: [String] = []
+    var startDelay: TimeInterval = 0
+    var onFinished: (() -> Void)?
 
     // MARK: - Lifecycle
 
@@ -159,11 +176,15 @@ extension FallingTrashScene {
             + shuffled.filter(isNet)
 
         let wait = SKAction.wait(forDuration: dropInterval)
-        let actions = ordered.flatMap { name in
+        let drops = ordered.flatMap { name in
             [wait, SKAction.run { [weak self] in self?.dropItem(name) }]
         }
 
-        run(.sequence(actions))
+        run(.sequence(
+            [.wait(forDuration: startDelay)]
+            + drops
+            + [.wait(forDuration: settleDuration), .run { [weak self] in self?.onFinished?() }]
+        ))
     }
 
     private func isNet(_ name: String) -> Bool {

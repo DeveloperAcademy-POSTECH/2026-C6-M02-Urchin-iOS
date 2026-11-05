@@ -18,15 +18,22 @@ struct RecordView: View {
     // MARK: - Body
     
     var body: some View {
-        switch store.scope(state: \.step, action: \.step).case {
-        case let .photoPicker(store):
-            PhotosPickerView(store: store)
-        case let .form(store):
-            RecordFormView(store: store)
-        case let .reward(store):
-            RecordRewardView(store: store)
-        case let .detail(store):
-            RecordDetailView(store: store)
+        ZStack {
+            switch store.scope(state: \.step, action: \.step).case {
+            case let .photoPicker(store):
+                PhotosPickerView(store: store)
+            case let .form(store):
+                // 리워드 화면이 덮을 때까지 그대로 남아 있어요
+                RecordFormView(store: store)
+                    .transition(.identity)
+            case let .reward(store):
+                RecordRewardView(store: store)
+                    .transition(.asymmetric(insertion: .move(edge: .top), removal: .identity))
+                    .zIndex(1)
+            case let .detail(store):
+                RecordDetailView(store: store)
+            }
         }
+        .animation(.easeInOut(duration: RecordRewardView.curtainDuration), value: store.step.is(\.reward))
     }
 }
