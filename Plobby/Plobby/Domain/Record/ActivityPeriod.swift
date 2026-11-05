@@ -30,9 +30,43 @@ nonisolated struct ActivityPeriod: Equatable, Sendable, Codable {
         start != nil && end != nil
     }
     
-    /// 시작과 종료가 모두 있고, 종료가 시작보다 늦어야 해요.
     var isValid: Bool {
         guard let start, let end else { return false }
+        
         return start < end
+    }
+}
+
+nonisolated extension ActivityPeriod {
+    
+    static let minimumGap: TimeInterval = 60
+    static let defaultDuration: TimeInterval = 60 * 60
+    
+    static func defaultPeriod(endingAt now: Date, calendar: Calendar) -> ActivityPeriod {
+        let end = calendar.dateInterval(of: .minute, for: now)?.start ?? now
+        return ActivityPeriod(start: end.addingTimeInterval(-defaultDuration), end: end)
+    }
+    
+    func allowedRange(for field: PeriodField, now: Date) -> ClosedRange<Date> {
+        let lowerBound: Date
+        let upperBound: Date
+        
+        switch field {
+        case .start:
+            lowerBound = .distantPast
+            upperBound = (end ?? now).addingTimeInterval(-Self.minimumGap)
+        case .end:
+            lowerBound = start?.addingTimeInterval(Self.minimumGap) ?? .distantPast
+            upperBound = now
+        }
+        
+        return min(lowerBound, upperBound)...upperBound
+    }
+}
+
+extension Comparable {
+    
+    func clamped(to range: ClosedRange<Self>) -> Self {
+        min(max(self, range.lowerBound), range.upperBound)
     }
 }

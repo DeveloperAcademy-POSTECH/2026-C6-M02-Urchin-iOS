@@ -87,7 +87,11 @@ private extension DatePickerView {
 
             Spacer()
 
-            monthButton(systemName: "chevron.left", accessibilityLabel: "이전 달") {
+            monthButton(
+                systemName: "chevron.left",
+                accessibilityLabel: "이전 달",
+                isEnabled: store.isPreviousMonthEnabled
+            ) {
                 store.send(.previousMonthTapped)
             }
             monthButton(
@@ -157,7 +161,7 @@ private extension DatePickerView {
     func dayCell(_ day: Date) -> some View {
         let isSelected = calendar.isDate(day, inSameDayAs: store.date)
         let isToday = calendar.isDate(day, inSameDayAs: store.today)
-        let isFuture = DatePickerFeature.isFuture(day, today: store.today, calendar: calendar)
+        let isDisabled = !DatePickerFeature.isSelectable(day, in: store.allowedRange, calendar: calendar)
 
         return Button {
             store.send(.dayTapped(day))
@@ -166,18 +170,18 @@ private extension DatePickerView {
                 day: day,
                 isSelected: isSelected,
                 isToday: isToday,
-                isFuture: isFuture
+                isDisabled: isDisabled
             )
         }
         .buttonStyle(.plain)
-        .disabled(isFuture)
+        .disabled(isDisabled)
     }
     
     func dayText(
         day: Date,
         isSelected: Bool,
         isToday: Bool,
-        isFuture: Bool
+        isDisabled: Bool
     ) -> some View {
         Text("\(calendar.component(.day, from: day))")
             .font(.system(size: 18, weight: isToday && !isSelected ? .semibold : .regular))
@@ -185,7 +189,7 @@ private extension DatePickerView {
                 dayColor(
                     isSelected: isSelected,
                     isToday: isToday,
-                    isFuture: isFuture
+                    isDisabled: isDisabled
                 )
             )
             .frame(width: 36, height: 36)
@@ -203,12 +207,12 @@ private extension DatePickerView {
     func dayColor(
         isSelected: Bool,
         isToday: Bool,
-        isFuture: Bool
+        isDisabled: Bool
     ) -> Color {
         if isSelected {
             return .white
         }
-        if isFuture {
+        if isDisabled {
             return .formDisabledText
         }
         if isToday {

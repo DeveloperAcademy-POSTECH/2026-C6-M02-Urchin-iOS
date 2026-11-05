@@ -18,6 +18,7 @@ struct TimePickerFeature {
     struct State: Equatable {
         let field: PeriodField
         let baseDate: Date
+        let earliestTime: TimeOfDay?
         let latestTime: TimeOfDay?
         var meridiemWheel: WheelState<TimeOfDay.Meridiem>
         var hourWheel: WheelState<Int>
@@ -26,16 +27,22 @@ struct TimePickerFeature {
         init(
             field: PeriodField,
             date: Date,
-            now: Date,
+            allowedRange: ClosedRange<Date>,
             calendar: Calendar
         ) {
-            let isEndOfToday = field == .end && calendar.isDate(date, inSameDayAs: now)
-            
             self.field = field
             self.baseDate = date
-            self.latestTime = isEndOfToday ? TimeOfDay(date: now, calendar: calendar) : nil
+            self.earliestTime = calendar.isDate(date, inSameDayAs: allowedRange.lowerBound)
+                ? TimeOfDay(date: allowedRange.lowerBound, calendar: calendar)
+                : nil
+            self.latestTime = calendar.isDate(date, inSameDayAs: allowedRange.upperBound)
+                ? TimeOfDay(date: allowedRange.upperBound, calendar: calendar)
+                : nil
             
             var time = TimeOfDay(date: date, calendar: calendar)
+            if let earliestTime, time < earliestTime {
+                time = earliestTime
+            }
             if let latestTime, time > latestTime {
                 time = latestTime
             }
@@ -55,7 +62,7 @@ struct TimePickerFeature {
                 isCyclic: true,
                 selected: time.minute
             )
-            applyLatestTime()
+            applyBounds()
         }
         
         var selectedTime: TimeOfDay {
@@ -66,28 +73,35 @@ struct TimePickerFeature {
             )
         }
         
-        mutating func applyLatestTime() {
-            guard let latest = latestTime else { return }
+        mutating func applyBounds() {
+            let earliest = earliestTime ?? TimeOfDay(hour24: 0, minute: 0)
+            let latest = latestTime ?? TimeOfDay(hour24: 23, minute: 59)
             
-            meridiemWheel.update(
-                values: latest.meridiem == .am ? [.am] : TimePickerFeature.meridiems,
-                isCyclic: false
-            )
+            let meridiems = TimePickerFeature.meridiems.filter { meridiem in
+                meridiem.startHour24 <= latest.hour24
+                    && meridiem.startHour24 + TimeOfDay.hoursPerPeriod > earliest.hour24
+            }
+            meridiemWheel.update(values: meridiems, isCyclic: false)
             
-            if meridiemWheel.selectedValue == latest.meridiem {
-                let hour12s = (latest.meridiem.startHour24...latest.hour24).map {
-                    TimeOfDay(hour24: $0, minute: 0).hour12
-                }
-                hourWheel.update(values: hour12s, isCyclic: false)
-            } else {
+            let meridiem = meridiemWheel.selectedValue
+            let firstHour24 = max(meridiem.startHour24, earliest.hour24)
+            let lastHour24 = min(meridiem.startHour24 + TimeOfDay.hoursPerPeriod - 1, latest.hour24)
+            
+            if lastHour24 - firstHour24 + 1 == TimeOfDay.hoursPerPeriod {
                 hourWheel.update(values: TimePickerFeature.hours, isCyclic: true)
+            } else {
+                let hour12s = (firstHour24...lastHour24).map { TimeOfDay(hour24: $0, minute: 0).hour12 }
+                hourWheel.update(values: hour12s, isCyclic: false)
             }
             
-            if meridiemWheel.selectedValue == latest.meridiem,
-               hourWheel.selectedValue == latest.hour12 {
-                minuteWheel.update(values: Array(0...latest.minute), isCyclic: false)
-            } else {
+            let hour24 = TimeOfDay(meridiem: meridiem, hour12: hourWheel.selectedValue, minute: 0).hour24
+            let firstMinute = hour24 == earliest.hour24 ? earliest.minute : 0
+            let lastMinute = hour24 == latest.hour24 ? latest.minute : 59
+            
+            if firstMinute == 0, lastMinute == 59 {
                 minuteWheel.update(values: TimePickerFeature.minutes, isCyclic: true)
+            } else {
+                minuteWheel.update(values: Array(firstMinute...lastMinute), isCyclic: false)
             }
         }
     }
@@ -120,7 +134,7 @@ struct TimePickerFeature {
                 case .hour: state.hourWheel.row = row
                 case .minute: state.minuteWheel.row = row
                 }
-                state.applyLatestTime()
+                state.applyBounds()
                 return .none
                 
             case .confirmTapped:
