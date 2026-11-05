@@ -17,6 +17,7 @@ struct CollectionCardFeature {
         var selectedCategory: TrashCategory = .plastic
         // TODO: 컬렉션 데이터 연동 후 실제 개수로 교체
         var collectedCount: Int = 128
+        var isFlipped = false
     }
 
     // MARK: - Action
@@ -35,8 +36,8 @@ struct CollectionCardFeature {
                 state.selectedCategory = category
                 return .none
 
-            // TODO: 카드 뒷면 뒤집기 연결
             case .flipButtonTapped:
+                state.isFlipped.toggle()
                 return .none
             }
         }

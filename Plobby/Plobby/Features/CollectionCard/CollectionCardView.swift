@@ -19,6 +19,17 @@ struct CollectionCardView: View {
     // MARK: - Body
 
     var body: some View {
+        FlipCard(angle: store.isFlipped ? 180 : 0, front: front, back: back)
+            .animation(.easeInOut(duration: 0.6), value: store.isFlipped)
+            .padding(.horizontal, 20)
+    }
+}
+
+// MARK: - Front
+
+private extension CollectionCardView {
+
+    var front: some View {
         VStack(spacing: 0) {
             header
             trashPile
@@ -26,13 +37,7 @@ struct CollectionCardView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.neutralBlack), in: RoundedRectangle(cornerRadius: 20))
-        .padding(.horizontal, 20)
     }
-}
-
-// MARK: - Subviews
-
-private extension CollectionCardView {
 
     var header: some View {
         HStack {
@@ -56,26 +61,29 @@ private extension CollectionCardView {
 
             Spacer()
 
-            Button {
-                store.send(.flipButtonTapped)
-            } label: {
-                // TODO: 디자인 시스템 확정 후 변경
-                Image(.collectionCardFlip)
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .frame(width: 44, height: 44)
-                    .background(Color(.gray900), in: Circle())
-                    .overlay {
-                        Circle()
-                            .strokeBorder(Color(.gray700), lineWidth: 1)
-                    }
-            }
+            flipButton
         }
         .padding(.top, 16)
         .padding(.horizontal, 20)
     }
 
-    /// 종류가 바뀌면 장면을 새로 만들어 처음부터 다시 떨어뜨려요
+    var flipButton: some View {
+        Button {
+            store.send(.flipButtonTapped)
+        } label: {
+            // TODO: 디자인 시스템 확정 후 변경
+            Image(.collectionCardFlip)
+                .resizable()
+                .frame(width: 24, height: 24)
+                .frame(width: 44, height: 44)
+                .background(Color(.gray900), in: Circle())
+                .overlay {
+                    Circle()
+                        .strokeBorder(Color(.gray700), lineWidth: 1)
+                }
+        }
+    }
+
     var trashPile: some View {
         TrashPileView(category: store.selectedCategory, count: store.collectedCount)
             .id(store.selectedCategory)
@@ -102,11 +110,117 @@ private extension CollectionCardView {
     }
 }
 
+// MARK: - Back
+
+private extension CollectionCardView {
+
+    // TODO: 디자인 확정 후 색상·여백 조정, 일러스트는 에셋 나오면 교체
+    var back: some View {
+        let fact = store.selectedCategory.collectionFact
+
+        return VStack(spacing: 0) {
+            HStack {
+                Text(store.selectedCategory.name)
+                    .plobbyFont(.metric)
+                    .foregroundStyle(Color(.gray0))
+
+                Spacer()
+
+                flipButton
+            }
+            .padding(.top, 16)
+            .padding(.horizontal, 20)
+
+            Spacer()
+
+            Text("지금까지 주운 \(store.selectedCategory.name)")
+                .plobbyFont(.helper)
+                // TODO: 컬러셋 확정 후 교체
+                .foregroundStyle(Color(red: 0xBA / 255, green: 0xC4 / 255, blue: 0xC0 / 255))
+
+            Text("\(store.collectedCount)개")
+                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 44))
+                .foregroundStyle(Color(.green500))
+
+            // TODO: 종류별 일러스트 에셋 나오면 교체
+            Text("🐢")
+                .font(.system(size: 120))
+                .padding(.vertical, 12)
+
+            Text(fact.title)
+                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 24))
+                .foregroundStyle(Color(.gray0))
+
+            Text(fact.description)
+                .plobbyFont(.body)
+                // TODO: 컬러셋 확정 후 교체
+                .foregroundStyle(Color(red: 0xBA / 255, green: 0xC4 / 255, blue: 0xC0 / 255))
+                .padding(.top, 12)
+
+            Text(fact.source)
+                .padding(.top, 48)
+                .plobbyFont(.metadata)
+                // TODO: 컬러셋 확정 후 교체
+                .foregroundStyle(Color(red: 0x8D / 255, green: 0x9A / 255, blue: 0x94 / 255))
+
+            Spacer()
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.neutralBlack), in: RoundedRectangle(cornerRadius: 20))
+    }
+}
+
+// MARK: - FlipCard
+
+private struct FlipCard<Front: View, Back: View>: View, Animatable {
+
+    var angle: Double
+    let front: Front
+    let back: Back
+
+    var animatableData: Double {
+        get { angle }
+        set { angle = newValue }
+    }
+
+    var body: some View {
+        ZStack {
+            front
+                .opacity(angle < 90 ? 1 : 0)
+                .allowsHitTesting(angle < 90)
+            back
+                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                .opacity(angle < 90 ? 0 : 1)
+                .allowsHitTesting(angle >= 90)
+        }
+        .rotation3DEffect(.degrees(angle), axis: (x: 0, y: 1, z: 0), perspective: 0.4)
+    }
+}
+
+// MARK: - TrashCategory
+
+private extension TrashCategory {
+
+    // TODO: 종류별 문구·출처 확정 후 교체 (지금은 플라스틱만 시안 문구)
+    var collectionFact: (title: String, description: String, source: String) {
+        switch self {
+        case .plastic:
+            (
+                "바다거북이 먹이로\n착각하지 않도록",
+                "비닐은 해파리와 비슷하게 보여\n바다거북이 삼킬 수 있어요.",
+                "출처 · NOAA 해양쓰레기 프로그램\nIngestion"
+            )
+        default:
+            ("바다를 깨끗하게", "\(name) 쓰레기를 주워 바다를 지켰어요.", "출처 · 준비 중")
+        }
+    }
+}
+
 // MARK: - TrashPileView
 
 private struct TrashPileView: View {
 
-    // ponytail: 모은 개수가 많아져도 버틸 수 있게 화면에 쌓는 개수를 묶어 둬요, 더미가 부족해 보이면 조정
     private static let maximumDropCount = 200
 
     @State private var scene: TrashPileScene
@@ -126,15 +240,12 @@ private struct TrashPileView: View {
 
 // MARK: - TrashPileScene
 
-/// 물리 없이 산 모양 안의 자리를 미리 정해 두고, 위에서 그 자리로 떨어뜨려요 (에셋끼리 겹쳐도 돼요)
 private final class TrashPileScene: SKScene {
 
     // MARK: - Properties
 
     private let trashScale: CGFloat = 0.9
-    /// 산 밑변의 절반 (화면 폭 대비)
     private let pileHalfWidthRatio: CGFloat = 0.46
-    /// 산 꼭대기 높이 (화면 높이 대비)
     private let pileHeightRatio: CGFloat = 0.42
     private let fallDuration: TimeInterval = 0.25
     private let bounceHeight: CGFloat = 6
@@ -159,12 +270,10 @@ private final class TrashPileScene: SKScene {
 
 extension TrashPileScene {
 
-    /// 장면 크기가 정해진 뒤에 한 번만 시작해요
     private func startIfNeeded() {
         guard !hasStarted, size.width > 0, size.height > 0, view != nil else { return }
         hasStarted = true
 
-        // 아래쪽 자리부터 채워야 산이 바닥부터 쌓여요
         let targets = pileTargets(count: imageNames.count)
         let items = zip(imageNames, targets)
             .map { (name: $0, target: $1) }
@@ -179,7 +288,6 @@ extension TrashPileScene {
         }
     }
 
-    /// 둥근 산을 개수만큼의 격자 칸으로 나누고, 칸마다 하나씩 살짝 흔들어 놓아요 (빈틈 없이 고르게 채워요)
     private func pileTargets(count: Int) -> [CGPoint] {
         guard count > 0 else { return [] }
 
@@ -192,7 +300,6 @@ extension TrashPileScene {
             return abs(offset) <= 1 && point.y <= height * (1 - offset * offset)
         }
 
-        // 포물선 산의 넓이(밑변 × 높이 × 2/3)를 개수로 나눈 만큼이 칸 하나의 넓이예요
         let area = 2 * halfWidth * height * 2 / 3
         let spacing = (area / CGFloat(count)).squareRoot()
 
@@ -207,7 +314,6 @@ extension TrashPileScene {
             }
         }
 
-        // 격자로 딱 맞지 않는 개수는 산 안의 아무 자리로 채우거나 덜어내요
         while points.count < count {
             let point = CGPoint(x: .random(in: centerX - halfWidth...centerX + halfWidth), y: .random(in: 0...height))
             if isInside(point) { points.append(point) }
@@ -220,7 +326,7 @@ extension TrashPileScene {
         node.setScale(DesignScale.fitRatio(for: size) * trashScale)
         node.zRotation = .random(in: -.pi...(.pi))
         node.zPosition = .random(in: 0...1)
-        // 회전까지 반영한 실제 크기의 절반만큼 안쪽에 놓아서 영역 밖으로 잘리지 않게 해요
+
         let cosine = abs(cos(node.zRotation))
         let sine = abs(sin(node.zRotation))
         let halfWidth = (node.size.width * cosine + node.size.height * sine) / 2
