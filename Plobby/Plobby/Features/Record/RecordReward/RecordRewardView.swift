@@ -52,6 +52,15 @@ struct RecordRewardView: View {
             }
             .onAppear {
                 store.send(.onAppear)
+
+                // 쓰레기는 선택 입력이라, 없으면 낙하 없이 검정 화면이 덮이자마자 문구를 보여 줘요
+                guard !store.trash.isEmpty else {
+                    withAnimation(.easeInOut(duration: 0.5).delay(Self.curtainDuration)) {
+                        isSummaryVisible = true
+                    }
+                    return
+                }
+
                 scene.onFinished = {
                     withAnimation(.easeInOut(duration: 0.5).delay(1)) {
                         isSummaryVisible = true
@@ -80,8 +89,10 @@ extension RecordRewardView {
                 .foregroundStyle(Color(.gray0))
 
             HStack(alignment: .top, spacing: 38) {
-                metric(value: "\(store.trash.totalCount)", unit: "개", title: "수거한 쓰레기")
-                    .frame(width: 154, alignment: .leading)
+                if !store.trash.isEmpty {
+                    metric(value: "\(store.trash.totalCount)", unit: "개", title: "수거한 쓰레기")
+                        .frame(width: 154, alignment: .leading)
+                }
 
                 if let weightKg = store.weightKg {
                     metric(value: weightKg.formatted(), unit: "kg", title: "총무게")
