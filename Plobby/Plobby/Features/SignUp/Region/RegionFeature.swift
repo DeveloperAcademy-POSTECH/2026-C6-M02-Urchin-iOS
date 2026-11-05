@@ -17,13 +17,13 @@ struct RegionFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.beaches) var allBeaches
-        var selectedRegion: BeachRegion?
+        var selectedRegion: Sea?
         var searchText = ""
         var selectedBeachIDs: Set<UUID> = []
         
         var beaches: [Beach] {
             let beaches = selectedRegion.map { region in
-                allBeaches.filter { $0.region == region.displayName }
+                allBeaches.filter { $0.region == region }
             } ?? allBeaches
             
             guard !searchText.isEmpty else { return beaches }
@@ -35,7 +35,7 @@ struct RegionFeature {
     // MARK: - Action
     
     enum Action {
-        case regionTapped(BeachRegion?)
+        case regionTapped(Sea?)
         case searchTextChanged(String)
         case beachTapped(UUID)
         case nextButtonTapped

@@ -10,7 +10,7 @@ import Foundation
 nonisolated struct BeachResponseDTO: Decodable, Identifiable, Equatable, Sendable {
     let id: UUID
     let name: String
-    let region: BeachRegion
+    let region: Region
     let address: String
     let latitude: Double
     let longitude: Double
@@ -26,11 +26,27 @@ nonisolated struct BeachResponseDTO: Decodable, Identifiable, Equatable, Sendabl
     func toDomain() -> Beach {
         Beach(
             id: id,
-            region: region.displayName,
+            region: region.toDomain(),
             name: name,
             address: address,
             latitude: latitude,
             longitude: longitude
         )
+    }
+}
+
+nonisolated extension BeachResponseDTO {
+
+    enum Region: String, Decodable, Sendable {
+        case east, west, south, jeju
+
+        func toDomain() -> Sea {
+            switch self {
+            case .east: .east
+            case .west: .west
+            case .south: .south
+            case .jeju: .jeju
+            }
+        }
     }
 }

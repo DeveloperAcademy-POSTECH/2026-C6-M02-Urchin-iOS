@@ -5,26 +5,44 @@
 //  Created by 더스틴 on 11/3/26.
 //
 
-nonisolated struct TrashSelection: Equatable, Sendable, Codable {
+nonisolated struct TrashSelection: Equatable, Sendable {
     
-    var items: [Item] = []
+    static let maximumCount = 999
+    static let etcMemoMaximumLength = 50
     
-    var totalQuantity: Int {
-        items.reduce(0) { $0 + $1.quantity }
+    private(set) var counts: [TrashCategory: Int] = [:]
+    
+    var etcMemo: String = ""
+    
+    subscript(category: TrashCategory) -> Int {
+        get { counts[category, default: 0] }
+        set {
+            let count = min(max(newValue, 0), Self.maximumCount)
+            counts[category] = count > 0 ? count : nil
+            
+            if category == .etc, count == 0 {
+                etcMemo = ""
+            }
+        }
     }
     
-    /// 예: "낚시·어업 용품 외 2종, 총 14개"
+    var selectedCategories: [TrashCategory] {
+        TrashCategory.allCases.filter { self[$0] > 0 }
+    }
+    
+    var isEmpty: Bool {
+        counts.isEmpty
+    }
+    
+    var totalCount: Int {
+        counts.values.reduce(0, +)
+    }
+    
     var summary: String? {
-        guard let first = items.first else { return nil }
-        let kinds = items.count > 1 ? "\(first.name) 외 \(items.count - 1)종" : first.name
-        return "\(kinds), 총 \(totalQuantity)개"
-    }
-}
-
-extension TrashSelection {
-    
-    nonisolated struct Item: Equatable, Sendable, Codable {
-        let name: String
-        var quantity: Int
+        let categories = selectedCategories
+        guard let first = categories.max(by: { self[$0] < self[$1] }) else { return nil }
+        
+        let kinds = categories.count > 1 ? "\(first.name) 외 \(categories.count - 1)종" : first.name
+        return "\(kinds), 총 \(totalCount)개"
     }
 }

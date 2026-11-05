@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "brick_M.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

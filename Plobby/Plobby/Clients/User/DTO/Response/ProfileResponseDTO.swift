@@ -18,7 +18,7 @@ nonisolated struct ProfileResponseDTO: Decodable, Sendable {
         case profileImageKey = "profile_image_key"
     }
 
-    func toDomain() -> Profile {
-        Profile(userID: userID, nickname: nickname, profileImageKey: profileImageKey)
+    func toDomain(profileImageURL: URL?) -> Profile {
+        Profile(userID: userID, nickname: nickname, profileImageKey: profileImageKey, profileImageURL: profileImageURL)
     }
 }

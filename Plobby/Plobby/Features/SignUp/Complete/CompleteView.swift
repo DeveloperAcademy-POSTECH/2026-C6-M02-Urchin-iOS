@@ -25,7 +25,7 @@ struct CompleteView: View {
             
             Spacer()
 
-            NormalButton(text: "완료") {
+            PlobbyButton(text: "완료") {
                 store.send(.completeButtonTapped)
             }
             .padding(.horizontal, 20)
