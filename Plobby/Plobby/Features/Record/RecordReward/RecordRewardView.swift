@@ -121,6 +121,7 @@ private final class FallingTrashScene: SKScene {
 
     private let dropInterval: TimeInterval = 0.12
     private let maxDropDuration: TimeInterval = 3.5
+    private let trashScale: CGFloat = 0.8
     private let boundaryCategory: UInt32 = 1 << 0
     private let trashCategory: UInt32 = 1 << 1
     private let floorCategory: UInt32 = 1 << 2
@@ -198,7 +199,7 @@ extension FallingTrashScene {
         let isNet = isNet(name)
         let texture = SKTexture(imageNamed: name)
         let node = SKSpriteNode(texture: texture)
-        node.setScale(DesignScale.fitRatio(for: size))
+        node.setScale(DesignScale.fitRatio(for: size) * trashScale)
 
         let halfWidth = node.size.width / 2
 
