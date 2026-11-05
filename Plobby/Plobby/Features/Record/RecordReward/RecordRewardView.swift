@@ -120,6 +120,7 @@ private final class FallingTrashScene: SKScene {
     // MARK: - Properties
 
     private let dropInterval: TimeInterval = 0.12
+    private let maxDropDuration: TimeInterval = 3.5
     private let boundaryCategory: UInt32 = 1 << 0
     private let trashCategory: UInt32 = 1 << 1
     private let floorCategory: UInt32 = 1 << 2
@@ -175,7 +176,9 @@ extension FallingTrashScene {
         let ordered = ["_L", "_M", "_S"].flatMap { suffix in items.filter { $0.hasSuffix(suffix) } }
             + shuffled.filter(isNet)
 
-        let wait = SKAction.wait(forDuration: dropInterval)
+        // 많이 떨어뜨릴수록 간격을 줄여 전체 낙하가 maxDropDuration을 넘지 않게 해요
+        let interval = min(dropInterval, maxDropDuration / Double(max(ordered.count, 1)))
+        let wait = SKAction.wait(forDuration: interval)
         let drops = ordered.flatMap { name in
             [wait, SKAction.run { [weak self] in self?.dropItem(name) }]
         }
@@ -242,10 +245,16 @@ extension FallingTrashScene {
 private extension TrashSelection {
 
     /// 종류별 개수만 맞추고, 그 종류 안의 에셋·크기는 랜덤으로 골라요
+    /// 화면에 떨어뜨릴 최대 개수, 넘으면 종류별 비율대로 줄이고 고른 종류는 최소 1개씩 남겨요
+    static let maximumDropCount = 50
+
     var imageNames: [String] {
-        counts.flatMap { category, count in
+        let scale = min(1, Double(Self.maximumDropCount) / Double(max(totalCount, 1)))
+
+        return counts.flatMap { category, count in
+            let dropCount = max(1, Int((Double(count) * scale).rounded()))
             let candidates = category.imageNames
-            return (0..<count).compactMap { _ in candidates.randomElement() }
+            return (0..<dropCount).compactMap { _ in candidates.randomElement() }
         }
     }
 }
