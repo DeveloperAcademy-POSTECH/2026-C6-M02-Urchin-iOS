@@ -13,7 +13,6 @@ nonisolated struct TrashSelection: Equatable, Sendable, Codable {
         items.reduce(0) { $0 + $1.quantity }
     }
     
-    /// 예: "낚시·어업 용품 외 2종, 총 14개"
     var summary: String? {
         guard let first = items.first else { return nil }
         let kinds = items.count > 1 ? "\(first.name) 외 \(items.count - 1)종" : first.name
