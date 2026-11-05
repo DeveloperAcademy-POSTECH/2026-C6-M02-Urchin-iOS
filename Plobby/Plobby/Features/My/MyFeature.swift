@@ -5,6 +5,8 @@
 //  Created by 더스틴 on 11/3/26.
 //
 
+import Foundation
+
 import ComposableArchitecture
 
 @Reducer
@@ -16,6 +18,8 @@ struct MyFeature {
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
         var profile: Profile?
+        var savedProfileImage: Data?
+        @Presents var profileEdit: ProfileEditFeature.State?
     }
 
     // MARK: - Action
@@ -23,6 +27,8 @@ struct MyFeature {
     enum Action {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
+        case profileEditButtonTapped
+        case profileEdit(PresentationAction<ProfileEditFeature.Action>)
     }
 
     // MARK: - Dependency
@@ -46,7 +52,27 @@ struct MyFeature {
             case let .profileResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 return .none
+
+            case .profileEditButtonTapped:
+                guard let profile = state.profile else { return .none }
+
+                state.profileEdit = ProfileEditFeature.State(profile: profile)
+                return .none
+
+            case let .profileEdit(.presented(.delegate(.saved(profile, profileImage)))):
+                state.profile = profile
+
+                if let profileImage {
+                    state.savedProfileImage = profileImage
+                }
+                return .none
+
+            case .profileEdit:
+                return .none
             }
+        }
+        .ifLet(\.$profileEdit, action: \.profileEdit) {
+            ProfileEditFeature()
         }
     }
 }

@@ -14,6 +14,7 @@ struct MyView: View {
     // MARK: - Properties
 
     let store: StoreOf<MyFeature>
+    @State private var savedProfileImage: UIImage?
 
     // MARK: - Body
 
@@ -26,6 +27,9 @@ struct MyView: View {
         .frame(maxHeight: .infinity, alignment: .top)
         .onAppear {
             store.send(.onAppear)
+        }
+        .task(id: store.savedProfileImage) {
+            savedProfileImage = store.savedProfileImage.flatMap(UIImage.init(data:))
         }
     }
 }
@@ -66,13 +70,21 @@ extension MyView {
     }
 
     private var profileImage: some View {
-        AsyncImage(url: store.profile?.profileImageURL) { image in
-            image
-                .resizable()
-                .scaledToFill()
-        } placeholder: {
-            Circle()
-                .fill(.gray.opacity(0.2))
+        Group {
+            if let savedProfileImage {
+                Image(uiImage: savedProfileImage)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                AsyncImage(url: store.profile?.profileImageURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Circle()
+                        .fill(.gray.opacity(0.2))
+                }
+            }
         }
         .frame(width: 56, height: 56)
         .clipShape(Circle())
@@ -80,7 +92,7 @@ extension MyView {
 
     private var profileEditButton: some View {
         Button {
-            // TODO: 프로필 수정 화면 연결
+            store.send(.profileEditButtonTapped)
         } label: {
             Text("프로필 수정")
                 .font(.system(size: 12, weight: .medium))

@@ -42,6 +42,11 @@ struct MainTabView: View {
             ) { store in
                 FavoriteBeachView(store: store)
             }
+            .navigationDestination(
+                item: $store.scope(state: \.my.profileEdit, action: \.my.profileEdit)
+            ) { store in
+                ProfileEditView(store: store)
+            }
         }
         .tint(.primary)
         .overlay(alignment: .bottomTrailing) {
