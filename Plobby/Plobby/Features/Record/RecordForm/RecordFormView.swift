@@ -90,7 +90,14 @@ struct RecordFormView: View {
         ) { store in
             LocationPickerView(store: store)
         }
-        // TODO: 장소 선택 뷰 구현 후 sheet 연결
+        .sheet(
+            item: $store.scope(state: \.destination?.trashPicker, action: \.destination.trashPicker)
+        ) { store in
+            TrashPickerView(store: store)
+                .presentationDetents(belowNavigationBarDetents)
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(20)
+        }
         .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
 }
