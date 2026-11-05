@@ -46,17 +46,7 @@ extension AuthClient: DependencyKey {
                 var profileImageKey: String?
 
                 if let profileImage = profile.profileImage {
-                    let path = "\(profile.userID.uuidString.lowercased())/profile.jpg"
-
-                    try await supabase.storage
-                        .from("Plobby Profile Bucket")
-                        .upload(
-                            path,
-                            data: profileImage,
-                            options: FileOptions(contentType: "image/jpeg", upsert: true)
-                        )
-
-                    profileImageKey = path
+                    profileImageKey = try await supabase.uploadProfileImage(profileImage, userID: profile.userID)
                 }
 
                 try await supabase

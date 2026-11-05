@@ -17,6 +17,7 @@ enum AlertType {
     case recordDeleted
     case recordDeleteFailed
     case userBlockConfirm
+    case profileUpdateFailed
     
     var title: String {
         switch self {
@@ -28,12 +29,13 @@ enum AlertType {
         case .recordDeleted: "삭제가 완료되었습니다"
         case .recordDeleteFailed: "기록을 삭제하지 못했어요"
         case .userBlockConfirm: "이 사용자를 차단할까요?"
+        case .profileUpdateFailed: "프로필을 저장하지 못했어요"
         }
     }
     
     var message: String? {
         switch self {
-        case .signInFailed, .signUpFailed, .recordSubmitFailed, .recordDeleteFailed: "잠시 후 다시 시도해 주세요."
+        case .signInFailed, .signUpFailed, .recordSubmitFailed, .recordDeleteFailed, .profileUpdateFailed: "잠시 후 다시 시도해 주세요."
         case .profileImageTooLarge: "2MB 미만의 사진을 선택해 주세요."
         case .recordDeleteConfirm: "삭제한 기록은 복구할 수 없어요."
         case .recordDeleted: nil
@@ -43,14 +45,14 @@ enum AlertType {
     
     var buttonType: ButtonType {
         switch self {
-        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed: .confirm
         case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm: .cancelConfirm
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed: .confirm
         }
     }
     
     var confirmTitle: String {
         switch self {
-        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed: "확인"
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed: "확인"
         case .recordSubmitFailed: "다시 시도"
         case .recordDeleteConfirm: "삭제"
         case .userBlockConfirm: "차단"
