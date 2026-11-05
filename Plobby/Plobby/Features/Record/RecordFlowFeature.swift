@@ -42,8 +42,14 @@ struct RecordFlowFeature {
         @CasePathable
         enum Delegate {
             case closed
+            case recordDeleted
         }
     }
+    
+    // MARK: - Dependency
+    
+    @Dependency(\.date.now) var now
+    @Dependency(\.calendar) var calendar
     
     // MARK: - Body
     
@@ -57,7 +63,8 @@ struct RecordFlowFeature {
             case let .step(.photoPicker(.delegate(.finished(photos)))):
                 state.step = .form(.init(
                     recordType: state.recordType,
-                    photos: IdentifiedArray(uniqueElements: photos)
+                    photos: IdentifiedArray(uniqueElements: photos.map(RecordPhoto.local)),
+                    period: .defaultPeriod(endingAt: now, calendar: calendar)
                 ))
                 return .none
                 
@@ -74,6 +81,9 @@ struct RecordFlowFeature {
                     .step(.reward(.delegate(.closed))),
                     .step(.detail(.delegate(.closed))):
                 return .send(.delegate(.closed))
+                
+            case .step(.detail(.delegate(.deleted))):
+                return .send(.delegate(.recordDeleted))
                 
             case .step, .delegate:
                 return .none
