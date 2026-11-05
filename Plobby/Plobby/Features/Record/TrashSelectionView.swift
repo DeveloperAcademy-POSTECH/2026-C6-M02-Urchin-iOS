@@ -31,7 +31,7 @@ struct TrashSelectionView: View {
                     .disabled(assetCounts.values.allSatisfy { $0 == 0 })
             }
             .navigationDestination(isPresented: $isDropping) {
-                FallingTrashView(assetCounts: assetCounts)
+                FallingTrashView(imageNames: assetCounts.flatMap { Array(repeating: $0.key.rawValue, count: $0.value) })
             }
         }
     }

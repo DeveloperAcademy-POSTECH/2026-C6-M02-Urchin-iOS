@@ -17,10 +17,10 @@ struct FallingTrashView: View {
 
     // MARK: - Init
 
-    init(assetCounts: [ImageAsset: Int]) {
+    init(imageNames: [String]) {
         let scene = FallingTrashScene()
         scene.scaleMode = .resizeFill
-        scene.assetCounts = assetCounts
+        scene.imageNames = imageNames
         _scene = State(initialValue: scene)
     }
 
@@ -43,7 +43,7 @@ final class FallingTrashScene: SKScene {
     private let floorNode = SKNode()
     private let netTilt: CGFloat = .pi / 3
 
-    var assetCounts: [ImageAsset: Int] = [:]
+    var imageNames: [String] = []
 
     // MARK: - Lifecycle
 
@@ -82,23 +82,27 @@ extension FallingTrashScene {
     }
 
     private func startDropping() {
-        let assets = selectedAssets(from: ImageAsset.large).shuffled()
-            + selectedAssets(from: ImageAsset.small).shuffled()
-            + selectedAssets(from: [.net])
+        // 큰 것부터 바닥에 깔리도록 L → M → S 순서로 떨어뜨리고, 그물은 맨 마지막에 덮어요
+        let shuffled = imageNames.shuffled()
+        let items = shuffled.filter { !isNet($0) }
+        let ordered = ["_L", "_M", "_S"].flatMap { suffix in items.filter { $0.hasSuffix(suffix) } }
+            + shuffled.filter(isNet)
+
         let wait = SKAction.wait(forDuration: dropInterval)
-        let actions = assets.flatMap { asset in
-            [wait, SKAction.run { [weak self] in self?.dropItem(asset) }]
+        let actions = ordered.flatMap { name in
+            [wait, SKAction.run { [weak self] in self?.dropItem(name) }]
         }
 
         run(.sequence(actions))
     }
 
-    private func selectedAssets(from assets: [ImageAsset]) -> [ImageAsset] {
-        assets.flatMap { Array(repeating: $0, count: assetCounts[$0, default: 0]) }
+    private func isNet(_ name: String) -> Bool {
+        name.hasPrefix("fishing_net")
     }
 
-    private func dropItem(_ asset: ImageAsset) {
-        let texture = SKTexture(imageNamed: asset.rawValue)
+    private func dropItem(_ name: String) {
+        let isNet = isNet(name)
+        let texture = SKTexture(imageNamed: name)
         let node = SKSpriteNode(texture: texture)
         node.setScale(DesignScale.fitRatio(for: size))
         
@@ -107,16 +111,18 @@ extension FallingTrashScene {
         guard size.width > node.size.width else { return }
 
         let netEdgeOffset = halfWidth * 0.2
-        let x = asset == .net
+        let x = isNet
             ? (Bool.random() ? netEdgeOffset : size.width - netEdgeOffset)
             : .random(in: halfWidth...(size.width - halfWidth))
 
         node.position = CGPoint(x: x, y: size.height + node.size.height)
 
-        let body = switch asset {
-        case .tire: SKPhysicsBody(circleOfRadius: halfWidth)
-        case .net: SKPhysicsBody(texture: texture, size: node.size)
-        default: SKPhysicsBody(rectangleOf: node.size)
+        let body = if isNet {
+            SKPhysicsBody(texture: texture, size: node.size)
+        } else if name.hasPrefix("tire") {
+            SKPhysicsBody(circleOfRadius: halfWidth)
+        } else {
+            SKPhysicsBody(rectangleOf: node.size)
         }
         body.restitution = 0.2
         body.friction = 0.6
@@ -124,7 +130,7 @@ extension FallingTrashScene {
         body.usesPreciseCollisionDetection = true
         body.categoryBitMask = trashCategory
 
-        if asset == .net {
+        if isNet {
             body.categoryBitMask = 0
             body.collisionBitMask = floorCategory
             body.allowsRotation = false
