@@ -18,21 +18,13 @@ struct HomeView: View {
     // MARK: - Body
 
     var body: some View {
-        NavigationStack {
-            content
-                .toolbar(.hidden, for: .navigationBar)
+        content
             .onAppear {
                 store.send(.onAppear)
             }
             .onDisappear {
                 store.send(.onDisappear)
             }
-            .navigationDestination(
-                item: $store.scope(state: \.favoriteBeachPicker, action: \.favoriteBeachPicker)
-            ) { store in
-                FavoriteBeachView(store: store)
-            }
-        }
     }
 }
 
