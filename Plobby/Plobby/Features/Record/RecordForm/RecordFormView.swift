@@ -85,13 +85,10 @@ struct RecordFormView: View {
                 .presentationDetents([.height(TimePickerView.sheetHeight)])
                 .presentationCornerRadius(20)
         }
-        .sheet(
-            item: $store.scope(state: \.destination?.trashPicker, action: \.destination.trashPicker)
+        .fullScreenCover(
+            item: $store.scope(state: \.destination?.locationPicker, action: \.destination.locationPicker)
         ) { store in
-            TrashPickerView(store: store)
-                .presentationDetents(belowNavigationBarDetents)
-                .presentationDragIndicator(.visible)
-                .presentationCornerRadius(20)
+            LocationPickerView(store: store)
         }
         // TODO: 장소 선택 뷰 구현 후 sheet 연결
         .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))

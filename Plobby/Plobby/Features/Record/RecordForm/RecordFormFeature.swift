@@ -143,9 +143,7 @@ struct RecordFormFeature {
                 return .none
                 
             case .locationFieldTapped:
-                state.destination = .locationPicker(LocationPickerFeature.State(
-                    selectedBeach: state.beach
-                ))
+                state.destination = .locationPicker(LocationPickerFeature.State())
                 return .none
                 
             case let .dateTapped(field):
