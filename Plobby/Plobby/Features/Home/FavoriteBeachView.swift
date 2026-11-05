@@ -20,14 +20,12 @@ struct FavoriteBeachView: View {
     var body: some View {
         VStack(spacing: 0) {
             title
-
             RegionPicker(store: store)
 
             Spacer()
 
             saveButton
         }
-        .toolbar(.hidden, for: .tabBar)
     }
 }
 

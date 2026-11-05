@@ -18,8 +18,10 @@ struct RecordFormView: View {
     @Bindable var store: StoreOf<RecordFormFeature>
     
     @FocusState private var focusedField: FocusField?
+    @State private var contentHeight: CGFloat = 0
 
     private let maxPhotoCount = RecordFormFeature.maxPhotoCount
+    private static let navigationBarHeight: CGFloat = 56
 
     // MARK: - Body
 
@@ -48,6 +50,15 @@ struct RecordFormView: View {
             .scrollDismissesKeyboard(.interactively)
         }
         .background(Color.white)
+        .background {
+            Color.clear
+                .ignoresSafeArea(.keyboard)
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.height
+                } action: { height in
+                    contentHeight = height
+                }
+        }
         .contentShape(Rectangle())
         .onTapGesture {
             focusedField = nil
@@ -74,7 +85,15 @@ struct RecordFormView: View {
                 .presentationDetents([.height(TimePickerView.sheetHeight)])
                 .presentationCornerRadius(20)
         }
-        // TODO: 장소·쓰레기 선택 뷰 구현 후 sheet 연결
+        .sheet(
+            item: $store.scope(state: \.destination?.trashPicker, action: \.destination.trashPicker)
+        ) { store in
+            TrashPickerView(store: store)
+                .presentationDetents(belowNavigationBarDetents)
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(20)
+        }
+        // TODO: 장소 선택 뷰 구현 후 sheet 연결
         .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
 }
@@ -130,7 +149,14 @@ private extension RecordFormView {
             }
         }
         .padding(.horizontal, 20)
-        .frame(height: 56)
+        .frame(height: Self.navigationBarHeight)
+    }
+    
+    var belowNavigationBarDetents: Set<PresentationDetent> {
+        let height = contentHeight - Self.navigationBarHeight
+        guard height > 0 else { return [.large] }
+        
+        return [.height(height), .large]
     }
 }
 

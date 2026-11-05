@@ -18,21 +18,29 @@ struct MainTabView: View {
     // MARK: - Body
     
     var body: some View {
-        TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
-            Tab("홈", systemImage: "house", value: .home) {
-                HomeView(store: store.scope(state: \.home, action: \.home))
+        NavigationStack {
+            TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
+                Tab("홈", systemImage: "house", value: .home) {
+                    HomeView(store: store.scope(state: \.home, action: \.home))
+                }
+
+                Tab("지도", systemImage: "map", value: .map) {
+                    Text("지도")
+                }
+
+                Tab("마이", systemImage: "person", value: .my) {
+                    MyView(store: store.scope(state: \.my, action: \.my))
+                }
+
+                Tab("기록", systemImage: store.isRecordMenuPresented ? "xmark" : "plus", value: .record, role: .search) {
+                    EmptyView()
+                }
             }
-            
-            Tab("지도", systemImage: "map", value: .map) {
-                Text("지도")
-            }
-            
-            Tab("마이", systemImage: "person", value: .my) {
-                MyView(store: store.scope(state: \.my, action: \.my))
-            }
-            
-            Tab("기록", systemImage: store.isRecordMenuPresented ? "xmark" : "plus", value: .record, role: .search) {
-                EmptyView()
+            .toolbar(.hidden, for: .navigationBar)
+            .navigationDestination(
+                item: $store.scope(state: \.home.favoriteBeachPicker, action: \.home.favoriteBeachPicker)
+            ) { store in
+                FavoriteBeachView(store: store)
             }
         }
         .tint(.primary)
