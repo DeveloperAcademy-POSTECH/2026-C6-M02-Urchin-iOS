@@ -31,4 +31,11 @@ extension SupabaseClient {
 
         return path
     }
+
+    /// Storage에서 프로필 사진 파일을 지워요.
+    func removeProfileImage(_ key: String) async throws {
+        _ = try await storage
+            .from("Plobby Profile Bucket")
+            .remove(paths: [key])
+    }
 }
