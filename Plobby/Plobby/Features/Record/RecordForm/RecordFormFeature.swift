@@ -33,7 +33,6 @@ struct RecordFormFeature {
         var memo: String
         var isSubmitting: Bool = false
         var isCompleteEnabled: Bool = false
-        var isExitAlertPresented: Bool = false
         @Presents var destination: Destination.State?
         
         init(
@@ -127,6 +126,7 @@ struct RecordFormFeature {
 
         enum Alert {
             case retrySubmitTapped
+            case exitTapped
         }
     }
 
@@ -136,8 +136,6 @@ struct RecordFormFeature {
         case binding(BindingAction<State>)
         case destination(PresentationAction<Destination.Action>)
         case closeTapped
-        case exitAlertExitTapped
-        case exitAlertContinueTapped
         case cameraTapped
         case photoDeleteTapped(RecordPhoto.ID)
         case photoMoved(RecordPhoto.ID, to: RecordPhoto.ID)
@@ -192,15 +190,8 @@ struct RecordFormFeature {
                     return .send(.delegate(.closed))
                 }
                 
-                state.isExitAlertPresented = true
-                return .none
-                
-            case .exitAlertExitTapped:
-                state.isExitAlertPresented = false
-                return .send(.delegate(.closed))
-                
-            case .exitAlertContinueTapped:
-                state.isExitAlertPresented = false
+                // 계속 작성하기는 동작 없이 Alert만 닫아요.
+                state.destination = .alert(.make(.recordExitConfirm, cancel: .exitTapped))
                 return .none
                 
             case .cameraTapped:
@@ -349,6 +340,9 @@ struct RecordFormFeature {
 
             case .destination(.presented(.alert(.retrySubmitTapped))):
                 return .send(.completeTapped)
+                
+            case .destination(.presented(.alert(.exitTapped))):
+                return .send(.delegate(.closed))
                 
             // 선택하지 않고 시트를 닫으면 필수 항목 오류를 표시
             case .destination(.dismiss):

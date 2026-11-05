@@ -40,16 +40,7 @@ struct RecordFormView: View {
                     .presentationDragIndicator(.visible)
                     .presentationCornerRadius(20)
             }
-            .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
-            .plobbyAlert(
-                isPresented: store.isExitAlertPresented,
-                title: "작성 중인 글을 나가시겠습니까?",
-                message: "지금 나가면 작성한 내용은 저장되지 않아요.",
-                secondaryTitle: "나가기",
-                primaryTitle: "계속 작성하기",
-                secondaryAction: { store.send(.exitAlertExitTapped) },
-                primaryAction: { store.send(.exitAlertContinueTapped) }
-            )
+            .plobbyAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
 }
 

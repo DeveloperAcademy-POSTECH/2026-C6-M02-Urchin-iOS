@@ -18,6 +18,7 @@ enum AlertType {
     case recordDeleteFailed
     case userBlockConfirm
     case profileUpdateFailed
+    case recordExitConfirm
     
     var title: String {
         switch self {
@@ -30,6 +31,7 @@ enum AlertType {
         case .recordDeleteFailed: "기록을 삭제하지 못했어요"
         case .userBlockConfirm: "이 사용자를 차단할까요?"
         case .profileUpdateFailed: "프로필을 저장하지 못했어요"
+        case .recordExitConfirm: "작성 중인 글을 나가시겠습니까?"
         }
     }
     
@@ -40,12 +42,13 @@ enum AlertType {
         case .recordDeleteConfirm: "삭제한 기록은 복구할 수 없어요."
         case .recordDeleted: nil
         case .userBlockConfirm: "차단하면 이 사용자의 기록이 더 이상 보이지 않아요."
+        case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요."
         }
     }
     
     var buttonType: ButtonType {
         switch self {
-        case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm: .cancelConfirm
+        case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm, .recordExitConfirm: .cancelConfirm
         case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed: .confirm
         }
     }
@@ -56,14 +59,15 @@ enum AlertType {
         case .recordSubmitFailed: "다시 시도"
         case .recordDeleteConfirm: "삭제"
         case .userBlockConfirm: "차단"
+        case .recordExitConfirm: "계속 작성하기"
         }
     }
     
-    /// 되돌릴 수 없는 동작은 확인 버튼을 빨간색으로 보여줘요.
-    var isDestructive: Bool {
+    /// `.cancelConfirm`에서 왼쪽에 놓이는 보조 버튼 문구
+    var cancelTitle: String {
         switch self {
-        case .recordDeleteConfirm, .userBlockConfirm: true
-        default: false
+        case .recordExitConfirm: "나가기"
+        default: "취소"
         }
     }
 }
