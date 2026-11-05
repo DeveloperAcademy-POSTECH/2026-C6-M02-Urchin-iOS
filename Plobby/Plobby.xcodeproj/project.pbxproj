@@ -111,6 +111,9 @@
 		EC0D4BA13098E1D0000E7BB7 /* Effect+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */; };
 		EC0D4BA53098E1D0000E7BB7 /* FavoriteBeachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA43098E1D0000E7BB7 /* FavoriteBeachView.swift */; };
 		EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */; };
+		EC196745309C579100BC4C19 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196743309C579100BC4C19 /* Pretendard-Regular.otf */; };
+		EC196746309C579100BC4C19 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196742309C579100BC4C19 /* Pretendard-Medium.otf */; };
+		EC196747309C579100BC4C19 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196744309C579100BC4C19 /* Pretendard-SemiBold.otf */; };
 		EC7608AE30996DF40061AAAD /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7608AD30996DF40061AAAD /* ImageAsset.swift */; };
 		ECDDDAB4309AC1F800FB04D5 /* RegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
@@ -294,6 +297,9 @@
 		EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Effect+.swift"; sourceTree = "<group>"; };
 		EC0D4BA43098E1D0000E7BB7 /* FavoriteBeachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachView.swift; sourceTree = "<group>"; };
 		EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachChip.swift; sourceTree = "<group>"; };
+		EC196742309C579100BC4C19 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		EC196743309C579100BC4C19 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		EC196744309C579100BC4C19 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		EC7608AD30996DF40061AAAD /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPicker.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -746,6 +752,16 @@
 			path = Beach;
 			sourceTree = "<group>";
 		};
+		EC196741309C577F00BC4C19 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				EC196742309C579100BC4C19 /* Pretendard-Medium.otf */,
+				EC196743309C579100BC4C19 /* Pretendard-Regular.otf */,
+				EC196744309C579100BC4C19 /* Pretendard-SemiBold.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		ECDDD9AA3099781C00FB04D5 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -1045,6 +1061,7 @@
 		ECE6F2C93098338400C4916C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EC196741309C577F00BC4C19 /* Fonts */,
 				ECE6F2C73098338400C4916C /* Assets.xcassets */,
 				ECE6F2C83098338400C4916C /* beaches.json */,
 			);
@@ -1249,6 +1266,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC196745309C579100BC4C19 /* Pretendard-Regular.otf in Resources */,
+				EC196746309C579100BC4C19 /* Pretendard-Medium.otf in Resources */,
+				EC196747309C579100BC4C19 /* Pretendard-SemiBold.otf in Resources */,
 				ECE6F2FE3098338400C4916C /* Config.xcconfig in Resources */,
 				ECE6F3003098338400C4916C /* Assets.xcassets in Resources */,
 				DA5B107B3099798F003FEDF9 /* GoogleService-Info.plist in Resources */,
