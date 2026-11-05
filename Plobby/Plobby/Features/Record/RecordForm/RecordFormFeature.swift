@@ -17,20 +17,55 @@ struct RecordFormFeature {
     @ObservableState
     struct State: Equatable {
         let recordType: RecordType
-        var photos: IdentifiedArrayOf<PhotoAsset> = []
+        let mode: Mode
+        /// 처음 채워 둔 입력값. 사용자가 바꿨는지 비교할 때 써요.
+        private(set) var initialInputs: Inputs
+        var photos: IdentifiedArrayOf<RecordPhoto>
         var beach: Beach?
         var isLocationErrorVisible: Bool = false
-        var period = ActivityPeriod()
+        var period: ActivityPeriod
         var periodError: String?
-        var maxDepthText: String = ""
+        var maxDepthText: String
         var maxDepthError: String?
-        var trash = TrashSelection()
-        var totalWeightText: String = ""
+        var trash: TrashSelection
+        var totalWeightText: String
         var totalWeightError: String?
-        var memo: String = ""
+        var memo: String
         var isSubmitting: Bool = false
         var isCompleteEnabled: Bool = false
+        var isExitAlertPresented: Bool = false
         @Presents var destination: Destination.State?
+        
+        init(
+            recordType: RecordType,
+            mode: Mode = .create,
+            photos: IdentifiedArrayOf<RecordPhoto> = [],
+            beach: Beach? = nil,
+            period: ActivityPeriod = ActivityPeriod(),
+            maxDepthText: String = "",
+            trash: TrashSelection = TrashSelection(),
+            totalWeightText: String = "",
+            memo: String = ""
+        ) {
+            self.recordType = recordType
+            self.mode = mode
+            self.photos = photos
+            self.beach = beach
+            self.period = period
+            self.maxDepthText = maxDepthText
+            self.trash = trash
+            self.totalWeightText = totalWeightText
+            self.memo = memo
+            self.initialInputs = Inputs()
+            self.initialInputs = inputs
+        }
+        
+        var title: String {
+            switch mode {
+            case .create: recordType.title
+            case .edit: "\(recordType.name) 기록 수정하기"
+            }
+        }
 
         var remainingPhotoCount: Int {
             max(RecordFormFeature.maxPhotoCount - photos.count, 0)
@@ -39,6 +74,44 @@ struct RecordFormFeature {
         var isMemoOverLimit: Bool {
             memo.count > RecordMemo.maximumLength
         }
+        
+        /// 작성할 때는 사진 외의 값을, 수정할 때는 사진까지 처음과 비교해요.
+        var hasInput: Bool {
+            var current = inputs
+            if mode == .create {
+                current.photoIDs = initialInputs.photoIDs
+            }
+            return current != initialInputs
+        }
+        
+        private var inputs: Inputs {
+            Inputs(
+                photoIDs: photos.map(\.id),
+                beachID: beach?.id,
+                period: period,
+                maxDepthText: InputText.trimmed(maxDepthText),
+                trash: trash,
+                totalWeightText: InputText.trimmed(totalWeightText),
+                memo: InputText.trimmed(memo)
+            )
+        }
+    }
+    
+    // MARK: - Mode
+    
+    enum Mode: Equatable {
+        case create
+        case edit(recordID: UUID)
+    }
+    
+    struct Inputs: Equatable {
+        var photoIDs: [RecordPhoto.ID] = []
+        var beachID: UUID?
+        var period = ActivityPeriod()
+        var maxDepthText = ""
+        var trash = TrashSelection()
+        var totalWeightText = ""
+        var memo = ""
     }
 
     // MARK: - Destination
@@ -63,9 +136,11 @@ struct RecordFormFeature {
         case binding(BindingAction<State>)
         case destination(PresentationAction<Destination.Action>)
         case closeTapped
+        case exitAlertExitTapped
+        case exitAlertContinueTapped
         case cameraTapped
-        case photoDeleteTapped(PhotoAsset.ID)
-        case photoMoved(PhotoAsset.ID, to: PhotoAsset.ID)
+        case photoDeleteTapped(RecordPhoto.ID)
+        case photoMoved(RecordPhoto.ID, to: RecordPhoto.ID)
         case locationFieldTapped
         case dateTapped(PeriodField)
         case timeTapped(PeriodField)
@@ -79,6 +154,7 @@ struct RecordFormFeature {
         @CasePathable
         enum Delegate {
             case recordCreated(UUID)
+            case recordUpdated(UUID)
             case closed
         }
     }
@@ -87,7 +163,8 @@ struct RecordFormFeature {
 
     // MARK: - Dependency
 
-    // TODO: - 기록 저장 구현 시 recordClient.submitRecord 결과의 ID로 교체
+    @Dependency(\.recordClient) var recordClient
+    @Dependency(\.photoLibraryClient) var photoLibraryClient
     @Dependency(\.uuid) var uuid
     @Dependency(\.date.now) var now
     @Dependency(\.calendar) var calendar
@@ -111,7 +188,20 @@ struct RecordFormFeature {
                 return .none
                 
             case .closeTapped:
+                guard state.hasInput else {
+                    return .send(.delegate(.closed))
+                }
+                
+                state.isExitAlertPresented = true
+                return .none
+                
+            case .exitAlertExitTapped:
+                state.isExitAlertPresented = false
                 return .send(.delegate(.closed))
+                
+            case .exitAlertContinueTapped:
+                state.isExitAlertPresented = false
+                return .none
                 
             case .cameraTapped:
                 guard state.remainingPhotoCount > 0 else {
@@ -151,6 +241,7 @@ struct RecordFormFeature {
                     field: field,
                     date: state.period[field] ?? now,
                     today: now,
+                    allowedRange: state.period.allowedRange(for: field, now: now),
                     calendar: calendar
                 ))
                 return .none
@@ -159,7 +250,7 @@ struct RecordFormFeature {
                 state.destination = .timePicker(TimePickerFeature.State(
                     field: field,
                     date: state.period[field] ?? now,
-                    now: now,
+                    allowedRange: state.period.allowedRange(for: field, now: now),
                     calendar: calendar
                 ))
                 return .none
@@ -188,14 +279,23 @@ struct RecordFormFeature {
                 guard !state.isSubmitting,
                       validate(&state) else { return .none }
                 
+                guard let record = newRecord(from: state) else { return .none }
+                
                 state.isSubmitting = true
-                return submit()
+                return submit(record, photos: Array(state.photos), mode: state.mode)
                 
             case let .submitResponse(.success(recordID)):
                 state.isSubmitting = false
-                return .send(.delegate(.recordCreated(recordID)))
                 
-            case .submitResponse(.failure):
+                switch state.mode {
+                case .create:
+                    return .send(.delegate(.recordCreated(recordID)))
+                case .edit:
+                    return .send(.delegate(.recordUpdated(recordID)))
+                }
+                
+            case let .submitResponse(.failure(error)):
+                PlobbyLogger.error(error)
                 state.isSubmitting = false
                 state.destination = .alert(.make(
                     .recordSubmitFailed,
@@ -205,7 +305,7 @@ struct RecordFormFeature {
                 
             case let .destination(.presented(.photoPicker(.delegate(.finished(photos))))):
                 for photo in photos.prefix(state.remainingPhotoCount) {
-                    state.photos.updateOrAppend(photo)
+                    state.photos.updateOrAppend(.local(photo))
                 }
                 state.destination = nil
                 return .none
@@ -221,7 +321,8 @@ struct RecordFormFeature {
                 return .none
                 
             case let .destination(.presented(.datePicker(.delegate(.confirmed(field, date))))):
-                state.period[field] = calendar.date(on: date, settingTimeOf: state.period[field] ?? date)
+                // 날짜 피커가 고른 날짜에 기존 시각을 붙여 범위 안으로 맞춰 둔 값이에요.
+                state.period[field] = date
                 state.periodError = periodError(for: state.period)
                 state.destination = nil
                 return .none
@@ -340,12 +441,75 @@ extension RecordFormFeature {
         return nil
     }
 
-    private func submit() -> Effect<Action> {
-        let recordID = uuid()
+    private func newRecord(from state: State) -> NewRecord? {
+        guard let beach = state.beach,
+              let startedAt = state.period.start,
+              let endedAt = state.period.end
+        else { return nil }
+        
+        let memo = InputText.trimmed(state.memo)
+        let etcMemo = InputText.trimmed(state.trash.etcMemo)
+        
+        let recordID = switch state.mode {
+        case .create: uuid()
+        case let .edit(recordID): recordID
+        }
+        
+        return NewRecord(
+            id: recordID,
+            beachID: beach.id,
+            recordType: state.recordType,
+            title: "\(beach.name) \(state.recordType.name) 기록",
+            startedAt: startedAt,
+            endedAt: endedAt,
+            weightKg: DecimalInput.number(from: state.totalWeightText, locale: locale),
+            depthM: state.recordType == .plobbing
+                ? DecimalInput.number(from: state.maxDepthText, locale: locale)
+                : nil,
+            memo: memo.isEmpty ? nil : memo,
+            trash: state.trash.selectedCategories.map { category in
+                NewRecord.Trash(
+                    category: category,
+                    // 서버는 기타일 때만 custom_name을 받고, 기타면 반드시 있어야 해요. 메모가 없으면 "기타"로 채워요.
+                    customName: category == .etc ? (etcMemo.isEmpty ? TrashCategory.etc.name : etcMemo) : nil,
+                    quantity: state.trash[category]
+                )
+            }
+        )
+    }
 
-        return .run { send in
-            // TODO: NewRecord 구현 후 recordClient.submitRecord 호출로 교체
-            await send(.submitResponse(.success(recordID)))
+    /// 새 사진은 JPEG로 압축하고, 기존 사진은 그대로 두고 기록과 함께 저장해요.
+    private func submit(_ record: NewRecord, photos: [RecordPhoto], mode: Mode) -> Effect<Action> {
+        .run { [recordClient, photoLibraryClient] send in
+            do {
+                var uploads: [RecordPhotoUpload] = []
+                for photo in photos {
+                    switch photo {
+                    case let .local(asset):
+                        let data = try await photoLibraryClient.imageData(asset.id)
+                        guard let jpeg = ProfileImageCompressor.compressedJPEG(from: data) else {
+                            throw NewRecordError.photoUnavailable
+                        }
+                        uploads.append(.new(jpeg))
+                        
+                    case let .remote(storageKey, _):
+                        uploads.append(.existing(storageKey: storageKey))
+                    }
+                }
+                
+                var record = record
+                record.photos = uploads
+                
+                switch mode {
+                case .create:
+                    try await recordClient.submitRecord(record)
+                case .edit:
+                    try await recordClient.updateRecord(UpdatedRecord(record))
+                }
+                await send(.submitResponse(.success(record.id)))
+            } catch {
+                await send(.submitResponse(.failure(error)))
+            }
         }
     }
 }
@@ -353,3 +517,37 @@ extension RecordFormFeature {
 // MARK: - Conformance
 
 extension RecordFormFeature.Destination.State: Equatable {}
+
+// MARK: - Edit
+
+extension RecordFormFeature.State {
+    
+    /// 이미 저장한 기록을 수정할 수 있게 양식을 채워요.
+    init(editing record: RecordDetail) {
+        @Shared(.beaches) var beaches
+        
+        var trash = TrashSelection()
+        for item in record.trash {
+            let category = TrashCategory(code: item.trashCode) ?? .etc
+            trash[category] += item.quantity
+            
+            if category == .etc, let customName = item.customName, customName != TrashCategory.etc.name {
+                trash.etcMemo = customName
+            }
+        }
+        
+        self.init(
+            recordType: record.recordType,
+            mode: .edit(recordID: record.id),
+            photos: IdentifiedArray(uniqueElements: record.photos.map {
+                RecordPhoto.remote(storageKey: $0.storageKey, url: $0.url)
+            }),
+            beach: beaches.first { $0.id == record.beachID },
+            period: ActivityPeriod(start: record.startedAt, end: record.endedAt),
+            maxDepthText: record.depthM.map(DecimalInput.text(from:)) ?? "",
+            trash: trash,
+            totalWeightText: record.weightKg.map(DecimalInput.text(from:)) ?? "",
+            memo: record.memo ?? ""
+        )
+    }
+}

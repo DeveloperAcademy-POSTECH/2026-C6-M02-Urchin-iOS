@@ -99,6 +99,15 @@ struct RecordFormView: View {
                 .presentationCornerRadius(20)
         }
         .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+        .plobbyAlert(
+            isPresented: store.isExitAlertPresented,
+            title: "작성 중인 글을 나가시겠습니까?",
+            message: "지금 나가면 작성한 내용은 저장되지 않아요.",
+            secondaryTitle: "나가기",
+            primaryTitle: "계속 작성하기",
+            secondaryAction: { store.send(.exitAlertExitTapped) },
+            primaryAction: { store.send(.exitAlertContinueTapped) }
+        )
     }
 }
 
@@ -134,7 +143,7 @@ private extension RecordFormView {
 
     var navigationBar: some View {
         ZStack {
-            Text(store.recordType.title)
+            Text(store.title)
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(Color.formPrimaryText)
 
@@ -214,8 +223,8 @@ private extension RecordFormView {
         .accessibilityLabel("사진 추가, \(store.photos.count)/\(maxPhotoCount)")
     }
 
-    func photoThumbnail(_ photo: PhotoAsset, isRepresentative: Bool) -> some View {
-        PhotoThumbnailView(assetID: photo.id, size: CGSize(width: 100, height: 100))
+    func photoThumbnail(_ photo: RecordPhoto, isRepresentative: Bool) -> some View {
+        photoImage(photo)
             .overlay(alignment: .bottom) {
                 representativeLabel(isRepresentative: isRepresentative)
             }
@@ -247,7 +256,28 @@ private extension RecordFormView {
         8 * (1 - 1 / 2.squareRoot())
     }
 
-    func photoDeleteButton(_ photoID: PhotoAsset.ID) -> some View {
+    @ViewBuilder
+    func photoImage(_ photo: RecordPhoto) -> some View {
+        let size = CGSize(width: 100, height: 100)
+        
+        switch photo {
+        case let .local(asset):
+            PhotoThumbnailView(assetID: asset.id, size: size)
+            
+        case let .remote(_, url):
+            AsyncImage(url: url) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+            } placeholder: {
+                Color(.systemGray6)
+            }
+            .frame(width: size.width, height: size.height)
+            .clipped()
+        }
+    }
+
+    func photoDeleteButton(_ photoID: RecordPhoto.ID) -> some View {
         Button {
             store.send(.photoDeleteTapped(photoID), animation: .default)
         } label: {
@@ -270,7 +300,7 @@ private extension RecordFormView {
 
 private struct PhotoDropDelegate: DropDelegate {
 
-    let onDrop: @MainActor @Sendable (PhotoAsset.ID) -> Void
+    let onDrop: @MainActor @Sendable (RecordPhoto.ID) -> Void
 
     func dropUpdated(info: DropInfo) -> DropProposal? {
         DropProposal(operation: .move)
