@@ -13,7 +13,7 @@ nonisolated struct RecordSummaryResponseDTO: Decodable, Sendable {
         id, user_id, beach_id, record_type, title, started_at, ended_at, \
         weight_kg, depth_m, created_at, \
         beaches(name), \
-        users(profiles(nickname, profile_image_key)), \
+        users!records_user_id_fkey(profiles(nickname, profile_image_key)), \
         record_photos(storage_key, photo_type, sort_order), \
         record_trash(trash_code, custom_name, quantity, trash_types(name_ko)), \
         record_likes(count), \
