@@ -85,7 +85,6 @@
 		DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10DF30998932003FEDF9 /* MapFeature.swift */; };
 		DA5B10E430998932003FEDF9 /* MyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E230998932003FEDF9 /* MyFeature.swift */; };
 		DA5B10E730998932003FEDF9 /* RecordFlowFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */; };
-		DA688DBA3099BAE30064A2F4 /* BeachRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB53099BAE30064A2F4 /* BeachRegion.swift */; };
 		DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB63099BAE30064A2F4 /* BeachResponseDTO.swift */; };
 		DA688DBC3099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB73099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift */; };
 		DA688DBD3099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB83099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift */; };
@@ -139,6 +138,8 @@
 		ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29E3098338400C4916C /* AppleCredential.swift */; };
 		ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29F3098338400C4916C /* AuthUser.swift */; };
 		ECE6F2E43098338400C4916C /* Beach.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A13098338400C4916C /* Beach.swift */; };
+		D1A0C0DE0000000000000B01 /* Sea.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B02 /* Sea.swift */; };
+		D1A0C0DE0000000000000B03 /* BeachStorageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */; };
 		ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A43098338400C4916C /* DecimalInput.swift */; };
 		ECE6F2E73098338400C4916C /* InputText.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A53098338400C4916C /* InputText.swift */; };
 		ECE6F2E83098338400C4916C /* MembershipStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A73098338400C4916C /* MembershipStatus.swift */; };
@@ -269,7 +270,6 @@
 		DA5B10DF30998932003FEDF9 /* MapFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFeature.swift; sourceTree = "<group>"; };
 		DA5B10E230998932003FEDF9 /* MyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFeature.swift; sourceTree = "<group>"; };
 		DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFlowFeature.swift; sourceTree = "<group>"; };
-		DA688DB53099BAE30064A2F4 /* BeachRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachRegion.swift; sourceTree = "<group>"; };
 		DA688DB63099BAE30064A2F4 /* BeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachResponseDTO.swift; sourceTree = "<group>"; };
 		DA688DB73099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachInsertRequestDTO.swift; sourceTree = "<group>"; };
 		DA688DB83099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachResponseDTO.swift; sourceTree = "<group>"; };
@@ -325,6 +325,8 @@
 		ECE6F29E3098338400C4916C /* AppleCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCredential.swift; sourceTree = "<group>"; };
 		ECE6F29F3098338400C4916C /* AuthUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUser.swift; sourceTree = "<group>"; };
 		ECE6F2A13098338400C4916C /* Beach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Beach.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000B02 /* Sea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sea.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachStorageDTO.swift; sourceTree = "<group>"; };
 		ECE6F2A43098338400C4916C /* DecimalInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalInput.swift; sourceTree = "<group>"; };
 		ECE6F2A53098338400C4916C /* InputText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputText.swift; sourceTree = "<group>"; };
 		ECE6F2A73098338400C4916C /* MembershipStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipStatus.swift; sourceTree = "<group>"; };
@@ -443,7 +445,6 @@
 		9B086B994F2A5DFEFABF5F20 /* Response */ = {
 			isa = PBXGroup;
 			children = (
-				DA688DB53099BAE30064A2F4 /* BeachRegion.swift */,
 				DA688DB63099BAE30064A2F4 /* BeachResponseDTO.swift */,
 				DA688DB83099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift */,
 			);
@@ -675,6 +676,7 @@
 			children = (
 				D78AFC30C51FAB5BF13B6604 /* Request */,
 				9B086B994F2A5DFEFABF5F20 /* Response */,
+				D1A0C0DE0000000000000B05 /* Storage */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -907,6 +909,7 @@
 			isa = PBXGroup;
 			children = (
 				ECE6F2A13098338400C4916C /* Beach.swift */,
+				D1A0C0DE0000000000000B02 /* Sea.swift */,
 			);
 			path = Beach;
 			sourceTree = "<group>";
@@ -1136,6 +1139,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		D1A0C0DE0000000000000B05 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1284,7 +1295,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */,
-				DA688DBA3099BAE30064A2F4 /* BeachRegion.swift in Sources */,
 				DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */,
 				DA688DBC3099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift in Sources */,
 				DA688DBD3099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift in Sources */,
@@ -1383,6 +1393,8 @@
 				ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */,
 				ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */,
 				ECE6F2E43098338400C4916C /* Beach.swift in Sources */,
+				D1A0C0DE0000000000000B01 /* Sea.swift in Sources */,
+				D1A0C0DE0000000000000B03 /* BeachStorageDTO.swift in Sources */,
 				ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */,
 				EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */,
 				EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */,
