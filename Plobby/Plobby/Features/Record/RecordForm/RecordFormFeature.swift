@@ -78,7 +78,7 @@ struct RecordFormFeature {
 
         @CasePathable
         enum Delegate {
-            case recordCreated(UUID)
+            case recordCreated(UUID, TrashSelection)
             case closed
         }
     }
@@ -195,7 +195,7 @@ struct RecordFormFeature {
                 
             case let .submitResponse(.success(recordID)):
                 state.isSubmitting = false
-                return .send(.delegate(.recordCreated(recordID)))
+                return .send(.delegate(.recordCreated(recordID, state.trash)))
                 
             case .submitResponse(.failure):
                 state.isSubmitting = false

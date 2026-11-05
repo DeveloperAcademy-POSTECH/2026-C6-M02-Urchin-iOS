@@ -17,6 +17,7 @@ struct RecordRewardFeature {
     @ObservableState
     struct State: Equatable {
         let recordID: UUID
+        var trash = TrashSelection()
     }
     
     // MARK: - Action
