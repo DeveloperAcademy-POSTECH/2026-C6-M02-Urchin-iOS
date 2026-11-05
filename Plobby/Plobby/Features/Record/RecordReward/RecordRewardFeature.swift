@@ -52,16 +52,21 @@ struct RecordRewardFeature {
                 return .run { send in
                     await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
                 }
+                
             case let .profileResponse(.success(profile)):
                 state.nickname = profile?.nickname
                 return .none
+                
             case let .profileResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 return .none
+                
             case .nextButtonTapped:
                 return .send(.delegate(.finished(state.recordID)))
+                
             case .closeButtonTapped:
                 return .send(.delegate(.closed))
+                
             case .delegate:
                 return .none
             }
