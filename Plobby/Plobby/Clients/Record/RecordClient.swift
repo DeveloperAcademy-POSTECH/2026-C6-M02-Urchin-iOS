@@ -27,16 +27,32 @@ nonisolated extension RecordClient: DependencyKey {
             fetchRecord: { recordID in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
-                let responseDTO: RecordDetailResponseDTO = try await supabaseClient
+                // 둘러보기 중이면 로그인한 사용자가 없어요. 이때는 내 좋아요 없이 불러와요.
+                let userID = try? await supabaseClient.currentUserID()
+                
+                var query = supabaseClient
                     .from("records")
                     .select(RecordDetailResponseDTO.selectQuery)
                     .eq("id", value: recordID)
                     .is("deleted_at", value: nil)
+                
+                if let userID {
+                    query = query.eq("my_like.user_id", value: userID)
+                }
+                
+                let responseDTO: RecordDetailResponseDTO = try await query
                     .single()
                     .execute()
                     .value
+                
+                let imageBucket = supabaseClient.storage.from(StorageBucket.image)
+                let profileBucket = supabaseClient.storage.from(StorageBucket.profile)
 
-                return try responseDTO.toDomain()
+                return try responseDTO.toDomain(
+                    currentUserID: userID,
+                    photoURL: { try? imageBucket.getPublicURL(path: $0) },
+                    profileImageURL: { try? profileBucket.getPublicURL(path: $0) }
+                )
             }, fetchRecords: { offset, limit in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
@@ -56,7 +72,8 @@ nonisolated extension RecordClient: DependencyKey {
             }, submitRecord: { record in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
-                let requestDTO = CreateRecordRequestDTO(from: record)
+                let photoKeys = try await supabaseClient.uploadRecordPhotos(record.photos, recordID: record.id)
+                let requestDTO = CreateRecordRequestDTO(from: record, photoKeys: photoKeys)
                 try await supabaseClient
                     .rpc("create_record", params: requestDTO)
                     .execute()
@@ -64,7 +81,8 @@ nonisolated extension RecordClient: DependencyKey {
             }, updateRecord: { record in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
-                let requestDTO = UpdateRecordRequestDTO(from: record)
+                let photoKeys = try await supabaseClient.uploadRecordPhotos(record.photos, recordID: record.id)
+                let requestDTO = UpdateRecordRequestDTO(from: record, photoKeys: photoKeys)
                 try await supabaseClient
                     .rpc("update_record", params: requestDTO)
                     .execute()
@@ -112,4 +130,40 @@ nonisolated extension RecordClient: DependencyKey {
             }
         )
     }()
+}
+
+// MARK: - Storage
+
+private nonisolated enum StorageBucket {
+    
+    static let image = "Plobby Image Bucket"
+    static let profile = "Plobby Profile Bucket"
+}
+
+private nonisolated extension SupabaseClient {
+    
+    /// 새 사진만 올리고, 기존 사진은 storage key를 그대로 써요. 반환하는 key는 사진 순서와 같아요.
+    /// 기존 사진과 경로가 겹치지 않도록 새 사진은 매번 새 파일 이름으로 올려요.
+    func uploadRecordPhotos(_ photos: [RecordPhotoUpload], recordID: UUID) async throws -> [String] {
+        let userID = try await currentUserID()
+        let folder = "\(userID.uuidString.lowercased())/\(recordID.uuidString.lowercased())"
+        
+        var photoKeys: [String] = []
+        for photo in photos {
+            switch photo {
+            case let .new(data):
+                let path = "\(folder)/\(UUID().uuidString.lowercased()).jpg"
+                
+                try await storage
+                    .from(StorageBucket.image)
+                    .upload(path, data: data, options: FileOptions(contentType: "image/jpeg"))
+                
+                photoKeys.append(path)
+                
+            case let .existing(storageKey):
+                photoKeys.append(storageKey)
+            }
+        }
+        return photoKeys
+    }
 }

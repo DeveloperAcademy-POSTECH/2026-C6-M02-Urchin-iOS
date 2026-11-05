@@ -41,6 +41,8 @@
 		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5951FB2309BA4AB0089A019 /* MyView.swift */; };
+		D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */; };
+		D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C03 /* ProfileEditView.swift */; };
 		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
 		B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */; };
 		BDA985C8CDA5A070AC9A1B00 /* PhotosPickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */; };
@@ -64,6 +66,7 @@
 		DA2C8CF2309C711C0042C67C /* LocationClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2C8CF1309C71180042C67C /* LocationClientError.swift */; };
 		DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FA330988669003FEDF9 /* RecordClient.swift */; };
 		DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */; };
+		DAEC9A04309C5A0000AA0001 /* RecordPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC9A03309C5A0000AA0001 /* RecordPhoto.swift */; };
 		DA5B0FB93098DA53003FEDF9 /* DependencyValues+Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */; };
 		DA5B0FBB3098DCCD003FEDF9 /* UpdatedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FBA3098DCCC003FEDF9 /* UpdatedRecord.swift */; };
 		DA5B0FC93098DF6F003FEDF9 /* RecordLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FC83098DF6E003FEDF9 /* RecordLike.swift */; };
@@ -144,6 +147,7 @@
 		ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28F3098338400C4916C /* PlobbyLogger.swift */; };
 		ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */; };
 		ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2923098338400C4916C /* PlobbyButton.swift */; };
+		DAEC9A02309C5A0000AA0001 /* PlobbyAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */; };
 		ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2943098338400C4916C /* AlertType.swift */; };
 		ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2953098338400C4916C /* Secrets.swift */; };
 		ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2973098338400C4916C /* AlertState+.swift */; };
@@ -236,6 +240,8 @@
 		B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDeviceTokenRequestDTO.swift; sourceTree = "<group>"; };
 		B5951FB2309BA4AB0089A019 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditFeature.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000C03 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
 		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
 		BCA7146257B2B7E18DD4D375 /* TimePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerFeatureTests.swift; sourceTree = "<group>"; };
@@ -261,6 +267,7 @@
 		DA2C8CF1309C71180042C67C /* LocationClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationClientError.swift; sourceTree = "<group>"; };
 		DA5B0FA330988669003FEDF9 /* RecordClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordClient.swift; sourceTree = "<group>"; };
 		DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecord.swift; sourceTree = "<group>"; };
+		DAEC9A03309C5A0000AA0001 /* RecordPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPhoto.swift; sourceTree = "<group>"; };
 		DA5B0FB83098DA4B003FEDF9 /* DependencyValues+Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+Record.swift"; sourceTree = "<group>"; };
 		DA5B0FBA3098DCCC003FEDF9 /* UpdatedRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedRecord.swift; sourceTree = "<group>"; };
 		DA5B0FC83098DF6E003FEDF9 /* RecordLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordLike.swift; sourceTree = "<group>"; };
@@ -341,6 +348,7 @@
 		ECE6F28C3098338400C4916C /* SupabaseClientKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClientKey.swift; sourceTree = "<group>"; };
 		ECE6F28F3098338400C4916C /* PlobbyLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyLogger.swift; sourceTree = "<group>"; };
 		ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageCompressor.swift; sourceTree = "<group>"; };
+		DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyAlert.swift; sourceTree = "<group>"; };
 		ECE6F2923098338400C4916C /* PlobbyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyButton.swift; sourceTree = "<group>"; };
 		ECE6F2943098338400C4916C /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		ECE6F2953098338400C4916C /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
@@ -696,10 +704,20 @@
 		DA5B10E330998932003FEDF9 /* My */ = {
 			isa = PBXGroup;
 			children = (
+				D1A0C0DE0000000000000C05 /* ProfileEdit */,
 				DA5B10E230998932003FEDF9 /* MyFeature.swift */,
 				B5951FB2309BA4AB0089A019 /* MyView.swift */,
 			);
 			path = My;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE0000000000000C05 /* ProfileEdit */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */,
+				D1A0C0DE0000000000000C03 /* ProfileEditView.swift */,
+			);
+			path = ProfileEdit;
 			sourceTree = "<group>";
 		};
 		DA5B10E630998932003FEDF9 /* Record */ = {
@@ -908,6 +926,7 @@
 		ECE6F2933098338400C4916C /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
+				DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */,
 				ECE6F2923098338400C4916C /* PlobbyButton.swift */,
 				EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */,
 				EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */,
@@ -1009,6 +1028,7 @@
 				DA5B0FC83098DF6E003FEDF9 /* RecordLike.swift */,
 				DA5B0FBA3098DCCC003FEDF9 /* UpdatedRecord.swift */,
 				DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */,
+				DAEC9A03309C5A0000AA0001 /* RecordPhoto.swift */,
 				DA5B0FE23099A001003FEDF9 /* RecordType.swift */,
 				DA5B0FE43099A001003FEDF9 /* RecordDetail.swift */,
 				DA5B0FE63099A001003FEDF9 /* RecordSummary.swift */,
@@ -1412,12 +1432,14 @@
 				ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */,
 				ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */,
 				DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */,
+				DAEC9A04309C5A0000AA0001 /* RecordPhoto.swift in Sources */,
 				DA5B0FE13099A001003FEDF9 /* RecordType.swift in Sources */,
 				DA688DC93099CFAA0064A2F4 /* RecordFormFeature.swift in Sources */,
 				DA5B0FE33099A001003FEDF9 /* RecordDetail.swift in Sources */,
 				DA5B0FE53099A001003FEDF9 /* RecordSummary.swift in Sources */,
 				B59027033098E2F800AE351D /* NotificationClient.swift in Sources */,
 				ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */,
+				DAEC9A02309C5A0000AA0001 /* PlobbyAlert.swift in Sources */,
 				DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */,
 				EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */,
 				DA5B106430997215003FEDF9 /* CreateRecordRequestDTO.swift in Sources */,
@@ -1480,6 +1502,8 @@
 				DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
 				B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */,
+				D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */,
+				D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */,
 				DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */,
 				ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */,
 				DA688DCF3099EFFF0064A2F4 /* RecordView.swift in Sources */,

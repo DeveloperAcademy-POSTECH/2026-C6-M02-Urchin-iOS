@@ -13,7 +13,7 @@ import Supabase
 struct UserClient {
     var fetchIsNicknameAvailable: @Sendable (_ nickname: String) async throws -> Bool
     var fetchMyProfile: @Sendable () async throws -> Profile?
-    var updateMyProfile: @Sendable (_ nickname: String, _ profileImageKey: String?) async throws -> Profile
+    var updateMyProfile: @Sendable (_ nickname: String, _ profileImage: Data?) async throws -> Profile
     var submitBlock: @Sendable (_ userID: UUID) async throws -> Void
     var removeBlock: @Sendable (_ userID: UUID) async throws -> Void
     var fetchBlockedUsers: @Sendable () async throws -> [BlockedUser]
@@ -51,19 +51,48 @@ extension UserClient: DependencyKey {
 
                 return profile.toDomain(profileImageURL: profileImageURL)
             },
-            updateMyProfile: { nickname, profileImageKey in
+            updateMyProfile: { nickname, profileImage in
                 @Dependency(\.supabaseClient) var supabaseClient
 
                 let userID = try await supabaseClient.auth.session.user.id
 
-                let profile: ProfileResponseDTO = try await supabaseClient
-                    .from("profiles")
-                    .update(ProfileUpdateRequestDTO(nickname: nickname, profileImageKey: profileImageKey))
-                    .eq("user_id", value: userID)
-                    .select("user_id, nickname, profile_image_key")
-                    .single()
-                    .execute()
-                    .value
+                var previousProfileImageKey: String?
+                var profileImageKey: String?
+
+                if let profileImage {
+                    let currentProfile: ProfileResponseDTO? = try await supabaseClient
+                        .from("profiles")
+                        .select("user_id, nickname, profile_image_key")
+                        .eq("user_id", value: userID)
+                        .maybeSingle()
+                        .execute()
+                        .value
+
+                    previousProfileImageKey = currentProfile?.profileImageKey
+                    profileImageKey = try await supabaseClient.uploadProfileImage(profileImage, userID: userID)
+                }
+
+                let profile: ProfileResponseDTO
+
+                do {
+                    profile = try await supabaseClient
+                        .from("profiles")
+                        .update(ProfileUpdateRequestDTO(nickname: nickname, profileImageKey: profileImageKey))
+                        .eq("user_id", value: userID)
+                        .select("user_id, nickname, profile_image_key")
+                        .single()
+                        .execute()
+                        .value
+                } catch {
+                    if let profileImageKey {
+                        try? await supabaseClient.removeProfileImage(profileImageKey)
+                    }
+                    throw error
+                }
+
+                if let previousProfileImageKey, previousProfileImageKey != profileImageKey {
+                    try? await supabaseClient.removeProfileImage(previousProfileImageKey)
+                }
 
                 let profileImageURL = try profile.profileImageKey.map {
                     try supabaseClient.storage.from("Plobby Profile Bucket").getPublicURL(path: $0)

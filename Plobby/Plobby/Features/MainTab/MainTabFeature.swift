@@ -66,6 +66,10 @@ struct MainTabFeature {
             case .recordFlow(.presented(.delegate(.closed))):
                 state.recordFlow = nil
                 return .none
+            case .recordFlow(.presented(.delegate(.recordDeleted))):
+                state.recordFlow = nil
+                state.selectedTab = .home
+                return .none
             case let .home(.delegate(.recordStarted(recordType))):
                 return .send(.recordTypeSelected(recordType))
             case .home:

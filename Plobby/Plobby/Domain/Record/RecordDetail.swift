@@ -24,6 +24,12 @@ nonisolated struct RecordDetail: Identifiable, Equatable, Sendable {
     let trashCount: Int
     let photos: [Photo]
     let trash: [Trash]
+    let nickname: String
+    let profileImageURL: URL?
+    /// 지금 로그인한 사용자가 쓴 기록인지
+    let isMine: Bool
+    var likeCount: Int
+    var likedByMe: Bool
 }
 
 extension RecordDetail {
@@ -36,6 +42,7 @@ extension RecordDetail {
         }
 
         let storageKey: String
+        let url: URL?
         let photoType: PhotoType
         let sortOrder: Int
     }
@@ -47,5 +54,9 @@ extension RecordDetail {
         let name: String
         let customName: String?
         let quantity: Int
+
+        var displayName: String {
+            customName ?? name
+        }
     }
 }
