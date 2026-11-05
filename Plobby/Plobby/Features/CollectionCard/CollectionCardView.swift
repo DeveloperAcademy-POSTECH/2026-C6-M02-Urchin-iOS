@@ -26,9 +26,6 @@ struct CollectionCardView: View {
             trashPile
             collectedCount
         }
-        .padding(.top, 16)
-        .padding(.horizontal, 20)
-        .padding(.bottom, 48)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.neutralBlack), in: RoundedRectangle(cornerRadius: 20))
         .padding(.horizontal, 20)
@@ -70,6 +67,8 @@ private extension CollectionCardView {
                     }
             }
         }
+        .padding(.top, 16)
+        .padding(.horizontal, 20)
     }
 
     // TODO: 모은 쓰레기가 쌓이는 SpriteKit 장면으로 교체
@@ -82,16 +81,18 @@ private extension CollectionCardView {
     var collectedCount: some View {
         HStack(alignment: .lastTextBaseline) {
             Text("지금까지 모은 개수")
-                .plobbyFont(.metadata)
-                .foregroundStyle(Color(.gray0))
-                .opacity(0.72)
+                .plobbyFont(.helper)
+                // TODO: 컬러셋 확정 후 교체
+                .foregroundStyle(Color(red: 0xB7 / 255, green: 0xC3 / 255, blue: 0xBC / 255))
 
             Spacer()
 
             Text("\(store.collectedCount)개")
-                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 48))
+                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 44))
                 .foregroundStyle(Color(.gray0))
         }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 48)
     }
 }
 
