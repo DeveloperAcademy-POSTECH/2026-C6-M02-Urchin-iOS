@@ -61,8 +61,8 @@ struct RecordFlowFeature {
                 ))
                 return .none
                 
-            case let .step(.form(.delegate(.recordCreated(recordID, trash)))):
-                state.step = .reward(.init(recordID: recordID, trash: trash))
+            case let .step(.form(.delegate(.recordCreated(recordID, beachName, trash, weightKg)))):
+                state.step = .reward(.init(recordID: recordID, beachName: beachName, trash: trash, weightKg: weightKg))
                 return .none
                 
             case let .step(.reward(.delegate(.finished(recordID)))):

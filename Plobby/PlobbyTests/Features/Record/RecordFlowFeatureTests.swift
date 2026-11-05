@@ -43,7 +43,7 @@ struct RecordFlowFeatureTests {
             }
         }
         await store.receive(\.step.form.delegate.recordCreated) {
-            $0.step = .reward(RecordRewardFeature.State(recordID: UUID(0)))
+            $0.step = .reward(RecordRewardFeature.State(recordID: UUID(0), beachName: "영일대 해수욕장"))
         }
     }
 
@@ -102,6 +102,7 @@ struct RecordFlowFeatureTests {
             RecordFlowFeature()
         } withDependencies: {
             $0.uuid = .incrementing
+            $0.locale = Locale(identifier: "ko_KR")
         }
     }
 }

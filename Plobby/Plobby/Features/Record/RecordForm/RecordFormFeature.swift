@@ -78,7 +78,7 @@ struct RecordFormFeature {
 
         @CasePathable
         enum Delegate {
-            case recordCreated(UUID, TrashSelection)
+            case recordCreated(recordID: UUID, beachName: String?, trash: TrashSelection, weightKg: Double?)
             case closed
         }
     }
@@ -195,7 +195,12 @@ struct RecordFormFeature {
                 
             case let .submitResponse(.success(recordID)):
                 state.isSubmitting = false
-                return .send(.delegate(.recordCreated(recordID, state.trash)))
+                return .send(.delegate(.recordCreated(
+                    recordID: recordID,
+                    beachName: state.beach?.name,
+                    trash: state.trash,
+                    weightKg: DecimalInput.number(from: state.totalWeightText, locale: locale)
+                )))
                 
             case .submitResponse(.failure):
                 state.isSubmitting = false

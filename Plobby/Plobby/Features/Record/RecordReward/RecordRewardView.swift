@@ -34,12 +34,69 @@ struct RecordRewardView: View {
     var body: some View {
         SpriteView(scene: scene)
             .ignoresSafeArea()
+            .overlay(alignment: .topLeading) {
+                summary
+            }
+            .onAppear {
+                store.send(.onAppear)
+            }
             .overlay(alignment: .bottom) {
                 PlobbyButton(text: "다음") {
                     store.send(.nextButtonTapped)
                 }
                 .padding(.horizontal, 20)
             }
+    }
+}
+
+// MARK: - Subviews
+
+extension RecordRewardView {
+
+    // TODO: 디자인 확정 후 색상·여백 조정
+    private var summary: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            if let nickname = store.nickname {
+                Text("\(nickname)님 덕분에")
+                    .plobbyFont(.body)
+                    .foregroundStyle(Color(.gray0))
+                    .opacity(0.8)
+                    .padding(.bottom, 8)
+            }
+
+            Text("\(store.beachName.map { "\($0)이" } ?? "바다가")\n이만큼 깨끗해졌어요")
+                .plobbyFont(.headingLarge)
+                .foregroundStyle(Color(.gray0))
+
+            HStack(alignment: .top, spacing: 38) {
+                metric(value: "\(store.trash.totalCount)", unit: "개", title: "수거한 쓰레기")
+                    .frame(width: 154, alignment: .leading)
+
+                if let weightKg = store.weightKg {
+                    metric(value: weightKg.formatted(), unit: "kg", title: "총무게")
+                }
+            }
+            .padding(.top, 24)
+        }
+        .padding(.horizontal, 28)
+        .padding(.top, 36)
+    }
+
+    private func metric(value: String, unit: String, title: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text(value)
+                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 32))
+                Text(unit)
+                    .plobbyFont(.cardTitle)
+            }
+            .foregroundStyle(Color(.gray0))
+
+            Text(title)
+                .plobbyFont(.metadata)
+                .foregroundStyle(Color(.gray0))
+                .opacity(0.72)
+        }
     }
 }
 
