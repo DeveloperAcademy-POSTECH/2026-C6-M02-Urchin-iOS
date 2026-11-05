@@ -136,8 +136,7 @@ struct ProfileEditFeature {
                 state.isNicknameAvailable = isAvailable
                 return .none
 
-            case let .nicknameCheckResponse(.failure(error)):
-                PlobbyLogger.error(error)
+            case .nicknameCheckResponse(.failure):
                 state.isCheckingNickname = false
                 return .none
 
