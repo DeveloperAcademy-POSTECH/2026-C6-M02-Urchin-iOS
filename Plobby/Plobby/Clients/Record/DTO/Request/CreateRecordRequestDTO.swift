@@ -8,7 +8,7 @@
 import Foundation
 
 nonisolated struct CreateRecordRequestDTO: Encodable, Sendable {
-    
+
     let id: UUID
     let beachID: UUID
     let recordType: String
@@ -34,11 +34,39 @@ nonisolated struct CreateRecordRequestDTO: Encodable, Sendable {
         case trash = "p_trash"
         case photos = "p_photos"
     }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(beachID, forKey: .beachID)
+        try container.encode(recordType, forKey: .recordType)
+        try container.encode(title, forKey: .title)
+        try container.encode(startedAt, forKey: .startedAt)
+        try container.encode(endedAt, forKey: .endedAt)
+        try container.encode(weightKg, forKey: .weightKg)
+        try container.encode(depthM, forKey: .depthM)
+        try container.encode(memo, forKey: .memo)
+        try container.encode(trash, forKey: .trash)
+        try container.encode(photos, forKey: .photos)
+    }
 }
 
 nonisolated extension CreateRecordRequestDTO {
-    // TODO: NewRecord 엔티티 구현 후 Entity -> DTO 변환으로 교체
-    init(from record: NewRecord) {
-        fatalError("NewRecord가 아직 구현되지 않았어요. 임시 값으로 서버에 저장하지 않도록 막아 둬요.")
+
+    /// - Parameter photoKeys: 업로드를 마친 사진의 storage key. `record.photos`와 순서가 같아요.
+    init(from record: NewRecord, photoKeys: [String]) {
+        self.init(
+            id: record.id,
+            beachID: record.beachID,
+            recordType: record.recordType.rawValue,
+            title: record.title,
+            startedAt: record.startedAt,
+            endedAt: record.endedAt,
+            weightKg: record.weightKg,
+            depthM: record.depthM,
+            memo: record.memo,
+            trash: record.trash.map(RecordTrashRequestDTO.init),
+            photos: RecordPhotoRequestDTO.activityPhotos(photoKeys)
+        )
     }
 }

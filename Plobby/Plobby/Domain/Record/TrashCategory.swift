@@ -54,3 +54,28 @@ nonisolated extension TrashCategory {
         }
     }
 }
+
+nonisolated extension TrashCategory {
+    
+    /// 서버 `trash_types.code`
+    var code: String {
+        switch self {
+        case .glass: "glass"
+        case .plastic: "plastic"
+        case .metal: "metal"
+        case .wood: "wood"
+        case .fishingGear: "fishing_gear"
+        case .clothing: "fiber"
+        case .styrofoam: "styrofoam"
+        case .can: "can"
+        case .paper: "paper"
+        case .rubber: "rubber"
+        case .etc: "other"
+        }
+    }
+    
+    init?(code: String) {
+        guard let category = Self.allCases.first(where: { $0.code == code }) else { return nil }
+        self = category
+    }
+}

@@ -17,3 +17,10 @@ nonisolated struct RecordTrashRequestDTO: Encodable, Sendable {
         case quantity
     }
 }
+
+nonisolated extension RecordTrashRequestDTO {
+    
+    init(_ trash: NewRecord.Trash) {
+        self.init(trashCode: trash.category.code, customName: trash.customName, quantity: trash.quantity)
+    }
+}

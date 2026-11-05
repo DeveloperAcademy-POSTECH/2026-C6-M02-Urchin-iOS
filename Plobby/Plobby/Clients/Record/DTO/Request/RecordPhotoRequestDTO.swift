@@ -17,3 +17,17 @@ nonisolated struct RecordPhotoRequestDTO: Encodable, Sendable {
         case sortOrder = "sort_order"
     }
 }
+
+nonisolated extension RecordPhotoRequestDTO {
+    
+    /// 업로드를 마친 storage key를 순서대로 활동 사진으로 보내요.
+    static func activityPhotos(_ storageKeys: [String]) -> [Self] {
+        storageKeys.enumerated().map { index, key in
+            RecordPhotoRequestDTO(
+                storageKey: key,
+                photoType: RecordDetail.Photo.PhotoType.activity.rawValue,
+                sortOrder: index
+            )
+        }
+    }
+}
