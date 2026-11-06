@@ -15,6 +15,25 @@ extension SupabaseClient {
         try await auth.session.user.id
     }
 
+    /// 로그인하지 않은 비회원이면 nil이에요. 네트워크 오류처럼 다른 에러는 그대로 던져요.
+    func currentUserIDIfSignedIn() async throws -> UUID? {
+        do {
+            return try await currentUserID()
+        } catch AuthError.sessionMissing {
+            return nil
+        }
+    }
+
+    /// 기록 사진의 storage key로 공개 URL을 만들어요.
+    nonisolated func recordPhotoURL(_ storageKey: String) -> URL? {
+        try? storage.from(StorageBucket.image).getPublicURL(path: storageKey)
+    }
+
+    /// 프로필 사진의 storage key로 공개 URL을 만들어요.
+    nonisolated func profileImageURL(_ storageKey: String) -> URL? {
+        try? storage.from(StorageBucket.profile).getPublicURL(path: storageKey)
+    }
+
     /// 프로필 사진을 Storage에 올리고 저장 경로(key)를 돌려줘요.
     /// 파일 이름에 시각을 넣어, 사진을 바꿨을 때 이전 사진이 캐시로 보이지 않게 해요.
     func uploadProfileImage(_ data: Data, userID: UUID) async throws -> String {
