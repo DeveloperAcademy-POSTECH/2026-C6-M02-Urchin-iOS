@@ -17,7 +17,7 @@ struct OnboardingPageIndicator: View {
     // MARK: - Body
     
     var body: some View {
-        HStack(alignment: .center, spacing: 8) {
+        HStack(alignment: .center, spacing: 8.scaled) {
             indicator
         }
         .animation(.easeInOut(duration: 0.3), value: currentIndex)
@@ -31,8 +31,8 @@ extension OnboardingPageIndicator {
     private var indicator: some View {
         ForEach(0..<pageCount, id: \.self) { index in
             Capsule()
-                .fill(index <= currentIndex ? Color.black : Color.gray.opacity(0.3))
-                .frame(height: 4)
+                .fill(index <= currentIndex ? Color(.neutralBlack) : Color.gray.opacity(0.3))
+                .frame(height: 4.scaled)
         }
     }
 }
