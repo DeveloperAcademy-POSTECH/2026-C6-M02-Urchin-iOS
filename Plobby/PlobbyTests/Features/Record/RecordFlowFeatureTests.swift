@@ -90,7 +90,7 @@ struct RecordFlowFeatureTests {
     func 기록상세에서_닫으면_기록_플로우가_종료된다() async {
         let store = makeStore(step: .detail(RecordDetailFeature.State(recordID: UUID(0))))
 
-        await store.send(\.step.detail.closeButtonTapped)
+        await store.send(\.step.detail.backTapped)
         await store.receive(\.step.detail.delegate.closed)
         await store.receive(\.delegate.closed)
     }
