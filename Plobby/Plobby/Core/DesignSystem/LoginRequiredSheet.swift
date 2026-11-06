@@ -17,26 +17,12 @@ struct LoginRequiredSheet: View {
     let onAppleLogin: () -> Void
     let onBrowse: () -> Void
 
-    @State private var scale: CGFloat = 1
-
     // MARK: - Body
     
     var body: some View {
-        GeometryReader { proxy in
-            let scale = max(proxy.size.width / DesignScale.frameWidth, 0.01)
-
-            content
-                .frame(width: DesignScale.frameWidth, height: max(proxy.size.height / scale, 0))
-                .scaleEffect(scale, anchor: .topLeading)
-        }
-        .onGeometryChange(for: CGFloat.self) { proxy in
-            proxy.size.width / DesignScale.frameWidth
-        } action: { newScale in
-            guard newScale > 0 else { return }
-            scale = newScale
-        }
-        .presentationDetents([.height(Self.designHeight * scale)])
-        .presentationBackgroundInteraction(.enabled)
+        content
+            .presentationDetents([.height(Self.designHeight.scaled)])
+            .presentationBackgroundInteraction(.enabled)
     }
 }
 
@@ -61,9 +47,9 @@ private extension LoginRequiredSheet {
             Text("로그인하고 내 활동을 기록해보세요")
                 .plobbyFont(.metric)
                 .foregroundStyle(Color(.textPrimary))
-                .padding(.horizontal, 24)
-                .padding(.top, 30)
-                .padding(.bottom, 8)
+                .padding(.horizontal, 24.scaled)
+                .padding(.top, 30.scaled)
+                .padding(.bottom, 8.scaled)
         }
     }
     
@@ -73,7 +59,7 @@ private extension LoginRequiredSheet {
                 .plobbyFont(.label)
                 .foregroundStyle(Color(.textSecondary))
                 .multilineTextAlignment(.leading)
-                .padding(.horizontal, 24)
+                .padding(.horizontal, 24.scaled)
         }
     }
 
@@ -82,7 +68,7 @@ private extension LoginRequiredSheet {
             AppleLoginLabel()
         }
         .disabled(isSigningIn)
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 20.scaled)
     }
 
     var browseButton: some View {
@@ -91,7 +77,7 @@ private extension LoginRequiredSheet {
                 .plobbyFont(.label)
                 .foregroundStyle(Color(.textSecondary))
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 17)
+                .padding(.vertical, 17.scaled)
         }
     }
 }

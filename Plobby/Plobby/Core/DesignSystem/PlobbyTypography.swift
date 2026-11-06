@@ -80,12 +80,13 @@ struct TypographyModifier: ViewModifier {
     let typography: PlobbyTypography
 
     func body(content: Content) -> some View {
-        let uiFont = UIFont(name: typography.weight.rawValue, size: typography.size)
-            ?? .systemFont(ofSize: typography.size)
-        let extraLineSpacing = max(0, typography.lineHeight - uiFont.lineHeight)
+        let size = typography.size.scaled
+        let uiFont = UIFont(name: typography.weight.rawValue, size: size)
+            ?? .systemFont(ofSize: size)
+        let extraLineSpacing = max(0, typography.lineHeight.scaled - uiFont.lineHeight)
 
         content
-            .font(.custom(typography.weight.rawValue, fixedSize: typography.size))
+            .font(.custom(typography.weight.rawValue, fixedSize: size))
             .lineSpacing(extraLineSpacing)
             .padding(.vertical, extraLineSpacing / 2)
     }

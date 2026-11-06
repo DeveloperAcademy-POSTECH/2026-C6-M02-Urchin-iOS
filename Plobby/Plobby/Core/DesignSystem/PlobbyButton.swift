@@ -25,11 +25,11 @@ struct PlobbyButton: View {
                 .plobbyFont(.actionLabel)
                 .foregroundStyle(textColor)
                 .frame(maxWidth: .infinity)
-                .frame(height: 54)
-                .background(backgroundColor, in: RoundedRectangle(cornerRadius: 8))
+                .frame(height: 54.scaled)
+                .background(backgroundColor, in: RoundedRectangle(cornerRadius: 8.scaled))
                 .overlay {
                     if style == .alternative && isEnabled {
-                        RoundedRectangle(cornerRadius: 8)
+                        RoundedRectangle(cornerRadius: 8.scaled)
                             .stroke(Color(.gray300), lineWidth: 1)
                     }
                 }
