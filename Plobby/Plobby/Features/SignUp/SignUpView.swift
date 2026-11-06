@@ -62,20 +62,22 @@ struct SignUpView: View {
 extension SignUpView {
     
     private var title: some View {
-        Text("플로비에서 사용할\n프로필을 등록해주세요")
-            .font(.system(size: 26, weight: .semibold))
+        Text("프로필을 등록해주세요")
+            .plobbyFont(.headingLarge)
+            .foregroundStyle(Color(.textPrimary))
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 21)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 51)
+            // 내비게이션 바가 없는 화면이라 시안 여백 24에 내비게이션 바 높이(44)를 더해요
+            .padding(.top, (24 + Self.navigationBarHeight).scaled)
+            .padding(.horizontal, 20.scaled)
+            .padding(.bottom, 68.scaled)
     }
 
     private var profileImagePicker: some View {
         PhotosPicker(selection: $selectedPhoto, matching: .images) {
             profileImage
-                .frame(width: 200, height: 200)
-                .clipShape(Circle())
-                .padding(.bottom, 50)
+                .frame(width: 132.scaled, height: 132.scaled)
+                .clipShape(RoundedRectangle(cornerRadius: 16.scaled))
+                .padding(.bottom, 32.scaled)
         }
     }
 
@@ -86,40 +88,44 @@ extension SignUpView {
                 .resizable()
                 .scaledToFill()
         } else {
-            Circle()
-                .fill(Color.gray.opacity(0.15))
+            Self.profilePlaceholderColor
                 .overlay {
-                    Image(systemName: "plus.circle")
-                        .font(.system(size: 32, weight: .light))
-                        .foregroundStyle(.gray)
+                    Image(systemName: "photo.badge.plus")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 48.scaled, height: 48.scaled)
+                        .foregroundStyle(Color(.gray600))
                 }
         }
     }
     
     private var nameSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 8.scaled) {
             Text("이름")
-                .font(.system(size: 16, weight: .semibold))
+                .plobbyFont(.actionLabel)
+                .foregroundStyle(Color(.gray700))
 
             Text(store.fullName ?? "")
-                .font(.system(size: 16, weight: .regular))
-                .padding(.horizontal, 20)
-                .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
+                .plobbyFont(.body)
+                .foregroundStyle(Color(.textPrimary))
+                .padding(.horizontal, 20.scaled)
+                .frame(maxWidth: .infinity, minHeight: 50.scaled, alignment: .leading)
                 .overlay {
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 16.scaled)
                         .stroke(.black)
                 }
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 4)
+        .padding(.horizontal, 20.scaled)
+        .padding(.bottom, 4.scaled)
     }
 
     private var nicknameSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 8.scaled) {
             Text("닉네임")
-                .font(.system(size: 16, weight: .semibold))
+                .plobbyFont(.actionLabel)
+                .foregroundStyle(Color(.gray700))
 
-            HStack(spacing: 8) {
+            HStack(spacing: 8.scaled) {
                 TextField(
                     "닉네임을 입력해주세요",
                     text: $nicknameText
@@ -130,39 +136,43 @@ extension SignUpView {
                     nicknameText = nickname
                     store.send(.nicknameChanged(nickname))
                 }
-                .font(.system(size: 16, weight: .regular))
+                .plobbyFont(.body)
+                .foregroundStyle(Color(.textPrimary))
 
                 Button {
                     store.send(.nicknameCheckButtonTapped)
                 } label: {
                     Text("중복확인")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(store.canCheckNickname ? Color.black : Color.gray)
-                        .padding(.horizontal, 10)
-                        .frame(height: 34)
-                        .background(Color.gray.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
+                        .plobbyFont(.body)
+                        .foregroundStyle(store.canCheckNickname ? Color(.neutralBlack) : Color.gray)
+                        .padding(.horizontal, 10.scaled)
+                        .frame(height: 34.scaled)
+                        .background(
+                            store.canCheckNickname ? Color.gray.opacity(0.1) : Color(.gray50),
+                            in: RoundedRectangle(cornerRadius: 8.scaled)
+                        )
                 }
                 .disabled(!store.canCheckNickname)
             }
-            .padding(.leading, 20)
-            .padding(.trailing, 8)
-            .frame(height: 50)
+            .padding(.leading, 20.scaled)
+            .padding(.trailing, 8.scaled)
+            .frame(height: 50.scaled)
             .overlay {
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 16.scaled)
                     .stroke(Color.gray.opacity(0.3))
             }
 
             if store.isNicknameFormatInvalid {
                 Text("\(Nickname.minimumLength)~\(Nickname.maximumLength)자의 한글, 영문, 숫자만 입력할 수 있어요")
-                    .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(.red)
+                    .plobbyFont(.metadata)
+                    .foregroundStyle(Color(.currentError))
             } else if let isAvailable = store.isNicknameAvailable {
                 Text(isAvailable ? "사용 가능한 닉네임이에요" : "이미 사용 중인 닉네임이에요")
-                    .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(isAvailable ? .green : .red)
+                    .plobbyFont(.metadata)
+                    .foregroundStyle(isAvailable ? Color.green : Color(.currentError))
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 20.scaled)
     }
     
     private var nextButton: some View {
@@ -170,6 +180,16 @@ extension SignUpView {
             store.send(.nextButtonTapped)
         }
         .disabled(!store.canGoNext)
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 20.scaled)
     }
+}
+
+// MARK: - Constants
+
+extension SignUpView {
+
+    private static let navigationBarHeight: CGFloat = 44
+
+    // TODO: 컬러셋 확정 후 교체 (#F2F4F7)
+    private static let profilePlaceholderColor = Color(red: 0xF2 / 255, green: 0xF4 / 255, blue: 0xF7 / 255)
 }
