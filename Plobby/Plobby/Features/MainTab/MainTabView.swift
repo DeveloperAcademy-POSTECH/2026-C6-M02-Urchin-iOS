@@ -70,13 +70,13 @@ struct MainTabView: View {
             RecordView(store: store)
         }
         .sheet(isPresented: $store.isLoginSheetPresented.sending(\.loginSheetPresentationChanged)) {
-            // TODO: Apple 로그인 처리 연결
             LoginRequiredSheet(
-                onAppleRequest: { _ in },
-                onAppleCompletion: { _ in },
+                isSigningIn: store.isSigningIn,
+                onAppleLogin: { store.send(.appleLoginButtonTapped) },
                 onBrowse: { store.send(.loginSheetPresentationChanged(false)) }
             )
         }
+        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
     }
 }
 // MARK: - Subviews

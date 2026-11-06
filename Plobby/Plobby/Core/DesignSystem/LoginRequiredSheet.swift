@@ -5,7 +5,6 @@
 //  Created by 이은지 on 11/6/26.
 //
 
-import AuthenticationServices
 import SwiftUI
 
 struct LoginRequiredSheet: View {
@@ -15,8 +14,7 @@ struct LoginRequiredSheet: View {
     private static let designHeight: CGFloat = 279
 
     var isSigningIn = false
-    let onAppleRequest: (ASAuthorizationAppleIDRequest) -> Void
-    let onAppleCompletion: (Result<AppleCredential, AppleSignInError>) -> Void
+    let onAppleLogin: () -> Void
     let onBrowse: () -> Void
 
     @State private var scale: CGFloat = 1
@@ -80,15 +78,8 @@ private extension LoginRequiredSheet {
     }
 
     var appleLoginButton: some View {
-        SignInWithAppleButton(.signIn) { request in
-            onAppleRequest(request)
-        } onCompletion: { result in
-            onAppleCompletion(result.appleCredential)
-        }
-        .frame(height: 51)
-        .overlay {
+        Button(action: onAppleLogin) {
             AppleLoginLabel()
-                .allowsHitTesting(false)
         }
         .disabled(isSigningIn)
         .padding(.horizontal, 20)
