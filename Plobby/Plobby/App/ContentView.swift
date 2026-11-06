@@ -14,9 +14,7 @@ struct ContentView: View {
     // MARK: - Properties
     
     @State private var store = Store(
-        initialState: AppFeature.State.onboarding(
-            OnboardingFeature.State()
-        )
+        initialState: AppFeature.State.launching
     ) {
         AppFeature()
     }
@@ -33,6 +31,10 @@ struct ContentView: View {
     @ViewBuilder
     private var content: some View {
         switch store.state {
+        case .launching:
+            Color(.gray0)
+                .ignoresSafeArea()
+
         case .onboarding:
             if let store = store.scope(
                 state: \.onboarding,
