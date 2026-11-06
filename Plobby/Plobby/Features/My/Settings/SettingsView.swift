@@ -60,6 +60,7 @@ extension SettingsView {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .disabled(store.isSigningOut)
             .accessibilityLabel("뒤로")
 
             Text("설정")
