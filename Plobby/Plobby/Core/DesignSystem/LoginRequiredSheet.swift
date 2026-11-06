@@ -73,7 +73,7 @@ private extension LoginRequiredSheet {
 
     var browseButton: some View {
         Button(action: onBrowse) {
-            Text("둘러보기")
+            Text("회원가입 없이 둘러보기")
                 .plobbyFont(.label)
                 .foregroundStyle(Color(.textSecondary))
                 .frame(maxWidth: .infinity)
