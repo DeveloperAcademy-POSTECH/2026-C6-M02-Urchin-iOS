@@ -15,6 +15,8 @@ struct HomeView: View {
 
     @Bindable var store: StoreOf<HomeFeature>
 
+    @State private var scale: CGFloat = 1
+
     // MARK: - Body
 
     var body: some View {
@@ -41,9 +43,15 @@ extension HomeView {
                 recentRecordRowList
                 // TODO: 이용 가이드 콘텐츠가 준비되면 dailyTipBanner 다시 표시
             }
-            .padding(.bottom, 36)
+            .padding(.bottom, 36 * scale)
         }
         .scrollIndicators(.hidden)
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            proxy.size.width / DesignScale.frameWidth
+        } action: { newScale in
+            guard newScale > 0 else { return }
+            scale = newScale
+        }
     }
 }
 
@@ -54,7 +62,7 @@ extension HomeView {
     private var header: some View {
         HStack {
             Text("홈")
-                .font(.system(size: 20, weight: .semibold))
+                .font(.system(size: 20 * scale, weight: .semibold))
 
             Spacer()
 
@@ -62,12 +70,12 @@ extension HomeView {
                 store.send(.notificationButtonTapped)
             } label: {
                 Image(systemName: "bell")
-                    .font(.system(size: 24, weight: .regular))
+                    .font(.system(size: 24 * scale, weight: .regular))
                     .foregroundStyle(.black)
             }
         }
-        .frame(height: 56)
-        .padding(.horizontal, 20)
+        .frame(height: 56 * scale)
+        .padding(.horizontal, 20 * scale)
     }
 }
 
@@ -95,18 +103,18 @@ extension HomeView {
             )
 
             recordButton
-                .padding(.horizontal, 20)
-                .padding(.bottom, 16)
+                .padding(.horizontal, 20 * scale)
+                .padding(.bottom, 16 * scale)
         }
         .overlay(alignment: .topTrailing) {
             bannerIndicator
-                .padding(.top, 18)
-                .padding(.trailing, 10)
+                .padding(.top, 18 * scale)
+                .padding(.trailing, 10 * scale)
         }
         .aspectRatio(362 / 180, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .padding(.horizontal, 20)
-        .padding(.top, 16)
+        .clipShape(RoundedRectangle(cornerRadius: 16 * scale))
+        .padding(.horizontal, 20 * scale)
+        .padding(.top, 16 * scale)
     }
 
     private var bannerPosition: Binding<RecordType?> {
@@ -127,18 +135,18 @@ extension HomeView {
             .clipped()
             .overlay(alignment: .topLeading) {
                 Text(banner.bannerTitle)
-                    .font(.system(size: 18, weight: .semibold))
-                    .padding(.top, 20)
-                    .padding(.leading, 24)
+                    .font(.system(size: 18 * scale, weight: .semibold))
+                    .padding(.top, 20 * scale)
+                    .padding(.leading, 24 * scale)
             }
     }
 
     private var bannerIndicator: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 8 * scale) {
             ForEach(HomeFeature.banners, id: \.self) { banner in
                 Circle()
                     .fill(banner == store.currentBanner ? Color.green : Color.gray.opacity(0.3))
-                    .frame(width: 8, height: 8)
+                    .frame(width: 8 * scale, height: 8 * scale)
             }
         }
     }
@@ -147,7 +155,7 @@ extension HomeView {
         PlobbyButton(text: store.currentBanner.recordButtonTitle) {
             store.send(.recordButtonTapped)
         }
-        .padding(.bottom, 4)
+        .padding(.bottom, 4 * scale)
     }
 }
 
@@ -160,7 +168,7 @@ extension HomeView {
             recentRecordHeader
             recentRecordList
         }
-        .padding(.top, 40)
+        .padding(.top, 40 * scale)
     }
 
     // TODO: coverPhotoKey, profileImageKey로 실제 이미지 불러오기
@@ -170,13 +178,13 @@ extension HomeView {
             recentRecordCardImage(record)
 
             recentRecordTitle(record)
-                .padding(.top, 8)
+                .padding(.top, 8 * scale)
 
             recentRecordMeta(record)
-                .padding(.top, 10)
+                .padding(.top, 10 * scale)
 
             recentRecordAuthor(record)
-                .padding(.top, 8)
+                .padding(.top, 8 * scale)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -184,21 +192,21 @@ extension HomeView {
     // TODO: coverPhotoKey로 실제 이미지 불러오기
     /// - 세로 배치 행
     private func recentRecordRow(_ record: RecordSummary) -> some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 16 * scale) {
             VStack(alignment: .leading, spacing: 0) {
                 recentRecordTitle(record)
 
                 recentRecordMeta(record)
-                    .padding(.top, 10)
+                    .padding(.top, 10 * scale)
 
                 recentRecordAuthor(record)
-                    .padding(.top, 8)
+                    .padding(.top, 8 * scale)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
             recentRecordRowImage(record)
         }
-        .padding(.vertical, 13)
+        .padding(.vertical, 13 * scale)
     }
 
     private func recentRecordCardImage(_ record: RecordSummary) -> some View {
@@ -209,45 +217,45 @@ extension HomeView {
                     .resizable()
                     .scaledToFill()
             }
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .clipShape(RoundedRectangle(cornerRadius: 12 * scale))
     }
 
     private func recentRecordRowImage(_ record: RecordSummary) -> some View {
         Image(record.recordType.bannerImage)
             .resizable()
             .scaledToFill()
-            .frame(width: 76, height: 76)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .frame(width: 76 * scale, height: 76 * scale)
+            .clipShape(RoundedRectangle(cornerRadius: 12 * scale))
     }
 
     private func recentRecordTitle(_ record: RecordSummary) -> some View {
         Text(record.title)
-            .font(.system(size: 17, weight: .semibold))
+            .font(.system(size: 17 * scale, weight: .semibold))
             .lineLimit(1)
     }
 
     private func recentRecordMeta(_ record: RecordSummary) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 8 * scale) {
             Text(record.createdAt, format: .relative(presentation: .named))
 
-            HStack(spacing: 2) {
+            HStack(spacing: 2 * scale) {
                 Image(systemName: "heart")
                 Text("\(record.likeCount)")
             }
         }
-        .font(.system(size: 13, weight: .regular))
+        .font(.system(size: 13 * scale, weight: .regular))
         .foregroundStyle(.gray)
     }
 
     private func recentRecordAuthor(_ record: RecordSummary) -> some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 6 * scale) {
             Image(systemName: "person.crop.circle.fill")
                 .resizable()
-                .frame(width: 16, height: 16)
+                .frame(width: 16 * scale, height: 16 * scale)
 
             Text(record.nickname)
-                .font(.system(size: 12, weight: .regular))
-                .padding(.leading, 4)
+                .font(.system(size: 12 * scale, weight: .regular))
+                .padding(.leading, 4 * scale)
         }
         .foregroundStyle(.gray)
     }
@@ -258,16 +266,16 @@ extension HomeView {
     private var recentRecordHeader: some View {
         HStack {
             Text("새로 올라온 기록")
-                .font(.system(size: 20, weight: .semibold))
+                .font(.system(size: 20 * scale, weight: .semibold))
 
             Spacer()
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 16)
+        .padding(.horizontal, 20 * scale)
+        .padding(.bottom, 16 * scale)
     }
     
     private var recentRecordList: some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(alignment: .top, spacing: 12 * scale) {
             ForEach(store.recentRecordCards) { record in
                 Button {
                     store.send(.recentRecordTapped(record.id))
@@ -277,7 +285,7 @@ extension HomeView {
                 .buttonStyle(.plain)
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 20 * scale)
     }
 
     private var recentRecordRowList: some View {
@@ -296,8 +304,8 @@ extension HomeView {
                 }
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 12)
+        .padding(.horizontal, 20 * scale)
+        .padding(.top, 12 * scale)
     }
 }
 
@@ -315,24 +323,24 @@ extension HomeView {
                 .overlay(alignment: .topLeading) {
                     VStack(alignment: .leading, spacing: 0) {
                         Text("하루 상식")
-                            .font(.system(size: 12, weight: .regular))
+                            .font(.system(size: 12 * scale, weight: .regular))
                             .foregroundStyle(.gray)
-                            .padding(.top, 22)
-                            .padding(.leading, 20)
-                            .padding(.bottom, 8)
+                            .padding(.top, 22 * scale)
+                            .padding(.leading, 20 * scale)
+                            .padding(.bottom, 8 * scale)
 
                         Text("바다도 사막화가\n된다고?")
-                            .font(.system(size: 20, weight: .semibold))
+                            .font(.system(size: 20 * scale, weight: .semibold))
                             .foregroundStyle(.black)
                             .multilineTextAlignment(.leading)
-                            .padding(.leading, 20)
-                            .padding(.bottom, 22)
+                            .padding(.leading, 20 * scale)
+                            .padding(.bottom, 22 * scale)
                     }
                 }
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 20)
-        .padding(.top, 24)
+        .padding(.horizontal, 20 * scale)
+        .padding(.top, 24 * scale)
     }
 }
 
