@@ -78,6 +78,7 @@
 		DA0A9D03309A155A006D2504 /* TrashSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9D02309A1555006D2504 /* TrashSelection.swift */; };
 		DA0A9D05309A1586006D2504 /* PeriodField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9D04309A1583006D2504 /* PeriodField.swift */; };
 		DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75A309B1BB1003400FB /* PhotoAuthorization.swift */; };
+		D1A0C0DE0000000000000B12 /* PushAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B11 /* PushAuthorization.swift */; };
 		DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */; };
 		DA0BB75F309B1C5D003400FB /* PhotoSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */; };
 		DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */; };
@@ -299,6 +300,7 @@
 		DA0A9D02309A1555006D2504 /* TrashSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashSelection.swift; sourceTree = "<group>"; };
 		DA0A9D04309A1583006D2504 /* PeriodField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodField.swift; sourceTree = "<group>"; };
 		DA0BB75A309B1BB1003400FB /* PhotoAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAuthorization.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000B11 /* PushAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAuthorization.swift; sourceTree = "<group>"; };
 		DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
 		DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelection.swift; sourceTree = "<group>"; };
 		DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryClient.swift; sourceTree = "<group>"; };
@@ -1146,9 +1148,18 @@
 				ECE6F2AB3098338400C4916C /* Member */,
 				DA035E537AB44E9EB3D534B7 /* Notification */,
 				2C961EE4DC443EB6481C85E1 /* Photo */,
+				D1A0C0DE0000000000000B13 /* Push */,
 				ECE6F2B13098338400C4916C /* Record */,
 			);
 			path = Domain;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE0000000000000B13 /* Push */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE0000000000000B11 /* PushAuthorization.swift */,
+			);
+			path = Push;
 			sourceTree = "<group>";
 		};
 		ECE6F2B53098338400C4916C /* Home */ = {
@@ -1610,6 +1621,7 @@
 				ECE6F2EC3098338400C4916C /* CollectedWeight.swift in Sources */,
 				ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */,
 				DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */,
+				D1A0C0DE0000000000000B12 /* PushAuthorization.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
 				B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */,
 				D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */,

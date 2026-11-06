@@ -16,6 +16,8 @@ struct NotificationClient {
     var updateReadAt: @Sendable (_ notification: AppNotification) async throws -> Void
     var updateAllReadAt: @Sendable () async throws -> Void
     var submitDeviceToken: @Sendable (_ token: String) async throws -> Void
+    /// 이 기기로 푸시를 받지 않도록 서버에서 기기 토큰을 지워요.
+    var removeDeviceToken: @Sendable (_ token: String) async throws -> Void
 }
 
 extension NotificationClient: DependencyKey {
@@ -67,6 +69,15 @@ extension NotificationClient: DependencyKey {
 
                 try await supabaseClient
                     .rpc("register_device_token", params: RegisterDeviceTokenRequestDTO(token: token))
+                    .execute()
+            },
+            removeDeviceToken: { token in
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                try await supabaseClient
+                    .from("device_tokens")
+                    .delete(returning: .minimal)
+                    .eq("token", value: token)
                     .execute()
             }
         )
