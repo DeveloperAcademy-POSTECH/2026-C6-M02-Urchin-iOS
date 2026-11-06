@@ -175,11 +175,12 @@ private extension BeachHomeView {
 
                 Spacer()
 
-                Button("전체보기") {
-                    store.send(.showAllTapped)
-                }
-                .plobbyFont(.helper)
-                .foregroundStyle(Color(.textSecondary))
+                // FIXME: 전체보기 동작이 정해지면 다시 표시 (심사 시 동작 없는 버튼으로 보이지 않게 숨김)
+                // Button("전체보기") {
+                //     store.send(.showAllTapped)
+                // }
+                // .plobbyFont(.helper)
+                // .foregroundStyle(Color(.textSecondary))
             }
 
             records
