@@ -1,0 +1,97 @@
+//
+//  LoginRequiredSheet.swift
+//  Plobby
+//
+//  Created by 이은지 on 11/6/26.
+//
+
+import AuthenticationServices
+import SwiftUI
+
+struct LoginRequiredSheet: View {
+
+    // MARK: - Properties
+
+    static let sheetHeight: CGFloat = 279
+
+    var isSigningIn = false
+    let onAppleRequest: (ASAuthorizationAppleIDRequest) -> Void
+    let onAppleCompletion: (Result<AppleCredential, AppleSignInError>) -> Void
+    let onBrowse: () -> Void
+
+    // MARK: - Body
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            title
+            message
+            
+            Spacer()
+
+            appleLoginButton
+            browseButton
+        }
+    }
+}
+
+// MARK: - Subviews
+
+private extension LoginRequiredSheet {
+    
+    var title: some View {
+        VStack(spacing: 0) {
+            Text("로그인하고 내 활동을 기록해보세요")
+                .plobbyFont(.metric)
+                .foregroundStyle(Color(.textPrimary))
+                .padding(.horizontal, 24)
+                .padding(.top, 30)
+                .padding(.bottom, 8)
+        }
+    }
+    
+    var message: some View {
+        VStack(spacing: 0) {
+            Text("로그인 후 다른 사람들의 기록 보기, 알림을 볼 수 있어요.")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textSecondary))
+                .padding(.leading, 24)
+        }
+    }
+
+    var appleLoginButton: some View {
+        SignInWithAppleButton(.signIn) { request in
+            onAppleRequest(request)
+        } onCompletion: { result in
+            onAppleCompletion(result.appleCredential)
+        }
+        .frame(height: 51)
+        .overlay {
+            AppleLoginLabel()
+                .allowsHitTesting(false)
+        }
+        .disabled(isSigningIn)
+        .padding(.horizontal, 20)
+    }
+
+    var browseButton: some View {
+        Button(action: onBrowse) {
+            Text("둘러보기")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textSecondary))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 17)
+        }
+    }
+}
+
+#Preview {
+    Color.clear
+        .sheet(isPresented: .constant(true)) {
+            LoginRequiredSheet(
+                onAppleRequest: { _ in },
+                onAppleCompletion: { _ in },
+                onBrowse: {}
+            )
+            .presentationDetents([.height(LoginRequiredSheet.sheetHeight)])
+        }
+}
