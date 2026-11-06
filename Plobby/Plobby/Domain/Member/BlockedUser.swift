@@ -11,5 +11,6 @@ struct BlockedUser: Identifiable, Equatable {
     let id: UUID
     let nickname: String
     let profileImageKey: String?
+    let profileImageURL: URL?
     let blockedAt: Date
 }

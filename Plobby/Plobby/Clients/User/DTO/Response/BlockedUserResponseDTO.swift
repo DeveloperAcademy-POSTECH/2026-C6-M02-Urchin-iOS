@@ -25,13 +25,14 @@ nonisolated struct BlockedUserResponseDTO: Decodable, Sendable {
         case blocked
     }
 
-    func toDomain() -> BlockedUser? {
+    func toDomain(profileImageURL: (String) -> URL?) -> BlockedUser? {
         guard let profile = blocked.profile else { return nil }
 
         return BlockedUser(
             id: blockedID,
             nickname: profile.nickname,
             profileImageKey: profile.profileImageKey,
+            profileImageURL: profile.profileImageKey.flatMap(profileImageURL),
             blockedAt: createdAt
         )
     }

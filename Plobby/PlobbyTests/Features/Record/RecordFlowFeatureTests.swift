@@ -14,6 +14,14 @@ import ComposableArchitecture
 @MainActor
 struct RecordFlowFeatureTests {
 
+    private let now = Date(timeIntervalSince1970: 1_793_000_000)
+
+    private let calendar: Calendar = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        return calendar
+    }()
+
     // MARK: - 단계 전환
 
     @Test
@@ -22,7 +30,10 @@ struct RecordFlowFeatureTests {
 
         await store.send(\.step.photoPicker.bottomButtonTapped)
         await store.receive(\.step.photoPicker.delegate.finished) {
-            $0.step = .form(RecordFormFeature.State(recordType: .plogging))
+            $0.step = .form(RecordFormFeature.State(
+                recordType: .plogging,
+                period: .defaultPeriod(endingAt: now, calendar: calendar)
+            ))
         }
     }
 
@@ -102,6 +113,9 @@ struct RecordFlowFeatureTests {
             RecordFlowFeature()
         } withDependencies: {
             $0.uuid = .incrementing
+            $0.date = .constant(now)
+            $0.calendar = calendar
+            $0.recordClient.submitRecord = { _ in }
             $0.locale = Locale(identifier: "ko_KR")
         }
     }

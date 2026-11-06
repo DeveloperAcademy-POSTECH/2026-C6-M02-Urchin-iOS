@@ -27,6 +27,7 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     notificationSection
                     serviceSection
+                    manageUserSection
                     accountSection
                     infoSection
                 }
@@ -37,8 +38,15 @@ struct SettingsView: View {
         }
         .background(Color(.gray0))
         .toolbar(.hidden, for: .navigationBar)
+        .onAppear {
+            store.send(.onAppear)
+        }
         .navigationDestination(item: $store.scope(state: \.withdrawal, action: \.withdrawal)) { store in
             WithdrawalView(store: store)
+                .toolbar(.hidden, for: .tabBar)
+        }
+        .navigationDestination(item: $store.scope(state: \.blockedUsers, action: \.blockedUsers)) { store in
+            BlockedUsersView(store: store)
                 .toolbar(.hidden, for: .tabBar)
         }
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
@@ -102,6 +110,25 @@ extension SettingsView {
                 }
                 .buttonStyle(.plain)
             }
+        }
+    }
+    
+    private var manageUserSection: some View {
+        section("사용자 관리") {
+            Button {
+                store.send(.manageUserTapped)
+            } label: {
+                HStack(alignment: .center, spacing: 0) {
+                    rowTitle("차단한 사용자")
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(Color(.textTertiary))
+                }
+                .frame(height: 52)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
         }
     }
 

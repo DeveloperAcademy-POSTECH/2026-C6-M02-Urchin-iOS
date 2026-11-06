@@ -18,6 +18,7 @@ struct HomeFeature {
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
         @Presents var recordDetail: RecordDetailFeature.State?
+        @Presents var notification: NotificationFeature.State?
         
         var currentBanner: RecordType = .plobbing
         var recentRecords: [RecordSummary] = []
@@ -47,6 +48,7 @@ struct HomeFeature {
         case dailyTipBannerTapped
         case recentRecordsResponse([RecordSummary])
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
+        case notification(PresentationAction<NotificationFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
@@ -96,8 +98,8 @@ struct HomeFeature {
             case let .recordButtonTapped(recordType):
                 return .send(.delegate(.recordStarted(recordType)))
 
-            // TODO: 알림 화면 이동
             case .notificationButtonTapped:
+                state.notification = NotificationFeature.State()
                 return .none
 
             case let .recentRecordTapped(recordID):
@@ -122,6 +124,9 @@ struct HomeFeature {
             case .recordDetail:
                 return .none
 
+            case .notification:
+                return .none
+
             // TODO: 하루 상식 상세 화면 이동
             case .dailyTipBannerTapped:
                 return .none
@@ -136,6 +141,9 @@ struct HomeFeature {
         }
         .ifLet(\.$recordDetail, action: \.recordDetail) {
             RecordDetailFeature()
+        }
+        .ifLet(\.$notification, action: \.notification) {
+            NotificationFeature()
         }
     }
 }
