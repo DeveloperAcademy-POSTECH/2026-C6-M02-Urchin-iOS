@@ -65,7 +65,7 @@ struct MainTabFeature {
         
         Reduce { state, action in
             switch action {
-            case .recordTypeSelected where state.isGuest:
+            case .recordTypeSelected where state.membershipStatus == .guest:
                 state.isRecordMenuPresented = false
                 state.isLoginSheetPresented = true
                 return .none
@@ -144,14 +144,5 @@ private extension MainTabFeature {
             try await clock.sleep(for: Self.sheetDismissDelay)
             await send(.signIn(.appleSignInRequested))
         }
-    }
-}
-
-// MARK: - State
-
-private extension MainTabFeature.State {
-
-    var isGuest: Bool {
-        if case .guest = membershipStatus { true } else { false }
     }
 }
