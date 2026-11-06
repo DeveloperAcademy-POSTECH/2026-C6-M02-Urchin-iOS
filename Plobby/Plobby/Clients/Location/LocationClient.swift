@@ -12,6 +12,7 @@ import Dependencies
 struct LocationClient {
 
     var currentLocation: @Sendable () async throws -> Coordinate
+    var authorization: @Sendable () -> LocationAuthorization
 }
 
 extension LocationClient: DependencyKey {
@@ -36,6 +37,9 @@ extension LocationClient: DependencyKey {
                 }
 
                 throw LocationClientError.unavailable
+            },
+            authorization: {
+                LocationAuthorization(CLLocationManager().authorizationStatus)
             }
         )
     }()
@@ -43,7 +47,6 @@ extension LocationClient: DependencyKey {
 
 // MARK: - LocationAuthorizationRequest
 
-/// CLLocationManager의 권한 변경 콜백을 async로 바꿔요. 요청이 끝날 때까지 호출한 쪽이 붙잡고 있어요.
 @MainActor
 private final class LocationAuthorizationRequest: NSObject, CLLocationManagerDelegate {
 
@@ -63,7 +66,6 @@ private final class LocationAuthorizationRequest: NSObject, CLLocationManagerDel
 
     nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         MainActor.assumeIsolated {
-            // 델리게이트를 붙이자마자 현재 상태(.notDetermined)로 한 번 호출되므로, 결정된 뒤에만 돌려줘요.
             let status = self.manager.authorizationStatus
             guard status != .notDetermined else { return }
 

@@ -15,6 +15,8 @@ struct BeachClient {
     var fetchFavoriteBeaches: @Sendable () async throws -> [Beach]
     var submitFavoriteBeach: @Sendable (_ beachID: UUID) async throws -> Void
     var removeFavoriteBeach: @Sendable (_ beachID: UUID) async throws -> Void
+    var fetchRecordCounts: @Sendable () async throws -> [UUID: Int]
+    var fetchBeachRecords: @Sendable (_ beachID: UUID, _ recordType: RecordType?) async throws -> [BeachRecord]
 }
 
 extension BeachClient: DependencyKey {
@@ -72,7 +74,58 @@ extension BeachClient: DependencyKey {
                     .eq("user_id", value: userID)
                     .eq("beach_id", value: beachID)
                     .execute()
+            },
+            fetchRecordCounts: {
+                @Dependency(\.supabaseClient) var supabase
+
+                let records: [BeachIDResponse] = try await supabase
+                    .from("records")
+                    .select("beach_id")
+                    .is("deleted_at", value: nil)
+                    .execute()
+                    .value
+
+                return records.reduce(into: [:]) { counts, record in
+                    counts[record.beachID, default: 0] += 1
+                }
+            },
+            fetchBeachRecords: { beachID, recordType in
+                @Dependency(\.supabaseClient) var supabase
+
+                var query = supabase
+                    .from("records")
+                    .select(BeachRecordResponseDTO.selectQuery)
+                    .eq("beach_id", value: beachID)
+                    .is("deleted_at", value: nil)
+
+                if let recordType {
+                    query = query.eq("record_type", value: recordType.rawValue)
+                }
+
+                let responseDTOs: [BeachRecordResponseDTO] = try await query
+                    .order("created_at", ascending: false)
+                    .execute()
+                    .value
+
+                let imageBucket = supabase.storage.from(StorageBucket.image)
+                let profileBucket = supabase.storage.from(StorageBucket.profile)
+
+                return responseDTOs.compactMap {
+                    $0.toDomain(
+                        photoURL: { try? imageBucket.getPublicURL(path: $0) },
+                        profileImageURL: { try? profileBucket.getPublicURL(path: $0) }
+                    )
+                }
             }
         )
     }()
+}
+
+private nonisolated struct BeachIDResponse: Decodable, Sendable {
+    
+    let beachID: UUID
+
+    enum CodingKeys: String, CodingKey {
+        case beachID = "beach_id"
+    }
 }

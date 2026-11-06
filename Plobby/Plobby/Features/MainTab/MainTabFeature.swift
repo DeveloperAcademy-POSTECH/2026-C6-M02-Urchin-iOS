@@ -120,6 +120,10 @@ struct MainTabFeature {
             case .home:
                 return .none
             
+            case .map(.delegate(.recordStartRequested)):
+                state.isRecordMenuPresented = true
+                return .none
+            
             case .map:
                 return .none
             
