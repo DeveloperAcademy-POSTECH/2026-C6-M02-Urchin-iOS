@@ -87,7 +87,11 @@ struct TimePickerFeature {
             let firstHour24 = max(meridiem.startHour24, earliest.hour24)
             let lastHour24 = min(meridiem.startHour24 + TimeOfDay.hoursPerPeriod - 1, latest.hour24)
             
-            if lastHour24 - firstHour24 + 1 == TimeOfDay.hoursPerPeriod {
+            // 선택한 오전/오후 안에 제한 시각이 걸려 있으면 휠을 순환시키지 않아요.
+            let isPeriodUnbounded = (earliest.hour24, earliest.minute) <= (meridiem.startHour24, 0)
+                && (latest.hour24, latest.minute) >= (meridiem.startHour24 + TimeOfDay.hoursPerPeriod - 1, 59)
+
+            if isPeriodUnbounded {
                 hourWheel.update(values: TimePickerFeature.hours, isCyclic: true)
             } else {
                 let hour12s = (firstHour24...lastHour24).map { TimeOfDay(hour24: $0, minute: 0).hour12 }
