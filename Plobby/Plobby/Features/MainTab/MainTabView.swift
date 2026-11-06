@@ -30,6 +30,12 @@ struct MainTabView: View {
                             FavoriteBeachView(store: store)
                                 .toolbar(.hidden, for: .tabBar)
                         }
+                        .navigationDestination(
+                            item: $store.scope(state: \.home.notification, action: \.home.notification)
+                        ) { store in
+                            NotificationView(store: store)
+                                .toolbar(.hidden, for: .tabBar)
+                        }
                 }
             }
 

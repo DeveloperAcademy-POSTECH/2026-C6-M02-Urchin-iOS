@@ -191,6 +191,8 @@
 		ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AF3098338400C4916C /* WaterDepth.swift */; };
 		ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B33098338400C4916C /* HomeFeature.swift */; };
 		ECE6F2F23098338400C4916C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B43098338400C4916C /* HomeView.swift */; };
+		D1A0C0DE0000000000000A02 /* NotificationFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000A01 /* NotificationFeature.swift */; };
+		D1A0C0DE0000000000000A04 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000A03 /* NotificationView.swift */; };
 		ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */; };
 		ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */; };
 		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
@@ -417,6 +419,8 @@
 		ECE6F2AF3098338400C4916C /* WaterDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepth.swift; sourceTree = "<group>"; };
 		ECE6F2B33098338400C4916C /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		ECE6F2B43098338400C4916C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000A01 /* NotificationFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFeature.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000A03 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginLabel.swift; sourceTree = "<group>"; };
 		ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageIndicator.swift; sourceTree = "<group>"; };
 		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
@@ -775,6 +779,15 @@
 				B5951FB2309BA4AB0089A019 /* MyView.swift */,
 			);
 			path = My;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE0000000000000A05 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE0000000000000A01 /* NotificationFeature.swift */,
+				D1A0C0DE0000000000000A03 /* NotificationView.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		D1A0C0DE00000000000000FE /* Settings */ = {
@@ -1210,6 +1223,7 @@
 				ECDDDAB3309AC1F800FB04D5 /* Common */,
 				DA5B10E630998932003FEDF9 /* Record */,
 				DA5B10E330998932003FEDF9 /* My */,
+				D1A0C0DE0000000000000A05 /* Notification */,
 				EC19674A309CE77100BC4C19 /* CollectionCard */,
 				DA5B10E030998932003FEDF9 /* Map */,
 				DA5B107630997758003FEDF9 /* MainTab */,
@@ -1619,6 +1633,8 @@
 				DA5B0FDA3098E2FC003FEDF9 /* SupabaseClient+.swift in Sources */,
 				ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */,
 				ECE6F2F23098338400C4916C /* HomeView.swift in Sources */,
+				D1A0C0DE0000000000000A02 /* NotificationFeature.swift in Sources */,
+				D1A0C0DE0000000000000A04 /* NotificationView.swift in Sources */,
 				EC0D4BA53098E1D0000E7BB7 /* FavoriteBeachView.swift in Sources */,
 				ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */,
 				ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */,
