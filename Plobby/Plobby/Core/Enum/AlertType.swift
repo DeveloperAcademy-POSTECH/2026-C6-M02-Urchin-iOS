@@ -20,6 +20,10 @@ enum AlertType {
     case profileUpdateFailed
     case recordExitConfirm
     case favoriteBeachLimit
+    case recordReported
+    case recordReportFailed
+    case userBlocked
+    case userBlockFailed
     
 }
 
@@ -38,31 +42,37 @@ extension AlertType {
         case .profileUpdateFailed: "프로필을 저장하지 못했어요"
         case .recordExitConfirm: "작성 중인 글을 나가시겠습니까?"
         case .favoriteBeachLimit: "관심 해변을 더 추가할 수 없어요"
+        case .recordReported: "신고가 완료되었습니다"
+        case .recordReportFailed: "신고하지 못했어요"
+        case .userBlocked: "차단이 완료되었습니다"
+        case .userBlockFailed: "차단하지 못했어요"
         }
     }
     
     var message: String? {
         switch self {
-        case .signInFailed, .signUpFailed, .recordSubmitFailed, .recordDeleteFailed, .profileUpdateFailed: "잠시 후 다시 시도해 주세요."
+        case .signInFailed, .signUpFailed, .recordSubmitFailed, .recordDeleteFailed, .profileUpdateFailed, .recordReportFailed, .userBlockFailed: "잠시 후 다시 시도해 주세요."
         case .profileImageTooLarge: "2MB 미만의 사진을 선택해 주세요."
         case .recordDeleteConfirm: "삭제한 기록은 복구할 수 없어요."
         case .recordDeleted: nil
         case .userBlockConfirm: "차단하면 이 사용자의 기록이 더 이상 보이지 않아요."
         case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요."
         case .favoriteBeachLimit: "관심 해변은 최대 \(HomeFeature.maximumFavoriteBeachCount)개까지 등록할 수 있어요."
+        case .recordReported: "신고한 기록은 더 이상 보이지 않아요."
+        case .userBlocked: "차단한 사용자의 기록은 더 이상 보이지 않아요."
         }
     }
     
     var buttonType: ButtonType {
         switch self {
         case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm, .recordExitConfirm: .cancelConfirm
-        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .favoriteBeachLimit: .confirm
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed: .confirm
         }
     }
     
     var confirmTitle: String {
         switch self {
-        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .favoriteBeachLimit: "확인"
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed: "확인"
         case .recordSubmitFailed: "다시 시도"
         case .recordDeleteConfirm: "삭제"
         case .userBlockConfirm: "차단"
