@@ -22,6 +22,7 @@ struct SettingsFeature {
         var isSigningOut = false
         @Presents var alert: AlertState<Action.Alert>?
         @Presents var withdrawal: WithdrawalFeature.State?
+        @Presents var blockedUsers: BlockedUsersFeature.State?
 
         init(appVersion: String? = nil) {
             self.appVersion = appVersion ?? Bundle.main.appVersion
@@ -34,12 +35,14 @@ struct SettingsFeature {
         case onAppear
         case backButtonTapped
         case notificationToggled(Bool)
+        case manageUserTapped
         case notificationStatusResponse(PushAuthorization)
         case logoutButtonTapped
         case withdrawalButtonTapped
         case signOutResponse(Result<Void, any Error>)
         case alert(PresentationAction<Alert>)
         case withdrawal(PresentationAction<WithdrawalFeature.Action>)
+        case blockedUsers(PresentationAction<BlockedUsersFeature.Action>)
         case delegate(Delegate)
 
         enum Alert {
@@ -84,6 +87,10 @@ struct SettingsFeature {
             case let .notificationStatusResponse(authorization):
                 state.isNotificationEnabled = authorization == .authorized && state.isPushEnabled
                 return .none
+                
+            case .manageUserTapped:
+                state.blockedUsers = BlockedUsersFeature.State()
+                return .none
 
             case .logoutButtonTapped:
                 state.alert = .make(.logoutConfirm, confirm: .confirmLogout)
@@ -115,13 +122,16 @@ struct SettingsFeature {
             case .withdrawal(.presented(.delegate(.withdrawn))):
                 return .send(.delegate(.signedOut))
 
-            case .alert, .withdrawal, .delegate:
+            case .alert, .withdrawal, .blockedUsers, .delegate:
                 return .none
             }
         }
         .ifLet(\.$alert, action: \.alert)
         .ifLet(\.$withdrawal, action: \.withdrawal) {
             WithdrawalFeature()
+        }
+        .ifLet(\.$blockedUsers, action: \.blockedUsers) {
+            BlockedUsersFeature()
         }
     }
 }
