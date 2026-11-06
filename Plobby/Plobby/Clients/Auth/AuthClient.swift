@@ -12,6 +12,7 @@ import Supabase
 
 struct AuthClient {
     var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
+    var fetchCredential: @Sendable (_ hashedNonce: String) async -> Result<AppleCredential, AppleSignInError>
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
     var signOut: @Sendable (_ token: String?) async throws -> Void
     var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason, _ detail: String?) async throws -> Void
@@ -39,6 +40,9 @@ extension AuthClient: DependencyKey {
                     email: session.user.email,
                     fullName: fullName ?? session.user.userMetadata["full_name"]?.stringValue
                 )
+            },
+            fetchCredential: { hashedNonce in
+                await AppleSignInCoordinator.fetchCredential(hashedNonce: hashedNonce)
             },
             signUp: { profile in
                 @Dependency(\.supabaseClient) var supabase

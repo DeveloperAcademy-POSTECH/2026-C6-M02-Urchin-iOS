@@ -19,14 +19,12 @@ struct MapFeature {
     struct State: Equatable {
         var path = StackState<Path.State>()
         @Presents var beachSheet: BeachSheetFeature.State?
-        /// 바텀시트가 열린 해변. 이 핀은 초록 배경으로 그려요.
         var selectedBeachID: UUID? {
             beachSheet?.beach.id
         }
 
         var authorization: LocationAuthorization = .notDetermined
         var cameraCommand: CameraCommand = .region(center: .fallback, meters: MapFeature.defaultSpanMeters)
-        /// 같은 곳으로 다시 옮길 때도 지도가 반응하도록 올려요.
         var cameraRevision = 0
         var recordCounts: [UUID: Int] = [:]
         var isLocating = false
@@ -65,8 +63,8 @@ struct MapFeature {
         case delegate(Delegate)
 
         enum Delegate: Equatable {
-            /// 기록이 없는 해변에서 첫 기록을 시작하려고 해요.
             case recordStartRequested
+            case loginRequired
         }
     }
 
@@ -79,6 +77,7 @@ struct MapFeature {
 
     static let defaultSpanMeters: Double = 5_000
     static let beachSpanMeters: Double = 2_000
+    private static let sheetDismissDelay: Duration = .milliseconds(350)
 
     private nonisolated enum CancelID {
         case location
@@ -89,6 +88,7 @@ struct MapFeature {
     @Dependency(\.beachClient) var beachClient
     @Dependency(\.locationClient) var locationClient
     @Dependency(\.openURL) var openURL
+    @Dependency(\.continuousClock) var clock
 
     // MARK: - Body
 
@@ -170,6 +170,13 @@ struct MapFeature {
             case .searchButtonTapped:
                 state.path.append(.searchBeach(SearchBeachFeature.State()))
                 return .none
+
+            case .beachSheet(.presented(.delegate(.homeTapped))) where !state.isMember:
+                state.beachSheet = nil
+                return .run { send in
+                    try await clock.sleep(for: Self.sheetDismissDelay)
+                    await send(.delegate(.loginRequired))
+                }
 
             case let .beachSheet(.presented(.delegate(.homeTapped(beach)))):
                 state.beachSheet = nil
