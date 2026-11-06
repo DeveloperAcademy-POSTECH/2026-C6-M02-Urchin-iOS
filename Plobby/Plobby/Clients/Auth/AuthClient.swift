@@ -14,8 +14,12 @@ struct AuthClient {
     var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
     var signOut: @Sendable (_ token: String?) async throws -> Void
-    var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason, _ detail: String?) async throws -> Void
-    var withdraw: @Sendable (_ reason: WithdrawalReason, _ detail: String?, _ authorizationCode: String) async throws -> Void
+    var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason?, _ detail: String?) async throws -> Void
+    var withdraw: @Sendable (
+        _ reason: WithdrawalReason?,
+        _ detail: String?,
+        _ authorizationCode: String
+    ) async throws -> Void
 }
 
 extension AuthClient: DependencyKey {
@@ -81,7 +85,7 @@ extension AuthClient: DependencyKey {
 
                 try await supabase
                     .from("withdrawal_feedback")
-                    .insert(WithdrawalFeedbackInsertRequestDTO(reason: reason, detail: detailToSave))
+                    .insert(WithdrawalFeedbackInsertRequestDTO(from: reason, detail: detailToSave))
                     .execute()
             },
             withdraw: { reason, detail, authorizationCode in

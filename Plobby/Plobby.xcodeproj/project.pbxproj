@@ -878,7 +878,6 @@
 			isa = PBXGroup;
 			children = (
 				EC0D4B983098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift */,
-				EC0D4B943098E1D0000E7BB7 /* WithdrawalReason.swift */,
 				EC0D4B923098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift */,
 				EC0D4B903098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift */,
 			);
@@ -1045,6 +1044,7 @@
 				ECE6F2A73098338400C4916C /* MembershipStatus.swift */,
 				B52C528DE8674E08CD648B87 /* BlockedUser.swift */,
 				ECE6F2A83098338400C4916C /* Nickname.swift */,
+				EC0D4B943098E1D0000E7BB7 /* WithdrawalReason.swift */,
 				B1CA15540443FE5BE6EF51E8 /* Profile.swift */,
 				ECE6F2A93098338400C4916C /* SignInResult.swift */,
 				ECE6F2AA3098338400C4916C /* SignUpProfile.swift */,
