@@ -43,7 +43,6 @@ struct SignInFeature {
 
     // MARK: - Dependency
 
-    @Dependency(\.appleSignInClient) var appleSignInClient
     @Dependency(\.authClient) var authClient
     @Dependency(\.userClient) var userClient
 
@@ -111,7 +110,7 @@ extension SignInFeature {
 
     private func fetchAppleCredential(hashedNonce: String) -> Effect<Action> {
         .run { send in
-            await send(.appleCredentialResponse(await appleSignInClient.fetchCredential(hashedNonce)))
+            await send(.appleCredentialResponse(await authClient.fetchCredential(hashedNonce)))
         }
     }
 

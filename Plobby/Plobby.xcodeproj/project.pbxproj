@@ -31,7 +31,7 @@
 		6C922A2E679C44E28DA507F7 /* AppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B876495304224301BF46BD28 /* AppNotification.swift */; };
 		781821F67D47B4EA5D000A8E /* RecordMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B11A53BEC65644616587EA /* RecordMenuView.swift */; };
 		7B3C1A02309D0000004C5301 /* LoginRequiredSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */; };
-		7B3C1A04309D0000004C5301 /* AppleSignInClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A03309D0000004C5301 /* AppleSignInClient.swift */; };
+		7B3C1A04309D0000004C5301 /* AppleSignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A03309D0000004C5301 /* AppleSignInCoordinator.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
 		A29D1CFD3712AA87F7389274 /* DependencyValues+UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */; };
@@ -229,7 +229,7 @@
 		7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockInsertRequestDTO.swift; sourceTree = "<group>"; };
 		72FC37464B922253D6A55F95 /* CheckNicknameRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNicknameRequestDTO.swift; sourceTree = "<group>"; };
 		7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequiredSheet.swift; sourceTree = "<group>"; };
-		7B3C1A03309D0000004C5301 /* AppleSignInClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInClient.swift; sourceTree = "<group>"; };
+		7B3C1A03309D0000004C5301 /* AppleSignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInCoordinator.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
 		95366258A2DD2CD25A307CDD /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
@@ -887,9 +887,9 @@
 				ECE6F2853098338400C4916C /* Extension */,
 				ECE6F2863098338400C4916C /* AppleNonce.swift */,
 				ECE6F2873098338400C4916C /* AppleSignInError.swift */,
-				7B3C1A03309D0000004C5301 /* AppleSignInClient.swift */,
 				ECE6F2883098338400C4916C /* AuthClient.swift */,
 				ECE6F2893098338400C4916C /* DependencyValues+AuthClient.swift */,
+				7B3C1A03309D0000004C5301 /* AppleSignInCoordinator.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -1407,7 +1407,7 @@
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
 				ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */,
-				7B3C1A04309D0000004C5301 /* AppleSignInClient.swift in Sources */,
+				7B3C1A04309D0000004C5301 /* AppleSignInCoordinator.swift in Sources */,
 				DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */,
 				DA2C8CF2309C711C0042C67C /* LocationClientError.swift in Sources */,
 				5A1C0E7B2F4D4E8A9B3C6E03 /* LocationClient.swift in Sources */,

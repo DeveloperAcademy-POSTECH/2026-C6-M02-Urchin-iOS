@@ -1,5 +1,5 @@
 //
-//  AppleSignInClient.swift
+//  AppleSignInCoordinator.swift
 //  Plobby
 //
 //  Created by 이은지 on 11/6/26.
@@ -7,31 +7,7 @@
 
 import AuthenticationServices
 
-import Dependencies
-
-struct AppleSignInClient {
-    var fetchCredential: @Sendable (_ hashedNonce: String) async -> Result<AppleCredential, AppleSignInError>
-}
-
-extension AppleSignInClient: DependencyKey {
-    static let liveValue = AppleSignInClient(
-        fetchCredential: { hashedNonce in
-            await AppleSignInCoordinator.fetchCredential(hashedNonce: hashedNonce)
-        }
-    )
-}
-
-extension DependencyValues {
-
-    nonisolated var appleSignInClient: AppleSignInClient {
-        get { self[AppleSignInClient.self] }
-        set { self[AppleSignInClient.self] = newValue }
-    }
-}
-
-// MARK: - Coordinator
-
-private final class AppleSignInCoordinator: NSObject {
+final class AppleSignInCoordinator: NSObject {
 
     private var continuation: CheckedContinuation<Result<ASAuthorization, any Error>, Never>?
 
@@ -69,7 +45,10 @@ extension AppleSignInCoordinator: ASAuthorizationControllerDelegate {
         finish(.success(authorization))
     }
 
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: any Error) {
+    func authorizationController(
+        controller: ASAuthorizationController,
+        didCompleteWithError error: any Error
+    ) {
         finish(.failure(error))
     }
 }
