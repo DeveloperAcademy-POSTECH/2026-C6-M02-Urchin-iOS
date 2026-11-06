@@ -38,6 +38,9 @@ struct SettingsView: View {
         }
         .background(Color(.gray0))
         .toolbar(.hidden, for: .navigationBar)
+        .onAppear {
+            store.send(.onAppear)
+        }
         .navigationDestination(item: $store.scope(state: \.withdrawal, action: \.withdrawal)) { store in
             WithdrawalView(store: store)
                 .toolbar(.hidden, for: .tabBar)
