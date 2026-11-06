@@ -49,6 +49,17 @@ struct MainTabView: View {
             }
         }
         .tint(.primary)
+        .overlay {
+            if store.home.isLoginSheetPresented {
+                Color.black.opacity(0.2)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        store.send(.home(.loginSheetPresentationChanged(false)))
+                    }
+                    .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: store.home.isLoginSheetPresented)
         .overlay(alignment: .bottomTrailing) {
             if store.isRecordMenuPresented {
                 recordMenu

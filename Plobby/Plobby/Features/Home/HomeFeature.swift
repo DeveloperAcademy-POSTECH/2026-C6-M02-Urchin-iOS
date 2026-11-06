@@ -17,10 +17,12 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
+        @Presents var favoriteBeachPicker: RegionFeature.State?
+        
         var currentBanner: RecordType = .plobbing
         var favoriteBeaches: [Beach] = []
         var recentRecords: [RecordSummary] = []
-        @Presents var favoriteBeachPicker: RegionFeature.State?
+        var isLoginSheetPresented = false
 
         var canAddFavoriteBeach: Bool {
             favoriteBeaches.count < HomeFeature.maximumFavoriteBeachCount
@@ -50,6 +52,7 @@ struct HomeFeature {
         case moreRecentRecordsButtonTapped
         case dailyTipBannerTapped
         case recentRecordsResponse([RecordSummary])
+        case loginSheetPresentationChanged(Bool)
         case favoriteBeachPicker(PresentationAction<RegionFeature.Action>)
         case delegate(Delegate)
 
@@ -66,6 +69,11 @@ struct HomeFeature {
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
+            if case .guest = state.membershipStatus, action.isUserInteraction {
+                state.isLoginSheetPresented = true
+                return .none
+            }
+
             switch action {
             case .onAppear:
                 return .merge(startTimer(), fetchRecentRecords())
@@ -125,12 +133,34 @@ struct HomeFeature {
                 state.recentRecords = records
                 return .none
 
+            case let .loginSheetPresentationChanged(isPresented):
+                state.isLoginSheetPresented = isPresented
+                return .none
+
             case .delegate:
                 return .none
             }
         }
         .ifLet(\.$favoriteBeachPicker, action: \.favoriteBeachPicker) {
             RegionFeature()
+        }
+    }
+}
+
+// MARK: - Action
+
+private extension HomeFeature.Action {
+
+    var isUserInteraction: Bool {
+        switch self {
+        case .recordButtonTapped,
+             .notificationButtonTapped,
+             .addFavoriteBeachButtonTapped,
+             .moreRecentRecordsButtonTapped,
+             .dailyTipBannerTapped:
+            true
+        default:
+            false
         }
     }
 }
