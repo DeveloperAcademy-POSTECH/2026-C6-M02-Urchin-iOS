@@ -12,31 +12,51 @@ struct LoginRequiredSheet: View {
 
     // MARK: - Properties
 
-    static let sheetHeight: CGFloat = 279
+    private static let designHeight: CGFloat = 279
 
     var isSigningIn = false
     let onAppleRequest: (ASAuthorizationAppleIDRequest) -> Void
     let onAppleCompletion: (Result<AppleCredential, AppleSignInError>) -> Void
     let onBrowse: () -> Void
 
+    @State private var scale: CGFloat = 1
+
     // MARK: - Body
-
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            title
-            message
-            
-            Spacer()
+        GeometryReader { proxy in
+            let scale = max(proxy.size.width / DesignScale.frameWidth, 0.01)
 
-            appleLoginButton
-            browseButton
+            content
+                .frame(width: DesignScale.frameWidth, height: max(proxy.size.height / scale, 0))
+                .scaleEffect(scale, anchor: .topLeading)
         }
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            proxy.size.width / DesignScale.frameWidth
+        } action: { newScale in
+            guard newScale > 0 else { return }
+            scale = newScale
+        }
+        .presentationDetents([.height(Self.designHeight * scale)])
+        .presentationBackgroundInteraction(.enabled)
     }
 }
 
 // MARK: - Subviews
 
 private extension LoginRequiredSheet {
+    
+    var content: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            title
+            message
+
+            Spacer()
+
+            appleLoginButton
+            browseButton
+        }
+    }
     
     var title: some View {
         VStack(spacing: 0) {
