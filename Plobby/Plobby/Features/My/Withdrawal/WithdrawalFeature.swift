@@ -25,8 +25,13 @@ struct WithdrawalFeature {
             detail.count
         }
 
+        var hasDetail: Bool {
+            !detail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
+
+        /// 사유를 고르거나 기타를 입력하면 탈퇴할 수 있어요.
         var canWithdraw: Bool {
-            selectedReason != nil && !isWithdrawing
+            (selectedReason != nil || hasDetail) && !isWithdrawing
         }
     }
 
@@ -68,7 +73,7 @@ struct WithdrawalFeature {
                 }
 
             case let .reasonTapped(reason):
-                state.selectedReason = reason
+                state.selectedReason = state.selectedReason == reason ? nil : reason
                 return .none
 
             case let .detailChanged(detail):
@@ -82,12 +87,11 @@ struct WithdrawalFeature {
                 return fetchAuthorizationCode()
 
             case let .authorizationCodeResponse(.success(authorizationCode)):
-                guard let reason = state.selectedReason else {
-                    state.isWithdrawing = false
-                    return .none
-                }
-
-                return withdraw(reason: reason, detail: state.detail, authorizationCode: authorizationCode)
+                return withdraw(
+                    reason: state.selectedReason,
+                    detail: state.detail,
+                    authorizationCode: authorizationCode
+                )
 
             case let .authorizationCodeResponse(.failure(error)):
                 state.isWithdrawing = false
@@ -137,7 +141,7 @@ extension WithdrawalFeature {
     }
 
     private func withdraw(
-        reason: WithdrawalReason,
+        reason: WithdrawalReason?,
         detail: String,
         authorizationCode: String
     ) -> Effect<Action> {
