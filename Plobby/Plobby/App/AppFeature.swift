@@ -59,10 +59,11 @@ struct AppFeature {
 
                 return submitDeviceToken(token)
 
+            // TODO: 앱이 꺼진 상태에서 푸시로 열면 로그인 복원(#96) 후 이동 연결
             case let .pushTapped(recordID):
-                // TODO: 기록 상세 화면 구현 후 이동 연결
-                PlobbyLogger.debug("푸시 탭 기록 ID: \(recordID)")
-                return .none
+                guard case .mainTab = state else { return .none }
+
+                return .send(.mainTab(.pushTapped(recordID)))
 
             case let .onboarding(.signIn(.delegate(.signedIn(user)))):
                 updateMembershipStatus(.member(user))

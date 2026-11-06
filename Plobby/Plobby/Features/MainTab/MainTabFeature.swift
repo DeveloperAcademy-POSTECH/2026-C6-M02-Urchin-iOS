@@ -36,6 +36,7 @@ struct MainTabFeature {
         case recordTypeSelected(RecordType)
         case loginSheetPresentationChanged(Bool)
         case appleLoginButtonTapped
+        case pushTapped(UUID)
         case home(HomeFeature.Action)
         case map(MapFeature.Action)
         case my(MyFeature.Action)
@@ -92,6 +93,16 @@ struct MainTabFeature {
 
                 state.isLoginSheetPresented = false
                 return requestAppleSignInAfterSheetDismissed()
+
+            case let .pushTapped(recordID):
+                guard state.recordFlow == nil else { return .none }
+
+                state.isRecordMenuPresented = false
+                state.selectedTab = .home
+                state.home.notification = NotificationFeature.State(
+                    recordDetail: RecordDetailFeature.State(recordID: recordID)
+                )
+                return .none
 
             case .tabSelected(.record):
                 state.isRecordMenuPresented.toggle()
