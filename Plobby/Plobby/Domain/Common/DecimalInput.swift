@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DecimalInput {
+nonisolated enum DecimalInput {
 
     static let maximumFractionDigits = 1
 
@@ -34,7 +34,7 @@ enum DecimalInput {
     }
 }
 
-extension DecimalInput {
+nonisolated extension DecimalInput {
 
     /// 저장된 숫자를 입력칸에 다시 채울 때 써요. 소수점 첫째 자리까지만 보여요.
     static func text(from number: Double) -> String {
