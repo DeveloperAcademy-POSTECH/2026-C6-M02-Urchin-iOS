@@ -134,7 +134,7 @@ nonisolated extension RecordClient: DependencyKey {
 
 // MARK: - Storage
 
-private nonisolated enum StorageBucket {
+nonisolated enum StorageBucket {
     
     static let image = "Plobby Image Bucket"
     static let profile = "Plobby Profile Bucket"

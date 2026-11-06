@@ -19,6 +19,11 @@ enum AlertType {
     case userBlockConfirm
     case profileUpdateFailed
     case recordExitConfirm
+    case favoriteBeachLimit
+    
+}
+
+extension AlertType {
     
     var title: String {
         switch self {
@@ -32,6 +37,7 @@ enum AlertType {
         case .userBlockConfirm: "이 사용자를 차단할까요?"
         case .profileUpdateFailed: "프로필을 저장하지 못했어요"
         case .recordExitConfirm: "작성 중인 글을 나가시겠습니까?"
+        case .favoriteBeachLimit: "관심 해변을 더 추가할 수 없어요"
         }
     }
     
@@ -43,19 +49,20 @@ enum AlertType {
         case .recordDeleted: nil
         case .userBlockConfirm: "차단하면 이 사용자의 기록이 더 이상 보이지 않아요."
         case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요."
+        case .favoriteBeachLimit: "관심 해변은 최대 \(HomeFeature.maximumFavoriteBeachCount)개까지 등록할 수 있어요."
         }
     }
     
     var buttonType: ButtonType {
         switch self {
         case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm, .recordExitConfirm: .cancelConfirm
-        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed: .confirm
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .favoriteBeachLimit: .confirm
         }
     }
     
     var confirmTitle: String {
         switch self {
-        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed: "확인"
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .favoriteBeachLimit: "확인"
         case .recordSubmitFailed: "다시 시도"
         case .recordDeleteConfirm: "삭제"
         case .userBlockConfirm: "차단"
@@ -63,7 +70,6 @@ enum AlertType {
         }
     }
     
-    /// `.cancelConfirm`에서 왼쪽에 놓이는 보조 버튼 문구
     var cancelTitle: String {
         switch self {
         case .recordExitConfirm: "나가기"
