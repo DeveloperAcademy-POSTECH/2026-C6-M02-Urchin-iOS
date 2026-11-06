@@ -58,7 +58,6 @@ struct WithdrawalFeature {
 
     // MARK: - Dependency
 
-    @Dependency(\.appleAuthClient) var appleAuthClient
     @Dependency(\.authClient) var authClient
     @Dependency(\.dismiss) var dismiss
 
@@ -135,7 +134,7 @@ extension WithdrawalFeature {
     private func fetchAuthorizationCode() -> Effect<Action> {
         .run { send in
             await send(.authorizationCodeResponse(Result {
-                try await appleAuthClient.fetchAuthorizationCode()
+                try await authClient.fetchAppleAuthorizationCode()
             }))
         }
     }

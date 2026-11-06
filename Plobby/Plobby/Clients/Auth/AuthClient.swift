@@ -12,6 +12,8 @@ import Supabase
 
 struct AuthClient {
     var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
+    /// Apple 재인증 후 `authorizationCode`를 돌려줘요. 사용자가 취소하면 `AppleSignInError.canceled`를 던져요.
+    var fetchAppleAuthorizationCode: @Sendable () async throws -> String
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
     var signOut: @Sendable (_ token: String?) async throws -> Void
     var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason?, _ detail: String?) async throws -> Void
@@ -43,6 +45,13 @@ extension AuthClient: DependencyKey {
                     email: session.user.email,
                     fullName: fullName ?? session.user.userMetadata["full_name"]?.stringValue
                 )
+            },
+            fetchAppleAuthorizationCode: {
+                guard let anchor = AppleAuthorizationRequester.currentAnchor() else {
+                    throw AppleSignInError.failed
+                }
+
+                return try await AppleAuthorizationRequester(anchor: anchor).fetchAuthorizationCode()
             },
             signUp: { profile in
                 @Dependency(\.supabaseClient) var supabase

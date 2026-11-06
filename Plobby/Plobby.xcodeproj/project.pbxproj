@@ -41,8 +41,7 @@
 		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5951FB2309BA4AB0089A019 /* MyView.swift */; };
-		D1A0C0DE00000000000000F2 /* AppleAuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F1 /* AppleAuthClient.swift */; };
-		D1A0C0DE00000000000000F4 /* DependencyValues+AppleAuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F3 /* DependencyValues+AppleAuthClient.swift */; };
+		D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */; };
 		D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F5 /* SettingsFeature.swift */; };
 		D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F7 /* SettingsView.swift */; };
 		D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */; };
@@ -246,8 +245,7 @@
 		B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDeviceTokenRequestDTO.swift; sourceTree = "<group>"; };
 		B5951FB2309BA4AB0089A019 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
-		D1A0C0DE00000000000000F1 /* AppleAuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleAuthClient.swift"; sourceTree = "<group>"; };
-		D1A0C0DE00000000000000F3 /* DependencyValues+AppleAuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+AppleAuthClient.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleAuthorizationRequester.swift"; sourceTree = "<group>"; };
 		D1A0C0DE00000000000000F5 /* SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsFeature.swift"; sourceTree = "<group>"; };
 		D1A0C0DE00000000000000F7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView.swift"; sourceTree = "<group>"; };
 		D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WithdrawalFeature.swift"; sourceTree = "<group>"; };
@@ -725,15 +723,6 @@
 			path = My;
 			sourceTree = "<group>";
 		};
-		D1A0C0DE00000000000000FD /* AppleAuth */ = {
-			isa = PBXGroup;
-			children = (
-				D1A0C0DE00000000000000F1 /* AppleAuthClient.swift */,
-				D1A0C0DE00000000000000F3 /* DependencyValues+AppleAuthClient.swift */,
-			);
-			path = AppleAuth;
-			sourceTree = "<group>";
-		};
 		D1A0C0DE00000000000000FE /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -920,6 +909,7 @@
 			children = (
 				ECDDD9AA3099781C00FB04D5 /* DTO */,
 				ECE6F2853098338400C4916C /* Extension */,
+				D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */,
 				ECE6F2863098338400C4916C /* AppleNonce.swift */,
 				ECE6F2873098338400C4916C /* AppleSignInError.swift */,
 				ECE6F2883098338400C4916C /* AuthClient.swift */,
@@ -941,7 +931,6 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
-				D1A0C0DE00000000000000FD /* AppleAuth */,
 				5A1C0E7B2F4D4E8A9B3C6E01 /* Location */,
 				DA0BB759309B1BAB003400FB /* Photo */,
 				EC0D4B823098E19A000E7BB7 /* Beach */,
@@ -1544,8 +1533,7 @@
 				DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
 				B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */,
-				D1A0C0DE00000000000000F2 /* AppleAuthClient.swift in Sources */,
-				D1A0C0DE00000000000000F4 /* DependencyValues+AppleAuthClient.swift in Sources */,
+				D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */,
 				D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */,
 				D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */,
 				D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  AppleAuthClient.swift
+//  AppleAuthorizationRequester.swift
 //  Plobby
 //
 //  Created by dlsundn on 11/6/26.
@@ -8,32 +8,9 @@
 import AuthenticationServices
 import UIKit
 
-import Dependencies
-
-/// Apple 로그인 창을 코드로 띄워 인증 정보를 받아와요.
-/// 회원탈퇴처럼 Apple 버튼 없이 재인증이 필요할 때 써요.
-struct AppleAuthClient {
-    /// Apple 재인증 후 `authorizationCode`를 돌려줘요. 사용자가 취소하면 `AppleSignInError.canceled`를 던져요.
-    var fetchAuthorizationCode: @Sendable () async throws -> String
-}
-
-extension AppleAuthClient: DependencyKey {
-    static let liveValue: AppleAuthClient = {
-        .init(
-            fetchAuthorizationCode: {
-                guard let anchor = AppleAuthorizationRequester.currentAnchor() else {
-                    throw AppleSignInError.failed
-                }
-
-                return try await AppleAuthorizationRequester(anchor: anchor).fetchAuthorizationCode()
-            }
-        )
-    }()
-}
-
-// MARK: - AppleAuthorizationRequester
-
-private final class AppleAuthorizationRequester: NSObject {
+/// Apple 로그인 창을 코드로 띄워 `authorizationCode`를 받아와요.
+/// 회원탈퇴처럼 Apple 버튼 없이 재인증이 필요할 때 `AuthClient`에서 써요.
+final class AppleAuthorizationRequester: NSObject {
 
     private let anchor: ASPresentationAnchor
     private var continuation: CheckedContinuation<String, any Error>?
