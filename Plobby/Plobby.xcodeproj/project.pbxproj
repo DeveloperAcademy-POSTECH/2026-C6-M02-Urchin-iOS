@@ -54,6 +54,8 @@
 		D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */; };
 		D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F5 /* SettingsFeature.swift */; };
 		D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F7 /* SettingsView.swift */; };
+		6991DBAB53BB6568C60D6B47 /* BlockedUsersFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */; };
+		173357ED8AF6DD3069DDB1FF /* BlockedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE094AF2875967D2DDAF62E /* BlockedUsersView.swift */; };
 		D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */; };
 		D1A0C0DE00000000000000FC /* WithdrawalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000FB /* WithdrawalView.swift */; };
 		D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */; };
@@ -272,6 +274,8 @@
 		D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleAuthorizationRequester.swift"; sourceTree = "<group>"; };
 		D1A0C0DE00000000000000F5 /* SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsFeature.swift"; sourceTree = "<group>"; };
 		D1A0C0DE00000000000000F7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView.swift"; sourceTree = "<group>"; };
+		BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersFeature.swift; sourceTree = "<group>"; };
+		5CE094AF2875967D2DDAF62E /* BlockedUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersView.swift; sourceTree = "<group>"; };
 		D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WithdrawalFeature.swift"; sourceTree = "<group>"; };
 		D1A0C0DE00000000000000FB /* WithdrawalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WithdrawalView.swift"; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditFeature.swift; sourceTree = "<group>"; };
@@ -764,6 +768,7 @@
 			children = (
 				D1A0C0DE0000000000000C05 /* ProfileEdit */,
 				D1A0C0DE00000000000000FE /* Settings */,
+				3AE34934580277078535F3C4 /* BlockedUsers */,
 				D1A0C0DE00000000000000FF /* Withdrawal */,
 				DA5B10E230998932003FEDF9 /* MyFeature.swift */,
 				B5951FB2309BA4AB0089A019 /* MyView.swift */,
@@ -778,6 +783,15 @@
 				D1A0C0DE00000000000000F7 /* SettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		3AE34934580277078535F3C4 /* BlockedUsers */ = {
+			isa = PBXGroup;
+			children = (
+				BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */,
+				5CE094AF2875967D2DDAF62E /* BlockedUsersView.swift */,
+			);
+			path = BlockedUsers;
 			sourceTree = "<group>";
 		};
 		D1A0C0DE00000000000000FF /* Withdrawal */ = {
@@ -1601,6 +1615,8 @@
 				D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */,
 				D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */,
 				D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */,
+				6991DBAB53BB6568C60D6B47 /* BlockedUsersFeature.swift in Sources */,
+				173357ED8AF6DD3069DDB1FF /* BlockedUsersView.swift in Sources */,
 				D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */,
 				D1A0C0DE00000000000000FC /* WithdrawalView.swift in Sources */,
 				D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */,

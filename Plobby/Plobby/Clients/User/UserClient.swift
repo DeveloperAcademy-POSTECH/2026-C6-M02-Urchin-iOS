@@ -140,7 +140,11 @@ extension UserClient: DependencyKey {
                     .execute()
                     .value
 
-                return blockedUsers.compactMap { $0.toDomain() }
+                let profileBucket = supabaseClient.storage.from(StorageBucket.profile)
+
+                return blockedUsers.compactMap {
+                    $0.toDomain(profileImageURL: { try? profileBucket.getPublicURL(path: $0) })
+                }
             }
         )
     }()
