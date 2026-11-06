@@ -18,7 +18,7 @@ nonisolated struct RecordClient {
     var like: @Sendable (_ recordID: UUID) async throws -> Void
     var unlike: @Sendable (_ recordID: UUID) async throws -> Void
     var removeRecord: @Sendable (_ recordID: UUID) async throws -> Void
-    var reportRecord: @Sendable (_ report: RecordReport) async throws -> Void
+    var reportRecord: @Sendable (_ recordID: UUID) async throws -> Void
 }
 
 nonisolated extension RecordClient: DependencyKey {
@@ -57,11 +57,13 @@ nonisolated extension RecordClient: DependencyKey {
                 @Dependency(\.supabaseClient) var supabaseClient
                 
                 let userID = try await supabaseClient.currentUserID()
+                let hiddenRecords = try await supabaseClient.hiddenRecords()
 
                 let responseDTOs: [RecordSummaryResponseDTO] = try await supabaseClient
                     .from("records")
                     .select(RecordSummaryResponseDTO.selectQuery)
                     .is("deleted_at", value: nil)
+                    .excluding(hiddenRecords)
                     .eq("my_like.user_id", value: userID)
                     .order("created_at", ascending: false)
                     .range(from: offset, to: offset + limit - 1)
@@ -118,14 +120,14 @@ nonisolated extension RecordClient: DependencyKey {
                     .eq("user_id", value: uid)
                     .is("deleted_at", value: nil)
                     .execute()
-            }, reportRecord: { report in
+            }, reportRecord: { recordID in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
                 let uid = try await supabaseClient.currentUserID()
                 
                 try await supabaseClient
                     .from("record_reports")
-                    .insert(RecordReportInsertRequestDTO(from: report, reporterID: uid))
+                    .insert(RecordReportInsertRequestDTO(recordID: recordID, reporterID: uid))
                     .execute()
             }
         )
