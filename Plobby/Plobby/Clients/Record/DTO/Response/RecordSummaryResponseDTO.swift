@@ -97,6 +97,7 @@ nonisolated extension RecordSummaryResponseDTO {
 nonisolated extension RecordSummaryResponseDTO {
 
     func toDomain(
+        currentUserID: UUID?,
         photoURL: (String) -> URL?,
         profileImageURL: (String) -> URL?
     ) -> RecordSummary? {
@@ -134,7 +135,7 @@ nonisolated extension RecordSummaryResponseDTO {
             coverPhotoURL: coverPhoto.flatMap { photoURL($0.storageKey) },
             trashNames: trashNames.isEmpty ? nil : trashNames.joined(separator: ", "),
             likeCount: likes.first?.count ?? 0,
-            likedByMe: !myLike.isEmpty,
+            likedByMe: currentUserID.map { id in myLike.contains { $0.userID == id } } ?? false,
             createdAt: createdAt
         )
     }
