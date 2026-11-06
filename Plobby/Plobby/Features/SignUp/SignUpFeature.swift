@@ -30,6 +30,11 @@ struct SignUpFeature {
         var isCheckingNickname = false
         var isNicknameAvailable: Bool?
         var isSigningUp = false
+        var isAgeConfirmed = false
+        var isTermsAgreed = false
+        var isPrivacyAgreed = false
+        /// 약관 동의를 마치면 프로필 등록 화면으로 넘어가요
+        var isAgreementCompleted = false
         var path = StackState<Path.State>()
         @Presents var alert: AlertState<Action.Alert>?
         
@@ -41,6 +46,10 @@ struct SignUpFeature {
             Nickname.isValid(nickname) && !isCheckingNickname
         }
         
+        var isAllAgreed: Bool {
+            isAgeConfirmed && isTermsAgreed && isPrivacyAgreed
+        }
+
         var canGoNext: Bool {
             isNicknameAvailable == true && !isSigningUp
         }
@@ -49,6 +58,11 @@ struct SignUpFeature {
     // MARK: - Action
     
     enum Action {
+        case allAgreementTapped
+        case ageConfirmationTapped
+        case termsAgreementTapped
+        case privacyAgreementTapped
+        case agreementNextButtonTapped
         case profileImageSelected(Data)
         case profileImageCompressed(Data?)
         case alert(PresentationAction<Alert>)
@@ -79,6 +93,31 @@ struct SignUpFeature {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .allAgreementTapped:
+                let isAgreed = !state.isAllAgreed
+                state.isAgeConfirmed = isAgreed
+                state.isTermsAgreed = isAgreed
+                state.isPrivacyAgreed = isAgreed
+                return .none
+
+            case .ageConfirmationTapped:
+                state.isAgeConfirmed.toggle()
+                return .none
+
+            case .termsAgreementTapped:
+                state.isTermsAgreed.toggle()
+                return .none
+
+            case .privacyAgreementTapped:
+                state.isPrivacyAgreed.toggle()
+                return .none
+
+            case .agreementNextButtonTapped:
+                guard state.isAllAgreed else { return .none }
+
+                state.isAgreementCompleted = true
+                return .none
+
             case let .profileImageSelected(data):
                 return compressProfileImage(data)
                 

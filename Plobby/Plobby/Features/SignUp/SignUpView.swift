@@ -23,16 +23,10 @@ struct SignUpView: View {
 
     var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-            VStack(spacing: 0) {
-                title
-                profileImagePicker
-                // FIXME: Apple이 이름을 첫 로그인에만 줘서 빈 칸으로 보이는 경우가 있어 숨겨둠. 이름 입력 방식 정해지면 다시 표시
-                // nameSection
-                nicknameSection
-                
-                Spacer()
-                
-                nextButton
+            if store.isAgreementCompleted {
+                profileForm
+            } else {
+                TermsAgreementView(store: store)
             }
         } destination: { store in
             switch store.case {
@@ -58,6 +52,20 @@ struct SignUpView: View {
 // MARK: - Subviews
 
 extension SignUpView {
+
+    private var profileForm: some View {
+        VStack(spacing: 0) {
+            title
+            profileImagePicker
+            // FIXME: Apple이 이름을 첫 로그인에만 줘서 빈 칸으로 보이는 경우가 있어 숨겨둠. 이름 입력 방식 정해지면 다시 표시
+            // nameSection
+            nicknameSection
+            
+            Spacer()
+            
+            nextButton
+        }
+    }
     
     private var title: some View {
         Text("프로필을 등록해주세요")
