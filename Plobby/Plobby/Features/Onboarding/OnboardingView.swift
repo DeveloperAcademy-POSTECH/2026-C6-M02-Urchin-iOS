@@ -5,7 +5,6 @@
 //  Created by 이은지 on 10/30/26.
 //
 
-import AuthenticationServices
 import SwiftUI
 
 import ComposableArchitecture
@@ -24,7 +23,7 @@ struct OnboardingView: View {
             appleLoginButton
             browseButton
         }
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert($store.scope(state: \.signIn.alert, action: \.signIn.alert))
         .onAppear {
             store.send(.onAppear)
         }
@@ -74,20 +73,12 @@ extension OnboardingView {
     }
     
     private var appleLoginButton: some View {
-        SignInWithAppleButton(.signIn) { request in
-            store.send(.appleButtonTapped)
-            request.requestedScopes = [.fullName]
-            request.nonce = store.hashedNonce
-        } onCompletion: { result in
-            store.send(.signInAppleCompleted(result.appleCredential))
-        }
-        .frame(height: 51)
-        .overlay {
+        Button {
+            store.send(.signIn(.appleSignInRequested))
+        } label: {
             AppleLoginLabel()
-                .allowsHitTesting(false)
         }
-        .disabled(store.isSigningIn)
-        .accessibilityHidden(true)
+        .disabled(store.signIn.isSigningIn)
         .padding(.horizontal, 38.5)
         .padding(.bottom, 17)
     }

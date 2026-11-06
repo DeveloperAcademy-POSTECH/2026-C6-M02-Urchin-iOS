@@ -20,6 +20,7 @@ struct MyFeature {
         var profile: Profile?
         var savedProfileImage: Data?
         @Presents var profileEdit: ProfileEditFeature.State?
+        @Presents var settings: SettingsFeature.State?
     }
 
     // MARK: - Action
@@ -28,7 +29,15 @@ struct MyFeature {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
         case profileEditButtonTapped
+        case settingsButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
+        case settings(PresentationAction<SettingsFeature.Action>)
+        case delegate(Delegate)
+
+        enum Delegate {
+            case loginRequired
+            case signedOut
+        }
     }
 
     // MARK: - Dependency
@@ -54,9 +63,20 @@ struct MyFeature {
                 return .none
 
             case .profileEditButtonTapped:
+                guard case .member = state.membershipStatus else {
+                    return .send(.delegate(.loginRequired))
+                }
                 guard let profile = state.profile else { return .none }
 
                 state.profileEdit = ProfileEditFeature.State(profile: profile)
+                return .none
+
+            case .settingsButtonTapped:
+                guard case .member = state.membershipStatus else {
+                    return .send(.delegate(.loginRequired))
+                }
+
+                state.settings = SettingsFeature.State()
                 return .none
 
             case let .profileEdit(.presented(.delegate(.saved(profile, profileImage)))):
@@ -67,12 +87,19 @@ struct MyFeature {
                 }
                 return .none
 
-            case .profileEdit:
+            case .settings(.presented(.delegate(.signedOut))):
+                state.settings = nil
+                return .send(.delegate(.signedOut))
+
+            case .profileEdit, .settings, .delegate:
                 return .none
             }
         }
         .ifLet(\.$profileEdit, action: \.profileEdit) {
             ProfileEditFeature()
+        }
+        .ifLet(\.$settings, action: \.settings) {
+            SettingsFeature()
         }
     }
 }

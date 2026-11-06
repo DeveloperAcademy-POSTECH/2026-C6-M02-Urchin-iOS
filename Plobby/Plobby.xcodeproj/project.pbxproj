@@ -37,6 +37,8 @@
 		73CD656240EA8E75250648CC /* BeachRecordResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99CF10416380E0C7057BE2D /* BeachRecordResponseDTO.swift */; };
 		781821F67D47B4EA5D000A8E /* RecordMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B11A53BEC65644616587EA /* RecordMenuView.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
+		7B3C1A02309D0000004C5301 /* LoginRequiredSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */; };
+		7B3C1A04309D0000004C5301 /* AppleSignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A03309D0000004C5301 /* AppleSignInCoordinator.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
 		A29D1CFD3712AA87F7389274 /* DependencyValues+UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */; };
@@ -49,6 +51,13 @@
 		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5951FB2309BA4AB0089A019 /* MyView.swift */; };
+		D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */; };
+		D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F5 /* SettingsFeature.swift */; };
+		D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F7 /* SettingsView.swift */; };
+		D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */; };
+		D1A0C0DE00000000000000FC /* WithdrawalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000FB /* WithdrawalView.swift */; };
+		D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */; };
+		D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C03 /* ProfileEditView.swift */; };
 		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
 		B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */; };
 		BDA985C8CDA5A070AC9A1B00 /* PhotosPickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */; };
@@ -135,6 +144,7 @@
 		EC0D4BA13098E1D0000E7BB7 /* Effect+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */; };
 		EC0D4BA53098E1D0000E7BB7 /* FavoriteBeachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA43098E1D0000E7BB7 /* FavoriteBeachView.swift */; };
 		EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */; };
+		EC17D65B309D82630031D2BD /* SignInFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC17D65A309D82630031D2BD /* SignInFeature.swift */; };
 		EC196745309C579100BC4C19 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196743309C579100BC4C19 /* Pretendard-Regular.otf */; };
 		EC196746309C579100BC4C19 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196742309C579100BC4C19 /* Pretendard-Medium.otf */; };
 		EC196747309C579100BC4C19 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196744309C579100BC4C19 /* Pretendard-SemiBold.otf */; };
@@ -241,6 +251,8 @@
 		7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockInsertRequestDTO.swift; sourceTree = "<group>"; };
 		72FC37464B922253D6A55F95 /* CheckNicknameRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckNicknameRequestDTO.swift; sourceTree = "<group>"; };
 		79BA895394908AB08392483E /* SearchBeachFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBeachFeature.swift; sourceTree = "<group>"; };
+		7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequiredSheet.swift; sourceTree = "<group>"; };
+		7B3C1A03309D0000004C5301 /* AppleSignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInCoordinator.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -257,6 +269,13 @@
 		B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDeviceTokenRequestDTO.swift; sourceTree = "<group>"; };
 		B5951FB2309BA4AB0089A019 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleAuthorizationRequester.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F5 /* SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsFeature.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WithdrawalFeature.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000FB /* WithdrawalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WithdrawalView.swift"; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditFeature.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000C03 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
 		B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
@@ -345,6 +364,7 @@
 		EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Effect+.swift"; sourceTree = "<group>"; };
 		EC0D4BA43098E1D0000E7BB7 /* FavoriteBeachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachView.swift; sourceTree = "<group>"; };
 		EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachChip.swift; sourceTree = "<group>"; };
+		EC17D65A309D82630031D2BD /* SignInFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInFeature.swift; sourceTree = "<group>"; };
 		EC196742309C579100BC4C19 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		EC196743309C579100BC4C19 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		EC196744309C579100BC4C19 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
@@ -743,10 +763,39 @@
 			isa = PBXGroup;
 			children = (
 				D1A0C0DE0000000000000C05 /* ProfileEdit */,
+				D1A0C0DE00000000000000FE /* Settings */,
+				D1A0C0DE00000000000000FF /* Withdrawal */,
 				DA5B10E230998932003FEDF9 /* MyFeature.swift */,
 				B5951FB2309BA4AB0089A019 /* MyView.swift */,
 			);
 			path = My;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE00000000000000FE /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE00000000000000F5 /* SettingsFeature.swift */,
+				D1A0C0DE00000000000000F7 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE00000000000000FF /* Withdrawal */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */,
+				D1A0C0DE00000000000000FB /* WithdrawalView.swift */,
+			);
+			path = Withdrawal;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE0000000000000C05 /* ProfileEdit */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */,
+				D1A0C0DE0000000000000C03 /* ProfileEditView.swift */,
+			);
+			path = ProfileEdit;
 			sourceTree = "<group>";
 		};
 		DA5B10E630998932003FEDF9 /* Record */ = {
@@ -866,7 +915,6 @@
 			isa = PBXGroup;
 			children = (
 				EC0D4B983098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift */,
-				EC0D4B943098E1D0000E7BB7 /* WithdrawalReason.swift */,
 				EC0D4B923098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift */,
 				EC0D4B903098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift */,
 			);
@@ -879,6 +927,7 @@
 				ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */,
 				0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */,
 				DAEC87A3309B7F2A0086965E /* ToastFeature.swift */,
+				EC17D65A309D82630031D2BD /* SignInFeature.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -909,10 +958,12 @@
 			children = (
 				ECDDD9AA3099781C00FB04D5 /* DTO */,
 				ECE6F2853098338400C4916C /* Extension */,
+				D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */,
 				ECE6F2863098338400C4916C /* AppleNonce.swift */,
 				ECE6F2873098338400C4916C /* AppleSignInError.swift */,
 				ECE6F2883098338400C4916C /* AuthClient.swift */,
 				ECE6F2893098338400C4916C /* DependencyValues+AuthClient.swift */,
+				7B3C1A03309D0000004C5301 /* AppleSignInCoordinator.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -956,6 +1007,7 @@
 			isa = PBXGroup;
 			children = (
 				DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */,
+				7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */,
 				ECE6F2923098338400C4916C /* PlobbyButton.swift */,
 				EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */,
 				EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */,
@@ -1035,6 +1087,7 @@
 				ECE6F2A73098338400C4916C /* MembershipStatus.swift */,
 				B52C528DE8674E08CD648B87 /* BlockedUser.swift */,
 				ECE6F2A83098338400C4916C /* Nickname.swift */,
+				EC0D4B943098E1D0000E7BB7 /* WithdrawalReason.swift */,
 				B1CA15540443FE5BE6EF51E8 /* Profile.swift */,
 				ECE6F2A93098338400C4916C /* SignInResult.swift */,
 				ECE6F2AA3098338400C4916C /* SignUpProfile.swift */,
@@ -1439,6 +1492,7 @@
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
 				ECE6F2D53098338400C4916C /* AppleSignInError.swift in Sources */,
+				7B3C1A04309D0000004C5301 /* AppleSignInCoordinator.swift in Sources */,
 				DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */,
 				DA2C8CF2309C711C0042C67C /* LocationClientError.swift in Sources */,
 				5A1C0E7B2F4D4E8A9B3C6E03 /* LocationClient.swift in Sources */,
@@ -1479,6 +1533,7 @@
 				B59027033098E2F800AE351D /* NotificationClient.swift in Sources */,
 				ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */,
 				DAEC9A02309C5A0000AA0001 /* PlobbyAlert.swift in Sources */,
+				7B3C1A02309D0000004C5301 /* LoginRequiredSheet.swift in Sources */,
 				DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */,
 				EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */,
 				DA5B106430997215003FEDF9 /* CreateRecordRequestDTO.swift in Sources */,
@@ -1543,6 +1598,11 @@
 				DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
 				B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */,
+				D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */,
+				D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */,
+				D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */,
+				D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */,
+				D1A0C0DE00000000000000FC /* WithdrawalView.swift in Sources */,
 				D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */,
 				D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */,
 				DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */,
@@ -1567,6 +1627,7 @@
 				DA0A9CFB309A140D006D2504 /* DatePickerFeature.swift in Sources */,
 				44553F7E8DF0475F4F9BF678 /* DatePickerView.swift in Sources */,
 				ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */,
+				EC17D65B309D82630031D2BD /* SignInFeature.swift in Sources */,
 				ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

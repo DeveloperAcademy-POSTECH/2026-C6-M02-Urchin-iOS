@@ -45,7 +45,7 @@ extension MyView {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Button {
-                // TODO: 설정 화면 연결
+                store.send(.settingsButtonTapped)
             } label: {
                 Image(systemName: "gearshape")
                     .font(.system(size: 24, weight: .regular))

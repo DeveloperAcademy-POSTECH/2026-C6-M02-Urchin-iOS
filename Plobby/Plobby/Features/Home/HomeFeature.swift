@@ -17,10 +17,11 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
+        @Presents var favoriteBeachPicker: RegionFeature.State?
+        
         var currentBanner: RecordType = .plobbing
         @Shared(.favoriteBeaches) var favoriteBeaches
         var recentRecords: [RecordSummary] = []
-        @Presents var favoriteBeachPicker: RegionFeature.State?
 
         var canAddFavoriteBeach: Bool {
             favoriteBeaches.count < HomeFeature.maximumFavoriteBeachCount
@@ -56,6 +57,7 @@ struct HomeFeature {
 
         enum Delegate {
             case recordStarted(RecordType)
+            case loginRequired
         }
     }
 
@@ -68,6 +70,10 @@ struct HomeFeature {
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
+            if case .guest = state.membershipStatus, action.isUserInteraction {
+                return .send(.delegate(.loginRequired))
+            }
+
             switch action {
             case .onAppear:
                 guard case .member = state.membershipStatus else {
@@ -142,6 +148,24 @@ struct HomeFeature {
         }
         .ifLet(\.$favoriteBeachPicker, action: \.favoriteBeachPicker) {
             RegionFeature()
+        }
+    }
+}
+
+// MARK: - Action
+
+private extension HomeFeature.Action {
+
+    var isUserInteraction: Bool {
+        switch self {
+        case .recordButtonTapped,
+             .notificationButtonTapped,
+             .addFavoriteBeachButtonTapped,
+             .moreRecentRecordsButtonTapped,
+             .dailyTipBannerTapped:
+            true
+        default:
+            false
         }
     }
 }
