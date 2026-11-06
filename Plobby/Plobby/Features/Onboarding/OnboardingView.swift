@@ -61,11 +61,12 @@ extension OnboardingView {
     private var pageDescription: some View {
         VStack(alignment: .center, spacing: 12) {
             Text(store.currentPage.title)
-                .font(.system(size: 28, weight: .bold))
+                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: store.currentPage.titleSize.scaled))
             
             Text(store.currentPage.description)
-                .font(.system(size: 16, weight: .regular))
+                .font(.custom(PretendardWeight.regular.rawValue, fixedSize: store.currentPage.descriptionSize.scaled))
         }
+        .foregroundStyle(Color(.neutralBlack))
         .multilineTextAlignment(.center)
         .animation(.easeInOut(duration: 0.3), value: store.currentPage)
         .padding(.horizontal, 20)
@@ -92,5 +93,19 @@ extension OnboardingView {
                 .foregroundStyle(.gray)
         }
         .padding(.bottom, 17)
+    }
+}
+
+// MARK: - OnboardingPage
+
+private extension OnboardingPage {
+
+    /// 첫 페이지는 수치를 강조해서 더 크게 보여줘요
+    var titleSize: CGFloat {
+        self == .trashAmount ? 36 : 28
+    }
+
+    var descriptionSize: CGFloat {
+        self == .trashAmount ? 17 : 16
     }
 }
