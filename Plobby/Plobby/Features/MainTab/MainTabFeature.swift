@@ -32,6 +32,11 @@ struct MainTabFeature {
         case map(MapFeature.Action)
         case my(MyFeature.Action)
         case recordFlow(PresentationAction<RecordFlowFeature.Action>)
+        case delegate(Delegate)
+
+        enum Delegate {
+            case signedOut
+        }
     }
     
     // MARK: - Body
@@ -76,9 +81,11 @@ struct MainTabFeature {
                 return .none
             case .map:
                 return .none
+            case .my(.delegate(.signedOut)):
+                return .send(.delegate(.signedOut))
             case .my:
                 return .none
-            case .recordFlow:
+            case .recordFlow, .delegate:
                 return .none
             }
         }
