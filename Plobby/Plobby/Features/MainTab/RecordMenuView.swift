@@ -28,8 +28,8 @@ struct RecordMenuView: View {
                             .frame(width: 24, height: 24)
                         
                         Text(recordType.title)
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundStyle(.primary)
+                            .plobbyFont(.body)
+                            .foregroundStyle(Color(.neutralBlack))
                             .frame(height: 48)
                             .contentShape(Rectangle())
                     }
