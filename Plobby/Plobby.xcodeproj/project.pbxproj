@@ -90,9 +90,18 @@
 		DA5B107930997758003FEDF9 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B107530997758003FEDF9 /* MainTabView.swift */; };
 		DA5B107B3099798F003FEDF9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA5B107A3099798F003FEDF9 /* GoogleService-Info.plist */; };
 		DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10DF30998932003FEDF9 /* MapFeature.swift */; };
+		C32FD956A6EA5A1EAD5DFC52 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */; };
+		499182C602791D918B8E9019 /* FavoriteBeachToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B273C5294323568F70EF6E48 /* FavoriteBeachToggle.swift */; };
+		BDB670B496D64EBBFC6DFA20 /* BeachSheetFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7000C176F646DD10B4458C46 /* BeachSheetFeature.swift */; };
+		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
+		AD8DACCB5F16A506E39D260D /* SearchBeachFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA895394908AB08392483E /* SearchBeachFeature.swift */; };
+		45486DEE9BE0616C342F1DD7 /* SearchBeachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD8EB2F9562114130AB9066 /* SearchBeachView.swift */; };
+		CDA93DA11F36AA86D9204B04 /* BeachHomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */; };
+		68C5E3F70B1137E8CEB2DFEC /* BeachHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8F8CE124E253309CA4EE3A /* BeachHomeView.swift */; };
 		DA5B10E430998932003FEDF9 /* MyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E230998932003FEDF9 /* MyFeature.swift */; };
 		DA5B10E730998932003FEDF9 /* RecordFlowFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */; };
 		DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB63099BAE30064A2F4 /* BeachResponseDTO.swift */; };
+		73CD656240EA8E75250648CC /* BeachRecordResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99CF10416380E0C7057BE2D /* BeachRecordResponseDTO.swift */; };
 		DA688DBC3099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB73099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift */; };
 		DA688DBD3099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DB83099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift */; };
 		DA688DC73099CF950064A2F4 /* PhotosPickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DC63099CF950064A2F4 /* PhotosPickerFeature.swift */; };
@@ -151,6 +160,9 @@
 		ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29E3098338400C4916C /* AppleCredential.swift */; };
 		ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F29F3098338400C4916C /* AuthUser.swift */; };
 		ECE6F2E43098338400C4916C /* Beach.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A13098338400C4916C /* Beach.swift */; };
+		45821C3C7A67C61EF3E96A02 /* BeachSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */; };
+		DD2B516972B03604A13831A7 /* BeachRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C8851DAF47D66B8A45DF88 /* BeachRecord.swift */; };
+		3AD5D28536A9C7C3BEF7C27C /* BeachMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */; };
 		D1A0C0DE0000000000000B01 /* Sea.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B02 /* Sea.swift */; };
 		D1A0C0DE0000000000000B03 /* BeachStorageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */; };
 		ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2A43098338400C4916C /* DecimalInput.swift */; };
@@ -288,9 +300,18 @@
 		DA5B107530997758003FEDF9 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		DA5B107A3099798F003FEDF9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DA5B10DF30998932003FEDF9 /* MapFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFeature.swift; sourceTree = "<group>"; };
+		B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		B273C5294323568F70EF6E48 /* FavoriteBeachToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachToggle.swift; sourceTree = "<group>"; };
+		7000C176F646DD10B4458C46 /* BeachSheetFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSheetFeature.swift; sourceTree = "<group>"; };
+		F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSheetView.swift; sourceTree = "<group>"; };
+		79BA895394908AB08392483E /* SearchBeachFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBeachFeature.swift; sourceTree = "<group>"; };
+		BFD8EB2F9562114130AB9066 /* SearchBeachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBeachView.swift; sourceTree = "<group>"; };
+		0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachHomeFeature.swift; sourceTree = "<group>"; };
+		0B8F8CE124E253309CA4EE3A /* BeachHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachHomeView.swift; sourceTree = "<group>"; };
 		DA5B10E230998932003FEDF9 /* MyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFeature.swift; sourceTree = "<group>"; };
 		DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFlowFeature.swift; sourceTree = "<group>"; };
 		DA688DB63099BAE30064A2F4 /* BeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachResponseDTO.swift; sourceTree = "<group>"; };
+		D99CF10416380E0C7057BE2D /* BeachRecordResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachRecordResponseDTO.swift; sourceTree = "<group>"; };
 		DA688DB73099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachInsertRequestDTO.swift; sourceTree = "<group>"; };
 		DA688DB83099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachResponseDTO.swift; sourceTree = "<group>"; };
 		DA688DC63099CF950064A2F4 /* PhotosPickerFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerFeature.swift; sourceTree = "<group>"; };
@@ -351,6 +372,9 @@
 		ECE6F29E3098338400C4916C /* AppleCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCredential.swift; sourceTree = "<group>"; };
 		ECE6F29F3098338400C4916C /* AuthUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUser.swift; sourceTree = "<group>"; };
 		ECE6F2A13098338400C4916C /* Beach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Beach.swift; sourceTree = "<group>"; };
+		FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSummary.swift; sourceTree = "<group>"; };
+		45C8851DAF47D66B8A45DF88 /* BeachRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachRecord.swift; sourceTree = "<group>"; };
+		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000B02 /* Sea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sea.swift; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachStorageDTO.swift; sourceTree = "<group>"; };
 		ECE6F2A43098338400C4916C /* DecimalInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalInput.swift; sourceTree = "<group>"; };
@@ -482,6 +506,7 @@
 			isa = PBXGroup;
 			children = (
 				DA688DB63099BAE30064A2F4 /* BeachResponseDTO.swift */,
+				D99CF10416380E0C7057BE2D /* BeachRecordResponseDTO.swift */,
 				DA688DB83099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift */,
 			);
 			path = Response;
@@ -683,6 +708,14 @@
 			isa = PBXGroup;
 			children = (
 				DA5B10DF30998932003FEDF9 /* MapFeature.swift */,
+				B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */,
+				B273C5294323568F70EF6E48 /* FavoriteBeachToggle.swift */,
+				7000C176F646DD10B4458C46 /* BeachSheetFeature.swift */,
+				F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */,
+				79BA895394908AB08392483E /* SearchBeachFeature.swift */,
+				BFD8EB2F9562114130AB9066 /* SearchBeachView.swift */,
+				0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */,
+				0B8F8CE124E253309CA4EE3A /* BeachHomeView.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -960,6 +993,9 @@
 			isa = PBXGroup;
 			children = (
 				ECE6F2A13098338400C4916C /* Beach.swift */,
+				FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */,
+				45C8851DAF47D66B8A45DF88 /* BeachRecord.swift */,
+				85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */,
 				D1A0C0DE0000000000000B02 /* Sea.swift */,
 			);
 			path = Beach;
@@ -1354,6 +1390,7 @@
 			files = (
 				DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */,
 				DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */,
+				73CD656240EA8E75250648CC /* BeachRecordResponseDTO.swift in Sources */,
 				DA688DBC3099BAE30064A2F4 /* FavoriteBeachInsertRequestDTO.swift in Sources */,
 				DA688DBD3099BAE30064A2F4 /* FavoriteBeachResponseDTO.swift in Sources */,
 				8B75290473133F917916BA5D /* UserClient.swift in Sources */,
@@ -1374,6 +1411,14 @@
 				DAEC87A4309B7F2A0086965E /* ToastFeature.swift in Sources */,
 				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
 				DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */,
+				C32FD956A6EA5A1EAD5DFC52 /* MapView.swift in Sources */,
+				499182C602791D918B8E9019 /* FavoriteBeachToggle.swift in Sources */,
+				BDB670B496D64EBBFC6DFA20 /* BeachSheetFeature.swift in Sources */,
+				7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */,
+				AD8DACCB5F16A506E39D260D /* SearchBeachFeature.swift in Sources */,
+				45486DEE9BE0616C342F1DD7 /* SearchBeachView.swift in Sources */,
+				CDA93DA11F36AA86D9204B04 /* BeachHomeFeature.swift in Sources */,
+				68C5E3F70B1137E8CEB2DFEC /* BeachHomeView.swift in Sources */,
 				DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */,
 				5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */,
 				B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */,
@@ -1459,6 +1504,9 @@
 				ECE6F2E23098338400C4916C /* AppleCredential.swift in Sources */,
 				ECE6F2E33098338400C4916C /* AuthUser.swift in Sources */,
 				ECE6F2E43098338400C4916C /* Beach.swift in Sources */,
+				45821C3C7A67C61EF3E96A02 /* BeachSummary.swift in Sources */,
+				DD2B516972B03604A13831A7 /* BeachRecord.swift in Sources */,
+				3AD5D28536A9C7C3BEF7C27C /* BeachMarker.swift in Sources */,
 				D1A0C0DE0000000000000B01 /* Sea.swift in Sources */,
 				D1A0C0DE0000000000000B03 /* BeachStorageDTO.swift in Sources */,
 				ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */,
