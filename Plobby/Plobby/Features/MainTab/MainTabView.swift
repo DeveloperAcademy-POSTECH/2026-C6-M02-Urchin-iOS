@@ -71,14 +71,15 @@ struct MainTabView: View {
         }
         .sheet(isPresented: $store.isLoginSheetPresented.sending(\.loginSheetPresentationChanged)) {
             LoginRequiredSheet(
-                isSigningIn: store.isSigningIn,
+                isSigningIn: store.signIn.isSigningIn,
                 onAppleLogin: { store.send(.appleLoginButtonTapped) },
                 onBrowse: { store.send(.loginSheetPresentationChanged(false)) }
             )
         }
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert($store.scope(state: \.signIn.alert, action: \.signIn.alert))
     }
 }
+
 // MARK: - Subviews
 
 extension MainTabView {
