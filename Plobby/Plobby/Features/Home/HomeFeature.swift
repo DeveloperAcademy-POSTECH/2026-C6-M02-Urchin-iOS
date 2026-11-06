@@ -41,7 +41,7 @@ struct HomeFeature {
         case bannerChanged(RecordType)
         case bannerDragStarted
         case bannerDragEnded
-        case recordButtonTapped
+        case recordButtonTapped(RecordType)
         case notificationButtonTapped
         case recentRecordTapped(RecordSummary.ID)
         case dailyTipBannerTapped
@@ -93,8 +93,8 @@ struct HomeFeature {
             case .bannerDragEnded:
                 return startTimer()
 
-            case .recordButtonTapped:
-                return .send(.delegate(.recordStarted(state.currentBanner)))
+            case let .recordButtonTapped(recordType):
+                return .send(.delegate(.recordStarted(recordType)))
 
             // TODO: 알림 화면 이동
             case .notificationButtonTapped:

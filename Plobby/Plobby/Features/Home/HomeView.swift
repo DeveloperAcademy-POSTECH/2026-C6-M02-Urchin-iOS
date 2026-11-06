@@ -81,28 +81,22 @@ extension HomeView {
 extension HomeView {
     
     private var recordBanner: some View {
-        ZStack(alignment: .bottom) {
-            ScrollView(.horizontal) {
-                HStack(spacing: 0) {
-                    ForEach(HomeFeature.banners, id: \.self) { banner in
-                        bannerPage(banner)
-                            .containerRelativeFrame(.horizontal)
-                    }
+        ScrollView(.horizontal) {
+            HStack(spacing: 0) {
+                ForEach(HomeFeature.banners, id: \.self) { banner in
+                    bannerPage(banner)
+                        .containerRelativeFrame(.horizontal)
                 }
-                .scrollTargetLayout()
             }
-            .scrollTargetBehavior(.paging)
-            .scrollIndicators(.hidden)
-            .scrollPosition(id: bannerPosition)
-            .onBannerDrag(
-                started: { store.send(.bannerDragStarted) },
-                ended: { store.send(.bannerDragEnded) }
-            )
-
-            recordButton
-                .padding(.horizontal, 20.scaled)
-                .padding(.bottom, 16.scaled)
+            .scrollTargetLayout()
         }
+        .scrollTargetBehavior(.paging)
+        .scrollIndicators(.hidden)
+        .scrollPosition(id: bannerPosition)
+        .onBannerDrag(
+            started: { store.send(.bannerDragStarted) },
+            ended: { store.send(.bannerDragEnded) }
+        )
         .overlay(alignment: .topTrailing) {
             bannerIndicator
                 .padding(.top, 18.scaled)
@@ -137,6 +131,11 @@ extension HomeView {
                     .padding(.top, 20.scaled)
                     .padding(.leading, 24.scaled)
             }
+            .overlay(alignment: .bottom) {
+                recordButton(banner)
+                    .padding(.horizontal, 20.scaled)
+                    .padding(.bottom, 16.scaled)
+            }
     }
 
     // TODO: 컬러셋 확정 후 교체 (#ACC9BE)
@@ -152,9 +151,9 @@ extension HomeView {
         }
     }
     
-    private var recordButton: some View {
-        PlobbyButton(text: store.currentBanner.recordButtonTitle) {
-            store.send(.recordButtonTapped)
+    private func recordButton(_ banner: RecordType) -> some View {
+        PlobbyButton(text: banner.recordButtonTitle) {
+            store.send(.recordButtonTapped(banner))
         }
         .padding(.bottom, 4.scaled)
     }
@@ -223,7 +222,6 @@ extension HomeView {
             .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
     }
 
-    /// 대표 사진. 불러오는 중이거나 사진이 없으면 회색 배경을 보여줘요
     private func recordPhoto(_ url: URL?) -> some View {
         AsyncImage(url: url) { image in
             image
