@@ -70,7 +70,15 @@ nonisolated extension RecordClient: DependencyKey {
                     .execute()
                     .value
 
-                return responseDTOs.compactMap { $0.toDomain() }
+                let imageBucket = supabaseClient.storage.from(StorageBucket.image)
+                let profileBucket = supabaseClient.storage.from(StorageBucket.profile)
+
+                return responseDTOs.compactMap {
+                    $0.toDomain(
+                        photoURL: { try? imageBucket.getPublicURL(path: $0) },
+                        profileImageURL: { try? profileBucket.getPublicURL(path: $0) }
+                    )
+                }
             }, submitRecord: { record in
                 @Dependency(\.supabaseClient) var supabaseClient
                 

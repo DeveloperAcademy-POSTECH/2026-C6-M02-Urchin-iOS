@@ -44,6 +44,9 @@ extension HomeView {
             .padding(.bottom, 36.scaled)
         }
         .scrollIndicators(.hidden)
+        .refreshable {
+            await store.send(.refreshPulled).finish()
+        }
     }
 }
 
@@ -169,7 +172,6 @@ extension HomeView {
         .padding(.top, 40.scaled)
     }
 
-    // TODO: coverPhotoKey, profileImageKey로 실제 이미지 불러오기
     /// - 가로 배치 카드
     private func recentRecordCard(_ record: RecordSummary) -> some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -187,7 +189,6 @@ extension HomeView {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    // TODO: coverPhotoKey로 실제 이미지 불러오기
     /// - 세로 배치 행
     private func recentRecordRow(_ record: RecordSummary) -> some View {
         HStack(spacing: 16.scaled) {
@@ -211,19 +212,26 @@ extension HomeView {
         Color.clear
             .aspectRatio(175 / 132, contentMode: .fit)
             .overlay {
-                Image(record.recordType.bannerImage)
-                    .resizable()
-                    .scaledToFill()
+                recordPhoto(record.coverPhotoURL)
             }
             .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
     }
 
     private func recentRecordRowImage(_ record: RecordSummary) -> some View {
-        Image(record.recordType.bannerImage)
-            .resizable()
-            .scaledToFill()
+        recordPhoto(record.coverPhotoURL)
             .frame(width: 76.scaled, height: 76.scaled)
             .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
+    }
+
+    /// 대표 사진. 불러오는 중이거나 사진이 없으면 회색 배경을 보여줘요
+    private func recordPhoto(_ url: URL?) -> some View {
+        AsyncImage(url: url) { image in
+            image
+                .resizable()
+                .scaledToFill()
+        } placeholder: {
+            Color(.gray50)
+        }
     }
 
     private func recentRecordTitle(_ record: RecordSummary) -> some View {
@@ -248,9 +256,16 @@ extension HomeView {
 
     private func recentRecordAuthor(_ record: RecordSummary) -> some View {
         HStack(spacing: 6.scaled) {
-            Image(systemName: "person.crop.circle.fill")
-                .resizable()
-                .frame(width: 16.scaled, height: 16.scaled)
+            AsyncImage(url: record.profileImageURL) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+            } placeholder: {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+            }
+            .frame(width: 16.scaled, height: 16.scaled)
+            .clipShape(Circle())
 
             Text(record.nickname)
                 .plobbyFont(.metadata)
