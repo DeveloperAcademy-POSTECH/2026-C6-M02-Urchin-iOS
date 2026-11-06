@@ -28,6 +28,7 @@ struct MyFeature {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
         case profileEditButtonTapped
+        case settingsButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
         case delegate(Delegate)
 
@@ -65,6 +66,13 @@ struct MyFeature {
                 guard let profile = state.profile else { return .none }
 
                 state.profileEdit = ProfileEditFeature.State(profile: profile)
+                return .none
+
+            // TODO: 설정 화면 연결
+            case .settingsButtonTapped:
+                guard case .member = state.membershipStatus else {
+                    return .send(.delegate(.loginRequired))
+                }
                 return .none
 
             case let .profileEdit(.presented(.delegate(.saved(profile, profileImage)))):
