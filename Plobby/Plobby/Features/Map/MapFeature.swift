@@ -199,6 +199,15 @@ struct MapFeature {
                 state.path.pop(from: id)
                 return .none
 
+            // 신고한 기록과 차단한 사용자의 기록은 나에게만 안 보여요. 상세를 닫고, 아래에 쌓인 해변 홈과 지도 배지에서도 빼요.
+            case let .path(.element(id, .recordDetail(.delegate(.reported(recordID))))):
+                state.path.pop(from: id)
+                return hideInBeachHomes(.recordHidden(recordID), state: state)
+
+            case let .path(.element(id, .recordDetail(.delegate(.blocked(userID))))):
+                state.path.pop(from: id)
+                return hideInBeachHomes(.userBlocked(userID), state: state)
+
             case .beachSheet, .path, .delegate:
                 return .none
             }
@@ -217,6 +226,15 @@ extension MapFeature {
     private func moveCamera(to center: Coordinate, meters: Double, state: inout State) {
         state.cameraCommand = .region(center: center, meters: meters)
         state.cameraRevision += 1
+    }
+
+    private func hideInBeachHomes(_ action: BeachHomeFeature.Action, state: State) -> Effect<Action> {
+        let beachHomeIDs = state.path.ids.filter { state.path[id: $0]?.is(\.beachHome) == true }
+
+        return .merge(
+            beachHomeIDs.map { .send(.path(.element(id: $0, action: .beachHome(action)))) }
+                + [fetchRecordCounts()]
+        )
     }
 
     private func fetchRecordCounts() -> Effect<Action> {
