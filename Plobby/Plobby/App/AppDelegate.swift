@@ -24,14 +24,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
         Messaging.messaging().delegate = self
 
-        // TODO: 권한 요청 시점이 정해지면 AppFeature의 pushClient.requestAuthorization으로 옮기기
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-            if let error {
-                PlobbyLogger.error(error)
-            }
-
-            PlobbyLogger.debug("푸시 권한 허용 여부: \(granted)")
-        }
+        // 알림 권한은 로그인·회원가입 직후 AppFeature에서 요청해요. APNs 등록은 권한과 상관없이 미리 해둬요.
         application.registerForRemoteNotifications()
 
         return true

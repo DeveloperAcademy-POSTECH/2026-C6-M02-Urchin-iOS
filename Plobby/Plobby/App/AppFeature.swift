@@ -55,7 +55,8 @@ struct AppFeature {
 
             case let .deviceTokenReceived(token):
                 @Shared(.membershipStatus) var membershipStatus
-                guard case .member = membershipStatus else { return .none }
+                @Shared(.isPushEnabled) var isPushEnabled
+                guard case .member = membershipStatus, isPushEnabled else { return .none }
 
                 return submitDeviceToken(token)
 
@@ -150,8 +151,15 @@ extension AppFeature {
         }
     }
 
+    /// 회원이 된 직후에 불러요. 알림 권한을 요청하고, 허용되면 기기 토큰을 등록해요.
+    /// 설정에서 알림을 끈 기기는 건너뛰어요.
     private func submitCurrentDeviceToken() -> Effect<Action> {
-        .run { _ in
+        @Shared(.isPushEnabled) var isPushEnabled
+        guard isPushEnabled else { return .none }
+
+        return .run { _ in
+            guard try await pushClient.requestAuthorization() else { return }
+
             let token = try await pushClient.fetchToken()
             try await notificationClient.submitDeviceToken(token)
         } catch: { error, _ in

@@ -34,6 +34,12 @@ extension SharedKey where Self == AppStorageKey<Date?>.Default {
     static var beachesSyncedAt: Self { Self[.appStorage("beachesSyncedAt"), default: nil] }
 }
 
+extension SharedKey where Self == AppStorageKey<Bool>.Default {
+
+    /// 이 기기에서 푸시를 받을지 여부. 설정의 알림 토글로 바꿔요.
+    static var isPushEnabled: Self { Self[.appStorage("isPushEnabled"), default: true] }
+}
+
 extension SharedKey where Self == InMemoryKey<[Beach]>.Default {
 
     /// 로그인한 사용자의 관심 해변. 홈과 지도 탭이 함께 써요.
