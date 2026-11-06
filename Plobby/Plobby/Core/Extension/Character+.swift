@@ -23,7 +23,7 @@ extension Character {
         isASCII && isLetter
     }
     
-    var isASCIIDigit: Bool {
+    nonisolated var isASCIIDigit: Bool {
         isASCII && isNumber
     }
 }

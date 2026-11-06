@@ -71,6 +71,10 @@ struct BeachHomeFeature {
         case moreRecordsTapped
         case showAllTapped
         case recordTapped(BeachRecord)
+        /// 신고한 기록을 목록에서 빼요.
+        case recordHidden(UUID)
+        /// 차단한 사용자의 기록을 목록에서 모두 빼요.
+        case userBlocked(UUID)
         case backTapped
         case alert(PresentationAction<Alert>)
         case delegate(Delegate)
@@ -174,6 +178,13 @@ struct BeachHomeFeature {
             case let .recordTapped(record):
                 return .send(.delegate(.recordSelected(record)))
 
+            // 목록에서 바로 빼고, 요약은 숨긴 기록을 뺀 기준으로 다시 불러와요.
+            case let .recordHidden(recordID):
+                return removeRecords(where: { $0.id == recordID }, state: &state)
+
+            case let .userBlocked(userID):
+                return removeRecords(where: { $0.userID == userID }, state: &state)
+
             case .backTapped:
                 return .run { _ in await dismiss() }
 
@@ -188,6 +199,14 @@ struct BeachHomeFeature {
 // MARK: - Functions
 
 extension BeachHomeFeature {
+
+    private func removeRecords(where shouldRemove: (BeachRecord) -> Bool, state: inout State) -> Effect<Action> {
+        if case var .loaded(records) = state.records {
+            records.removeAll(where: shouldRemove)
+            state.records = records.isEmpty ? .empty : .loaded(records)
+        }
+        return fetchSummary(beachID: state.beach.id)
+    }
 
     private func fetchSummary(beachID: UUID) -> Effect<Action> {
         .run { send in

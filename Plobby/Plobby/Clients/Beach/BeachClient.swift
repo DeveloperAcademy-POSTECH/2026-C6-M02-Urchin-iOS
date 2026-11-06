@@ -78,10 +78,13 @@ extension BeachClient: DependencyKey {
             fetchRecordCounts: {
                 @Dependency(\.supabaseClient) var supabase
 
+                let hiddenRecords = try await supabase.hiddenRecords()
+
                 let records: [BeachIDResponse] = try await supabase
                     .from("records")
                     .select("beach_id")
                     .is("deleted_at", value: nil)
+                    .excluding(hiddenRecords)
                     .execute()
                     .value
 
@@ -92,11 +95,14 @@ extension BeachClient: DependencyKey {
             fetchBeachRecords: { beachID, recordType in
                 @Dependency(\.supabaseClient) var supabase
 
+                let hiddenRecords = try await supabase.hiddenRecords()
+
                 var query = supabase
                     .from("records")
                     .select(BeachRecordResponseDTO.selectQuery)
                     .eq("beach_id", value: beachID)
                     .is("deleted_at", value: nil)
+                    .excluding(hiddenRecords)
 
                 if let recordType {
                     query = query.eq("record_type", value: recordType.rawValue)

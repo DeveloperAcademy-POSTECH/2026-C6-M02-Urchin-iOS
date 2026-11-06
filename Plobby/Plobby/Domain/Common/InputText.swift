@@ -9,7 +9,7 @@ import Foundation
 
 enum InputText {
 
-    static func trimmed(_ text: String) -> String {
+    nonisolated static func trimmed(_ text: String) -> String {
         text.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
