@@ -213,10 +213,12 @@ extension SettingsView {
             }
         }
 
-        // TODO: 링크 주소 정해지면 연결
         var url: URL? {
             switch self {
-            case .notice, .inquiry, .termsOfService, .privacyPolicy: nil
+            case .notice: URL(string: "https://root-fenugreek-5da.notion.site/4100af7877f48126a2edd352e419e39c")
+            case .inquiry: URL(string: "https://root-fenugreek-5da.notion.site/4100af7877f481aa9461d6e7c64e0bcf")
+            case .termsOfService: URL(string: "https://root-fenugreek-5da.notion.site/4100af7877f4819fa959e6f62de599bc")
+            case .privacyPolicy: URL(string: "https://root-fenugreek-5da.notion.site/4100af7877f48117be23c849a2a2c5f9")
             }
         }
     }
