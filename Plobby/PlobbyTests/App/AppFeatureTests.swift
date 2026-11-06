@@ -16,18 +16,21 @@ import ComposableArchitecture
 struct AppFeatureTests {
 
     private let user = AuthUser(id: UUID(0), email: "plobby@example.com", fullName: "플로비")
+    private let profile = Profile(userID: UUID(0), nickname: "플로비", profileImageKey: nil, profileImageURL: nil)
 
     // MARK: - 세션 복원
 
     @Test
     func 세션과_프로필이_있으면_회원으로_메인탭에_들어간다() async {
         let submittedToken = LockIsolated<String?>(nil)
-        let store = makeStore(initialState: .launching) {
-            $0.pushClient = .mock(fetchToken: { "device-token" })
-            $0.notificationClient = .mock(submitDeviceToken: { token in submittedToken.setValue(token) })
-        }
+        let store = makeStore(
+            currentUser: user,
+            fetchMyProfile: { profile },
+            submitDeviceToken: { submittedToken.setValue($0) }
+        )
 
-        await store.send(.sessionRestored(.success(.member(user)))) {
+        await store.send(.task)
+        await store.receive(\.sessionRestored.success) {
             $0 = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
         }
         await store.finish()
@@ -38,63 +41,102 @@ struct AppFeatureTests {
 
     @Test
     func 세션은_있지만_프로필이_없으면_회원가입으로_이동한다() async {
-        let store = makeStore(initialState: .launching)
+        let store = makeStore(currentUser: user, fetchMyProfile: { nil })
 
-        await store.send(.sessionRestored(.success(.newUser(user, fullName: "플로비")))) {
+        await store.send(.task)
+        await store.receive(\.sessionRestored.success) {
             $0 = .signUp(SignUpFeature.State(user: self.user, fullName: "플로비"))
         }
+        await store.finish()
     }
 
     @Test
     func 세션이_없으면_온보딩으로_이동한다() async {
-        let store = makeStore(initialState: .launching)
+        let store = makeStore(currentUser: nil)
 
-        await store.send(.sessionRestored(.success(nil))) {
+        await store.send(.task)
+        await store.receive(\.sessionRestored.success) {
             $0 = .onboarding(OnboardingFeature.State())
         }
+        await store.finish()
     }
 
     @Test
-    func 세션_확인에_실패하면_온보딩으로_이동한다() async {
-        struct FetchFailure: Error {}
-        let store = makeStore(initialState: .launching)
+    func 프로필_조회에_실패하면_온보딩으로_이동한다() async {
+        let store = makeStore(currentUser: user, fetchMyProfile: { throw MockError() })
 
-        await store.send(.sessionRestored(.failure(FetchFailure()))) {
+        await store.send(.task)
+        await store.receive(\.sessionRestored.failure) {
             $0 = .onboarding(OnboardingFeature.State())
         }
+        await store.finish()
     }
 
     // MARK: - 세션 종료
 
     @Test
     func 회원의_세션이_끝나면_비회원으로_온보딩에_이동한다() async {
-        let mainTab = MainTabFeature.State(home: HomeFeature.State())
-        mainTab.$membershipStatus.withLock { $0 = .member(user) }
-        let store = makeStore(initialState: .mainTab(mainTab))
+        let (signedOutEvents, signOut) = AsyncStream<Void>.makeStream()
+        let store = makeStore(
+            currentUser: user,
+            fetchMyProfile: { profile },
+            signedOutEvents: signedOutEvents
+        )
 
-        await store.send(.sessionEnded) {
+        await store.send(.task)
+        await store.receive(\.sessionRestored.success) {
+            $0 = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
+        }
+
+        signOut.yield()
+        await store.receive(\.sessionEnded) {
             $0 = .onboarding(OnboardingFeature.State())
         }
+        signOut.finish()
+        await store.finish()
 
         @Shared(.membershipStatus) var membershipStatus
         #expect(membershipStatus == .guest)
     }
 
     @Test
+    func 복원_중에_세션이_끝나면_복원_결과를_버리고_온보딩으로_이동한다() async {
+        let (signedOutEvents, signOut) = AsyncStream<Void>.makeStream()
+        let store = makeStore(
+            currentUser: user,
+            fetchMyProfile: {
+                try await Task.sleep(for: .seconds(60))
+                return nil
+            },
+            signedOutEvents: signedOutEvents
+        )
+
+        await store.send(.task)
+
+        signOut.yield()
+        await store.receive(\.sessionEnded) {
+            $0 = .onboarding(OnboardingFeature.State())
+        }
+        signOut.finish()
+        await store.finish()
+    }
+
+    @Test
     func 비회원일_때_세션이_끝나면_무시한다() async {
         let mainTab = MainTabFeature.State(home: HomeFeature.State())
         mainTab.$membershipStatus.withLock { $0 = .guest }
-        let store = makeStore(initialState: .mainTab(mainTab))
+        let store = TestStore(initialState: .mainTab(mainTab)) {
+            AppFeature()
+        }
 
         await store.send(.sessionEnded)
     }
 
-    @Test(arguments: [
-        AppFeature.State.launching,
-        .onboarding(OnboardingFeature.State()),
-    ])
-    func 로그인_전_화면에서_세션이_끝나면_무시한다(initialState: AppFeature.State) async {
-        let store = makeStore(initialState: initialState)
+    @Test
+    func 온보딩에서_세션이_끝나면_무시한다() async {
+        let store = TestStore(initialState: .onboarding(OnboardingFeature.State())) {
+            AppFeature()
+        }
 
         await store.send(.sessionEnded)
     }
@@ -105,18 +147,63 @@ struct AppFeatureTests {
 private extension AppFeatureTests {
 
     func makeStore(
-        initialState: AppFeature.State,
-        dependencies: (inout DependencyValues) -> Void = { _ in }
+        currentUser: AuthUser?,
+        fetchMyProfile: @escaping @Sendable () async throws -> Profile? = { nil },
+        signedOutEvents: AsyncStream<Void> = .finished,
+        submitDeviceToken: @escaping @Sendable (String) async throws -> Void = { _ in }
     ) -> TestStoreOf<AppFeature> {
-        TestStore(initialState: initialState) {
+        TestStore(initialState: .launching) {
             AppFeature()
         } withDependencies: {
-            dependencies(&$0)
+            $0.authClient = .mock(currentUser: currentUser, signedOutEvents: signedOutEvents)
+            $0.userClient = .mock(fetchMyProfile: fetchMyProfile)
+            $0.pushClient = .mock(fetchToken: { "device-token" })
+            $0.notificationClient = .mock(submitDeviceToken: submitDeviceToken)
+            $0.beachClient = .mock
+            $0.date.now = Date(timeIntervalSince1970: 0)
         }
     }
 }
 
 // MARK: - Mock
+
+private struct MockError: Error {}
+
+private extension AsyncStream {
+
+    static var finished: Self { AsyncStream { $0.finish() } }
+}
+
+private extension AuthClient {
+
+    static func mock(currentUser: AuthUser?, signedOutEvents: AsyncStream<Void>) -> Self {
+        AuthClient(
+            signInWithApple: { _, _, _ in throw MockError() },
+            fetchCredential: { _ in .failure(.failed) },
+            fetchAppleAuthorizationCode: { throw MockError() },
+            fetchCurrentUser: { currentUser },
+            signedOutEvents: { signedOutEvents },
+            signUp: { _ in throw MockError() },
+            signOut: { _ in throw MockError() },
+            submitWithdrawalFeedback: { _, _ in throw MockError() },
+            withdraw: { _, _, _ in throw MockError() }
+        )
+    }
+}
+
+private extension UserClient {
+
+    static func mock(fetchMyProfile: @escaping @Sendable () async throws -> Profile?) -> Self {
+        UserClient(
+            fetchIsNicknameAvailable: { _ in throw MockError() },
+            fetchMyProfile: fetchMyProfile,
+            updateMyProfile: { _, _ in throw MockError() },
+            submitBlock: { _ in throw MockError() },
+            removeBlock: { _ in throw MockError() },
+            fetchBlockedUsers: { throw MockError() }
+        )
+    }
+}
 
 private extension PushClient {
 
@@ -124,8 +211,8 @@ private extension PushClient {
         PushClient(
             requestAuthorization: { true },
             fetchToken: fetchToken,
-            tokens: { AsyncStream { $0.finish() } },
-            tappedRecordIDs: { AsyncStream { $0.finish() } }
+            tokens: { .finished },
+            tappedRecordIDs: { .finished }
         )
     }
 }
@@ -140,4 +227,16 @@ private extension NotificationClient {
             submitDeviceToken: submitDeviceToken
         )
     }
+}
+
+private extension BeachClient {
+
+    static let mock = BeachClient(
+        fetchBeaches: { _ in [] },
+        fetchFavoriteBeaches: { [] },
+        submitFavoriteBeach: { _ in },
+        removeFavoriteBeach: { _ in },
+        fetchRecordCounts: { [:] },
+        fetchBeachRecords: { _, _ in [] }
+    )
 }

@@ -83,7 +83,7 @@ struct AppFeature {
                 @Shared(.membershipStatus) var membershipStatus
 
                 switch state {
-                case .signUp:
+                case .launching, .signUp:
                     break
                 case .mainTab where membershipStatus != .guest:
                     break
@@ -93,7 +93,7 @@ struct AppFeature {
 
                 updateMembershipStatus(.guest)
                 state = .onboarding(OnboardingFeature.State())
-                return .none
+                return .cancel(id: CancelID.restoreSession)
 
             case let .deviceTokenReceived(token):
                 @Shared(.membershipStatus) var membershipStatus
@@ -167,6 +167,10 @@ extension AppFeature {
         $membershipStatus.withLock { $0 = status }
     }
 
+    private nonisolated enum CancelID {
+        case restoreSession
+    }
+
     private func restoreSession() -> Effect<Action> {
         .run { [authClient, userClient] send in
             await send(.sessionRestored(Result {
@@ -176,6 +180,7 @@ extension AppFeature {
                 return profile != nil ? .member(user) : .newUser(user, fullName: user.fullName)
             }))
         }
+        .cancellable(id: CancelID.restoreSession)
     }
 
     private func observeSignedOutEvents() -> Effect<Action> {
