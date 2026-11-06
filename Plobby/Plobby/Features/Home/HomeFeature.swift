@@ -18,6 +18,7 @@ struct HomeFeature {
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
         @Presents var favoriteBeachPicker: RegionFeature.State?
+        @Presents var notification: NotificationFeature.State?
         
         var currentBanner: RecordType = .plobbing
         @Shared(.favoriteBeaches) var favoriteBeaches
@@ -53,6 +54,7 @@ struct HomeFeature {
         case recentRecordsResponse([RecordSummary])
         case favoriteBeachesResponse([Beach])
         case favoriteBeachPicker(PresentationAction<RegionFeature.Action>)
+        case notification(PresentationAction<NotificationFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
@@ -103,8 +105,8 @@ struct HomeFeature {
             case .recordButtonTapped:
                 return .send(.delegate(.recordStarted(state.currentBanner)))
 
-            // TODO: 알림 화면 이동
             case .notificationButtonTapped:
+                state.notification = NotificationFeature.State()
                 return .none
 
             case .addFavoriteBeachButtonTapped:
@@ -124,6 +126,9 @@ struct HomeFeature {
                 return .none
 
             case .favoriteBeachPicker:
+                return .none
+
+            case .notification:
                 return .none
 
             // TODO: 기록 목록 화면 이동
@@ -148,6 +153,9 @@ struct HomeFeature {
         }
         .ifLet(\.$favoriteBeachPicker, action: \.favoriteBeachPicker) {
             RegionFeature()
+        }
+        .ifLet(\.$notification, action: \.notification) {
+            NotificationFeature()
         }
     }
 }

@@ -12,9 +12,12 @@ import Supabase
 
 struct NotificationClient {
     var fetchNotifications: @Sendable () async throws -> [AppNotification]
-    var updateReadAt: @Sendable (_ notificationID: UUID) async throws -> Void
+    /// 알림을 읽음 처리해요. 좋아요 알림은 같은 기록에 묶인 알림을 모두 읽음 처리해요.
+    var updateReadAt: @Sendable (_ notification: AppNotification) async throws -> Void
     var updateAllReadAt: @Sendable () async throws -> Void
     var submitDeviceToken: @Sendable (_ token: String) async throws -> Void
+    /// 이 기기로 푸시를 받지 않도록 서버에서 기기 토큰을 지워요.
+    var removeDeviceToken: @Sendable (_ token: String) async throws -> Void
 }
 
 extension NotificationClient: DependencyKey {
@@ -35,7 +38,7 @@ extension NotificationClient: DependencyKey {
 
                 return notifications.map { $0.toDomain() }
             },
-            updateReadAt: { notificationID in
+            updateReadAt: { notification in
                 @Dependency(\.supabaseClient) var supabaseClient
 
                 let userID = try await supabaseClient.currentUserID()
@@ -43,8 +46,9 @@ extension NotificationClient: DependencyKey {
                 try await supabaseClient
                     .from("notifications")
                     .update(ReadAtUpdateRequestDTO(readAt: .now), returning: .minimal)
-                    .eq("id", value: notificationID)
                     .eq("user_id", value: userID)
+                    .eq("record_id", value: notification.recordID)
+                    .eq("type", value: notification.kind.serverType)
                     .is("read_at", value: nil)
                     .execute()
             },
@@ -66,7 +70,29 @@ extension NotificationClient: DependencyKey {
                 try await supabaseClient
                     .rpc("register_device_token", params: RegisterDeviceTokenRequestDTO(token: token))
                     .execute()
+            },
+            removeDeviceToken: { token in
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                try await supabaseClient
+                    .from("device_tokens")
+                    .delete(returning: .minimal)
+                    .eq("token", value: token)
+                    .execute()
             }
         )
     }()
+}
+
+// MARK: - AppNotification.Kind+
+
+private extension AppNotification.Kind {
+
+    /// `notifications.type` 칼럼 값
+    var serverType: String {
+        switch self {
+        case .like: "like"
+        case .newRecordAtFavoriteBeach: "beach_record"
+        }
+    }
 }
