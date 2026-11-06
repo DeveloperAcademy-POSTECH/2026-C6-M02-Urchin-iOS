@@ -63,7 +63,7 @@ struct MapFeature {
         case delegate(Delegate)
 
         enum Delegate: Equatable {
-            case recordStartRequested
+            case recordStartRequested(Beach)
             case loginRequired
         }
     }
@@ -187,9 +187,9 @@ struct MapFeature {
                 state.beachSheet = nil
                 return .none
 
-            case .beachSheet(.presented(.delegate(.recordStartTapped))):
+            case let .beachSheet(.presented(.delegate(.recordStartTapped(beach)))):
                 state.beachSheet = nil
-                return .send(.delegate(.recordStartRequested))
+                return .send(.delegate(.recordStartRequested(beach)))
 
             case let .path(.element(id, .searchBeach(.delegate(.beachSelected(beach))))):
                 state.path.pop(from: id)

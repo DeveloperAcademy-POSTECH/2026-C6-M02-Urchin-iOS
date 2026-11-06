@@ -15,10 +15,13 @@ struct RecordFlowFeature {
     @ObservableState
     struct State: Equatable {
         let recordType: RecordType
+        /// 지도에서 해변을 골라 시작하면 기록 작성 화면에 미리 채워요
+        let beach: Beach?
         var step: Step.State
         
-        init(recordType: RecordType, step: Step.State? = nil) {
+        init(recordType: RecordType, beach: Beach? = nil, step: Step.State? = nil) {
             self.recordType = recordType
+            self.beach = beach
             self.step = step ?? .photoPicker(PhotosPickerFeature.State(recordType: recordType))
         }
     }
@@ -64,6 +67,7 @@ struct RecordFlowFeature {
                 state.step = .form(.init(
                     recordType: state.recordType,
                     photos: IdentifiedArray(uniqueElements: photos.map(RecordPhoto.local)),
+                    beach: state.beach,
                     period: .defaultPeriod(endingAt: now, calendar: calendar)
                 ))
                 return .none

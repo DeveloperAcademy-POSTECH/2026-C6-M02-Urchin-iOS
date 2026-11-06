@@ -53,7 +53,7 @@ struct BeachSheetFeature {
         enum Delegate: Equatable {
             case closed
             case homeTapped(Beach)
-            case recordStartTapped
+            case recordStartTapped(Beach)
             case favoriteChanged(isFavorite: Bool)
         }
     }
@@ -124,7 +124,7 @@ struct BeachSheetFeature {
                 return .send(.delegate(.homeTapped(state.beach)))
 
             case .recordStartTapped:
-                return .send(.delegate(.recordStartTapped))
+                return .send(.delegate(.recordStartTapped(state.beach)))
 
             case .alert, .delegate:
                 return .none

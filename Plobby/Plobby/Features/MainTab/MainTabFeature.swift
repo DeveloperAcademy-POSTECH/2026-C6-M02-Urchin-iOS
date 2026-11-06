@@ -21,6 +21,8 @@ struct MainTabFeature {
 
         var selectedTab: MainTab = .home
         var isRecordMenuPresented = false
+        /// 지도에서 기록하기를 눌러 연 기록 메뉴라면, 고른 해변을 기록 작성까지 넘겨요
+        var pendingRecordBeach: Beach?
         var isLoginSheetPresented = false
         var home: HomeFeature.State
         var map = MapFeature.State()
@@ -73,6 +75,7 @@ struct MainTabFeature {
             switch action {
             case .recordTypeSelected where state.membershipStatus == .guest:
                 state.isRecordMenuPresented = false
+                state.pendingRecordBeach = nil
                 guard !state.signIn.isSigningIn else { return .none }
 
                 state.isLoginSheetPresented = true
@@ -106,6 +109,7 @@ struct MainTabFeature {
 
             case .tabSelected(.record):
                 state.isRecordMenuPresented.toggle()
+                state.pendingRecordBeach = nil
                 return .none
                 
             case let .tabSelected(tab):
@@ -115,11 +119,13 @@ struct MainTabFeature {
                 
             case .recordMenuDismissed:
                 state.isRecordMenuPresented = false
+                state.pendingRecordBeach = nil
                 return .none
                 
             case let .recordTypeSelected(recordType):
                 state.isRecordMenuPresented = false
-                state.recordFlow = RecordFlowFeature.State(recordType: recordType)
+                state.recordFlow = RecordFlowFeature.State(recordType: recordType, beach: state.pendingRecordBeach)
+                state.pendingRecordBeach = nil
                 return .none
                 
             case .recordFlow(.presented(.delegate(.closed))):
@@ -137,8 +143,9 @@ struct MainTabFeature {
             case .home:
                 return .none
             
-            case .map(.delegate(.recordStartRequested)):
+            case let .map(.delegate(.recordStartRequested(beach))):
                 state.isRecordMenuPresented = true
+                state.pendingRecordBeach = beach
                 return .none
             
             case .map:
