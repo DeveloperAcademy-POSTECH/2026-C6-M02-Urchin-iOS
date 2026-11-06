@@ -37,10 +37,9 @@ extension HomeView {
             VStack(spacing: 0) {
                 header
                 recordBanner
-                favoriteBeachSection
                 recentRecordSection
                 recentRecordRowList
-                dailyTipBanner
+                // TODO: 이용 가이드 콘텐츠가 준비되면 dailyTipBanner 다시 표시
             }
             .padding(.bottom, 36)
         }
@@ -149,54 +148,6 @@ extension HomeView {
             store.send(.recordButtonTapped)
         }
         .padding(.bottom, 4)
-    }
-}
-
-// MARK: - 관심 해변
-
-extension HomeView {
-    
-    private var favoriteBeachSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Text("관심 해변")
-                    .font(.system(size: 20, weight: .semibold))
-
-                Spacer()
-
-                Text("\(store.favoriteBeaches.count)/\(HomeFeature.maximumFavoriteBeachCount)")
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundStyle(.gray)
-            }
-            .padding(.horizontal, 20)
-
-            ScrollView(.horizontal) {
-                HStack(spacing: 16) {
-                    ForEach(store.favoriteBeaches) { beach in
-                        favoriteBeachChip(beach)
-                    }
-
-                    if store.canAddFavoriteBeach {
-                        addFavoriteBeachButton
-                    }
-                }
-                .padding(.horizontal, 20)
-            }
-            .scrollIndicators(.hidden)
-        }
-        .padding(.top, 40)
-    }
-
-    private func favoriteBeachChip(_ beach: Beach) -> some View {
-        BeachChip(title: beach.name, systemImage: "star.fill")
-    }
-
-    private var addFavoriteBeachButton: some View {
-        Button {
-            store.send(.addFavoriteBeachButtonTapped)
-        } label: {
-            BeachChip(title: "추가", systemImage: "plus", iconColor: .gray, textColor: .gray)
-        }
     }
 }
 
@@ -310,12 +261,6 @@ extension HomeView {
                 .font(.system(size: 20, weight: .semibold))
 
             Spacer()
-
-            Button("더 보기") {
-                store.send(.moreRecentRecordsButtonTapped)
-            }
-            .font(.system(size: 13, weight: .regular))
-            .foregroundStyle(.gray)
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 16)

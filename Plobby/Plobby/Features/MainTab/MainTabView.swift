@@ -24,12 +24,6 @@ struct MainTabView: View {
                 NavigationStack {
                     HomeView(store: store.scope(state: \.home, action: \.home))
                         .toolbar(.hidden, for: .navigationBar)
-                        .navigationDestination(
-                            item: $store.scope(state: \.home.favoriteBeachPicker, action: \.home.favoriteBeachPicker)
-                        ) { store in
-                            FavoriteBeachView(store: store)
-                                .toolbar(.hidden, for: .tabBar)
-                        }
                 }
             }
 
