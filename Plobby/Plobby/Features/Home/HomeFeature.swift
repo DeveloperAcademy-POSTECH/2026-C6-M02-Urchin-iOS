@@ -36,6 +36,7 @@ struct HomeFeature {
     enum Action {
         case onAppear
         case onDisappear
+        case refreshPulled
         case timerTicked
         case bannerChanged(RecordType)
         case bannerDragStarted
@@ -72,6 +73,9 @@ struct HomeFeature {
 
             case .onDisappear:
                 return .cancel(id: CancelID.timer)
+
+            case .refreshPulled:
+                return fetchRecentRecords()
 
             case .timerTicked:
                 state.currentBanner = HomeFeature.nextBanner(after: state.currentBanner)
