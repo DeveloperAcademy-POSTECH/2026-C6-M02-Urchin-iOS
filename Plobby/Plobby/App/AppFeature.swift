@@ -64,12 +64,12 @@ struct AppFeature {
                 PlobbyLogger.debug("푸시 탭 기록 ID: \(recordID)")
                 return .none
 
-            case let .onboarding(.delegate(.signedIn(user))):
+            case let .onboarding(.signIn(.delegate(.signedIn(user)))):
                 updateMembershipStatus(.member(user))
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()
 
-            case let .onboarding(.delegate(.needsSignUp(user, fullName))):
+            case let .onboarding(.signIn(.delegate(.needsSignUp(user, fullName)))):
                 state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
                 return .none
 
@@ -86,6 +86,18 @@ struct AppFeature {
             case .mainTab(.delegate(.signedOut)):
                 updateMembershipStatus(.guest)
                 state = .onboarding(OnboardingFeature.State())
+                return .none
+
+            case let .mainTab(.signIn(.delegate(.signedIn(user)))):
+                updateMembershipStatus(.member(user))
+                state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
+                return .merge(
+                    submitCurrentDeviceToken(),
+                    .send(.mainTab(.home(.onAppear)))
+                )
+
+            case let .mainTab(.signIn(.delegate(.needsSignUp(user, fullName)))):
+                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
                 return .none
 
             case .onboarding, .signUp, .mainTab:

@@ -24,6 +24,11 @@ enum AlertType {
     case withdrawalConfirm
     case withdrawalCompleted
     case withdrawalFailed
+    case favoriteBeachLimit
+    
+}
+
+extension AlertType {
     
     var title: String {
         switch self {
@@ -42,6 +47,7 @@ enum AlertType {
         case .withdrawalConfirm: "정말 탈퇴하시겠습니까?"
         case .withdrawalCompleted: "탈퇴한 회원입니다"
         case .withdrawalFailed: "탈퇴하지 못했어요"
+        case .favoriteBeachLimit: "관심 해변을 더 추가할 수 없어요"
         }
     }
     
@@ -55,6 +61,7 @@ enum AlertType {
         case .userBlockConfirm: "차단하면 이 사용자의 기록이 더 이상 보이지 않아요."
         case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요."
         case .withdrawalConfirm: "탈퇴하면 게시글, 좋아요 등 모든 활동 기록들이 삭제되어 복구되지 않습니다."
+        case .favoriteBeachLimit: "관심 해변은 최대 \(HomeFeature.maximumFavoriteBeachCount)개까지 등록할 수 있어요."
         }
     }
     
@@ -63,14 +70,14 @@ enum AlertType {
         case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm, .recordExitConfirm,
              .logoutConfirm, .withdrawalConfirm: .cancelConfirm
         case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed,
-             .profileUpdateFailed, .logoutFailed, .withdrawalCompleted, .withdrawalFailed: .confirm
+             .profileUpdateFailed, .logoutFailed, .withdrawalCompleted, .withdrawalFailed, .favoriteBeachLimit: .confirm
         }
     }
     
     var confirmTitle: String {
         switch self {
         case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed,
-             .profileUpdateFailed, .logoutFailed, .withdrawalFailed: "확인"
+             .profileUpdateFailed, .logoutFailed, .withdrawalFailed, .favoriteBeachLimit: "확인"
         case .recordSubmitFailed: "다시 시도"
         case .recordDeleteConfirm: "삭제"
         case .userBlockConfirm: "차단"
@@ -81,7 +88,6 @@ enum AlertType {
         }
     }
     
-    /// `.cancelConfirm`에서 왼쪽에 놓이는 보조 버튼 문구
     var cancelTitle: String {
         switch self {
         case .recordExitConfirm: "나가기"

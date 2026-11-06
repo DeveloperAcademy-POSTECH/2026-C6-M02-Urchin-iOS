@@ -11,13 +11,11 @@ import ComposableArchitecture
 
 extension SharedKey where Self == InMemoryKey<MembershipStatus>.Default {
 
-    /// 회원 여부. 값 변경은 AppFeature에서만 해요.
     static var membershipStatus: Self { Self[.inMemory("membershipStatus"), default: .guest] }
 }
 
 extension SharedKey where Self == FileStorageKey<[Beach]>.Default {
 
-    /// 전체 해변 목록. 처음엔 번들 JSON, 앱 시작 시 서버 데이터로 교체해요. 값 변경은 AppFeature에서만 해요.
     static var beaches: Self {
         Self[
             .fileStorage(
@@ -34,4 +32,25 @@ extension SharedKey where Self == AppStorageKey<Date?>.Default {
 
     /// 해변 목록을 마지막으로 동기화한 시각. 값 변경은 AppFeature에서만 해요.
     static var beachesSyncedAt: Self { Self[.appStorage("beachesSyncedAt"), default: nil] }
+}
+
+extension SharedKey where Self == InMemoryKey<[Beach]>.Default {
+
+    /// 로그인한 사용자의 관심 해변. 홈과 지도 탭이 함께 써요.
+    static var favoriteBeaches: Self { Self[.inMemory("favoriteBeaches"), default: []] }
+}
+
+extension SharedKey where Self == FileStorageKey<[Beach]>.Default {
+
+    /// 지도 탭에서 최근 고른 해변. 최신순이에요.
+    static var recentSearches: Self {
+        Self[
+            .fileStorage(
+                .applicationSupportDirectory.appending(component: "recent-searches.json"),
+                decode: BeachStorageDTO.decode,
+                encode: BeachStorageDTO.encode
+            ),
+            default: []
+        ]
+    }
 }

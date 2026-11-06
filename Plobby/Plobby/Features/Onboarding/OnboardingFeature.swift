@@ -17,17 +17,10 @@ struct OnboardingFeature {
     @ObservableState
     struct State: Equatable {
         var currentPage: OnboardingPage = .trashAmount
-        var nonce: String?
-        var isSigningIn = false
-        var pendingFullName: String?
-        @Presents var alert: AlertState<Action.Alert>?
+        var signIn = SignInFeature.State()
         
         var currentPageIndex: Int {
             OnboardingPage.allCases.firstIndex(of: currentPage) ?? 0
-        }
-        
-        var hashedNonce: String? {
-            nonce.map(AppleNonce.sha256)
         }
     }
     
@@ -37,32 +30,22 @@ struct OnboardingFeature {
         case onAppear
         case timerTicked
         case screenTapped
-        case appleButtonTapped
         case browseButtonTapped
-        case signInAppleCompleted(Result<AppleCredential, AppleSignInError>)
-        case signInResponse(Result<SignInResult, any Error>)
-        case alert(PresentationAction<Alert>)
+        case signIn(SignInFeature.Action)
         case delegate(Delegate)
 
-        enum Alert {
-            case confirm
-        }
-
         enum Delegate {
-            case signedIn(AuthUser)
-            case needsSignUp(AuthUser, fullName: String?)
             case browseWithoutSignUp
         }
     }
     
-    // MARK: - Dependency
-    
-    @Dependency(\.authClient) var authClient
-    @Dependency(\.userClient) var userClient
-
     // MARK: - Body
     
     var body: some Reducer<State, Action> {
+        Scope(state: \.signIn, action: \.signIn) {
+            SignInFeature()
+        }
+
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -76,63 +59,15 @@ struct OnboardingFeature {
                 state.currentPage = state.currentPage.next
                 return startTimer()
                 
-            case .appleButtonTapped:
-                state.nonce = UUID().uuidString
-                return .none
-                
             case .browseButtonTapped:
-                guard !state.isSigningIn else { return .none }
+                guard !state.signIn.isSigningIn else { return .none }
                 
                 return .send(.delegate(.browseWithoutSignUp))
                 
-            case .signInAppleCompleted(.failure(.canceled)):
-                state.nonce = nil
-                return .none
-                
-            case .signInAppleCompleted(.failure):
-                state.nonce = nil
-                state.alert = .make(.signInFailed)
-                return .none
-                
-            case let .signInAppleCompleted(.success(credential)):
-                state.pendingFullName = credential.fullName ?? state.pendingFullName
-                
-                guard let nonce = state.nonce else {
-                    state.alert = .make(.signInFailed)
-                    return .none
-                }
-                
-                state.isSigningIn = true
-                
-                return signIn(
-                    idToken: credential.idToken,
-                    nonce: nonce,
-                    fullName: state.pendingFullName
-                )
-                
-            case let .signInResponse(.success(.member(user))):
-                state.isSigningIn = false
-                state.nonce = nil
-                state.pendingFullName = nil
-                return .send(.delegate(.signedIn(user)))
-
-            case let .signInResponse(.success(.newUser(user, fullName))):
-                state.isSigningIn = false
-                state.nonce = nil
-                state.pendingFullName = nil
-                return .send(.delegate(.needsSignUp(user, fullName: fullName)))
-
-            case .signInResponse(.failure):
-                state.isSigningIn = false
-                state.nonce = nil
-                state.alert = .make(.signInFailed)
-                return .none
-
-            case .alert, .delegate:
+            case .signIn, .delegate:
                 return .none
             }
         }
-        .ifLet(\.$alert, action: \.alert)
     }
 }
 
@@ -145,29 +80,6 @@ extension OnboardingFeature {
     }
     
     private static let pageInterval: Duration = .seconds(3)
-    
-    private func signIn(
-        idToken: String,
-        nonce: String,
-        fullName: String?
-    ) -> Effect<Action> {
-        .run { send in
-            await send(.signInResponse(Result {
-                let user = try await authClient.signInWithApple(idToken, nonce, fullName)
-                
-                do {
-                    let profile = try await userClient.fetchMyProfile()
-
-                    return profile != nil ?
-                        .member(user) :
-                        .newUser(user, fullName: user.fullName)
-                } catch {
-                    try? await authClient.signOut(nil)
-                    throw error
-                }
-            }))
-        }
-    }
     
     private func startTimer() -> Effect<Action> {
         .timer(

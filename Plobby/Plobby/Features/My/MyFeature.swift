@@ -29,12 +29,13 @@ struct MyFeature {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
         case profileEditButtonTapped
-        case profileEdit(PresentationAction<ProfileEditFeature.Action>)
         case settingsButtonTapped
+        case profileEdit(PresentationAction<ProfileEditFeature.Action>)
         case settings(PresentationAction<SettingsFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
+            case loginRequired
             case signedOut
         }
     }
@@ -62,9 +63,20 @@ struct MyFeature {
                 return .none
 
             case .profileEditButtonTapped:
+                guard case .member = state.membershipStatus else {
+                    return .send(.delegate(.loginRequired))
+                }
                 guard let profile = state.profile else { return .none }
 
                 state.profileEdit = ProfileEditFeature.State(profile: profile)
+                return .none
+
+            case .settingsButtonTapped:
+                guard case .member = state.membershipStatus else {
+                    return .send(.delegate(.loginRequired))
+                }
+
+                state.settings = SettingsFeature.State()
                 return .none
 
             case let .profileEdit(.presented(.delegate(.saved(profile, profileImage)))):
@@ -75,18 +87,11 @@ struct MyFeature {
                 }
                 return .none
 
-            case .profileEdit:
-                return .none
-
-            case .settingsButtonTapped:
-                state.settings = SettingsFeature.State()
-                return .none
-
             case .settings(.presented(.delegate(.signedOut))):
                 state.settings = nil
                 return .send(.delegate(.signedOut))
 
-            case .settings, .delegate:
+            case .profileEdit, .settings, .delegate:
                 return .none
             }
         }

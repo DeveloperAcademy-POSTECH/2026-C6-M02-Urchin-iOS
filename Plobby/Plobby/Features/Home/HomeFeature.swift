@@ -17,10 +17,11 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
-        var currentBanner: RecordType = .plobbing
-        var favoriteBeaches: [Beach] = []
-        var recentRecords: [RecordSummary] = []
         @Presents var favoriteBeachPicker: RegionFeature.State?
+        
+        var currentBanner: RecordType = .plobbing
+        @Shared(.favoriteBeaches) var favoriteBeaches
+        var recentRecords: [RecordSummary] = []
 
         var canAddFavoriteBeach: Bool {
             favoriteBeaches.count < HomeFeature.maximumFavoriteBeachCount
@@ -50,25 +51,35 @@ struct HomeFeature {
         case moreRecentRecordsButtonTapped
         case dailyTipBannerTapped
         case recentRecordsResponse([RecordSummary])
+        case favoriteBeachesResponse([Beach])
         case favoriteBeachPicker(PresentationAction<RegionFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
             case recordStarted(RecordType)
+            case loginRequired
         }
     }
 
     // MARK: - Dependency
 
     @Dependency(\.recordClient) var recordClient
+    @Dependency(\.beachClient) var beachClient
 
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
+            if case .guest = state.membershipStatus, action.isUserInteraction {
+                return .send(.delegate(.loginRequired))
+            }
+
             switch action {
             case .onAppear:
-                return .merge(startTimer(), fetchRecentRecords())
+                guard case .member = state.membershipStatus else {
+                    return .merge(startTimer(), fetchRecentRecords())
+                }
+                return .merge(startTimer(), fetchRecentRecords(), fetchFavoriteBeaches())
 
             case .onDisappear:
                 return .cancel(id: CancelID.timer)
@@ -106,7 +117,9 @@ struct HomeFeature {
             case .favoriteBeachPicker(.presented(.nextButtonTapped)):
                 guard let picker = state.favoriteBeachPicker else { return .none }
 
-                state.favoriteBeaches = picker.allBeaches.filter { picker.selectedBeachIDs.contains($0.id) }
+                state.$favoriteBeaches.withLock {
+                    $0 = picker.allBeaches.filter { picker.selectedBeachIDs.contains($0.id) }
+                }
                 state.favoriteBeachPicker = nil
                 return .none
 
@@ -125,12 +138,34 @@ struct HomeFeature {
                 state.recentRecords = records
                 return .none
 
+            case let .favoriteBeachesResponse(beaches):
+                state.$favoriteBeaches.withLock { $0 = beaches }
+                return .none
+
             case .delegate:
                 return .none
             }
         }
         .ifLet(\.$favoriteBeachPicker, action: \.favoriteBeachPicker) {
             RegionFeature()
+        }
+    }
+}
+
+// MARK: - Action
+
+private extension HomeFeature.Action {
+
+    var isUserInteraction: Bool {
+        switch self {
+        case .recordButtonTapped,
+             .notificationButtonTapped,
+             .addFavoriteBeachButtonTapped,
+             .moreRecentRecordsButtonTapped,
+             .dailyTipBannerTapped:
+            true
+        default:
+            false
         }
     }
 }
@@ -162,6 +197,14 @@ extension HomeFeature {
             action: .timerTicked,
             animation: .easeInOut
         )
+    }
+
+    private func fetchFavoriteBeaches() -> Effect<Action> {
+        .run { send in
+            await send(.favoriteBeachesResponse(try await beachClient.fetchFavoriteBeaches()))
+        } catch: { error, _ in
+            PlobbyLogger.error(error)
+        }
     }
 
     private func fetchRecentRecords() -> Effect<Action> {
