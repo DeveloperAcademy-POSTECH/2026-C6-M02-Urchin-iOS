@@ -21,7 +21,11 @@ extension AppleAuthClient: DependencyKey {
     static let liveValue: AppleAuthClient = {
         .init(
             fetchAuthorizationCode: {
-                try await AppleAuthorizationRequester().fetchAuthorizationCode()
+                guard let anchor = AppleAuthorizationRequester.currentAnchor() else {
+                    throw AppleSignInError.failed
+                }
+
+                return try await AppleAuthorizationRequester(anchor: anchor).fetchAuthorizationCode()
             }
         )
     }()
@@ -31,10 +35,26 @@ extension AppleAuthClient: DependencyKey {
 
 private final class AppleAuthorizationRequester: NSObject {
 
+    private let anchor: ASPresentationAnchor
     private var continuation: CheckedContinuation<String, any Error>?
     private var controller: ASAuthorizationController?
     /// Apple 창은 delegate를 weak으로 들고 있어서, 결과가 올 때까지 스스로를 붙잡아 둬요.
     private var retainedSelf: AppleAuthorizationRequester?
+
+    init(anchor: ASPresentationAnchor) {
+        self.anchor = anchor
+    }
+
+    /// Apple 창을 띄울 화면이에요. 화면이 없으면 `nil`이라 창을 띄우기 전에 실패로 처리해요.
+    static func currentAnchor() -> ASPresentationAnchor? {
+        let windowScenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+
+        if let keyWindow = windowScenes.lazy.compactMap(\.keyWindow).first {
+            return keyWindow
+        }
+
+        return windowScenes.first.map(ASPresentationAnchor.init(windowScene:))
+    }
 
     func fetchAuthorizationCode() async throws -> String {
         try await withCheckedThrowingContinuation { continuation in
@@ -91,16 +111,6 @@ extension AppleAuthorizationRequester: ASAuthorizationControllerDelegate {
 extension AppleAuthorizationRequester: ASAuthorizationControllerPresentationContextProviding {
 
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        let windowScenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
-
-        if let keyWindow = windowScenes.lazy.compactMap(\.keyWindow).first {
-            return keyWindow
-        }
-
-        guard let windowScene = windowScenes.first else {
-            fatalError("Apple 로그인 창을 띄울 화면이 없어요")
-        }
-
-        return ASPresentationAnchor(windowScene: windowScene)
+        anchor
     }
 }
