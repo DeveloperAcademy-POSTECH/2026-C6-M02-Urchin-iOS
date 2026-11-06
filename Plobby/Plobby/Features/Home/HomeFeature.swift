@@ -22,7 +22,6 @@ struct HomeFeature {
         var currentBanner: RecordType = .plobbing
         var favoriteBeaches: [Beach] = []
         var recentRecords: [RecordSummary] = []
-        var isLoginSheetPresented = false
 
         var canAddFavoriteBeach: Bool {
             favoriteBeaches.count < HomeFeature.maximumFavoriteBeachCount
@@ -52,12 +51,12 @@ struct HomeFeature {
         case moreRecentRecordsButtonTapped
         case dailyTipBannerTapped
         case recentRecordsResponse([RecordSummary])
-        case loginSheetPresentationChanged(Bool)
         case favoriteBeachPicker(PresentationAction<RegionFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
             case recordStarted(RecordType)
+            case loginRequired
         }
     }
 
@@ -70,8 +69,7 @@ struct HomeFeature {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             if case .guest = state.membershipStatus, action.isUserInteraction {
-                state.isLoginSheetPresented = true
-                return .none
+                return .send(.delegate(.loginRequired))
             }
 
             switch action {
@@ -131,10 +129,6 @@ struct HomeFeature {
 
             case let .recentRecordsResponse(records):
                 state.recentRecords = records
-                return .none
-
-            case let .loginSheetPresentationChanged(isPresented):
-                state.isLoginSheetPresented = isPresented
                 return .none
 
             case .delegate:

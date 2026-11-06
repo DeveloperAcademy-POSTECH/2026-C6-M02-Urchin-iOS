@@ -25,14 +25,6 @@ struct HomeView: View {
             .onDisappear {
                 store.send(.onDisappear)
             }
-            .sheet(isPresented: $store.isLoginSheetPresented.sending(\.loginSheetPresentationChanged)) {
-                // TODO: Apple 로그인 처리 연결
-                LoginRequiredSheet(
-                    onAppleRequest: { _ in },
-                    onAppleCompletion: { _ in },
-                    onBrowse: { store.send(.loginSheetPresentationChanged(false)) }
-                )
-            }
     }
 }
 
@@ -49,15 +41,6 @@ extension HomeView {
                 recentRecordSection
                 recentRecordRowList
                 dailyTipBanner
-
-                // TODO: - 회원/비회원 분기처리
-//                switch store.membershipStatus {
-//                case .member:
-//                    Text("회원 홈화면이지롱")
-//
-//                case .guest:
-//                    Text("비회원 홈화면이지롱")
-//                }
             }
             .padding(.bottom, 36)
         }
@@ -292,7 +275,6 @@ extension HomeView {
             .lineLimit(1)
     }
 
-    /// - 몇 시간 전 · 좋아요 수
     private func recentRecordMeta(_ record: RecordSummary) -> some View {
         HStack(spacing: 8) {
             Text(record.createdAt, format: .relative(presentation: .named))

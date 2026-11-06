@@ -50,16 +50,16 @@ struct MainTabView: View {
         }
         .tint(.primary)
         .overlay {
-            if store.home.isLoginSheetPresented {
+            if store.isLoginSheetPresented {
                 Color.black.opacity(0.2)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        store.send(.home(.loginSheetPresentationChanged(false)))
+                        store.send(.loginSheetPresentationChanged(false))
                     }
                     .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.25), value: store.home.isLoginSheetPresented)
+        .animation(.easeInOut(duration: 0.25), value: store.isLoginSheetPresented)
         .overlay(alignment: .bottomTrailing) {
             if store.isRecordMenuPresented {
                 recordMenu
@@ -68,6 +68,14 @@ struct MainTabView: View {
         .animation(.spring(duration: 0.25), value: store.isRecordMenuPresented)
         .fullScreenCover(item: $store.scope(state: \.recordFlow, action: \.recordFlow)) { store in
             RecordView(store: store)
+        }
+        .sheet(isPresented: $store.isLoginSheetPresented.sending(\.loginSheetPresentationChanged)) {
+            // TODO: Apple 로그인 처리 연결
+            LoginRequiredSheet(
+                onAppleRequest: { _ in },
+                onAppleCompletion: { _ in },
+                onBrowse: { store.send(.loginSheetPresentationChanged(false)) }
+            )
         }
     }
 }
