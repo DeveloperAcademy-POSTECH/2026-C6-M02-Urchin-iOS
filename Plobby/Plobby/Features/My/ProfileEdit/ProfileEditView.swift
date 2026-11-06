@@ -18,6 +18,7 @@ struct ProfileEditView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var previewImage: UIImage?
     @State private var nicknameText = ""
+    @FocusState private var isNicknameFocused: Bool
 
     // MARK: - Body
 
@@ -30,6 +31,11 @@ struct ProfileEditView: View {
         .padding(.horizontal, 20)
         .frame(maxHeight: .infinity, alignment: .top)
         .background(Color(.gray0))
+        // 빈 곳을 누르면 키보드를 내려요
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isNicknameFocused = false
+        }
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             nicknameText = store.nickname
@@ -192,6 +198,8 @@ extension ProfileEditView {
             }
             .plobbyFont(.cardTitle)
             .foregroundStyle(Color(.textPrimary))
+            .focused($isNicknameFocused)
+            .submitLabel(.done)
 
             Text("\(store.nickname.count)/\(Nickname.maximumLength)")
                 .plobbyFont(.label)
