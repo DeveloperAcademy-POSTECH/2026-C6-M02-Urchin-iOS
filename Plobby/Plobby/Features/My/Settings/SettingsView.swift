@@ -39,6 +39,7 @@ struct SettingsView: View {
         .toolbar(.hidden, for: .navigationBar)
         .navigationDestination(item: $store.scope(state: \.withdrawal, action: \.withdrawal)) { store in
             WithdrawalView(store: store)
+                .toolbar(.hidden, for: .tabBar)
         }
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
     }

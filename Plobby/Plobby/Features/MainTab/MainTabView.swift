@@ -47,16 +47,17 @@ struct MainTabView: View {
                             ProfileEditView(store: store)
                                 .toolbar(.hidden, for: .tabBar)
                         }
+                        .navigationDestination(
+                            item: $store.scope(state: \.my.settings, action: \.my.settings)
+                        ) { store in
+                            SettingsView(store: store)
+                                .toolbar(.hidden, for: .tabBar)
+                        }
                 }
             }
 
             Tab("기록", systemImage: store.isRecordMenuPresented ? "xmark" : "plus", value: .record, role: .search) {
                 EmptyView()
-            }
-            .navigationDestination(
-                item: $store.scope(state: \.my.settings, action: \.my.settings)
-            ) { store in
-                SettingsView(store: store)
             }
         }
         .tint(.primary)
