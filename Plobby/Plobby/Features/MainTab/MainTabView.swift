@@ -47,6 +47,11 @@ struct MainTabView: View {
             ) { store in
                 ProfileEditView(store: store)
             }
+            .navigationDestination(
+                item: $store.scope(state: \.my.settings, action: \.my.settings)
+            ) { store in
+                SettingsView(store: store)
+            }
         }
         .tint(.primary)
         .overlay(alignment: .bottomTrailing) {

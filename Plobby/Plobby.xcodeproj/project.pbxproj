@@ -41,6 +41,12 @@
 		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5951FB2309BA4AB0089A019 /* MyView.swift */; };
+		D1A0C0DE00000000000000F2 /* AppleAuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F1 /* AppleAuthClient.swift */; };
+		D1A0C0DE00000000000000F4 /* DependencyValues+AppleAuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F3 /* DependencyValues+AppleAuthClient.swift */; };
+		D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F5 /* SettingsFeature.swift */; };
+		D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F7 /* SettingsView.swift */; };
+		D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */; };
+		D1A0C0DE00000000000000FC /* WithdrawalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000FB /* WithdrawalView.swift */; };
 		D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */; };
 		D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C03 /* ProfileEditView.swift */; };
 		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
@@ -240,6 +246,12 @@
 		B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDeviceTokenRequestDTO.swift; sourceTree = "<group>"; };
 		B5951FB2309BA4AB0089A019 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F1 /* AppleAuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleAuthClient.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F3 /* DependencyValues+AppleAuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+AppleAuthClient.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F5 /* SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsFeature.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WithdrawalFeature.swift"; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000FB /* WithdrawalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WithdrawalView.swift"; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditFeature.swift; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000C03 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
@@ -705,10 +717,39 @@
 			isa = PBXGroup;
 			children = (
 				D1A0C0DE0000000000000C05 /* ProfileEdit */,
+				D1A0C0DE00000000000000FE /* Settings */,
+				D1A0C0DE00000000000000FF /* Withdrawal */,
 				DA5B10E230998932003FEDF9 /* MyFeature.swift */,
 				B5951FB2309BA4AB0089A019 /* MyView.swift */,
 			);
 			path = My;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE00000000000000FD /* AppleAuth */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE00000000000000F1 /* AppleAuthClient.swift */,
+				D1A0C0DE00000000000000F3 /* DependencyValues+AppleAuthClient.swift */,
+			);
+			path = AppleAuth;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE00000000000000FE /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE00000000000000F5 /* SettingsFeature.swift */,
+				D1A0C0DE00000000000000F7 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE00000000000000FF /* Withdrawal */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */,
+				D1A0C0DE00000000000000FB /* WithdrawalView.swift */,
+			);
+			path = Withdrawal;
 			sourceTree = "<group>";
 		};
 		D1A0C0DE0000000000000C05 /* ProfileEdit */ = {
@@ -901,6 +942,7 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				D1A0C0DE00000000000000FD /* AppleAuth */,
 				5A1C0E7B2F4D4E8A9B3C6E01 /* Location */,
 				DA0BB759309B1BAB003400FB /* Photo */,
 				EC0D4B823098E19A000E7BB7 /* Beach */,
@@ -1502,6 +1544,12 @@
 				DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
 				B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */,
+				D1A0C0DE00000000000000F2 /* AppleAuthClient.swift in Sources */,
+				D1A0C0DE00000000000000F4 /* DependencyValues+AppleAuthClient.swift in Sources */,
+				D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */,
+				D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */,
+				D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */,
+				D1A0C0DE00000000000000FC /* WithdrawalView.swift in Sources */,
 				D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */,
 				D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */,
 				DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */,
