@@ -16,6 +16,8 @@ struct AppFeature {
     
     @ObservableState
     enum State: Equatable {
+        /// 저장된 세션을 확인하는 중이에요.
+        case launching
         case onboarding(OnboardingFeature.State)
         case signUp(SignUpFeature.State)
         case mainTab(MainTabFeature.State)
@@ -25,6 +27,8 @@ struct AppFeature {
     
     enum Action {
         case task
+        case sessionRestored(Result<SignInResult?, any Error>)
+        case sessionEnded
         case deviceTokenReceived(String)
         case pushTapped(UUID)
         case onboarding(OnboardingFeature.Action)
@@ -36,6 +40,8 @@ struct AppFeature {
 
     // MARK: - Dependency
 
+    @Dependency(\.authClient) var authClient
+    @Dependency(\.userClient) var userClient
     @Dependency(\.pushClient) var pushClient
     @Dependency(\.notificationClient) var notificationClient
     @Dependency(\.beachClient) var beachClient
@@ -48,10 +54,46 @@ struct AppFeature {
             switch action {
             case .task:
                 return .merge(
+                    restoreSession(),
+                    observeSignedOutEvents(),
                     observeDeviceTokens(),
                     observeTappedRecordIDs(),
                     syncBeaches()
                 )
+
+            case let .sessionRestored(.success(.member(user))):
+                updateMembershipStatus(.member(user))
+                state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
+                return submitCurrentDeviceToken()
+
+            case let .sessionRestored(.success(.newUser(user, fullName))):
+                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
+                return .none
+
+            case let .sessionRestored(.failure(error)):
+                PlobbyLogger.error(error)
+                state = .onboarding(OnboardingFeature.State())
+                return .none
+
+            case .sessionRestored(.success(nil)):
+                state = .onboarding(OnboardingFeature.State())
+                return .none
+                
+            case .sessionEnded:
+                @Shared(.membershipStatus) var membershipStatus
+
+                switch state {
+                case .launching, .signUp:
+                    break
+                case .mainTab where membershipStatus != .guest:
+                    break
+                default:
+                    return .none
+                }
+
+                updateMembershipStatus(.guest)
+                state = .onboarding(OnboardingFeature.State())
+                return .cancel(id: CancelID.restoreSession)
 
             case let .deviceTokenReceived(token):
                 @Shared(.membershipStatus) var membershipStatus
@@ -123,6 +165,30 @@ extension AppFeature {
     private func updateMembershipStatus(_ status: MembershipStatus) {
         @Shared(.membershipStatus) var membershipStatus
         $membershipStatus.withLock { $0 = status }
+    }
+
+    private nonisolated enum CancelID {
+        case restoreSession
+    }
+
+    private func restoreSession() -> Effect<Action> {
+        .run { [authClient, userClient] send in
+            await send(.sessionRestored(Result {
+                guard let user = await authClient.fetchCurrentUser() else { return nil }
+
+                let profile = try await userClient.fetchMyProfile()
+                return profile != nil ? .member(user) : .newUser(user, fullName: user.fullName)
+            }))
+        }
+        .cancellable(id: CancelID.restoreSession)
+    }
+
+    private func observeSignedOutEvents() -> Effect<Action> {
+        .run { [authClient] send in
+            for await _ in authClient.signedOutEvents() {
+                await send(.sessionEnded)
+            }
+        }
     }
 
     private func observeDeviceTokens() -> Effect<Action> {

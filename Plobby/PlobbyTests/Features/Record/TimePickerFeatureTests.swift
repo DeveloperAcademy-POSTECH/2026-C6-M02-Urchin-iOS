@@ -48,7 +48,6 @@ struct TimePickerFeatureTests {
         let hourRow = store.state.hourWheel.row
         let minuteRow = store.state.minuteWheel.row
 
-        // 오전 9:00 → 오후 10:59 (분은 위로 스크롤해 이전 행으로 순환)
         await store.send(.wheelScrolled(.meridiem, row: 1)) {
             $0.meridiemWheel.row = 1
         }
@@ -68,7 +67,6 @@ struct TimePickerFeatureTests {
 
     @Test
     func 오늘의_종료_시간은_현재_시각까지만_휠에_올린다() {
-        // 현재 오전 11:40
         let state = makeState(date: date(hour: 11, minute: 30), now: date(hour: 11, minute: 40))
 
         #expect(state.meridiemWheel.values == [.am])
@@ -83,7 +81,6 @@ struct TimePickerFeatureTests {
         let store = makeStore(date: date(hour: 11, minute: 30), now: date(hour: 11, minute: 40))
         store.exhaustivity = .off
 
-        // 11시 → 10시
         await store.send(.wheelScrolled(.hour, row: store.state.hourWheel.row - 1))
 
         #expect(store.state.selectedTime == TimeOfDay(hour24: 10, minute: 30))
@@ -96,7 +93,6 @@ struct TimePickerFeatureTests {
         let store = makeStore(date: date(hour: 10, minute: 50), now: date(hour: 11, minute: 40))
         store.exhaustivity = .off
 
-        // 10:50 → 11:50은 미래라서 11:40으로 맞춰요.
         await store.send(.wheelScrolled(.hour, row: store.state.hourWheel.row + 1))
 
         #expect(store.state.selectedTime == TimeOfDay(hour24: 11, minute: 40))
@@ -122,18 +118,23 @@ struct TimePickerFeatureTests {
             #expect(state.minuteWheel.isCyclic)
         }
     }
+}
 
-    // MARK: - Helpers
+// MARK: - Helpers
+
+extension TimePickerFeatureTests {
 
     private func makeState(
         field: PeriodField = .end,
         date: Date,
         now: Date? = nil
     ) -> TimePickerFeature.State {
-        TimePickerFeature.State(
+        let now = now ?? calendar.date(byAdding: .day, value: 1, to: date)!
+
+        return TimePickerFeature.State(
             field: field,
             date: date,
-            now: now ?? calendar.date(byAdding: .day, value: 1, to: date)!,
+            allowedRange: field == .end ? Date.distantPast...now : Date.distantPast...Date.distantFuture,
             calendar: calendar
         )
     }
