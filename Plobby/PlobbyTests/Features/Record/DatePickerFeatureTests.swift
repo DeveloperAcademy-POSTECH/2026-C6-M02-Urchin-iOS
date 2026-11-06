@@ -22,7 +22,6 @@ struct DatePickerFeatureTests {
 
     @Test
     func 달력은_일요일부터_시작하고_빈_칸으로_주를_채운다() {
-        // 2026년 10월 1일은 목요일
         let days = DatePickerFeature.days(in: date(2026, 10, 1), calendar: calendar)
 
         #expect(days.count == 35)
@@ -71,7 +70,11 @@ struct DatePickerFeatureTests {
         await store.send(.confirmTapped)
         await store.receive(\.delegate.confirmed)
     }
-    // MARK: - Helpers
+}
+
+// MARK: - Helpers
+
+extension DatePickerFeatureTests {
 
     private func makeStore(date: Date) -> TestStoreOf<DatePickerFeature> {
         TestStore(
@@ -79,6 +82,7 @@ struct DatePickerFeatureTests {
                 field: .end,
                 date: date,
                 today: date,
+                allowedRange: Date.distantPast...date,
                 calendar: calendar
             )
         ) {
@@ -88,7 +92,13 @@ struct DatePickerFeatureTests {
         }
     }
 
-    private func date(_ year: Int, _ month: Int, _ day: Int, hour: Int = 0, minute: Int = 0) -> Date {
+    private func date(
+        _ year: Int,
+        _ month: Int,
+        _ day: Int,
+        hour: Int = 0,
+        minute: Int = 0
+    ) -> Date {
         calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour, minute: minute))!
     }
 }
