@@ -5,6 +5,8 @@
 //  Created by 이은지 on 10/30/26.
 //
 
+import SwiftUI
+
 enum OnboardingPage: CaseIterable {
     
     case trashAmount, record, photo, together
@@ -33,26 +35,19 @@ extension OnboardingPage {
     var description: String {
         switch self {
         case .trashAmount: "2025년, 우리나라 해변과 바닷속에서\n수거한 해양쓰레기의 양이에요"
-        case .record: "해변에서도, 바닷속에서도 내가 주운 쓰레기의 종류와 양을 기록해요"
+        case .record: "해변에서도, 바닷속에서도\n내가 주운 쓰레기의 종류와 양을 기록해요"
         case .photo: "오늘 돌본 해변의 모습을 남기고,\n서로의 활동을 만나보세요."
         case .together: "쓰레기를 줍고, 바다의 모습을 기록하며\n우리 바다를 지키는 일에 함께해요"
         }
     }
 
-    // FIXME: - 배경 이미지 결정되면 변경
-//    var image: ImageResource {
-//        switch self {
-//        case .trashAmount:
-//            .onboardingTrashAmount
-//            
-//        case .record:
-//            .onboardingRecord
-//            
-//        case .photo:
-//            .onboardingPhoto
-//            
-//        case .together:
-//            .onboardingTogether
-//        }
-//    }
+    // TODO: 최종 이미지가 나오면 temp 에셋 교체
+    var image: ImageResource {
+        switch self {
+        case .trashAmount: .tempOnboarding1
+        case .record: .tempOnboarding2
+        case .photo: .tempOnboarding3
+        case .together: .tempOnboarding4
+        }
+    }
 }

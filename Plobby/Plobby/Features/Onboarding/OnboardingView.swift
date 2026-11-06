@@ -38,7 +38,7 @@ extension OnboardingView {
         VStack(alignment: .center, spacing: 0) {
             indicator
 
-            Spacer()
+            pageImage
 
             pageDescription
         }
@@ -58,6 +58,17 @@ extension OnboardingView {
         .padding(.horizontal, 65)
     }
     
+    private var pageImage: some View {
+        Image(store.currentPage.image)
+            .resizable()
+            .scaledToFit()
+            .scaleEffect(store.currentPage.imageScale)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.horizontal, 20.scaled)
+            .padding(.vertical, 24.scaled)
+            .animation(.easeInOut(duration: 0.3), value: store.currentPage)
+    }
+
     private var pageDescription: some View {
         VStack(alignment: .center, spacing: 12) {
             Text(store.currentPage.title)
@@ -100,12 +111,18 @@ extension OnboardingView {
 
 private extension OnboardingPage {
 
-    /// 첫 페이지는 수치를 강조해서 더 크게 보여줘요
     var titleSize: CGFloat {
         self == .trashAmount ? 36 : 28
     }
 
     var descriptionSize: CGFloat {
         self == .trashAmount ? 17 : 16
+    }
+
+    var imageScale: CGFloat {
+        switch self {
+        case .trashAmount, .together: 0.6
+        case .record, .photo: 1
+        }
     }
 }
