@@ -26,7 +26,8 @@ struct SignUpView: View {
             VStack(spacing: 0) {
                 title
                 profileImagePicker
-                nameSection
+                // FIXME: Apple이 이름을 첫 로그인에만 줘서 빈 칸으로 보이는 경우가 있어 숨겨둠. 이름 입력 방식 정해지면 다시 표시
+                // nameSection
                 nicknameSection
                 
                 Spacer()
@@ -35,9 +36,6 @@ struct SignUpView: View {
             }
         } destination: { store in
             switch store.case {
-            case let .region(store):
-                RegionView(store: store)
-
             case let .complete(store):
                 CompleteView(store: store)
             }
