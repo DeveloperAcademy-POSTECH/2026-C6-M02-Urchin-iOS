@@ -27,7 +27,6 @@ nonisolated extension RecordClient: DependencyKey {
             fetchRecord: { recordID in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
-                // 둘러보기 중이면 로그인한 사용자가 없어요. 이때는 내 좋아요 없이 불러와요.
                 let userID = try? await supabaseClient.currentUserID()
                 
                 var query = supabaseClient
@@ -56,21 +55,35 @@ nonisolated extension RecordClient: DependencyKey {
             }, fetchRecords: { offset, limit in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
-                let userID = try await supabaseClient.currentUserID()
+                let userID = try? await supabaseClient.currentUserID()
                 let hiddenRecords = try await supabaseClient.hiddenRecords()
 
-                let responseDTOs: [RecordSummaryResponseDTO] = try await supabaseClient
+                var query = supabaseClient
                     .from("records")
                     .select(RecordSummaryResponseDTO.selectQuery)
                     .is("deleted_at", value: nil)
                     .excluding(hiddenRecords)
-                    .eq("my_like.user_id", value: userID)
+
+                if let userID {
+                    query = query.eq("my_like.user_id", value: userID)
+                }
+
+                let responseDTOs: [RecordSummaryResponseDTO] = try await query
                     .order("created_at", ascending: false)
                     .range(from: offset, to: offset + limit - 1)
                     .execute()
                     .value
 
-                return responseDTOs.compactMap { $0.toDomain() }
+                let imageBucket = supabaseClient.storage.from(StorageBucket.image)
+                let profileBucket = supabaseClient.storage.from(StorageBucket.profile)
+
+                return responseDTOs.compactMap {
+                    $0.toDomain(
+                        currentUserID: userID,
+                        photoURL: { try? imageBucket.getPublicURL(path: $0) },
+                        profileImageURL: { try? profileBucket.getPublicURL(path: $0) }
+                    )
+                }
             }, submitRecord: { record in
                 @Dependency(\.supabaseClient) var supabaseClient
                 

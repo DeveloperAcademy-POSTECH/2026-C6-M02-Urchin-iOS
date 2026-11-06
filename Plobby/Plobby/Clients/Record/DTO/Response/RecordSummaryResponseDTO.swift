@@ -96,7 +96,11 @@ nonisolated extension RecordSummaryResponseDTO {
 
 nonisolated extension RecordSummaryResponseDTO {
 
-    func toDomain() -> RecordSummary? {
+    func toDomain(
+        currentUserID: UUID?,
+        photoURL: (String) -> URL?,
+        profileImageURL: (String) -> URL?
+    ) -> RecordSummary? {
         guard
             let recordType = RecordType(rawValue: recordType),
             let profile = user.profile
@@ -127,11 +131,11 @@ nonisolated extension RecordSummaryResponseDTO {
             depthM: depthM,
             trashCount: trash.reduce(0) { $0 + $1.quantity },
             nickname: profile.nickname,
-            profileImageKey: profile.profileImageKey,
-            coverPhotoKey: coverPhoto?.storageKey,
+            profileImageURL: profile.profileImageKey.flatMap(profileImageURL),
+            coverPhotoURL: coverPhoto.flatMap { photoURL($0.storageKey) },
             trashNames: trashNames.isEmpty ? nil : trashNames.joined(separator: ", "),
             likeCount: likes.first?.count ?? 0,
-            likedByMe: !myLike.isEmpty,
+            likedByMe: currentUserID.map { id in myLike.contains { $0.userID == id } } ?? false,
             createdAt: createdAt
         )
     }

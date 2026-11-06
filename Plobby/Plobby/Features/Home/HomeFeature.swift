@@ -17,16 +17,11 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
-        @Presents var favoriteBeachPicker: RegionFeature.State?
+        @Presents var recordDetail: RecordDetailFeature.State?
         @Presents var notification: NotificationFeature.State?
         
         var currentBanner: RecordType = .plobbing
-        @Shared(.favoriteBeaches) var favoriteBeaches
         var recentRecords: [RecordSummary] = []
-
-        var canAddFavoriteBeach: Bool {
-            favoriteBeaches.count < HomeFeature.maximumFavoriteBeachCount
-        }
 
         var recentRecordCards: [RecordSummary] {
             Array(recentRecords.prefix(HomeFeature.recentRecordCardCount))
@@ -42,18 +37,17 @@ struct HomeFeature {
     enum Action {
         case onAppear
         case onDisappear
+        case refreshPulled
         case timerTicked
         case bannerChanged(RecordType)
         case bannerDragStarted
         case bannerDragEnded
-        case recordButtonTapped
+        case recordButtonTapped(RecordType)
         case notificationButtonTapped
-        case addFavoriteBeachButtonTapped
-        case moreRecentRecordsButtonTapped
+        case recentRecordTapped(RecordSummary.ID)
         case dailyTipBannerTapped
         case recentRecordsResponse([RecordSummary])
-        case favoriteBeachesResponse([Beach])
-        case favoriteBeachPicker(PresentationAction<RegionFeature.Action>)
+        case recordDetail(PresentationAction<RecordDetailFeature.Action>)
         case notification(PresentationAction<NotificationFeature.Action>)
         case delegate(Delegate)
 
@@ -66,7 +60,6 @@ struct HomeFeature {
     // MARK: - Dependency
 
     @Dependency(\.recordClient) var recordClient
-    @Dependency(\.beachClient) var beachClient
 
     // MARK: - Body
 
@@ -78,13 +71,13 @@ struct HomeFeature {
 
             switch action {
             case .onAppear:
-                guard case .member = state.membershipStatus else {
-                    return .merge(startTimer(), fetchRecentRecords())
-                }
-                return .merge(startTimer(), fetchRecentRecords(), fetchFavoriteBeaches())
+                return .merge(startTimer(), fetchRecentRecords())
 
             case .onDisappear:
                 return .cancel(id: CancelID.timer)
+
+            case .refreshPulled:
+                return fetchRecentRecords()
 
             case .timerTicked:
                 state.currentBanner = HomeFeature.nextBanner(after: state.currentBanner)
@@ -102,37 +95,36 @@ struct HomeFeature {
             case .bannerDragEnded:
                 return startTimer()
 
-            case .recordButtonTapped:
-                return .send(.delegate(.recordStarted(state.currentBanner)))
+            case let .recordButtonTapped(recordType):
+                return .send(.delegate(.recordStarted(recordType)))
 
             case .notificationButtonTapped:
                 state.notification = NotificationFeature.State()
                 return .none
 
-            case .addFavoriteBeachButtonTapped:
-                state.favoriteBeachPicker = RegionFeature.State(
-                    selectedBeachIDs: Set(state.favoriteBeaches.map(\.id))
-                )
+            case let .recentRecordTapped(recordID):
+                state.recordDetail = RecordDetailFeature.State(recordID: recordID)
                 return .none
 
-            // TODO: BeachClient로 관심 해변 추가/삭제 요청
-            case .favoriteBeachPicker(.presented(.nextButtonTapped)):
-                guard let picker = state.favoriteBeachPicker else { return .none }
-
-                state.$favoriteBeaches.withLock {
-                    $0 = picker.allBeaches.filter { picker.selectedBeachIDs.contains($0.id) }
-                }
-                state.favoriteBeachPicker = nil
+            case .recordDetail(.presented(.delegate(.closed))):
+                state.recordDetail = nil
                 return .none
 
-            case .favoriteBeachPicker:
+            case let .recordDetail(.presented(.delegate(.deleted(recordID)))),
+                let .recordDetail(.presented(.delegate(.reported(recordID)))):
+                state.recordDetail = nil
+                state.recentRecords.removeAll { $0.id == recordID }
+                return .none
+
+            case let .recordDetail(.presented(.delegate(.blocked(userID)))):
+                state.recordDetail = nil
+                state.recentRecords.removeAll { $0.userID == userID }
+                return .none
+
+            case .recordDetail:
                 return .none
 
             case .notification:
-                return .none
-
-            // TODO: 기록 목록 화면 이동
-            case .moreRecentRecordsButtonTapped:
                 return .none
 
             // TODO: 하루 상식 상세 화면 이동
@@ -143,16 +135,12 @@ struct HomeFeature {
                 state.recentRecords = records
                 return .none
 
-            case let .favoriteBeachesResponse(beaches):
-                state.$favoriteBeaches.withLock { $0 = beaches }
-                return .none
-
             case .delegate:
                 return .none
             }
         }
-        .ifLet(\.$favoriteBeachPicker, action: \.favoriteBeachPicker) {
-            RegionFeature()
+        .ifLet(\.$recordDetail, action: \.recordDetail) {
+            RecordDetailFeature()
         }
         .ifLet(\.$notification, action: \.notification) {
             NotificationFeature()
@@ -168,8 +156,7 @@ private extension HomeFeature.Action {
         switch self {
         case .recordButtonTapped,
              .notificationButtonTapped,
-             .addFavoriteBeachButtonTapped,
-             .moreRecentRecordsButtonTapped,
+             .recentRecordTapped,
              .dailyTipBannerTapped:
             true
         default:
@@ -205,14 +192,6 @@ extension HomeFeature {
             action: .timerTicked,
             animation: .easeInOut
         )
-    }
-
-    private func fetchFavoriteBeaches() -> Effect<Action> {
-        .run { send in
-            await send(.favoriteBeachesResponse(try await beachClient.fetchFavoriteBeaches()))
-        } catch: { error, _ in
-            PlobbyLogger.error(error)
-        }
     }
 
     private func fetchRecentRecords() -> Effect<Action> {

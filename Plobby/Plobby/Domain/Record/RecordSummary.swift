@@ -22,8 +22,8 @@ nonisolated struct RecordSummary: Identifiable, Equatable, Sendable {
     let depthM: Double?
     let trashCount: Int
     let nickname: String
-    let profileImageKey: String?
-    let coverPhotoKey: String?
+    let profileImageURL: URL?
+    let coverPhotoURL: URL?
     let trashNames: String?
     let likeCount: Int
     let likedByMe: Bool
