@@ -18,6 +18,7 @@ struct SignUpView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var previewImage: UIImage?
     @State private var nicknameText = ""
+    @FocusState private var isNicknameFocused: Bool
     
     // MARK: - Body
 
@@ -53,17 +54,27 @@ struct SignUpView: View {
 
 extension SignUpView {
 
+    /// 키보드가 올라오면 내용은 스크롤로 밀어 올리고, 다음 버튼은 키보드 바로 위에 붙어요
     private var profileForm: some View {
-        VStack(spacing: 0) {
-            title
-            profileImagePicker
-            // FIXME: Apple이 이름을 첫 로그인에만 줘서 빈 칸으로 보이는 경우가 있어 숨겨둠. 이름 입력 방식 정해지면 다시 표시
-            // nameSection
-            nicknameSection
-            
-            Spacer()
-            
+        ScrollView {
+            VStack(spacing: 0) {
+                title
+                profileImagePicker
+                // FIXME: Apple이 이름을 첫 로그인에만 줘서 빈 칸으로 보이는 경우가 있어 숨겨둠. 이름 입력 방식 정해지면 다시 표시
+                // nameSection
+                nicknameSection
+            }
+        }
+        .scrollBounceBehavior(.basedOnSize)
+        .scrollDismissesKeyboard(.interactively)
+        // 빈 곳을 누르면 키보드를 내려요
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isNicknameFocused = false
+        }
+        .safeAreaInset(edge: .bottom) {
             nextButton
+                .padding(.bottom, 8.scaled)
         }
     }
     
@@ -114,6 +125,8 @@ extension SignUpView {
             Text(store.fullName ?? "")
                 .plobbyFont(.body)
                 .foregroundStyle(Color(.textPrimary))
+                .focused($isNicknameFocused)
+                .submitLabel(.done)
                 .padding(.horizontal, 20.scaled)
                 .frame(maxWidth: .infinity, minHeight: 50.scaled, alignment: .leading)
                 .overlay {
