@@ -72,7 +72,8 @@ struct MainTabFeature {
                 state.isLoginSheetPresented = true
                 return .none
                 
-            case .home(.delegate(.loginRequired)) where !state.signIn.isSigningIn:
+            case .home(.delegate(.loginRequired)) where !state.signIn.isSigningIn,
+                 .my(.delegate(.loginRequired)) where !state.signIn.isSigningIn:
                 state.isLoginSheetPresented = true
                 return .none
                 

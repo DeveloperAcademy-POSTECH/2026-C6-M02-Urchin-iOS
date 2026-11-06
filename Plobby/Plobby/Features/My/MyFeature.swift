@@ -29,6 +29,11 @@ struct MyFeature {
         case profileResponse(Result<Profile?, any Error>)
         case profileEditButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
+        case delegate(Delegate)
+
+        enum Delegate {
+            case loginRequired
+        }
     }
 
     // MARK: - Dependency
@@ -54,6 +59,9 @@ struct MyFeature {
                 return .none
 
             case .profileEditButtonTapped:
+                guard case .member = state.membershipStatus else {
+                    return .send(.delegate(.loginRequired))
+                }
                 guard let profile = state.profile else { return .none }
 
                 state.profileEdit = ProfileEditFeature.State(profile: profile)
@@ -67,7 +75,7 @@ struct MyFeature {
                 }
                 return .none
 
-            case .profileEdit:
+            case .profileEdit, .delegate:
                 return .none
             }
         }
