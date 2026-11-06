@@ -67,10 +67,12 @@ struct MainTabFeature {
             switch action {
             case .recordTypeSelected where state.membershipStatus == .guest:
                 state.isRecordMenuPresented = false
+                guard !state.signIn.isSigningIn else { return .none }
+
                 state.isLoginSheetPresented = true
                 return .none
                 
-            case .home(.delegate(.loginRequired)):
+            case .home(.delegate(.loginRequired)) where !state.signIn.isSigningIn:
                 state.isLoginSheetPresented = true
                 return .none
                 

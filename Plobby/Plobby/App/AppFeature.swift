@@ -85,7 +85,11 @@ struct AppFeature {
 
             case let .mainTab(.signIn(.delegate(.signedIn(user)))):
                 updateMembershipStatus(.member(user))
-                return submitCurrentDeviceToken()
+                state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
+                return .merge(
+                    submitCurrentDeviceToken(),
+                    .send(.mainTab(.home(.onAppear)))
+                )
 
             case let .mainTab(.signIn(.delegate(.needsSignUp(user, fullName)))):
                 state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
