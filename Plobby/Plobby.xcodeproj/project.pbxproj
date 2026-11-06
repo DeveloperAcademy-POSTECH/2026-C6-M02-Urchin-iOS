@@ -22,6 +22,7 @@
 		45821C3C7A67C61EF3E96A02 /* BeachSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */; };
 		499182C602791D918B8E9019 /* FavoriteBeachToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B273C5294323568F70EF6E48 /* FavoriteBeachToggle.swift */; };
 		49C55E872A91D91FB1E0434A /* RecordFormFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */; };
+		7B3C1A06309D0000004C5301 /* AppFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */; };
 		49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */; };
 		4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */; };
 		5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1C0E7B2F4D4E8A9B3C6D12 /* TrashPickerView.swift */; };
@@ -283,6 +284,7 @@
 		B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
 		BCA7146257B2B7E18DD4D375 /* TimePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerFeatureTests.swift; sourceTree = "<group>"; };
+		7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureTests.swift; sourceTree = "<group>"; };
 		BFD8EB2F9562114130AB9066 /* SearchBeachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBeachView.swift; sourceTree = "<group>"; };
 		CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastFeatureTests.swift; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000B02 /* Sea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sea.swift; sourceTree = "<group>"; };
@@ -1301,9 +1303,18 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
+		7B3C1A07309D0000004C5301 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 		ECE6F30F309833A900C4916C /* PlobbyTests */ = {
 			isa = PBXGroup;
 			children = (
+				7B3C1A07309D0000004C5301 /* App */,
 				ECE6F30E309833A900C4916C /* Domain */,
 				C5EBA3F73C437547E4DE6366 /* Features */,
 			);
@@ -1673,6 +1684,7 @@
 				ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */,
 				68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */,
 				49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */,
+				7B3C1A06309D0000004C5301 /* AppFeatureTests.swift in Sources */,
 				49C55E872A91D91FB1E0434A /* RecordFormFeatureTests.swift in Sources */,
 				BDA985C8CDA5A070AC9A1B00 /* PhotosPickerFeatureTests.swift in Sources */,
 				3172447EB0D6D8602AD55D82 /* TimePickerFeatureTests.swift in Sources */,

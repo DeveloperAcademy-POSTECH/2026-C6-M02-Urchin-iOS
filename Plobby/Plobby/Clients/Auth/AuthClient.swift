@@ -13,8 +13,9 @@ import Supabase
 struct AuthClient {
     var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
     var fetchCredential: @Sendable (_ hashedNonce: String) async -> Result<AppleCredential, AppleSignInError>
-    /// Apple 재인증 후 `authorizationCode`를 돌려줘요. 사용자가 취소하면 `AppleSignInError.canceled`를 던져요.
     var fetchAppleAuthorizationCode: @Sendable () async throws -> String
+    var fetchCurrentUser: @Sendable () async -> AuthUser?
+    var signedOutEvents: @Sendable () -> AsyncStream<Void>
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
     var signOut: @Sendable (_ token: String?) async throws -> Void
     var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason?, _ detail: String?) async throws -> Void
@@ -56,6 +57,30 @@ extension AuthClient: DependencyKey {
                 }
 
                 return try await AppleAuthorizationRequester(anchor: anchor).fetchAuthorizationCode()
+            },
+            fetchCurrentUser: {
+                @Dependency(\.supabaseClient) var supabase
+
+                guard let session = try? await supabase.auth.session else { return nil }
+
+                return AuthUser(
+                    id: session.user.id,
+                    email: session.user.email,
+                    fullName: session.user.userMetadata["full_name"]?.stringValue
+                )
+            },
+            signedOutEvents: {
+                @Dependency(\.supabaseClient) var supabase
+
+                return AsyncStream { continuation in
+                    let task = Task {
+                        for await (event, _) in supabase.auth.authStateChanges where event == .signedOut {
+                            continuation.yield()
+                        }
+                        continuation.finish()
+                    }
+                    continuation.onTermination = { _ in task.cancel() }
+                }
             },
             signUp: { profile in
                 @Dependency(\.supabaseClient) var supabase
