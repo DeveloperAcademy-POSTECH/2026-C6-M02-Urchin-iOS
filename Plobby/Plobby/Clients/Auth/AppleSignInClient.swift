@@ -9,7 +9,6 @@ import AuthenticationServices
 
 import Dependencies
 
-/// 버튼 뷰 없이 Feature에서 Apple 로그인 창을 띄울 때 사용해요 (띄운 화면이 사라져도 결과를 받을 수 있어요)
 struct AppleSignInClient {
     var fetchCredential: @Sendable (_ hashedNonce: String) async -> Result<AppleCredential, AppleSignInError>
 }
@@ -78,8 +77,16 @@ extension AppleSignInCoordinator: ASAuthorizationControllerDelegate {
 extension AppleSignInCoordinator: ASAuthorizationControllerPresentationContextProviding {
 
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        UIApplication.shared.connectedScenes
-            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
-            .first ?? ASPresentationAnchor()
+        let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+
+        if let keyWindow = scenes.compactMap(\.keyWindow).first {
+            return keyWindow
+        }
+
+        guard let scene = scenes.first else {
+            preconditionFailure("Apple 로그인 창을 띄울 WindowScene이 없어요")
+        }
+
+        return scene.windows.first ?? ASPresentationAnchor(windowScene: scene)
     }
 }
