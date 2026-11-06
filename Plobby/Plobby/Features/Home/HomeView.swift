@@ -54,16 +54,18 @@ extension HomeView {
     private var header: some View {
         HStack {
             Text("홈")
-                .font(.system(size: 20.scaled, weight: .semibold))
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.textPrimary))
 
             Spacer()
 
             Button {
                 store.send(.notificationButtonTapped)
             } label: {
-                Image(systemName: "bell")
-                    .font(.system(size: 24.scaled, weight: .regular))
-                    .foregroundStyle(.black)
+                Image(.bell)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24.scaled, height: 24.scaled)
             }
         }
         .frame(height: 56.scaled)
@@ -127,17 +129,21 @@ extension HomeView {
             .clipped()
             .overlay(alignment: .topLeading) {
                 Text(banner.bannerTitle)
-                    .font(.system(size: 18.scaled, weight: .semibold))
+                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 18.scaled))
+                    .foregroundStyle(Color(.textPrimary))
                     .padding(.top, 20.scaled)
                     .padding(.leading, 24.scaled)
             }
     }
 
+    // TODO: 컬러셋 확정 후 교체 (#ACC9BE)
+    private static let inactiveIndicatorColor = Color(red: 0xAC / 255, green: 0xC9 / 255, blue: 0xBE / 255)
+
     private var bannerIndicator: some View {
         HStack(spacing: 8.scaled) {
             ForEach(HomeFeature.banners, id: \.self) { banner in
                 Circle()
-                    .fill(banner == store.currentBanner ? Color.green : Color.gray.opacity(0.3))
+                    .fill(banner == store.currentBanner ? Color(.green500) : Self.inactiveIndicatorColor)
                     .frame(width: 8.scaled, height: 8.scaled)
             }
         }
@@ -222,7 +228,8 @@ extension HomeView {
 
     private func recentRecordTitle(_ record: RecordSummary) -> some View {
         Text(record.title)
-            .font(.system(size: 17.scaled, weight: .semibold))
+            .plobbyFont(.actionLabel)
+            .foregroundStyle(Color(.textPrimary))
             .lineLimit(1)
     }
 
@@ -235,8 +242,8 @@ extension HomeView {
                 Text("\(record.likeCount)")
             }
         }
-        .font(.system(size: 13.scaled, weight: .regular))
-        .foregroundStyle(.gray)
+        .plobbyFont(.metadata)
+        .foregroundStyle(Color(.gray600))
     }
 
     private func recentRecordAuthor(_ record: RecordSummary) -> some View {
@@ -246,19 +253,23 @@ extension HomeView {
                 .frame(width: 16.scaled, height: 16.scaled)
 
             Text(record.nickname)
-                .font(.system(size: 12.scaled, weight: .regular))
+                .plobbyFont(.metadata)
                 .padding(.leading, 4.scaled)
         }
-        .foregroundStyle(.gray)
+        .foregroundStyle(Color(.gray600))
     }
 }
 
 extension HomeView {
     
+    // TODO: 컬러셋 확정 후 교체 (#E1E7E4)
+    private static let dividerColor = Color(red: 0xE1 / 255, green: 0xE7 / 255, blue: 0xE4 / 255)
+
     private var recentRecordHeader: some View {
         HStack {
             Text("새로 올라온 기록")
-                .font(.system(size: 20.scaled, weight: .semibold))
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.textPrimary))
 
             Spacer()
         }
@@ -293,6 +304,7 @@ extension HomeView {
 
                 if record.id != store.recentRecordRows.last?.id {
                     Divider()
+                        .overlay(Self.dividerColor)
                 }
             }
         }
@@ -315,15 +327,15 @@ extension HomeView {
                 .overlay(alignment: .topLeading) {
                     VStack(alignment: .leading, spacing: 0) {
                         Text("하루 상식")
-                            .font(.system(size: 12.scaled, weight: .regular))
-                            .foregroundStyle(.gray)
+                            .plobbyFont(.metadata)
+                            .foregroundStyle(Color(.textSecondary))
                             .padding(.top, 22.scaled)
                             .padding(.leading, 20.scaled)
                             .padding(.bottom, 8.scaled)
 
                         Text("바다도 사막화가\n된다고?")
-                            .font(.system(size: 20.scaled, weight: .semibold))
-                            .foregroundStyle(.black)
+                            .plobbyFont(.heading)
+                            .foregroundStyle(Color(.textPrimary))
                             .multilineTextAlignment(.leading)
                             .padding(.leading, 20.scaled)
                             .padding(.bottom, 22.scaled)
