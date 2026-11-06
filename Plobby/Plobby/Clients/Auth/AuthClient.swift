@@ -77,7 +77,7 @@ extension AuthClient: DependencyKey {
                 @Dependency(\.supabaseClient) var supabase
 
                 let trimmed = detail?.trimmingCharacters(in: .whitespacesAndNewlines)
-                let detailToSave = (reason == .other && trimmed?.isEmpty == false) ? trimmed : nil
+                let detailToSave = trimmed?.isEmpty == false ? trimmed : nil
 
                 try await supabase
                     .from("withdrawal_feedback")
