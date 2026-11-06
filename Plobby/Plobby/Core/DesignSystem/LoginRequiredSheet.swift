@@ -54,7 +54,8 @@ private extension LoginRequiredSheet {
             Text("로그인 후 다른 사람들의 기록 보기, 알림을 볼 수 있어요.")
                 .plobbyFont(.label)
                 .foregroundStyle(Color(.textSecondary))
-                .padding(.leading, 24)
+                .multilineTextAlignment(.leading)
+                .padding(.horizontal, 24)
         }
     }
 
@@ -82,16 +83,4 @@ private extension LoginRequiredSheet {
                 .padding(.vertical, 17)
         }
     }
-}
-
-#Preview {
-    Color.clear
-        .sheet(isPresented: .constant(true)) {
-            LoginRequiredSheet(
-                onAppleRequest: { _ in },
-                onAppleCompletion: { _ in },
-                onBrowse: {}
-            )
-            .presentationDetents([.height(LoginRequiredSheet.sheetHeight)])
-        }
 }
