@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B3C1A0B309D0000004C5301 /* TermsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */; };
+		7B3C1A09309D0000004C5301 /* ServiceLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A08309D0000004C5301 /* ServiceLink.swift */; };
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */; };
@@ -234,6 +236,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAgreementView.swift; sourceTree = "<group>"; };
+		7B3C1A08309D0000004C5301 /* ServiceLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLink.swift; sourceTree = "<group>"; };
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
 		0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachHomeFeature.swift; sourceTree = "<group>"; };
 		033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PhotoLibraryClient.swift"; sourceTree = "<group>"; };
@@ -1051,6 +1055,7 @@
 		ECE6F2963098338400C4916C /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				7B3C1A08309D0000004C5301 /* ServiceLink.swift */,
 				ECE6F2943098338400C4916C /* AlertType.swift */,
 				ECE6F2953098338400C4916C /* Secrets.swift */,
 			);
@@ -1218,9 +1223,18 @@
 			path = Region;
 			sourceTree = "<group>";
 		};
+		7B3C1A0C309D0000004C5301 /* Terms */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */,
+			);
+			path = Terms;
+			sourceTree = "<group>";
+		};
 		ECE6F2C53098338400C4916C /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				7B3C1A0C309D0000004C5301 /* Terms */,
 				ECE6F2BF3098338400C4916C /* Complete */,
 				ECE6F2C23098338400C4916C /* Region */,
 				ECE6F2C33098338400C4916C /* SignUpFeature.swift */,
@@ -1667,6 +1681,8 @@
 				ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */,
 				EC17D65B309D82630031D2BD /* SignInFeature.swift in Sources */,
 				ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */,
+				7B3C1A0B309D0000004C5301 /* TermsAgreementView.swift in Sources */,
+				7B3C1A09309D0000004C5301 /* ServiceLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1879,7 +1895,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1923,7 +1939,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -1944,7 +1960,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Plobby.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Plobby";
 			};
 			name = Debug;
@@ -1966,7 +1982,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Plobby.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Plobby";
 			};
 			name = Release;
@@ -1986,7 +2002,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = Plobby;
 			};
 			name = Debug;
@@ -2006,7 +2022,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = Plobby;
 			};
 			name = Release;
