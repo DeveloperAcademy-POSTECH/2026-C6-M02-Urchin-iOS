@@ -101,7 +101,6 @@ struct NotificationFeature {
                 state.isLoading = false
                 state.notifications = notifications
 
-                // 푸시로 바로 연 기록의 알림은 읽음 처리해요.
                 guard let recordID = state.recordDetail?.recordID else { return .none }
 
                 let openedNotifications = notifications.filter { $0.recordID == recordID && !$0.isRead }
