@@ -89,9 +89,22 @@ struct AppFeatureTests {
         await store.send(.sessionEnded)
     }
 
-    // MARK: - Helpers
+    @Test(arguments: [
+        AppFeature.State.launching,
+        .onboarding(OnboardingFeature.State()),
+    ])
+    func 로그인_전_화면에서_세션이_끝나면_무시한다(initialState: AppFeature.State) async {
+        let store = makeStore(initialState: initialState)
 
-    private func makeStore(
+        await store.send(.sessionEnded)
+    }
+}
+
+// MARK: - Helpers
+
+private extension AppFeatureTests {
+
+    func makeStore(
         initialState: AppFeature.State,
         dependencies: (inout DependencyValues) -> Void = { _ in }
     ) -> TestStoreOf<AppFeature> {
