@@ -210,6 +210,8 @@ private extension PushClient {
     static func mock(fetchToken: @escaping @Sendable () async throws -> String) -> Self {
         PushClient(
             requestAuthorization: { true },
+            fetchAuthorization: { .authorized },
+            openNotificationSettings: {},
             fetchToken: fetchToken,
             tokens: { .finished },
             tappedRecordIDs: { .finished }
@@ -224,7 +226,8 @@ private extension NotificationClient {
             fetchNotifications: { [] },
             updateReadAt: { _ in },
             updateAllReadAt: {},
-            submitDeviceToken: submitDeviceToken
+            submitDeviceToken: submitDeviceToken,
+            removeDeviceToken: { _ in }
         )
     }
 }
