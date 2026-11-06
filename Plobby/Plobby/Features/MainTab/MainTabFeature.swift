@@ -144,6 +144,9 @@ struct MainTabFeature {
             case .map:
                 return .none
             
+            case .my(.delegate(.signInRequested)):
+                return .send(.signIn(.appleSignInRequested))
+
             case .my(.delegate(.signedOut)):
                 return .send(.delegate(.signedOut))
             

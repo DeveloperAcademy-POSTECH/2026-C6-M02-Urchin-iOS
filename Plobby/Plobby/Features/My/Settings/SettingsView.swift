@@ -14,14 +14,18 @@ struct SettingsView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<SettingsFeature>
+    /// 마이 화면에 목록만 넣을 때는 상단 바를 숨겨요
+    var showsNavigationBar = true
     @Environment(\.openURL) private var openURL
 
     // MARK: - Body
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
-                .padding(.horizontal, 20)
+            if showsNavigationBar {
+                navigationBar
+                    .padding(.horizontal, 20)
+            }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {

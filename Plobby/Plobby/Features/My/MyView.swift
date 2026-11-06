@@ -20,10 +20,26 @@ struct MyView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            header
-            profile
+            Group {
+                header
+
+                if case .member = store.membershipStatus {
+                    profile
+                } else {
+                    guestLoginPrompt
+                }
+            }
+            .padding(.horizontal, 20)
+
+            // FIXME: 설정 화면 진입 방식 정해지면 제거 (임시로 프로필 아래에 설정 목록을 보여줘요)
+            if case .member = store.membershipStatus {
+                SettingsView(
+                    store: store.scope(state: \.settingsList, action: \.settingsList),
+                    showsNavigationBar: false
+                )
+                .padding(.top, 24)
+            }
         }
-        .padding(.horizontal, 20)
         .frame(maxHeight: .infinity, alignment: .top)
         .onAppear {
             store.send(.onAppear)
@@ -44,13 +60,14 @@ extension MyView {
                 .font(.system(size: 20, weight: .semibold))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Button {
-                store.send(.settingsButtonTapped)
-            } label: {
-                Image(systemName: "gearshape")
-                    .font(.system(size: 24, weight: .regular))
-                    .foregroundStyle(.black)
-            }
+            // FIXME: 설정 목록을 프로필 아래로 임시 이동해서 설정 아이콘을 숨겨둠
+            // Button {
+            //     store.send(.settingsButtonTapped)
+            // } label: {
+            //     Image(systemName: "gearshape")
+            //         .font(.system(size: 24, weight: .regular))
+            //         .foregroundStyle(.black)
+            // }
         }
         .frame(height: 56)
     }
@@ -67,6 +84,28 @@ extension MyView {
             profileEditButton
         }
         .padding(.top, 16)
+    }
+
+    /// 비회원에게 로그인을 안내하고 바로 Apple 로그인을 할 수 있게 해요
+    private var guestLoginPrompt: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("로그인하고 내 활동을 기록해보세요")
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.textPrimary))
+
+            Text("로그인 후 내 기록과 프로필을 관리할 수 있어요.")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textSecondary))
+                .padding(.top, 8.scaled)
+
+            Button {
+                store.send(.appleLoginButtonTapped)
+            } label: {
+                AppleLoginLabel()
+            }
+            .padding(.top, 24.scaled)
+        }
+        .padding(.top, 16.scaled)
     }
 
     private var profileImage: some View {
