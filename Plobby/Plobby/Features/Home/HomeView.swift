@@ -269,7 +269,12 @@ extension HomeView {
     private var recentRecordList: some View {
         HStack(alignment: .top, spacing: 12) {
             ForEach(store.recentRecordCards) { record in
-                recentRecordCard(record)
+                Button {
+                    store.send(.recentRecordTapped(record.id))
+                } label: {
+                    recentRecordCard(record)
+                }
+                .buttonStyle(.plain)
             }
         }
         .padding(.horizontal, 20)
@@ -278,7 +283,13 @@ extension HomeView {
     private var recentRecordRowList: some View {
         VStack(spacing: 0) {
             ForEach(store.recentRecordRows) { record in
-                recentRecordRow(record)
+                Button {
+                    store.send(.recentRecordTapped(record.id))
+                } label: {
+                    recentRecordRow(record)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
 
                 if record.id != store.recentRecordRows.last?.id {
                     Divider()

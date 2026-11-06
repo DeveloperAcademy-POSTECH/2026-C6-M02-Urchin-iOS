@@ -17,6 +17,7 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
+        @Presents var recordDetail: RecordDetailFeature.State?
         
         var currentBanner: RecordType = .plobbing
         var recentRecords: [RecordSummary] = []
@@ -41,8 +42,10 @@ struct HomeFeature {
         case bannerDragEnded
         case recordButtonTapped
         case notificationButtonTapped
+        case recentRecordTapped(RecordSummary.ID)
         case dailyTipBannerTapped
         case recentRecordsResponse([RecordSummary])
+        case recordDetail(PresentationAction<RecordDetailFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
@@ -93,6 +96,28 @@ struct HomeFeature {
             case .notificationButtonTapped:
                 return .none
 
+            case let .recentRecordTapped(recordID):
+                state.recordDetail = RecordDetailFeature.State(recordID: recordID)
+                return .none
+
+            case .recordDetail(.presented(.delegate(.closed))):
+                state.recordDetail = nil
+                return .none
+
+            case let .recordDetail(.presented(.delegate(.deleted(recordID)))),
+                let .recordDetail(.presented(.delegate(.reported(recordID)))):
+                state.recordDetail = nil
+                state.recentRecords.removeAll { $0.id == recordID }
+                return .none
+
+            case let .recordDetail(.presented(.delegate(.blocked(userID)))):
+                state.recordDetail = nil
+                state.recentRecords.removeAll { $0.userID == userID }
+                return .none
+
+            case .recordDetail:
+                return .none
+
             // TODO: 하루 상식 상세 화면 이동
             case .dailyTipBannerTapped:
                 return .none
@@ -105,6 +130,9 @@ struct HomeFeature {
                 return .none
             }
         }
+        .ifLet(\.$recordDetail, action: \.recordDetail) {
+            RecordDetailFeature()
+        }
     }
 }
 
@@ -116,6 +144,7 @@ private extension HomeFeature.Action {
         switch self {
         case .recordButtonTapped,
              .notificationButtonTapped,
+             .recentRecordTapped,
              .dailyTipBannerTapped:
             true
         default:
@@ -129,7 +158,6 @@ private extension HomeFeature.Action {
 extension HomeFeature {
 
     static let banners: [RecordType] = [.plobbing, .plogging]
-    /// 관심 해변 최대 개수 (지도 탭 관심 해변 알럿에서 사용)
     static let maximumFavoriteBeachCount = 3
     static let recentRecordCardCount = 2
     private static let recentRecordLimit = 5

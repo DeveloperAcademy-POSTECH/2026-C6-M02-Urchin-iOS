@@ -18,12 +18,18 @@ struct MainTabView: View {
     // MARK: - Body
     
     var body: some View {
-        // 지도 탭이 자기 내비게이션 스택을 가지도록 탭마다 스택을 따로 둬요. 쌓인 화면에서는 탭 바를 숨겨요.
         TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
             Tab("홈", systemImage: "house", value: .home) {
                 NavigationStack {
                     HomeView(store: store.scope(state: \.home, action: \.home))
                         .toolbar(.hidden, for: .navigationBar)
+                        .navigationDestination(
+                            item: $store.scope(state: \.home.recordDetail, action: \.home.recordDetail)
+                        ) { store in
+                            RecordDetailView(store: store)
+                                .toolbar(.hidden, for: .navigationBar)
+                                .toolbar(.hidden, for: .tabBar)
+                        }
                 }
             }
 
