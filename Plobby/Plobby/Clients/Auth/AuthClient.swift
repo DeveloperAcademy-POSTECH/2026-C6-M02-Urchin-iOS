@@ -13,10 +13,16 @@ import Supabase
 struct AuthClient {
     var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
     var fetchCredential: @Sendable (_ hashedNonce: String) async -> Result<AppleCredential, AppleSignInError>
+    /// Apple 재인증 후 `authorizationCode`를 돌려줘요. 사용자가 취소하면 `AppleSignInError.canceled`를 던져요.
+    var fetchAppleAuthorizationCode: @Sendable () async throws -> String
     var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
     var signOut: @Sendable (_ token: String?) async throws -> Void
-    var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason, _ detail: String?) async throws -> Void
-    var withdraw: @Sendable (_ reason: WithdrawalReason, _ detail: String?, _ authorizationCode: String) async throws -> Void
+    var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason?, _ detail: String?) async throws -> Void
+    var withdraw: @Sendable (
+        _ reason: WithdrawalReason?,
+        _ detail: String?,
+        _ authorizationCode: String
+    ) async throws -> Void
 }
 
 extension AuthClient: DependencyKey {
@@ -43,6 +49,13 @@ extension AuthClient: DependencyKey {
             },
             fetchCredential: { hashedNonce in
                 await AppleSignInCoordinator.fetchCredential(hashedNonce: hashedNonce)
+            },
+            fetchAppleAuthorizationCode: {
+                guard let anchor = AppleAuthorizationRequester.currentAnchor() else {
+                    throw AppleSignInError.failed
+                }
+
+                return try await AppleAuthorizationRequester(anchor: anchor).fetchAuthorizationCode()
             },
             signUp: { profile in
                 @Dependency(\.supabaseClient) var supabase
@@ -81,11 +94,11 @@ extension AuthClient: DependencyKey {
                 @Dependency(\.supabaseClient) var supabase
 
                 let trimmed = detail?.trimmingCharacters(in: .whitespacesAndNewlines)
-                let detailToSave = (reason == .other && trimmed?.isEmpty == false) ? trimmed : nil
+                let detailToSave = trimmed?.isEmpty == false ? trimmed : nil
 
                 try await supabase
                     .from("withdrawal_feedback")
-                    .insert(WithdrawalFeedbackInsertRequestDTO(reason: reason, detail: detailToSave))
+                    .insert(WithdrawalFeedbackInsertRequestDTO(from: reason, detail: detailToSave))
                     .execute()
             },
             withdraw: { reason, detail, authorizationCode in

@@ -20,6 +20,7 @@ struct MyFeature {
         var profile: Profile?
         var savedProfileImage: Data?
         @Presents var profileEdit: ProfileEditFeature.State?
+        @Presents var settings: SettingsFeature.State?
     }
 
     // MARK: - Action
@@ -30,10 +31,12 @@ struct MyFeature {
         case profileEditButtonTapped
         case settingsButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
+        case settings(PresentationAction<SettingsFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
             case loginRequired
+            case signedOut
         }
     }
 
@@ -68,11 +71,12 @@ struct MyFeature {
                 state.profileEdit = ProfileEditFeature.State(profile: profile)
                 return .none
 
-            // TODO: 설정 화면 연결
             case .settingsButtonTapped:
                 guard case .member = state.membershipStatus else {
                     return .send(.delegate(.loginRequired))
                 }
+
+                state.settings = SettingsFeature.State()
                 return .none
 
             case let .profileEdit(.presented(.delegate(.saved(profile, profileImage)))):
@@ -83,12 +87,19 @@ struct MyFeature {
                 }
                 return .none
 
-            case .profileEdit, .delegate:
+            case .settings(.presented(.delegate(.signedOut))):
+                state.settings = nil
+                return .send(.delegate(.signedOut))
+
+            case .profileEdit, .settings, .delegate:
                 return .none
             }
         }
         .ifLet(\.$profileEdit, action: \.profileEdit) {
             ProfileEditFeature()
+        }
+        .ifLet(\.$settings, action: \.settings) {
+            SettingsFeature()
         }
     }
 }

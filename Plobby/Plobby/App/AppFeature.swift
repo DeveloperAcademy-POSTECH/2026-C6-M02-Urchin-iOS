@@ -83,6 +83,11 @@ struct AppFeature {
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()
 
+            case .mainTab(.delegate(.signedOut)):
+                updateMembershipStatus(.guest)
+                state = .onboarding(OnboardingFeature.State())
+                return .none
+
             case let .mainTab(.signIn(.delegate(.signedIn(user)))):
                 updateMembershipStatus(.member(user))
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))

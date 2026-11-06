@@ -41,6 +41,11 @@ struct MainTabFeature {
         case my(MyFeature.Action)
         case recordFlow(PresentationAction<RecordFlowFeature.Action>)
         case signIn(SignInFeature.Action)
+        case delegate(Delegate)
+
+        enum Delegate {
+            case signedOut
+        }
     }
 
     // MARK: - Dependency
@@ -128,10 +133,13 @@ struct MainTabFeature {
             case .map:
                 return .none
             
+            case .my(.delegate(.signedOut)):
+                return .send(.delegate(.signedOut))
+            
             case .my:
                 return .none
             
-            case .recordFlow, .signIn:
+            case .recordFlow, .signIn, .delegate:
                 return .none
             }
         }
