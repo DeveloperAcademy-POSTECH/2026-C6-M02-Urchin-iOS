@@ -21,7 +21,7 @@ struct MapView: View {
     @State private var mapSize: CGSize = .zero
     @Environment(\.scenePhase) private var scenePhase
 
-    private static let sheetHeight: CGFloat = 400
+    private static let sheetHeight: CGFloat = 357.scaled
 
     // MARK: - Body
 
@@ -36,9 +36,11 @@ struct MapView: View {
         }
         .sheet(item: $store.scope(state: \.beachSheet, action: \.beachSheet)) { store in
             BeachSheetView(store: store)
+                // 시안 높이(357)에 하단 안전 영역까지 포함돼 있어서 콘텐츠를 안전 영역까지 내려요
+                .ignoresSafeArea(.container, edges: .bottom)
                 .presentationDetents([.height(Self.sheetHeight)])
                 .presentationBackgroundInteraction(.enabled(upThrough: .height(Self.sheetHeight)))
-                .presentationCornerRadius(24)
+                .presentationCornerRadius(24.scaled)
         }
         .onAppear {
             cameraPosition = Self.cameraPosition(for: store.cameraCommand)
