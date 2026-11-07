@@ -111,24 +111,7 @@ private extension SearchBeachView {
                         Button {
                             store.send(.resultTapped(beach.id))
                         } label: {
-                            HStack(spacing: 4) {
-                                Image(systemName: "star.fill")
-                                    .font(.system(size: 10, weight: .medium))
-                                    .foregroundStyle(Color(.green500))
-                                    .frame(width: 24, height: 24)
-
-                                Text(beach.name)
-                                    .font(.custom(PretendardWeight.semiBold.rawValue, size: 14))
-                                    .foregroundStyle(Color(.textPrimary))
-                            }
-                            .padding(.leading, 8)
-                            .padding(.trailing, 16)
-                            .frame(height: 44)
-                            .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color(.currentWarmBorder), lineWidth: 1)
-                            }
+                            BeachChip(title: beach.name)
                         }
                         .buttonStyle(.plain)
                     }
