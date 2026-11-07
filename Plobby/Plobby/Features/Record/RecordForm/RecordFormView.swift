@@ -178,7 +178,7 @@ private extension RecordFormView {
     var photoSection: some View {
         VStack(alignment: .leading, spacing: 16.scaled) {
             VStack(alignment: .leading, spacing: 0) {
-                sectionTitle("사진")
+                sectionTitle("사진 *")
 
                 Text("사진을 최대 \(maxPhotoCount)장까지 올릴 수 있어요")
                     .plobbyFont(.helper)
@@ -467,7 +467,7 @@ private extension RecordFormView {
 
     var trashSection: some View {
         VStack(alignment: .leading, spacing: 16.scaled) {
-            sectionTitle("수거한 쓰레기")
+            sectionTitle("수거한 쓰레기 *")
 
             VStack(spacing: 0) {
                 trashSelectRow
@@ -490,7 +490,6 @@ private extension RecordFormView {
             store.send(.trashFieldTapped)
         } label: {
             HStack(spacing: 8.scaled) {
-                // 직접 입력이 아니라 선택 창으로 가는 필드라 placeholder도 SemiBold
                 Text(store.trash.summary ?? "종류와 개수 선택")
                     .plobbyFont(.actionLabel)
                     .foregroundStyle(store.trash.summary == nil ? Color(.textSecondary) : Color(.textPrimary))
@@ -510,9 +509,7 @@ private extension RecordFormView {
 
     var totalWeightRow: some View {
         HStack(spacing: 12.scaled) {
-            Text("총무게")
-                .plobbyFont(.body)
-                .foregroundStyle(Color(.textPrimary))
+            requiredTitle("총무게 *", typography: .body)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             unitInputBox("50", text: $store.totalWeightText, unit: "kg")
@@ -600,7 +597,6 @@ private extension RecordFormView {
         requiredTitle(text, typography: .heading)
     }
 
-    /// 끝에 " *"가 붙은 제목은 *만 에러 색으로 보여줘요
     func requiredTitle(_ text: String, typography: PlobbyTypography) -> some View {
         let isRequired = text.hasSuffix("*")
         let title = isRequired ? String(text.dropLast()).trimmingCharacters(in: .whitespaces) : text
@@ -651,7 +647,6 @@ private extension RecordFormView {
         }
     }
 
-    /// 회색 칸 안에 숫자를 오른쪽 정렬로 입력하고 단위를 붙여요 (108 × 48)
     func unitInputBox(
         _ placeholder: String,
         text: Binding<String>,

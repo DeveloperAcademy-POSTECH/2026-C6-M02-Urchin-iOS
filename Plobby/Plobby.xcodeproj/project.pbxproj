@@ -43,6 +43,8 @@
 		7B3C1A06309D0000004C5301 /* AppFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */; };
 		7B3C1A09309D0000004C5301 /* ServiceLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A08309D0000004C5301 /* ServiceLink.swift */; };
 		7B3C1A0B309D0000004C5301 /* TermsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */; };
+		7B3C1A0D309D0000004C5301 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A0E309D0000004C5301 /* SearchBar.swift */; };
+		7B3C1A0F309D0000004C5301 /* PlobbyToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A10309D0000004C5301 /* PlobbyToast.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
@@ -149,8 +151,6 @@
 		EC0D4B993098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B983098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift */; };
 		EC0D4BA13098E1D0000E7BB7 /* Effect+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */; };
 		EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */; };
-		7B3C1A0D309D0000004C5301 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A0E309D0000004C5301 /* SearchBar.swift */; };
-		7B3C1A0F309D0000004C5301 /* PlobbyToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A10309D0000004C5301 /* PlobbyToast.swift */; };
 		EC17D65B309D82630031D2BD /* SignInFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC17D65A309D82630031D2BD /* SignInFeature.swift */; };
 		EC196745309C579100BC4C19 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196743309C579100BC4C19 /* Pretendard-Regular.otf */; };
 		EC196746309C579100BC4C19 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196742309C579100BC4C19 /* Pretendard-Medium.otf */; };
@@ -264,6 +264,8 @@
 		7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureTests.swift; sourceTree = "<group>"; };
 		7B3C1A08309D0000004C5301 /* ServiceLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLink.swift; sourceTree = "<group>"; };
 		7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAgreementView.swift; sourceTree = "<group>"; };
+		7B3C1A0E309D0000004C5301 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		7B3C1A10309D0000004C5301 /* PlobbyToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyToast.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -376,8 +378,6 @@
 		EC0D4B983098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountRequestDTO.swift; sourceTree = "<group>"; };
 		EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Effect+.swift"; sourceTree = "<group>"; };
 		EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachChip.swift; sourceTree = "<group>"; };
-		7B3C1A0E309D0000004C5301 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
-		7B3C1A10309D0000004C5301 /* PlobbyToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyToast.swift; sourceTree = "<group>"; };
 		EC17D65A309D82630031D2BD /* SignInFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInFeature.swift; sourceTree = "<group>"; };
 		EC196742309C579100BC4C19 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		EC196743309C579100BC4C19 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
@@ -1092,11 +1092,11 @@
 		ECE6F29D3098338400C4916C /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				DA5B107A3099798F003FEDF9 /* GoogleService-Info.plist */,
 				ECE6F2913098338400C4916C /* Common */,
 				ECE6F2933098338400C4916C /* DesignSystem */,
 				ECE6F2963098338400C4916C /* Enum */,
 				ECE6F29A3098338400C4916C /* Extension */,
+				DA5B107A3099798F003FEDF9 /* GoogleService-Info.plist */,
 				ECE6F29B3098338400C4916C /* Config.xcconfig */,
 			);
 			path = Core;
