@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "collection_card_flip.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

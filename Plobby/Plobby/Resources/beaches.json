@@ -1,0 +1,2442 @@
+[
+  {
+    "id": "1fc1f1d4-a767-5a46-9760-8925bfe0b977",
+    "region": "west",
+    "name": "서망해수욕장",
+    "address": "진도군",
+    "latitude": 34.365572,
+    "longitude": 126.136825
+  },
+  {
+    "id": "ad128ca3-f58b-5076-8b56-85247d6cddaf",
+    "region": "south",
+    "name": "율포솔밭해수욕장",
+    "address": "보성군",
+    "latitude": 34.670092,
+    "longitude": 127.089594
+  },
+  {
+    "id": "84cf094e-7340-5fe3-9aea-50a4f14e7329",
+    "region": "south",
+    "name": "명교해수욕장",
+    "address": "보성군",
+    "latitude": 34.665303,
+    "longitude": 127.078175
+  },
+  {
+    "id": "8daabdaa-d3d6-568f-becd-54605b1a023b",
+    "region": "south",
+    "name": "덕흥해수욕장",
+    "address": "고흥군",
+    "latitude": 34.527417,
+    "longitude": 127.459121
+  },
+  {
+    "id": "7ecfd134-8f7f-5557-9bc6-2e03c267067d",
+    "region": "south",
+    "name": "장선해수욕장",
+    "address": "고흥군",
+    "latitude": 34.749617,
+    "longitude": 127.250958
+  },
+  {
+    "id": "1a455cef-e72f-53e8-880f-f9e28a5e223e",
+    "region": "south",
+    "name": "대전해수욕장",
+    "address": "고흥군",
+    "latitude": 34.713350,
+    "longitude": 127.271730
+  },
+  {
+    "id": "5c2579ff-3d41-588e-9318-80a0d597dbb8",
+    "region": "south",
+    "name": "용동해수욕장",
+    "address": "고흥군",
+    "latitude": 34.631109,
+    "longitude": 127.180859
+  },
+  {
+    "id": "c19522f5-d6de-5f95-9220-9dfe1c5a0e9c",
+    "region": "south",
+    "name": "당남해수욕장",
+    "address": "고흥군",
+    "latitude": 34.604633,
+    "longitude": 127.172308
+  },
+  {
+    "id": "39899d91-a491-56c2-bc38-748cf72921c2",
+    "region": "south",
+    "name": "소록도해수욕장",
+    "address": "고흥군",
+    "latitude": 34.508088,
+    "longitude": 127.131698
+  },
+  {
+    "id": "eda6206e-5f23-5e4a-a230-f16f372192ed",
+    "region": "south",
+    "name": "연소해수욕장",
+    "address": "고흥군",
+    "latitude": 34.447580,
+    "longitude": 127.116200
+  },
+  {
+    "id": "eba0349e-4ebe-54c0-ada7-0be85927dc9e",
+    "region": "south",
+    "name": "익금해수욕장",
+    "address": "고흥군",
+    "latitude": 34.429519,
+    "longitude": 127.145762
+  },
+  {
+    "id": "4a0e00b3-efd9-5816-b18b-d9cbc9c759bd",
+    "region": "south",
+    "name": "금장해수욕장",
+    "address": "고흥군",
+    "latitude": 34.434630,
+    "longitude": 127.164310
+  },
+  {
+    "id": "6e9f5e62-d69d-51e8-a22a-1a7b6bf8c6f5",
+    "region": "west",
+    "name": "왕산해수욕장",
+    "address": "인천광역시 중구",
+    "latitude": 37.455956,
+    "longitude": 126.368367
+  },
+  {
+    "id": "9ec941f7-dbfd-5608-b601-0a8b938df1f0",
+    "region": "west",
+    "name": "을왕리해수욕장",
+    "address": "인천광역시 중구",
+    "latitude": 37.447733,
+    "longitude": 126.372506
+  },
+  {
+    "id": "ee16d7db-4196-542d-9735-565b86aee310",
+    "region": "west",
+    "name": "용유해수욕장",
+    "address": "인천광역시 중구",
+    "latitude": 37.442792,
+    "longitude": 126.401692
+  },
+  {
+    "id": "6e349cfe-795a-5ed0-8d19-075f7bf6f365",
+    "region": "west",
+    "name": "실미해수욕장",
+    "address": "인천광역시 중구",
+    "latitude": 37.402833,
+    "longitude": 126.402481
+  },
+  {
+    "id": "b54d32ca-5cf1-5268-9b4b-faef5df65b39",
+    "region": "west",
+    "name": "하나개해수욕장",
+    "address": "인천광역시 중구",
+    "latitude": 37.385436,
+    "longitude": 126.408781
+  },
+  {
+    "id": "d146d6f5-cd31-5dcf-92a9-1b265f91e065",
+    "region": "west",
+    "name": "동막해수욕장",
+    "address": "인천광역시 강화군",
+    "latitude": 37.592097,
+    "longitude": 126.459285
+  },
+  {
+    "id": "940725ab-4b04-5d6f-be28-ef6553f4eb3b",
+    "region": "west",
+    "name": "민머루해수욕장",
+    "address": "인천광역시 강화군",
+    "latitude": 37.651321,
+    "longitude": 126.333441
+  },
+  {
+    "id": "115db262-a32b-5ecf-83a6-25d337b2481d",
+    "region": "west",
+    "name": "대빈창해수욕장",
+    "address": "인천광역시 강화군",
+    "latitude": 37.647014,
+    "longitude": 126.228131
+  },
+  {
+    "id": "cd9fc188-8c2b-53c9-9d5e-70823eee1c22",
+    "region": "west",
+    "name": "사곶해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.952187,
+    "longitude": 124.721831
+  },
+  {
+    "id": "33e7bb77-4daa-5c7b-a491-8e989c1b5714",
+    "region": "west",
+    "name": "콩돌해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.926231,
+    "longitude": 124.698631
+  },
+  {
+    "id": "1c9a7cd1-3528-5d45-a7de-966d98afb64c",
+    "region": "west",
+    "name": "옥죽동해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.844186,
+    "longitude": 124.710539
+  },
+  {
+    "id": "2b2e0a08-f070-5756-976f-ebdfde610e20",
+    "region": "west",
+    "name": "농여해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.840792,
+    "longitude": 124.700219
+  },
+  {
+    "id": "f484902d-eccd-554c-8b9d-e5d17e6b7b58",
+    "region": "west",
+    "name": "사탄동해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.814251,
+    "longitude": 124.677981
+  },
+  {
+    "id": "cfbec1d8-4c4b-5a70-ad8a-2202a8bcc52b",
+    "region": "west",
+    "name": "답동해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.831669,
+    "longitude": 124.713886
+  },
+  {
+    "id": "de03300b-97be-5c79-8d4e-986de296b0af",
+    "region": "west",
+    "name": "구리동해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.668595,
+    "longitude": 125.684933
+  },
+  {
+    "id": "83ea189c-8f78-5f5b-96f2-9d67a1f51a89",
+    "region": "west",
+    "name": "진촌해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.550596,
+    "longitude": 126.334158
+  },
+  {
+    "id": "e0cc6ae3-deb9-59ae-a725-12df99f52130",
+    "region": "west",
+    "name": "수기해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.544709,
+    "longitude": 126.431818
+  },
+  {
+    "id": "8b3df391-cc93-5ca9-a39b-b70061fd03a7",
+    "region": "west",
+    "name": "문갑해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.174119,
+    "longitude": 126.107556
+  },
+  {
+    "id": "5b84cf6c-35f9-5601-a3a9-0e5795231c9f",
+    "region": "west",
+    "name": "한월리해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.178733,
+    "longitude": 126.107089
+  },
+  {
+    "id": "d0c1b4f8-01dd-5eb3-b896-51b0cf9dbd70",
+    "region": "west",
+    "name": "서포리해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.221456,
+    "longitude": 126.113818
+  },
+  {
+    "id": "2a9bad7a-187a-542c-bbc1-4999ac40d354",
+    "region": "west",
+    "name": "벌안해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.181584,
+    "longitude": 126.222683
+  },
+  {
+    "id": "fd545689-9290-5c30-bdc9-0162e9980895",
+    "region": "west",
+    "name": "이일레해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.164675,
+    "longitude": 126.302128
+  },
+  {
+    "id": "ef01ea7b-fdf8-54c8-88ba-d4c773c7846e",
+    "region": "west",
+    "name": "목기미해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.193442,
+    "longitude": 125.984535
+  },
+  {
+    "id": "5e5da5c0-4eb4-51c8-b52b-bc45b3aae642",
+    "region": "west",
+    "name": "별난금해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.256658,
+    "longitude": 126.292286
+  },
+  {
+    "id": "fbac1bd1-7150-5049-9f88-5312faefd503",
+    "region": "west",
+    "name": "장골해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.249010,
+    "longitude": 126.315050
+  },
+  {
+    "id": "12fe49aa-a44b-500e-8b1d-b258b1fb210c",
+    "region": "west",
+    "name": "장경리해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.272109,
+    "longitude": 126.448936
+  },
+  {
+    "id": "9763d8fa-6c91-5ca8-8275-765296f5d6a0",
+    "region": "west",
+    "name": "방아머리해수욕장",
+    "address": "안산시",
+    "latitude": 37.283922,
+    "longitude": 126.568053
+  },
+  {
+    "id": "f6131382-5a51-554c-97ce-6ca0b4f3ea31",
+    "region": "west",
+    "name": "제부도해수욕장",
+    "address": "화성시",
+    "latitude": 37.165494,
+    "longitude": 126.617294
+  },
+  {
+    "id": "972f2f42-c9f1-5869-a74c-9d75064281c3",
+    "region": "west",
+    "name": "궁평해수욕장",
+    "address": "화성시",
+    "latitude": 37.125011,
+    "longitude": 126.683942
+  },
+  {
+    "id": "b4575a5d-d2ea-5a84-9265-9e2ca6b084de",
+    "region": "west",
+    "name": "난지도해수욕장",
+    "address": "당진시",
+    "latitude": 37.047125,
+    "longitude": 126.423428
+  },
+  {
+    "id": "8c9ec7ad-f801-5a7d-91b1-2e95e2091860",
+    "region": "west",
+    "name": "벌천포해수욕장",
+    "address": "서산시",
+    "latitude": 36.967542,
+    "longitude": 126.336519
+  },
+  {
+    "id": "e19ec627-a810-5014-9ecd-2a1786376ed5",
+    "region": "west",
+    "name": "고파도해수욕장",
+    "address": "서산시",
+    "latitude": 36.909103,
+    "longitude": 126.338356
+  },
+  {
+    "id": "e3aca655-02cb-5b14-a75c-97ad5b9950f4",
+    "region": "west",
+    "name": "학암포해수욕장",
+    "address": "태안군",
+    "latitude": 36.898807,
+    "longitude": 126.213197
+  },
+  {
+    "id": "24567bfc-0dd8-5b5a-a891-ab1fedd76872",
+    "region": "west",
+    "name": "신두리해수욕장",
+    "address": "태안군",
+    "latitude": 36.840256,
+    "longitude": 126.189268
+  },
+  {
+    "id": "734d06f9-7105-5862-bc53-34354aa687c9",
+    "region": "west",
+    "name": "천리포해수욕장",
+    "address": "태안군",
+    "latitude": 36.803147,
+    "longitude": 126.150216
+  },
+  {
+    "id": "5c9d0572-cb9a-5ba8-8505-9a261f004684",
+    "region": "west",
+    "name": "만리포해수욕장",
+    "address": "태안군",
+    "latitude": 36.784749,
+    "longitude": 126.140427
+  },
+  {
+    "id": "288f9a32-d63d-58c1-b567-24a138f2940d",
+    "region": "west",
+    "name": "어은돌해수욕장",
+    "address": "태안군",
+    "latitude": 36.752626,
+    "longitude": 126.129341
+  },
+  {
+    "id": "8f5fc796-c647-5c2e-b098-e543d88c26cd",
+    "region": "west",
+    "name": "통개해수욕장",
+    "address": "태안군",
+    "latitude": 36.729191,
+    "longitude": 126.143308
+  },
+  {
+    "id": "f0ea680d-0769-5590-ba99-7d62139dd038",
+    "region": "west",
+    "name": "갈음이해수욕장",
+    "address": "태안군",
+    "latitude": 36.696041,
+    "longitude": 126.152404
+  },
+  {
+    "id": "eb814f73-e26f-549f-85d4-b8a58268b5bf",
+    "region": "west",
+    "name": "연포해수욕장",
+    "address": "태안군",
+    "latitude": 36.693933,
+    "longitude": 126.210142
+  },
+  {
+    "id": "fd6dd647-57c6-5dce-ad93-d3412762a77a",
+    "region": "west",
+    "name": "원안해수욕장",
+    "address": "태안군",
+    "latitude": 36.702989,
+    "longitude": 126.235592
+  },
+  {
+    "id": "26bcda55-ed97-56e4-86e8-2ea6ebe37c2e",
+    "region": "west",
+    "name": "몽산포해수욕장",
+    "address": "태안군",
+    "latitude": 36.669419,
+    "longitude": 126.286636
+  },
+  {
+    "id": "3a9dcb40-3d7f-5782-83ff-6600a1532db9",
+    "region": "west",
+    "name": "기지포해수욕장",
+    "address": "태안군",
+    "latitude": 36.562730,
+    "longitude": 126.322350
+  },
+  {
+    "id": "d30003fd-4c73-5679-8c92-fefc1f76f558",
+    "region": "west",
+    "name": "안면해수욕장",
+    "address": "태안군",
+    "latitude": 36.549454,
+    "longitude": 126.328752
+  },
+  {
+    "id": "c2589da7-49da-5198-b2a3-8fe35913da72",
+    "region": "west",
+    "name": "방포해수욕장",
+    "address": "태안군",
+    "latitude": 36.509376,
+    "longitude": 126.332648
+  },
+  {
+    "id": "8a808374-4f64-5455-88e6-2be1fb91c159",
+    "region": "west",
+    "name": "꽃지해수욕장",
+    "address": "태안군",
+    "latitude": 36.497202,
+    "longitude": 126.336017
+  },
+  {
+    "id": "f4ba422f-8cd3-5474-90a2-81b725b4c006",
+    "region": "west",
+    "name": "운여해수욕장",
+    "address": "태안군",
+    "latitude": 36.433133,
+    "longitude": 126.355144
+  },
+  {
+    "id": "ea0e4857-20e5-5a7e-997a-fe36b989091c",
+    "region": "west",
+    "name": "장삼포해수욕장",
+    "address": "태안군",
+    "latitude": 36.422659,
+    "longitude": 126.360776
+  },
+  {
+    "id": "da813773-f4da-5606-941b-ca2a08a3495e",
+    "region": "west",
+    "name": "대천해수욕장",
+    "address": "보령시",
+    "latitude": 36.310228,
+    "longitude": 126.513526
+  },
+  {
+    "id": "79b2ec08-d583-534c-9c16-0d6a70711b24",
+    "region": "west",
+    "name": "장안해수욕장",
+    "address": "보령시",
+    "latitude": 36.199897,
+    "longitude": 126.538872
+  },
+  {
+    "id": "c51c668c-66e4-5225-beb5-8c7af234548b",
+    "region": "west",
+    "name": "당산해수욕장",
+    "address": "보령시",
+    "latitude": 36.270519,
+    "longitude": 126.266958
+  },
+  {
+    "id": "93339bf4-7759-5c15-acfb-2f4b27c8ad65",
+    "region": "west",
+    "name": "오봉산해수욕장",
+    "address": "보령시",
+    "latitude": 36.367969,
+    "longitude": 126.401093
+  },
+  {
+    "id": "cb6c8e05-0dcf-5e4c-975b-13e645ceda43",
+    "region": "west",
+    "name": "사창해수욕장",
+    "address": "보령시",
+    "latitude": 36.365450,
+    "longitude": 126.412170
+  },
+  {
+    "id": "74cef7af-a876-5030-a209-fd35d16a2616",
+    "region": "west",
+    "name": "원산도해수욕장",
+    "address": "보령시",
+    "latitude": 36.359661,
+    "longitude": 126.442068
+  },
+  {
+    "id": "67e89a05-237b-5911-928b-9a327abb22a2",
+    "region": "west",
+    "name": "춘장대 해수욕장",
+    "address": "서천군",
+    "latitude": 36.163236,
+    "longitude": 126.524411
+  },
+  {
+    "id": "54dc9080-e5ec-52f5-b9eb-cb5caffe4f35",
+    "region": "west",
+    "name": "띠섬목 해수욕장",
+    "address": "서천군",
+    "latitude": 36.147264,
+    "longitude": 126.540964
+  },
+  {
+    "id": "13907998-34cb-586f-b830-0695c528602c",
+    "region": "west",
+    "name": "비인해수욕장",
+    "address": "서천군",
+    "latitude": 36.129286,
+    "longitude": 126.589986
+  },
+  {
+    "id": "a8710ad4-388b-55fa-96ab-6585767a3792",
+    "region": "west",
+    "name": "선유도해수욕장",
+    "address": "군산시",
+    "latitude": 35.823105,
+    "longitude": 126.412849
+  },
+  {
+    "id": "fed0f306-2b5b-59b1-b9a5-393af86125d3",
+    "region": "west",
+    "name": "개야도해수욕장",
+    "address": "군산시",
+    "latitude": 36.044031,
+    "longitude": 126.548483
+  },
+  {
+    "id": "1ab06a89-69e2-5437-9c10-b50d07937909",
+    "region": "west",
+    "name": "변산해수욕장",
+    "address": "부안군",
+    "latitude": 35.680864,
+    "longitude": 126.530963
+  },
+  {
+    "id": "4976ac8f-5637-57f9-9ffc-a31174376fde",
+    "region": "west",
+    "name": "격포해수욕장",
+    "address": "부안군",
+    "latitude": 35.630030,
+    "longitude": 126.469550
+  },
+  {
+    "id": "7b64615d-a7f6-573c-b7a5-d58c1f5578f9",
+    "region": "west",
+    "name": "상록해수욕장",
+    "address": "부안군",
+    "latitude": 35.601505,
+    "longitude": 126.479979
+  },
+  {
+    "id": "374081b1-0643-5b20-a453-70801b79ffc4",
+    "region": "west",
+    "name": "모항해수욕장",
+    "address": "부안군",
+    "latitude": 35.582421,
+    "longitude": 126.507045
+  },
+  {
+    "id": "7d082c91-c431-50a4-a16b-d4c183249a14",
+    "region": "west",
+    "name": "구시포해수욕장",
+    "address": "고창군",
+    "latitude": 35.445759,
+    "longitude": 126.435384
+  },
+  {
+    "id": "1b99cde6-d50c-5987-89e9-1025a71af0fd",
+    "region": "west",
+    "name": "동호해수욕장",
+    "address": "고창군",
+    "latitude": 35.518349,
+    "longitude": 126.483514
+  },
+  {
+    "id": "7dc4f4f1-f0b7-57ef-bc44-a7373f45ab73",
+    "region": "west",
+    "name": "가마미해수욕장",
+    "address": "영광군",
+    "latitude": 35.398924,
+    "longitude": 126.408235
+  },
+  {
+    "id": "c3a03d22-e808-5602-ae81-b746db0be53a",
+    "region": "west",
+    "name": "송이도해수욕장",
+    "address": "영광군",
+    "latitude": 35.281800,
+    "longitude": 126.155700
+  },
+  {
+    "id": "239621bc-1548-51d0-95ce-5dd257192a52",
+    "region": "west",
+    "name": "대광해수욕장",
+    "address": "신안군",
+    "latitude": 35.102913,
+    "longitude": 126.072512
+  },
+  {
+    "id": "163e3bbf-bb84-52a4-9fd8-85b7d440ebf3",
+    "region": "west",
+    "name": "원평해수욕장",
+    "address": "신안군",
+    "latitude": 34.773300,
+    "longitude": 125.915600
+  },
+  {
+    "id": "b48d23c9-d5df-541c-ae60-ed72a2f9d376",
+    "region": "west",
+    "name": "은동해수욕장",
+    "address": "신안군",
+    "latitude": 35.055922,
+    "longitude": 126.082469
+  },
+  {
+    "id": "383fb6dc-9ba4-5efc-9979-095455f1aaca",
+    "region": "west",
+    "name": "용난굴해수욕장",
+    "address": "신안군",
+    "latitude": 35.051769,
+    "longitude": 126.103675
+  },
+  {
+    "id": "cfd7f4c1-021a-5ca3-a8bd-173ab0ae7d9e",
+    "region": "west",
+    "name": "우전해수욕장",
+    "address": "신안군",
+    "latitude": 34.961558,
+    "longitude": 126.134189
+  },
+  {
+    "id": "3bea8870-7f15-5969-8e77-fa372bc0e977",
+    "region": "west",
+    "name": "둔장해수욕장",
+    "address": "신안군",
+    "latitude": 34.915439,
+    "longitude": 126.057975
+  },
+  {
+    "id": "ec11511a-494c-5926-8d99-e5411d80fdc1",
+    "region": "west",
+    "name": "신돌해수욕장",
+    "address": "신안군",
+    "latitude": 34.909797,
+    "longitude": 126.033414
+  },
+  {
+    "id": "542dc4d8-919c-59a7-90ad-e960d0b5bf27",
+    "region": "west",
+    "name": "내치해수욕장",
+    "address": "신안군",
+    "latitude": 34.888697,
+    "longitude": 126.002428
+  },
+  {
+    "id": "60f93edf-9543-5b72-8a17-b914470c130d",
+    "region": "west",
+    "name": "분계해수욕장",
+    "address": "신안군",
+    "latitude": 34.870622,
+    "longitude": 125.982294
+  },
+  {
+    "id": "73755b01-a0f1-547e-9989-91313e71bac5",
+    "region": "west",
+    "name": "신성해수욕장",
+    "address": "신안군",
+    "latitude": 34.865614,
+    "longitude": 125.999014
+  },
+  {
+    "id": "961e9133-cc57-55b6-9632-bfc3684b6251",
+    "region": "west",
+    "name": "면전해수욕장",
+    "address": "신안군",
+    "latitude": 34.858611,
+    "longitude": 126.032131
+  },
+  {
+    "id": "ff18cae3-0cdd-59d1-8665-c35284587369",
+    "region": "west",
+    "name": "백길해수욕장",
+    "address": "신안군",
+    "latitude": 34.849500,
+    "longitude": 126.039500
+  },
+  {
+    "id": "3b7e2c4c-1d58-517f-84bf-bf63e4683104",
+    "region": "west",
+    "name": "추포해수욕장",
+    "address": "신안군",
+    "latitude": 34.807500,
+    "longitude": 126.065500
+  },
+  {
+    "id": "22ec4a62-1f4e-5bfb-aa8e-c4461851074b",
+    "region": "south",
+    "name": "명사십리해수욕장",
+    "address": "완도군",
+    "latitude": 34.327394,
+    "longitude": 126.809014
+  },
+  {
+    "id": "d062f503-2583-5883-8854-7693b05a93f8",
+    "region": "west",
+    "name": "이미해수욕장",
+    "address": "신안군",
+    "latitude": 34.759528,
+    "longitude": 125.898656
+  },
+  {
+    "id": "fb32f6ac-7bbe-5806-a2ea-3721f209426d",
+    "region": "west",
+    "name": "하누넘해수욕장",
+    "address": "신안군",
+    "latitude": 34.751400,
+    "longitude": 125.894600
+  },
+  {
+    "id": "fe9ae6b7-6103-526a-a816-14d9d47c7d58",
+    "region": "west",
+    "name": "내포해수욕장",
+    "address": "신안군",
+    "latitude": 34.727900,
+    "longitude": 125.903000
+  },
+  {
+    "id": "abddf68d-1beb-5b5d-be23-55b5f5c0de07",
+    "region": "west",
+    "name": "가는게해수욕장",
+    "address": "신안군",
+    "latitude": 34.689597,
+    "longitude": 125.919853
+  },
+  {
+    "id": "6edda354-f59e-5280-9e8e-5523d451be62",
+    "region": "west",
+    "name": "대야도해수욕장",
+    "address": "태안군",
+    "latitude": 36.464761,
+    "longitude": 126.415061
+  },
+  {
+    "id": "c418a938-aa9d-5048-b911-c27ab8b649cb",
+    "region": "west",
+    "name": "신도해수욕장",
+    "address": "신안군",
+    "latitude": 34.588014,
+    "longitude": 125.973478
+  },
+  {
+    "id": "efd0c65f-3684-5e5d-b6d9-8a2f198b56d2",
+    "region": "west",
+    "name": "안악해수욕장",
+    "address": "함평군",
+    "latitude": 35.139870,
+    "longitude": 126.390540
+  },
+  {
+    "id": "296d88ea-89bb-55ae-9a69-fa08866bf940",
+    "region": "south",
+    "name": "검은모래해수욕장",
+    "address": "여수시",
+    "latitude": 34.777383,
+    "longitude": 127.744886
+  },
+  {
+    "id": "bef00ded-0cff-5530-8c78-f141ac0703b2",
+    "region": "south",
+    "name": "무슬해수욕장",
+    "address": "여수시",
+    "latitude": 34.683650,
+    "longitude": 127.776250
+  },
+  {
+    "id": "244eae0f-d18f-560a-adbb-70fd12e9514d",
+    "region": "south",
+    "name": "모사금해수욕장",
+    "address": "여수시",
+    "latitude": 34.796270,
+    "longitude": 127.756270
+  },
+  {
+    "id": "708bccec-ee55-5dce-8118-5b5f84727c21",
+    "region": "south",
+    "name": "방죽포해수욕장",
+    "address": "여수시",
+    "latitude": 34.630916,
+    "longitude": 127.793437
+  },
+  {
+    "id": "499ac917-3ea9-5406-ae0a-cdf0c8f5d1da",
+    "region": "south",
+    "name": "안도해수욕장",
+    "address": "여수시",
+    "latitude": 34.490760,
+    "longitude": 127.812880
+  },
+  {
+    "id": "39916706-8e4f-5f8a-a339-6a8f6918fffc",
+    "region": "south",
+    "name": "안도몽돌해수욕장",
+    "address": "여수시",
+    "latitude": 34.483056,
+    "longitude": 127.806883
+  },
+  {
+    "id": "c1ebc63c-3d64-566d-a7b1-ac7bc2e15985",
+    "region": "south",
+    "name": "직포해수욕장",
+    "address": "여수시",
+    "latitude": 34.508744,
+    "longitude": 127.741247
+  },
+  {
+    "id": "ce87dfdd-d390-56bc-b5b1-6a1fcacd6d2c",
+    "region": "south",
+    "name": "호녘개해수욕장",
+    "address": "여수시",
+    "latitude": 34.580492,
+    "longitude": 127.668525
+  },
+  {
+    "id": "dc079006-07f6-53fa-94ef-0eb68a81c09d",
+    "region": "south",
+    "name": "양면해수욕장",
+    "address": "여수시",
+    "latitude": 34.588997,
+    "longitude": 127.559528
+  },
+  {
+    "id": "f0a02f53-fa06-5bc9-90f5-2854dad8cca6",
+    "region": "south",
+    "name": "장등해수욕장",
+    "address": "여수시",
+    "latitude": 34.644749,
+    "longitude": 127.610875
+  },
+  {
+    "id": "b0aef4e2-f023-5f6c-9e85-5ade077b395f",
+    "region": "south",
+    "name": "손죽해수욕장",
+    "address": "여수시",
+    "latitude": 34.287797,
+    "longitude": 127.360065
+  },
+  {
+    "id": "57ea0f15-40bc-513a-9c77-3a3acccb4786",
+    "region": "south",
+    "name": "의성해수욕장",
+    "address": "여수시",
+    "latitude": 34.221975,
+    "longitude": 127.249522
+  },
+  {
+    "id": "0adfd61a-fe98-564f-95b2-7dfe14821c4d",
+    "region": "south",
+    "name": "정강해수욕장",
+    "address": "여수시",
+    "latitude": 34.218519,
+    "longitude": 127.237271
+  },
+  {
+    "id": "2909d3cf-37e0-5a37-b69f-618c01c2f8f4",
+    "region": "south",
+    "name": "서도해수욕장",
+    "address": "여수시",
+    "latitude": 34.055794,
+    "longitude": 127.295364
+  },
+  {
+    "id": "d13efd12-abda-5708-a7c8-c9ee59c978da",
+    "region": "south",
+    "name": "거문도해수욕장",
+    "address": "여수시",
+    "latitude": 34.019997,
+    "longitude": 127.304017
+  },
+  {
+    "id": "2cdea298-b486-5049-b29e-111a8a9d9459",
+    "region": "south",
+    "name": "배알도해수욕장",
+    "address": "광양시",
+    "latitude": 34.959667,
+    "longitude": 127.760603
+  },
+  {
+    "id": "dfdf6a04-db51-58af-93e2-bcd95c1dae04",
+    "region": "jeju",
+    "name": "협재해변",
+    "address": "제주시",
+    "latitude": 33.394353,
+    "longitude": 126.239985
+  },
+  {
+    "id": "2cc7f93e-777f-504a-8363-8562c8ce4171",
+    "region": "jeju",
+    "name": "이호테우해변",
+    "address": "제주시",
+    "latitude": 33.497267,
+    "longitude": 126.451607
+  },
+  {
+    "id": "15509084-a1c0-52de-936d-ba516c1fd142",
+    "region": "jeju",
+    "name": "곽지과물해변",
+    "address": "제주시",
+    "latitude": 33.451020,
+    "longitude": 126.304960
+  },
+  {
+    "id": "58e93da2-1916-5c69-80d0-d19c478d3c21",
+    "region": "jeju",
+    "name": "금능으뜸원해변",
+    "address": "제주시",
+    "latitude": 33.389933,
+    "longitude": 126.235241
+  },
+  {
+    "id": "230a452f-c600-512c-9036-8f7c47e48eb9",
+    "region": "jeju",
+    "name": "함덕서우봉해변",
+    "address": "제주시",
+    "latitude": 33.543197,
+    "longitude": 126.669519
+  },
+  {
+    "id": "d6ae0964-eb23-58ca-bb65-9c35aa906a0c",
+    "region": "jeju",
+    "name": "김녕성세기해변",
+    "address": "제주시",
+    "latitude": 33.557770,
+    "longitude": 126.759180
+  },
+  {
+    "id": "e9a507b7-7923-57c0-8782-d8be4b2a5a3a",
+    "region": "jeju",
+    "name": "월정리해변",
+    "address": "제주시",
+    "latitude": 33.555983,
+    "longitude": 126.796228
+  },
+  {
+    "id": "d7401131-7396-55ee-ab40-93472691cb17",
+    "region": "jeju",
+    "name": "세화해변",
+    "address": "제주시",
+    "latitude": 33.525294,
+    "longitude": 126.861108
+  },
+  {
+    "id": "c4ca65e9-b517-5933-bbc0-1f0fe623ad1d",
+    "region": "jeju",
+    "name": "표선해비치해변",
+    "address": "서귀포시",
+    "latitude": 33.328444,
+    "longitude": 126.836694
+  },
+  {
+    "id": "b33b1a93-5288-51a7-8372-e7e56010355d",
+    "region": "jeju",
+    "name": "용머리해안해변",
+    "address": "서귀포시",
+    "latitude": 33.231390,
+    "longitude": 126.314170
+  },
+  {
+    "id": "19b03ffb-e3ed-5c69-9af2-851e51464583",
+    "region": "jeju",
+    "name": "황우치해변",
+    "address": "서귀포시",
+    "latitude": 33.238525,
+    "longitude": 126.319703
+  },
+  {
+    "id": "a245659f-420e-5b23-8109-ed0104ca4beb",
+    "region": "jeju",
+    "name": "중문색달해변",
+    "address": "서귀포시",
+    "latitude": 33.245014,
+    "longitude": 126.411631
+  },
+  {
+    "id": "db0cdcd9-d536-5b95-95be-e9e435609538",
+    "region": "jeju",
+    "name": "화순금모래해변",
+    "address": "서귀포시",
+    "latitude": 33.239451,
+    "longitude": 126.334727
+  },
+  {
+    "id": "a174671f-8095-558c-9ff1-37b37fdaca00",
+    "region": "jeju",
+    "name": "하모해변",
+    "address": "서귀포시",
+    "latitude": 33.211072,
+    "longitude": 126.260619
+  },
+  {
+    "id": "938399f5-7eca-5bdd-b835-1dd83bb89489",
+    "region": "east",
+    "name": "장호해변",
+    "address": "삼척시",
+    "latitude": 37.285911,
+    "longitude": 129.314167
+  },
+  {
+    "id": "1c870500-e647-5192-9429-415f118a3695",
+    "region": "east",
+    "name": "신남해변",
+    "address": "삼척시",
+    "latitude": 37.264669,
+    "longitude": 129.326975
+  },
+  {
+    "id": "1282cfd9-8ceb-5dc4-8a02-507385cc0698",
+    "region": "east",
+    "name": "임원해변",
+    "address": "삼척시",
+    "latitude": 37.226957,
+    "longitude": 129.341327
+  },
+  {
+    "id": "ef7d735a-a647-55e7-bd81-3fb345d5f3e5",
+    "region": "east",
+    "name": "고포해변",
+    "address": "삼척시",
+    "latitude": 37.146000,
+    "longitude": 129.363800
+  },
+  {
+    "id": "33de4fc0-af45-5f77-8708-08eababdf93b",
+    "region": "east",
+    "name": "망상해변",
+    "address": "동해시",
+    "latitude": 37.593511,
+    "longitude": 129.090441
+  },
+  {
+    "id": "3e998e6f-fac2-51c5-86e6-1861f9f96d13",
+    "region": "east",
+    "name": "어달해변",
+    "address": "동해시",
+    "latitude": 37.568980,
+    "longitude": 129.117300
+  },
+  {
+    "id": "3a812a9c-7029-5c75-ac6b-15c6e5aaab86",
+    "region": "west",
+    "name": "돌머리해수욕장",
+    "address": "함평군",
+    "latitude": 35.086805,
+    "longitude": 126.441191
+  },
+  {
+    "id": "dd3fd4e4-b1a5-5860-8393-ef5ee740bb48",
+    "region": "east",
+    "name": "백도해수욕장",
+    "address": "강원도 고성군",
+    "latitude": 38.300007,
+    "longitude": 128.546323
+  },
+  {
+    "id": "2329321d-1020-56ae-bea6-3058c6a54c4e",
+    "region": "west",
+    "name": "홀통해변",
+    "address": "무안군",
+    "latitude": 35.062250,
+    "longitude": 126.336960
+  },
+  {
+    "id": "7db20703-3be6-57ed-a060-9bfdc9a56053",
+    "region": "west",
+    "name": "조금나루해변",
+    "address": "무안군",
+    "latitude": 34.994325,
+    "longitude": 126.333963
+  },
+  {
+    "id": "6d89b472-05b8-5068-9505-ebace5e4ff1c",
+    "region": "west",
+    "name": "톱머리해변",
+    "address": "무안군",
+    "latitude": 34.968247,
+    "longitude": 126.386711
+  },
+  {
+    "id": "a84d5988-f441-51b3-bbcc-b08f76e94ef4",
+    "region": "west",
+    "name": "외달도해수욕장",
+    "address": "목포시",
+    "latitude": 34.781701,
+    "longitude": 126.297548
+  },
+  {
+    "id": "207c374a-17f8-58bb-9ac5-d9419019a50b",
+    "region": "west",
+    "name": "금갑해수욕장",
+    "address": "진도군",
+    "latitude": 34.394900,
+    "longitude": 126.278100
+  },
+  {
+    "id": "69ebbcc3-abd7-5229-b22e-37b3e47b3c97",
+    "region": "west",
+    "name": "가계해수욕장",
+    "address": "진도군",
+    "latitude": 34.434950,
+    "longitude": 126.354730
+  },
+  {
+    "id": "70da7870-5a93-5b11-8bb3-847d6ebeb241",
+    "region": "west",
+    "name": "신전해수욕장",
+    "address": "진도군",
+    "latitude": 34.284630,
+    "longitude": 126.074170
+  },
+  {
+    "id": "29321290-bf5c-56d3-b279-6b3de4fd01b2",
+    "region": "west",
+    "name": "관매도해수욕장",
+    "address": "진도군",
+    "latitude": 34.240456,
+    "longitude": 126.050184
+  },
+  {
+    "id": "81fa623f-9df1-5dd4-9460-b12ea0782b5e",
+    "region": "south",
+    "name": "오시아노해변",
+    "address": "해남군",
+    "latitude": 34.670653,
+    "longitude": 126.259994
+  },
+  {
+    "id": "68ba8330-13e5-572c-9a41-01434da15a98",
+    "region": "south",
+    "name": "송평해변",
+    "address": "해남군",
+    "latitude": 34.435532,
+    "longitude": 126.471602
+  },
+  {
+    "id": "fb2b399d-6704-5792-9240-965a6f0bfe4b",
+    "region": "south",
+    "name": "땅끝송호해변",
+    "address": "해남군",
+    "latitude": 34.315775,
+    "longitude": 126.518002
+  },
+  {
+    "id": "7c2ad81b-a8de-5ae6-b9f6-8f4da2c2593e",
+    "region": "south",
+    "name": "동고리해수욕장",
+    "address": "완도군",
+    "latitude": 34.329781,
+    "longitude": 126.880415
+  },
+  {
+    "id": "457c1112-aff1-522b-93a5-45c7992e5243",
+    "region": "south",
+    "name": "가사동백숲해수욕장",
+    "address": "완도군",
+    "latitude": 34.370521,
+    "longitude": 126.928508
+  },
+  {
+    "id": "e027a897-4654-50d1-9912-d79c9b027420",
+    "region": "south",
+    "name": "금일해당화해수욕장",
+    "address": "완도군",
+    "latitude": 34.332381,
+    "longitude": 127.059292
+  },
+  {
+    "id": "fb53a339-00d8-537b-bc7e-231b37234d14",
+    "region": "south",
+    "name": "넙도해수욕장",
+    "address": "완도군",
+    "latitude": 34.199478,
+    "longitude": 126.512369
+  },
+  {
+    "id": "da3a5ec4-5176-58f9-8bfa-63d823735bf0",
+    "region": "south",
+    "name": "중리은모래해수욕장",
+    "address": "완도군",
+    "latitude": 34.162750,
+    "longitude": 126.590560
+  },
+  {
+    "id": "2801c1ee-f658-5028-ace7-b1075c70ed58",
+    "region": "south",
+    "name": "통리해수욕장",
+    "address": "완도군",
+    "latitude": 34.158078,
+    "longitude": 126.579175
+  },
+  {
+    "id": "575af9bf-bf63-5955-a820-8adf2bc0c714",
+    "region": "south",
+    "name": "예송갯돌해수욕장",
+    "address": "완도군",
+    "latitude": 34.138194,
+    "longitude": 126.563236
+  },
+  {
+    "id": "d20f18cf-2bb2-5f9a-8334-2dd03aa1c5fb",
+    "region": "south",
+    "name": "공룡알해수욕장",
+    "address": "완도군",
+    "latitude": 34.125897,
+    "longitude": 126.518775
+  },
+  {
+    "id": "a92c2be9-b524-502c-b961-9d4e0e5e88c5",
+    "region": "south",
+    "name": "지리청송해수욕장",
+    "address": "완도군",
+    "latitude": 34.196044,
+    "longitude": 126.862149
+  },
+  {
+    "id": "139cc229-e8a5-5f85-a7c7-212b6a51a209",
+    "region": "south",
+    "name": "진산갯돌해수욕장",
+    "address": "완도군",
+    "latitude": 34.202186,
+    "longitude": 126.903564
+  },
+  {
+    "id": "1584d916-cecf-5a7f-9257-cef5e3b6a2a4",
+    "region": "south",
+    "name": "신흥해수욕장",
+    "address": "완도군",
+    "latitude": 34.183689,
+    "longitude": 126.907842
+  },
+  {
+    "id": "b6174e3a-5a72-5015-bc55-6f6877bb33c9",
+    "region": "south",
+    "name": "수문해수욕장",
+    "address": "장흥군",
+    "latitude": 34.635078,
+    "longitude": 127.034638
+  },
+  {
+    "id": "5749c2a7-5d92-58a2-aa67-647d83c17b69",
+    "region": "east",
+    "name": "감추사해변",
+    "address": "동해시",
+    "latitude": 37.514786,
+    "longitude": 129.125819
+  },
+  {
+    "id": "9346da3f-d3a4-588a-8453-278edcd9b82d",
+    "region": "east",
+    "name": "추암해변",
+    "address": "동해시",
+    "latitude": 37.477228,
+    "longitude": 129.159249
+  },
+  {
+    "id": "7c5e08d6-dc3e-55b4-9467-d1ef19917833",
+    "region": "east",
+    "name": "경포대해변",
+    "address": "강릉시",
+    "latitude": 37.805486,
+    "longitude": 128.907831
+  },
+  {
+    "id": "56e2ad15-1eed-554a-ad81-d413139d7f7f",
+    "region": "east",
+    "name": "주문진해변",
+    "address": "강릉시",
+    "latitude": 37.911274,
+    "longitude": 128.818839
+  },
+  {
+    "id": "dbf449a7-d9b4-5e1f-99c2-cd2438698c6f",
+    "region": "east",
+    "name": "정동진해변",
+    "address": "강릉시",
+    "latitude": 37.691550,
+    "longitude": 129.035290
+  },
+  {
+    "id": "dd97984c-cc89-5fee-858a-e034af3bc35f",
+    "region": "east",
+    "name": "사천진해변",
+    "address": "강릉시",
+    "latitude": 37.843032,
+    "longitude": 128.873641
+  },
+  {
+    "id": "e627bc5a-b9be-5587-b0d3-20058c3a85a9",
+    "region": "east",
+    "name": "송정해변",
+    "address": "강릉시",
+    "latitude": 37.778200,
+    "longitude": 128.940300
+  },
+  {
+    "id": "30a6ac21-eea6-5e61-b256-87212aa62694",
+    "region": "east",
+    "name": "옥계해변",
+    "address": "강릉시",
+    "latitude": 37.627341,
+    "longitude": 129.049708
+  },
+  {
+    "id": "9e2747fc-c2e2-5406-9da7-7019df8084c5",
+    "region": "east",
+    "name": "등명해변",
+    "address": "강릉시",
+    "latitude": 37.704152,
+    "longitude": 129.016991
+  },
+  {
+    "id": "bff34946-c654-5524-b14b-afbff590cbfc",
+    "region": "east",
+    "name": "죽도해변",
+    "address": "양양군",
+    "latitude": 37.973036,
+    "longitude": 128.760709
+  },
+  {
+    "id": "31080517-f78c-5dc5-9924-e2331ead6ca3",
+    "region": "east",
+    "name": "속초해변",
+    "address": "속초시",
+    "latitude": 38.190571,
+    "longitude": 128.602025
+  },
+  {
+    "id": "3f7667a0-cf10-532f-9023-a112cae42739",
+    "region": "east",
+    "name": "공현진해변",
+    "address": "강원도 고성군",
+    "latitude": 38.356603,
+    "longitude": 128.509967
+  },
+  {
+    "id": "c6fbc8d3-b360-58ef-b1c7-6fd32ba69693",
+    "region": "east",
+    "name": "명파해변",
+    "address": "강원도 고성군",
+    "latitude": 38.545920,
+    "longitude": 128.403500
+  },
+  {
+    "id": "989c1405-5ec5-50cf-9d04-e7185e9437c7",
+    "region": "east",
+    "name": "초도해변",
+    "address": "강원도 고성군",
+    "latitude": 38.492876,
+    "longitude": 128.429288
+  },
+  {
+    "id": "c28c0228-02e2-5bd3-926a-5918606780e2",
+    "region": "east",
+    "name": "화진포해변",
+    "address": "강원도 고성군",
+    "latitude": 38.478575,
+    "longitude": 128.439342
+  },
+  {
+    "id": "4a95a6fc-9216-508e-8bad-d5ace46fcb2b",
+    "region": "east",
+    "name": "거진해변",
+    "address": "강원도 고성군",
+    "latitude": 38.442822,
+    "longitude": 128.455331
+  },
+  {
+    "id": "15e2c0d9-3cbf-52a3-951c-22fa03f5488b",
+    "region": "east",
+    "name": "송지호해변",
+    "address": "강원도 고성군",
+    "latitude": 38.330700,
+    "longitude": 128.527900
+  },
+  {
+    "id": "e61bcc16-bcb3-50fa-acbb-4c4910bb432e",
+    "region": "east",
+    "name": "문암해변",
+    "address": "삼척시",
+    "latitude": 37.309097,
+    "longitude": 129.289739
+  },
+  {
+    "id": "0932342f-b56e-5cd0-98ff-541224817240",
+    "region": "east",
+    "name": "아야진해변",
+    "address": "강원도 고성군",
+    "latitude": 38.276889,
+    "longitude": 128.553351
+  },
+  {
+    "id": "9a5ad403-ce08-5ccd-9bad-0d524755c815",
+    "region": "east",
+    "name": "청간해변",
+    "address": "강원도 고성군",
+    "latitude": 38.265782,
+    "longitude": 128.559467
+  },
+  {
+    "id": "31925a29-3c12-573d-8d0b-e8a17b90fde9",
+    "region": "south",
+    "name": "비진도산호빛해변",
+    "address": "통영시",
+    "latitude": 34.720534,
+    "longitude": 128.459919
+  },
+  {
+    "id": "f9515d11-e701-5a9c-a8ce-985ffbe14d64",
+    "region": "south",
+    "name": "사구미해수욕장",
+    "address": "해남군",
+    "latitude": 34.320794,
+    "longitude": 126.578710
+  },
+  {
+    "id": "e803fd70-d9e4-5815-953e-fdec108f40c3",
+    "region": "west",
+    "name": "굴업도해수욕장",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.188287,
+    "longitude": 125.978185
+  },
+  {
+    "id": "c1d33058-3273-5b1a-b232-c0ad4856b726",
+    "region": "west",
+    "name": "도초시목해수욕장",
+    "address": "신안군",
+    "latitude": 34.672556,
+    "longitude": 125.954918
+  },
+  {
+    "id": "416f02e2-e826-5359-9413-43281531bbd2",
+    "region": "south",
+    "name": "봉암해수욕장",
+    "address": "통영시",
+    "latitude": 34.759184,
+    "longitude": 128.512212
+  },
+  {
+    "id": "c08a86e6-bcbd-59cd-8ef8-64622e432cb3",
+    "region": "west",
+    "name": "장봉도옹암해수욕장",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.529651,
+    "longitude": 126.372515
+  },
+  {
+    "id": "80572089-a26a-5a7d-9b98-3136619393af",
+    "region": "east",
+    "name": "마차진해수욕장",
+    "address": "강원도 고성군",
+    "latitude": 38.510844,
+    "longitude": 128.419899
+  },
+  {
+    "id": "28eeb090-d78e-52cb-a60b-f352e0630adb",
+    "region": "east",
+    "name": "망양정해수욕장",
+    "address": "울진군",
+    "latitude": 36.969087,
+    "longitude": 129.412755
+  },
+  {
+    "id": "524af480-e44d-5154-a359-523048b31cc9",
+    "region": "west",
+    "name": "지두리해수욕장",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.819941,
+    "longitude": 124.672352
+  },
+  {
+    "id": "3dffaba3-d5c7-532a-b7b6-0e79b84f0758",
+    "region": "south",
+    "name": "낭도해수욕장",
+    "address": "여수시",
+    "latitude": 34.592026,
+    "longitude": 127.555988
+  },
+  {
+    "id": "626f100e-ca8c-568b-9446-efbe3ecbad3c",
+    "region": "west",
+    "name": "저두해수욕장",
+    "address": "보령시",
+    "latitude": 36.356739,
+    "longitude": 126.453386
+  },
+  {
+    "id": "3eaacded-524f-56ea-b0d2-1e7c9731237f",
+    "region": "west",
+    "name": "호도해수욕장",
+    "address": "보령시",
+    "latitude": 36.297821,
+    "longitude": 126.265098
+  },
+  {
+    "id": "dc9df5d7-4ed6-5563-85a8-cabf8617d1cf",
+    "region": "west",
+    "name": "작은풀안해수욕장",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.166000,
+    "longitude": 126.283000
+  },
+  {
+    "id": "6fda683d-f53a-5c25-a0e5-6b5883fcfd57",
+    "region": "east",
+    "name": "후정해수욕장",
+    "address": "울진군",
+    "latitude": 37.074414,
+    "longitude": 129.410176
+  },
+  {
+    "id": "2d9e805b-82cd-5903-82b8-a9dc2b54e7af",
+    "region": "west",
+    "name": "용두해수욕장",
+    "address": "보령시",
+    "latitude": 36.265540,
+    "longitude": 126.548279
+  },
+  {
+    "id": "21c6b60b-cc9a-529d-b7e6-469657903c31",
+    "region": "west",
+    "name": "장봉도한들해수욕장",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.528570,
+    "longitude": 126.346029
+  },
+  {
+    "id": "5d6466ab-63eb-5baa-8f09-c31cd0723d5d",
+    "region": "east",
+    "name": "정암해수욕장",
+    "address": "양양군",
+    "latitude": 38.138739,
+    "longitude": 128.616160
+  },
+  {
+    "id": "732f48b8-0e04-5b9b-bb6b-a26f3e3fa265",
+    "region": "west",
+    "name": "장돌(장곡)해수욕장",
+    "address": "태안군",
+    "latitude": 36.416868,
+    "longitude": 126.366421
+  },
+  {
+    "id": "e9bf724f-aae2-52b5-9bf5-34f7e0ddecd1",
+    "region": "west",
+    "name": "위도해수욕장",
+    "address": "부안군",
+    "latitude": 35.603685,
+    "longitude": 126.283064
+  },
+  {
+    "id": "e7f95f57-2f1b-5c02-9128-ee295c077543",
+    "region": "east",
+    "name": "삼포2리해수욕장",
+    "address": "강원도 고성군",
+    "latitude": 38.318540,
+    "longitude": 128.531601
+  },
+  {
+    "id": "52ac28af-9f83-5395-8c31-b016fa1006f6",
+    "region": "west",
+    "name": "구례포해수욕장",
+    "address": "태안군",
+    "latitude": 36.886705,
+    "longitude": 126.198233
+  },
+  {
+    "id": "ceed5b8f-d078-5e1b-b5ad-4d70942f8488",
+    "region": "south",
+    "name": "물건해수욕장",
+    "address": "남해군",
+    "latitude": 34.797331,
+    "longitude": 128.050608
+  },
+  {
+    "id": "df6374da-3c6c-5a7f-8f9d-0ee89b488e99",
+    "region": "east",
+    "name": "강문해변",
+    "address": "강릉시",
+    "latitude": 37.794912,
+    "longitude": 128.918456
+  },
+  {
+    "id": "89e341d7-0998-592a-a053-7dab73a10055",
+    "region": "east",
+    "name": "낙산해수욕장",
+    "address": "양양군",
+    "latitude": 38.115893,
+    "longitude": 128.635724
+  },
+  {
+    "id": "8080bbf0-cc01-555f-be0d-d269931f1567",
+    "region": "east",
+    "name": "남애1리해수욕장",
+    "address": "양양군",
+    "latitude": 37.939210,
+    "longitude": 128.787587
+  },
+  {
+    "id": "6049e7bd-1e58-537b-9795-bec3082e2b11",
+    "region": "west",
+    "name": "달산포해수욕장",
+    "address": "태안군",
+    "latitude": 36.657534,
+    "longitude": 126.294351
+  },
+  {
+    "id": "96434eb6-934f-5815-b27c-a87996e197f9",
+    "region": "west",
+    "name": "계남해변",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.172810,
+    "longitude": 126.258957
+  },
+  {
+    "id": "343639ea-a2ca-5542-9886-b604974d6bdc",
+    "region": "west",
+    "name": "큰풀안해수욕장",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.168754,
+    "longitude": 126.260577
+  },
+  {
+    "id": "2f5b4359-34b9-57f3-9bd4-039c04b62730",
+    "region": "west",
+    "name": "밧지름해수욕장",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.216527,
+    "longitude": 126.139446
+  },
+  {
+    "id": "1f836a44-861e-50d8-b80a-473f8f3ba1f6",
+    "region": "west",
+    "name": "꾸지나무골해수욕장",
+    "address": "태안군",
+    "latitude": 36.936315,
+    "longitude": 126.293154
+  },
+  {
+    "id": "c8bb0bb8-eb38-5671-89a5-f920480b044b",
+    "region": "east",
+    "name": "하맹방해수욕장",
+    "address": "삼척시",
+    "latitude": 37.394218,
+    "longitude": 129.225080
+  },
+  {
+    "id": "c56169b9-f122-55fe-a277-cd4d94aea1f8",
+    "region": "east",
+    "name": "하조대해수욕장",
+    "address": "양양군",
+    "latitude": 38.023161,
+    "longitude": 128.725309
+  },
+  {
+    "id": "a75be4cc-ef8d-5385-ba48-bd6ecdd19242",
+    "region": "east",
+    "name": "하평해수욕장",
+    "address": "강릉시",
+    "latitude": 37.843013,
+    "longitude": 128.873709
+  },
+  {
+    "id": "c8b645dd-9a98-5f50-9a58-eb229abf14d9",
+    "region": "west",
+    "name": "큰무리(실미)해수욕장",
+    "address": "인천광역시 중구",
+    "latitude": 37.386870,
+    "longitude": 126.426995
+  },
+  {
+    "id": "4b4dade2-8088-569f-b09c-abe32a1b958b",
+    "region": "west",
+    "name": "우이도돈목해수욕장",
+    "address": "신안군",
+    "latitude": 34.608105,
+    "longitude": 125.827782
+  },
+  {
+    "id": "1bbc3d1f-baee-57a3-ad01-54bbce5ebb1d",
+    "region": "west",
+    "name": "의항해수욕장",
+    "address": "태안군",
+    "latitude": 36.827317,
+    "longitude": 126.161781
+  },
+  {
+    "id": "b7a66259-726e-5b42-9ac3-2b23908ebfa6",
+    "region": "west",
+    "name": "청포대해수욕장",
+    "address": "태안군",
+    "latitude": 36.639196,
+    "longitude": 126.304260
+  },
+  {
+    "id": "16cfa119-fc97-567b-9035-3eb2b680a698",
+    "region": "west",
+    "name": "마검포해수욕장",
+    "address": "태안군",
+    "latitude": 36.611263,
+    "longitude": 126.307775
+  },
+  {
+    "id": "b4a6aa61-73b6-5c1b-bceb-7a5536717695",
+    "region": "west",
+    "name": "사목해수욕장",
+    "address": "태안군",
+    "latitude": 36.919201,
+    "longitude": 126.292343
+  },
+  {
+    "id": "41e94c43-b4bb-584f-a03b-b2778a0c2322",
+    "region": "west",
+    "name": "샛별해수욕장",
+    "address": "태안군",
+    "latitude": 36.448551,
+    "longitude": 126.337707
+  },
+  {
+    "id": "be91bdb4-ce1e-5be5-909f-018c9f192935",
+    "region": "west",
+    "name": "십리포해수욕장",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.257264,
+    "longitude": 126.499364
+  },
+  {
+    "id": "e3ef0c0e-13ea-5210-aa96-8cfaa72f57f9",
+    "region": "west",
+    "name": "능동자갈마당",
+    "address": "인천광역시 옹진군",
+    "latitude": 37.263922,
+    "longitude": 126.102693
+  },
+  {
+    "id": "eeeb6733-a727-5744-8b19-06ebe66c2586",
+    "region": "west",
+    "name": "선녀바위해변",
+    "address": "인천광역시 중구",
+    "latitude": 37.440107,
+    "longitude": 126.379401
+  },
+  {
+    "id": "0fd58e30-2c20-5963-b7f4-149d4af7a6c8",
+    "region": "west",
+    "name": "백사장해수욕장",
+    "address": "태안군",
+    "latitude": 36.585638,
+    "longitude": 126.316326
+  },
+  {
+    "id": "72f60fe1-4578-5cc1-bad2-9d791ebbd6c4",
+    "region": "west",
+    "name": "밧개해수욕장",
+    "address": "태안군",
+    "latitude": 36.524732,
+    "longitude": 126.330855
+  },
+  {
+    "id": "0a76058f-3faa-5b55-85aa-0ffd6f6f565c",
+    "region": "west",
+    "name": "삼봉해수욕장",
+    "address": "태안군",
+    "latitude": 36.571515,
+    "longitude": 126.315083
+  },
+  {
+    "id": "be2d461b-9f8e-542c-9ec9-c7c9fa298d3c",
+    "region": "west",
+    "name": "백리포해수욕장",
+    "address": "태안군",
+    "latitude": 36.779243,
+    "longitude": 126.143679
+  },
+  {
+    "id": "27606346-185e-5a41-96c4-401accc87bdb",
+    "region": "west",
+    "name": "영종도 마시안해변",
+    "address": "인천광역시 중구",
+    "latitude": 37.432553,
+    "longitude": 126.417762
+  },
+  {
+    "id": "2b6d912b-1abe-5463-9b3e-a51a6f39caa7",
+    "region": "west",
+    "name": "당너머해수욕장",
+    "address": "보령시",
+    "latitude": 36.396226,
+    "longitude": 126.336305
+  },
+  {
+    "id": "657d1b68-efe9-5b91-9407-4cf56ee739e5",
+    "region": "west",
+    "name": "독산해수욕장",
+    "address": "보령시",
+    "latitude": 36.223771,
+    "longitude": 126.532116
+  },
+  {
+    "id": "64f3fd99-ecaa-5e3d-be69-8be89d113f7f",
+    "region": "west",
+    "name": "명장섬해수욕장",
+    "address": "보령시",
+    "latitude": 36.401300,
+    "longitude": 126.345700
+  },
+  {
+    "id": "823cd0d1-4e85-592a-ba27-20e8a47f6b20",
+    "region": "west",
+    "name": "무창포해수욕장",
+    "address": "보령시",
+    "latitude": 36.247689,
+    "longitude": 126.538805
+  },
+  {
+    "id": "b4bec94e-07f8-5114-9eda-20b0e94f3f5b",
+    "region": "east",
+    "name": "주전몽돌해안",
+    "address": "울산광역시 동구",
+    "latitude": 35.560022,
+    "longitude": 129.449190
+  },
+  {
+    "id": "af33aedb-0538-5c5c-b4ac-7426e21ce20a",
+    "region": "east",
+    "name": "구산해수욕장",
+    "address": "울진군",
+    "latitude": 36.760548,
+    "longitude": 129.469655
+  },
+  {
+    "id": "edabed18-cc92-508f-97d8-c6f0179b9310",
+    "region": "south",
+    "name": "덕동해수욕장",
+    "address": "통영시",
+    "latitude": 34.635498,
+    "longitude": 128.237627
+  },
+  {
+    "id": "7bac29ae-fb16-5d2f-ac6e-e37855ca8832",
+    "region": "south",
+    "name": "두곡·월포해수욕장",
+    "address": "남해군",
+    "latitude": 34.783066,
+    "longitude": 127.899654
+  },
+  {
+    "id": "8e23ef10-26cb-5791-b1eb-e1d305ae91b3",
+    "region": "south",
+    "name": "사촌해수욕장",
+    "address": "남해군",
+    "latitude": 34.743410,
+    "longitude": 127.856124
+  },
+  {
+    "id": "335cdd51-6361-5c4a-9c15-82dc87d36d58",
+    "region": "south",
+    "name": "설리해수욕장",
+    "address": "남해군",
+    "latitude": 34.705578,
+    "longitude": 128.025542
+  },
+  {
+    "id": "a245aca4-1760-5474-a695-6b5e9a2d0bc3",
+    "region": "south",
+    "name": "두모몽돌해변",
+    "address": "거제시",
+    "latitude": 34.981091,
+    "longitude": 128.694660
+  },
+  {
+    "id": "cbb36021-b094-53d2-9b84-deba920d1107",
+    "region": "south",
+    "name": "망치몽돌해수욕장",
+    "address": "거제시",
+    "latitude": 34.805916,
+    "longitude": 128.658902
+  },
+  {
+    "id": "bca506e2-0b83-559e-ab4f-929f20083eb5",
+    "region": "south",
+    "name": "구영해수욕장",
+    "address": "거제시",
+    "latitude": 35.031209,
+    "longitude": 128.690781
+  },
+  {
+    "id": "1268b18f-6810-57a3-b9b7-b409df2bba80",
+    "region": "south",
+    "name": "항도몽돌해변",
+    "address": "남해군",
+    "latitude": 34.741504,
+    "longitude": 128.048332
+  },
+  {
+    "id": "368e3035-37b9-50cb-9a97-66af716abd51",
+    "region": "south",
+    "name": "상주은모래해수욕장",
+    "address": "남해군",
+    "latitude": 34.720783,
+    "longitude": 127.988089
+  },
+  {
+    "id": "70db4a7a-b7a4-5235-85c7-8e43b20631db",
+    "region": "south",
+    "name": "송정솔바람해수욕장",
+    "address": "남해군",
+    "latitude": 34.722246,
+    "longitude": 128.023895
+  },
+  {
+    "id": "b87af6ad-4ab0-5fa0-bbb7-875c788fd3e5",
+    "region": "south",
+    "name": "남일대해수욕장",
+    "address": "사천시",
+    "latitude": 34.926630,
+    "longitude": 128.096380
+  },
+  {
+    "id": "3f5dddef-3dc8-5c53-af96-de35212fcb36",
+    "region": "south",
+    "name": "대항해수욕장",
+    "address": "통영시",
+    "latitude": 34.850947,
+    "longitude": 128.212827
+  },
+  {
+    "id": "eca9fa87-3944-52e2-978f-19c63c7441fd",
+    "region": "south",
+    "name": "통영공설해수욕장",
+    "address": "통영시",
+    "latitude": 34.819535,
+    "longitude": 128.439401
+  },
+  {
+    "id": "f644d03c-15f2-5291-80de-e60d7e454acc",
+    "region": "south",
+    "name": "통영죽도해수욕장",
+    "address": "통영시",
+    "latitude": 34.812853,
+    "longitude": 128.458061
+  },
+  {
+    "id": "1d308598-e1d7-55af-9080-29ee1bb67b2d",
+    "region": "south",
+    "name": "도동해수욕장",
+    "address": "통영시",
+    "latitude": 34.643297,
+    "longitude": 128.235289
+  },
+  {
+    "id": "a8746960-9558-5fac-b193-2532c92db099",
+    "region": "south",
+    "name": "유동해수욕장",
+    "address": "통영시",
+    "latitude": 34.623136,
+    "longitude": 128.242989
+  },
+  {
+    "id": "05d5e97b-aa01-5392-ab12-4fee72b3b8d3",
+    "region": "south",
+    "name": "노적해수욕장",
+    "address": "통영시",
+    "latitude": 34.624344,
+    "longitude": 128.286414
+  },
+  {
+    "id": "0c2613ac-4a12-5ee6-9d36-704d960abdc4",
+    "region": "south",
+    "name": "구조라해수욕장",
+    "address": "거제시",
+    "latitude": 34.806953,
+    "longitude": 128.692837
+  },
+  {
+    "id": "1f87f29f-b18d-5e69-8ca0-2fa0ba792001",
+    "region": "south",
+    "name": "와현모래숲해변",
+    "address": "거제시",
+    "latitude": 34.812745,
+    "longitude": 128.708604
+  },
+  {
+    "id": "d97ca383-e986-5f42-a8a5-ea138853b99d",
+    "region": "south",
+    "name": "학동흑진주몽돌해변",
+    "address": "거제시",
+    "latitude": 34.774769,
+    "longitude": 128.641519
+  },
+  {
+    "id": "e5b27c8d-c47f-548f-96d8-3d9892f8ed37",
+    "region": "south",
+    "name": "명사해수욕장",
+    "address": "거제시",
+    "latitude": 34.726984,
+    "longitude": 128.603501
+  },
+  {
+    "id": "e143b111-c9f7-50a3-99f6-2053d0619eaa",
+    "region": "south",
+    "name": "덕원해수욕장",
+    "address": "거제시",
+    "latitude": 34.778903,
+    "longitude": 128.575555
+  },
+  {
+    "id": "dc5d9a96-d154-5b96-9f42-b2b4f78becf8",
+    "region": "south",
+    "name": "여차몽돌해수욕장",
+    "address": "거제시",
+    "latitude": 34.713906,
+    "longitude": 128.625973
+  },
+  {
+    "id": "0f4344b9-c96a-509e-adf7-8c4e87ca71d3",
+    "region": "south",
+    "name": "함목해수욕장",
+    "address": "거제시",
+    "latitude": 34.740005,
+    "longitude": 128.652929
+  },
+  {
+    "id": "4278646d-0b63-5965-986c-befdf50c5a31",
+    "region": "south",
+    "name": "물안해수욕장",
+    "address": "거제시",
+    "latitude": 35.010761,
+    "longitude": 128.652575
+  },
+  {
+    "id": "205877e9-cd0b-5e28-8835-5682daedd36f",
+    "region": "south",
+    "name": "황포해수욕장",
+    "address": "거제시",
+    "latitude": 35.020927,
+    "longitude": 128.674252
+  },
+  {
+    "id": "b16962b7-637e-5a21-b22a-fd513903d7da",
+    "region": "south",
+    "name": "농소몽돌해수욕장",
+    "address": "거제시",
+    "latitude": 35.004620,
+    "longitude": 128.701060
+  },
+  {
+    "id": "445e7e52-d877-5b7d-b079-2252f55af5b8",
+    "region": "south",
+    "name": "덕포해수욕장",
+    "address": "거제시",
+    "latitude": 34.910847,
+    "longitude": 128.710547
+  },
+  {
+    "id": "1eabbf3f-f14b-5697-89a4-a86eacadaa48",
+    "region": "south",
+    "name": "옥계해수욕장",
+    "address": "거제시",
+    "latitude": 34.981000,
+    "longitude": 128.647000
+  },
+  {
+    "id": "c6065ed7-f922-5e70-8963-f5d6a5c155d4",
+    "region": "south",
+    "name": "해운대해수욕장",
+    "address": "부산광역시 해운대구",
+    "latitude": 35.158572,
+    "longitude": 129.159944
+  },
+  {
+    "id": "b49a7590-65a5-54a9-84d7-36e1bd35bd77",
+    "region": "south",
+    "name": "광안리해수욕장",
+    "address": "부산광역시 수영구",
+    "latitude": 35.153774,
+    "longitude": 129.118522
+  },
+  {
+    "id": "5d043839-f000-5541-b476-9db14ba6db9c",
+    "region": "south",
+    "name": "송도해수욕장",
+    "address": "부산광역시 서구",
+    "latitude": 35.075931,
+    "longitude": 129.016945
+  },
+  {
+    "id": "6dd5be8f-34d0-57d1-926e-012c6a06c309",
+    "region": "south",
+    "name": "다대포해수욕장",
+    "address": "부산광역시 사하구",
+    "latitude": 35.046874,
+    "longitude": 128.965537
+  },
+  {
+    "id": "5dff5d7e-8aef-5a1d-898f-715fc661b0b3",
+    "region": "south",
+    "name": "임랑해수욕장",
+    "address": "부산광역시 기장군",
+    "latitude": 35.319079,
+    "longitude": 129.264453
+  },
+  {
+    "id": "9953543e-48f0-5111-b01c-64cab678c990",
+    "region": "south",
+    "name": "일광해수욕장",
+    "address": "부산광역시 기장군",
+    "latitude": 35.260014,
+    "longitude": 129.233782
+  },
+  {
+    "id": "8e5001cd-e0b9-56a3-ad54-4e72072b3baf",
+    "region": "east",
+    "name": "진하해수욕장",
+    "address": "울산광역시 울주군",
+    "latitude": 35.381645,
+    "longitude": 129.345046
+  },
+  {
+    "id": "f81fcf88-9adc-5c80-a372-0ae0b768b358",
+    "region": "east",
+    "name": "나사해수욕장",
+    "address": "울산광역시 울주군",
+    "latitude": 35.355956,
+    "longitude": 129.335583
+  },
+  {
+    "id": "3a4e9369-57d2-52b8-a760-bf5b9d3d7d2a",
+    "region": "east",
+    "name": "일산해수욕장",
+    "address": "울산광역시 동구",
+    "latitude": 35.495877,
+    "longitude": 129.430888
+  },
+  {
+    "id": "657e12e7-4456-5ea3-b099-8d707fa95fbb",
+    "region": "east",
+    "name": "오류해수욕장",
+    "address": "경주시",
+    "latitude": 35.822181,
+    "longitude": 129.509528
+  },
+  {
+    "id": "aa1cc0d6-e935-56f3-a27b-19622439bc36",
+    "region": "east",
+    "name": "나아해수욕장",
+    "address": "경주시",
+    "latitude": 35.703500,
+    "longitude": 129.472500
+  },
+  {
+    "id": "ee2d2eb5-0a43-5dd3-850d-2c33c876e101",
+    "region": "east",
+    "name": "전촌송림해수욕장",
+    "address": "경주시",
+    "latitude": 35.786769,
+    "longitude": 129.491169
+  },
+  {
+    "id": "c085892c-6cb9-5f09-8ae5-841822d9e401",
+    "region": "east",
+    "name": "영일대해수욕장",
+    "address": "포항시",
+    "latitude": 36.055092,
+    "longitude": 129.378165
+  },
+  {
+    "id": "f7eb48ce-72ea-5b1b-a897-b207d1fde4c4",
+    "region": "east",
+    "name": "화진해수욕장",
+    "address": "포항시",
+    "latitude": 36.251408,
+    "longitude": 129.373893
+  },
+  {
+    "id": "e64fab34-a7d9-5225-8969-c62f1be6dd4d",
+    "region": "east",
+    "name": "월포해수욕장",
+    "address": "포항시",
+    "latitude": 36.201746,
+    "longitude": 129.371235
+  },
+  {
+    "id": "5ca45a6a-b45b-5b21-96fa-f4e24a311068",
+    "region": "east",
+    "name": "포항송도해수욕장",
+    "address": "포항시",
+    "latitude": 36.034800,
+    "longitude": 129.380700
+  },
+  {
+    "id": "18f07585-18ff-513e-b0e7-d9baf0736984",
+    "region": "east",
+    "name": "도구해수욕장",
+    "address": "포항시",
+    "latitude": 35.992251,
+    "longitude": 129.442997
+  },
+  {
+    "id": "265ccd98-eeef-53e2-9c75-6d5bced0cba3",
+    "region": "east",
+    "name": "삼정해변",
+    "address": "포항시",
+    "latitude": 36.003900,
+    "longitude": 129.572100
+  },
+  {
+    "id": "b0518633-61ea-594b-979d-6d7561c35631",
+    "region": "east",
+    "name": "구룡포해수욕장",
+    "address": "포항시",
+    "latitude": 35.997183,
+    "longitude": 129.566573
+  },
+  {
+    "id": "7774e6aa-e384-5749-baf0-255f56f73b0e",
+    "region": "east",
+    "name": "대진1리해수욕장",
+    "address": "영덕군",
+    "latitude": 36.564414,
+    "longitude": 129.426703
+  },
+  {
+    "id": "2b288782-687e-54f7-8b1d-ebfdae2d602d",
+    "region": "east",
+    "name": "후포해수욕장",
+    "address": "울진군",
+    "latitude": 36.675080,
+    "longitude": 129.442660
+  },
+  {
+    "id": "65833615-8025-5882-b6f7-28fc1797980a",
+    "region": "east",
+    "name": "증산해변",
+    "address": "삼척시",
+    "latitude": 37.474623,
+    "longitude": 129.161747
+  },
+  {
+    "id": "90b33537-8df6-500e-ad64-e82504521224",
+    "region": "east",
+    "name": "삼척해변",
+    "address": "삼척시",
+    "latitude": 37.467940,
+    "longitude": 129.169850
+  },
+  {
+    "id": "e98efcad-84a4-5d7c-91a5-d6ef727a50d3",
+    "region": "east",
+    "name": "작은후진해변",
+    "address": "삼척시",
+    "latitude": 37.464252,
+    "longitude": 129.175575
+  },
+  {
+    "id": "6a78cb03-3c4b-598d-a7b8-69e7c44d0602",
+    "region": "east",
+    "name": "한재밑해변",
+    "address": "삼척시",
+    "latitude": 37.408285,
+    "longitude": 129.205101
+  },
+  {
+    "id": "6faf2926-a7ff-540e-b173-b3dd75f313c9",
+    "region": "east",
+    "name": "맹방해변",
+    "address": "삼척시",
+    "latitude": 37.390280,
+    "longitude": 129.232300
+  },
+  {
+    "id": "c863b752-cd2d-53ab-9858-79fcf4a80caa",
+    "region": "east",
+    "name": "덕산해변",
+    "address": "삼척시",
+    "latitude": 37.385030,
+    "longitude": 129.243170
+  },
+  {
+    "id": "58edd51a-8541-56ef-bf60-48e94cb688b6",
+    "region": "east",
+    "name": "부남해변",
+    "address": "삼척시",
+    "latitude": 37.362214,
+    "longitude": 129.251085
+  },
+  {
+    "id": "bce1bd8a-0151-5ab2-9fdf-dc6bf8f6101f",
+    "region": "east",
+    "name": "궁촌해변",
+    "address": "삼척시",
+    "latitude": 37.324509,
+    "longitude": 129.267816
+  },
+  {
+    "id": "c995517e-8db5-58e9-b73a-360df9874cf0",
+    "region": "east",
+    "name": "원평해변",
+    "address": "삼척시",
+    "latitude": 37.320060,
+    "longitude": 129.272480
+  },
+  {
+    "id": "e4065e31-5c28-5c93-af04-22d7d4a73c20",
+    "region": "east",
+    "name": "용화해변",
+    "address": "삼척시",
+    "latitude": 37.289716,
+    "longitude": 129.304328
+  },
+  {
+    "id": "df320452-9bb7-5a4b-b4b3-bc2fae7fba5a",
+    "region": "south",
+    "name": "오천몽돌해변",
+    "address": "고흥군",
+    "latitude": 34.430653,
+    "longitude": 127.207214
+  },
+  {
+    "id": "fd536f41-fbdb-5248-bbf7-d7bd9a34aa16",
+    "region": "south",
+    "name": "발포해수욕장",
+    "address": "고흥군",
+    "latitude": 34.491036,
+    "longitude": 127.355906
+  },
+  {
+    "id": "bbf103e8-b507-5d29-a6cb-8ba4955d90ef",
+    "region": "south",
+    "name": "남성리해수욕장",
+    "address": "고흥군",
+    "latitude": 34.519433,
+    "longitude": 127.406283
+  },
+  {
+    "id": "92bc5afa-c6e3-5a9a-91a2-33ba414bc809",
+    "region": "south",
+    "name": "남열해돋이해수욕장",
+    "address": "고흥군",
+    "latitude": 34.579864,
+    "longitude": 127.486678
+  },
+  {
+    "id": "234379fb-4e40-5bb5-9125-0b53a3842637",
+    "region": "south",
+    "name": "와온해수욕장",
+    "address": "순천시",
+    "latitude": 34.846400,
+    "longitude": 127.525400
+  },
+  {
+    "id": "ccdee473-73a4-5bcd-aaa2-e72f769977da",
+    "region": "south",
+    "name": "신덕해수욕장",
+    "address": "여수시",
+    "latitude": 34.818739,
+    "longitude": 127.766816
+  },
+  {
+    "id": "22059042-d907-5a71-a301-abafc277960a",
+    "region": "east",
+    "name": "노봉해변",
+    "address": "동해시",
+    "latitude": 37.587294,
+    "longitude": 129.100184
+  },
+  {
+    "id": "9713a054-abc7-5763-9379-b4c08663668c",
+    "region": "east",
+    "name": "대진해변",
+    "address": "동해시",
+    "latitude": 37.581404,
+    "longitude": 129.109696
+  },
+  {
+    "id": "1d4c9284-c19e-5992-8e05-c0544c950d3f",
+    "region": "east",
+    "name": "고불개해변",
+    "address": "동해시",
+    "latitude": 37.527649,
+    "longitude": 129.122331
+  },
+  {
+    "id": "d214c823-0c26-5350-995d-845728b82d6c",
+    "region": "east",
+    "name": "한섬해변",
+    "address": "동해시",
+    "latitude": 37.520427,
+    "longitude": 129.122194
+  }
+]

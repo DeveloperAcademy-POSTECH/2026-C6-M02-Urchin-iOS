@@ -1,0 +1,146 @@
+//
+//  AuthClient.swift
+//  Plobby
+//
+//  Created by 더스틴 on 10/27/26.
+//
+
+import Foundation
+
+import Dependencies
+import Supabase
+
+struct AuthClient {
+    var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
+    var fetchCredential: @Sendable (_ hashedNonce: String) async -> Result<AppleCredential, AppleSignInError>
+    var fetchAppleAuthorizationCode: @Sendable () async throws -> String
+    var fetchCurrentUser: @Sendable () async -> AuthUser?
+    var signedOutEvents: @Sendable () -> AsyncStream<Void>
+    var signUp: @Sendable (_ profile: SignUpProfile) async throws -> Void
+    var signOut: @Sendable (_ token: String?) async throws -> Void
+    var submitWithdrawalFeedback: @Sendable (_ reason: WithdrawalReason?, _ detail: String?) async throws -> Void
+    var withdraw: @Sendable (
+        _ reason: WithdrawalReason?,
+        _ detail: String?,
+        _ authorizationCode: String
+    ) async throws -> Void
+}
+
+extension AuthClient: DependencyKey {
+    static let liveValue: AuthClient = {
+        .init(
+            signInWithApple: { idToken, nonce, fullName in
+                @Dependency(\.supabaseClient) var supabase
+
+                let session = try await supabase.auth.signInWithIdToken(
+                    credentials: OpenIDConnectCredentials(provider: .apple, idToken: idToken, nonce: nonce)
+                )
+
+                if let fullName {
+                    _ = try? await supabase.auth.update(
+                        user: UserAttributes(data: ["full_name": .string(fullName)])
+                    )
+                }
+
+                return AuthUser(
+                    id: session.user.id,
+                    email: session.user.email,
+                    fullName: fullName ?? session.user.userMetadata["full_name"]?.stringValue
+                )
+            },
+            fetchCredential: { hashedNonce in
+                await AppleSignInCoordinator.fetchCredential(hashedNonce: hashedNonce)
+            },
+            fetchAppleAuthorizationCode: {
+                guard let anchor = AppleAuthorizationRequester.currentAnchor() else {
+                    throw AppleSignInError.failed
+                }
+
+                return try await AppleAuthorizationRequester(anchor: anchor).fetchAuthorizationCode()
+            },
+            fetchCurrentUser: {
+                @Dependency(\.supabaseClient) var supabase
+
+                guard let session = try? await supabase.auth.session else { return nil }
+
+                return AuthUser(
+                    id: session.user.id,
+                    email: session.user.email,
+                    fullName: session.user.userMetadata["full_name"]?.stringValue
+                )
+            },
+            signedOutEvents: {
+                @Dependency(\.supabaseClient) var supabase
+
+                return AsyncStream { continuation in
+                    let task = Task {
+                        for await (event, _) in supabase.auth.authStateChanges where event == .signedOut {
+                            continuation.yield()
+                        }
+                        continuation.finish()
+                    }
+                    continuation.onTermination = { _ in task.cancel() }
+                }
+            },
+            signUp: { profile in
+                @Dependency(\.supabaseClient) var supabase
+
+                var profileImageKey: String?
+
+                if let profileImage = profile.profileImage {
+                    profileImageKey = try await supabase.uploadProfileImage(profileImage, userID: profile.userID)
+                }
+
+                try await supabase
+                    .rpc(
+                        "complete_signup",
+                        params: CompleteSignupRequestDTO(from: profile, profileImageKey: profileImageKey)
+                    )
+                    .execute()
+            },
+            signOut: { token in
+                @Dependency(\.supabaseClient) var supabase
+
+                if let token {
+                    do {
+                        try await supabase
+                            .from("device_tokens")
+                            .delete()
+                            .eq("token", value: token)
+                            .execute()
+                    } catch {
+                        PlobbyLogger.error(error)
+                    }
+                }
+
+                try await supabase.auth.signOut(scope: .local)
+            },
+            submitWithdrawalFeedback: { reason, detail in
+                @Dependency(\.supabaseClient) var supabase
+
+                let trimmed = detail?.trimmingCharacters(in: .whitespacesAndNewlines)
+                let detailToSave = trimmed?.isEmpty == false ? trimmed : nil
+
+                try await supabase
+                    .from("withdrawal_feedback")
+                    .insert(WithdrawalFeedbackInsertRequestDTO(from: reason, detail: detailToSave))
+                    .execute()
+            },
+            withdraw: { reason, detail, authorizationCode in
+                @Dependency(\.supabaseClient) var supabase
+                @Dependency(\.authClient) var authClient
+
+                try await authClient.submitWithdrawalFeedback(reason, detail)
+
+                try await supabase.functions.invoke(
+                    "delete-account",
+                    options: FunctionInvokeOptions(
+                        body: DeleteAccountRequestDTO(authorizationCode: authorizationCode)
+                    )
+                )
+
+                try? await supabase.auth.signOut(scope: .local)
+            }
+        )
+    }()
+}
