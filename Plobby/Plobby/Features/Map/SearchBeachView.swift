@@ -20,10 +20,8 @@ struct SearchBeachView: View {
     // MARK: - Body
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 0) {
             searchField
-                .padding(.horizontal, 20)
-                .padding(.vertical, 8)
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
@@ -57,37 +55,46 @@ struct SearchBeachView: View {
 private extension SearchBeachView {
 
     var searchField: some View {
-        HStack(spacing: 8) {
-            Button {
-                store.send(.backTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 24, height: 24)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-
-            TextField(
-                "",
-                text: $store.query,
-                prompt: Text("해변, 해수욕장 이름을 검색해주세요.")
-                    .foregroundStyle(Color(.textTertiary))
-            )
-            .focused($isSearchFocused)
-            .plobbyFont(.body)
-            .foregroundStyle(Color(.textPrimary))
-            .submitLabel(.search)
+        HStack(spacing: 8.scaled) {
+            backButton
+            searchTextField
         }
-        .padding(.horizontal, 12)
-        .frame(height: 56)
-        .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 12))
+        .padding(.horizontal, 12.scaled)
+        .padding(.vertical, 16.scaled)
+        .frame(height: 56.scaled)
+        .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 12.scaled))
         .overlay {
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 12.scaled)
                 .stroke(Color(.currentWarmBorder), lineWidth: 1)
         }
+        .padding(.horizontal, 20.scaled)
+        .padding(.vertical, 8.scaled)
+    }
+    
+    var backButton: some View {
+        Button {
+            store.send(.backTapped)
+        } label: {
+            Image(.chevronLeft)
+                .resizable()
+                .frame(width: 24.scaled, height: 24.scaled)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("뒤로")
+    }
+    
+    var searchTextField: some View {
+        TextField(
+            "",
+            text: $store.query,
+            prompt: Text("해변, 해수욕장 이름을 검색해주세요.")
+                .foregroundStyle(Color(.textTertiary))
+        )
+        .focused($isSearchFocused)
+        .plobbyFont(.body)
+        // TODO: 컬러셋 확정 후 교체 (#1A1A1A)
+        .foregroundStyle(Color(red: 0x1A / 255, green: 0x1A / 255, blue: 0x1A / 255))
+        .submitLabel(.search)
     }
 }
 
