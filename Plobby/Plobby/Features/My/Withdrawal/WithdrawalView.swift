@@ -39,16 +39,14 @@ struct WithdrawalView: View {
                 .padding(.horizontal, 20)
         }
         .background(Color(.gray0))
-        // 빈 곳을 누르면 키보드를 내려요
         .contentShape(Rectangle())
         .onTapGesture {
             isDetailFocused = false
         }
-        // 여러 줄 입력이라 리턴 키가 줄바꿈이에요. 키보드 위에 완료 버튼을 둬요
         .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
+            ToolbarSpacer(.flexible, placement: .keyboard)
 
+            ToolbarItem(placement: .keyboard) {
                 Button("완료") {
                     isDetailFocused = false
                 }
