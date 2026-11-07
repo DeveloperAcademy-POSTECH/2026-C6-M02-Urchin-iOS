@@ -14,7 +14,6 @@ struct SettingsView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<SettingsFeature>
-    /// 마이 화면에 목록만 넣을 때는 상단 바를 숨겨요
     var showsNavigationBar = true
     @Environment(\.openURL) private var openURL
 
@@ -77,8 +76,8 @@ extension SettingsView {
             .accessibilityLabel("뒤로")
 
             Text("설정")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
+                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 18))
+                .foregroundStyle(Color.currentNeutralGray)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(height: 56)
@@ -107,7 +106,7 @@ extension SettingsView {
 
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(Color(.textTertiary))
+                            .foregroundStyle(Color.currentNeutralGray)
                     }
                     .frame(height: 52)
                     .contentShape(Rectangle())
@@ -127,7 +126,7 @@ extension SettingsView {
 
                     Image(systemName: "chevron.right")
                         .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(Color(.textTertiary))
+                        .foregroundStyle(Color.textTertiary)
                 }
                 .frame(height: 52)
                 .contentShape(Rectangle())
@@ -166,7 +165,7 @@ extension SettingsView {
 
                 Text(store.appVersion)
                     .plobbyFont(.body)
-                    .foregroundStyle(Color(.textSecondary))
+                    .foregroundStyle(Color.textTertiary)
             }
             .frame(height: 52)
         }
@@ -178,17 +177,17 @@ extension SettingsView {
     ) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
-                .plobbyFont(.metadata)
-                .foregroundStyle(Color(.textTertiary))
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.gray600))
                 .padding(.bottom, 4)
 
             content()
         }
     }
 
-    private func rowTitle(_ title: String, color: Color = Color(.textPrimary)) -> some View {
+    private func rowTitle(_ title: String, color: Color = .textPrimary) -> some View {
         Text(title)
-            .plobbyFont(.body)
+            .plobbyFont(.actionLabel)
             .foregroundStyle(color)
             .frame(maxWidth: .infinity, alignment: .leading)
     }

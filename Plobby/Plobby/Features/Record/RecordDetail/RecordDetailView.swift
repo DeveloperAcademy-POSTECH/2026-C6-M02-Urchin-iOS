@@ -226,7 +226,7 @@ private extension RecordDetailView {
                 .tabViewStyle(.page(indexDisplayMode: .never))
 
                 LinearGradient(
-                    colors: [.clear, .black.opacity(0.4)],
+                    colors: [.clear, Color(.neutralBlack).opacity(0.4)],
                     startPoint: .center,
                     endPoint: .bottom
                 )
@@ -241,7 +241,7 @@ private extension RecordDetailView {
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.gray0))
                     .frame(width: 44, height: 26)
-                    .background(.black.opacity(0.4), in: RoundedRectangle(cornerRadius: 8))
+                    .background(Color(.neutralBlack).opacity(0.4), in: RoundedRectangle(cornerRadius: 8))
                     .padding(12)
             }
         }

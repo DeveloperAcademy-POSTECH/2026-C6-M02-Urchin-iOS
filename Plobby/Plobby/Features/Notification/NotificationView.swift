@@ -58,7 +58,7 @@ extension NotificationView {
 
             Text("알림")
                 .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
+                .foregroundStyle(Color.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(height: 56)
@@ -71,8 +71,8 @@ extension NotificationView {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if store.isEmpty {
             Text("아직 받은 알림이 없어요")
-                .plobbyFont(.body)
-                .foregroundStyle(Color(.textTertiary))
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             ScrollView {
@@ -101,7 +101,7 @@ extension NotificationView {
         } label: {
             Text("모두 읽음")
                 .plobbyFont(.label)
-                .foregroundStyle(store.hasUnread ? Color(.textSecondary) : Color(.textDisabled))
+                .foregroundStyle(store.hasUnread ? Color(.gray700) : Color(.textDisabled))
                 .frame(height: 44)
                 .contentShape(Rectangle())
         }
@@ -116,7 +116,7 @@ extension NotificationView {
         if !notifications.isEmpty {
             VStack(alignment: .leading, spacing: 0) {
                 Text(title)
-                    .plobbyFont(.cardTitle)
+                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 16))
                     .foregroundStyle(Color(.textPrimary))
                     .padding(.horizontal, 20)
                     .padding(.top, 16)
@@ -144,11 +144,11 @@ extension NotificationView {
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(notification.title)
-                        .plobbyFont(.body)
+                        .plobbyFont(.notification)
                         .foregroundStyle(Color(.textPrimary))
 
                     Text(notification.subtitle)
-                        .plobbyFont(.label)
+                        .plobbyFont(.helper)
                         .foregroundStyle(Color(.textSecondary))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

@@ -26,6 +26,7 @@ enum PlobbyTypography {
     case helper
     case metadata
     case metric
+    case metricLarge
 
     var weight: PretendardWeight {
         switch self {
@@ -40,6 +41,7 @@ enum PlobbyTypography {
         case .helper: .regular
         case .metadata: .regular
         case .metric: .semiBold
+        case .metricLarge: .semiBold
         }
     }
 
@@ -56,6 +58,7 @@ enum PlobbyTypography {
         case .helper: 13
         case .metadata: 12
         case .metric: 22
+        case .metricLarge: 32
         }
     }
 
@@ -72,6 +75,7 @@ enum PlobbyTypography {
         case .helper: 20
         case .metadata: 18
         case .metric: 28
+        case .metricLarge: 40
         }
     }
 }
