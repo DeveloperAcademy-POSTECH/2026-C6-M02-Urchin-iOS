@@ -263,36 +263,15 @@ private extension PhotosPickerView {
 private extension PhotosPickerView {
 
     var bottomButton: some View {
-        Button {
+        PlobbyButton(
+            text: store.isSkip ? "건너뛰기" : "다음",
+            style: store.isSkip ? .alternative : .default
+        ) {
             store.send(.bottomButtonTapped)
-        } label: {
-            bottomButtonLabel
         }
-        .buttonStyle(.plain)
         .padding(.horizontal, 20.scaled)
         .padding(.vertical, 24.scaled)
         .background(Color(.gray0))
-    }
-
-    var bottomButtonLabel: some View {
-        Text(store.isSkip ? "건너뛰기" : "다음")
-            .font(.custom(PretendardWeight.medium.rawValue, fixedSize: (store.isSkip ? 18 : 17).scaled))
-            .foregroundStyle(store.isSkip ? Color(.textPrimary) : Color(.gray0))
-            .frame(maxWidth: .infinity)
-            .frame(height: 54.scaled)
-            .background(
-                store.isSkip ? Color(.gray0) : Color(.green500),
-                in: RoundedRectangle(cornerRadius: 8.scaled)
-            )
-            .overlay { skipButtonBorder }
-    }
-
-    @ViewBuilder
-    var skipButtonBorder: some View {
-        if store.isSkip {
-            RoundedRectangle(cornerRadius: 8.scaled)
-                .stroke(Color(.currentWarmBorder), lineWidth: 1)
-        }
     }
 }
 
@@ -361,11 +340,11 @@ private extension PhotosPickerView {
     func albumTitleAndCount(_ album: PhotoAlbum) -> some View {
         VStack(alignment: .leading, spacing: 2.scaled) {
             Text(album.title)
-                .font(.custom(PretendardWeight.regular.rawValue, fixedSize: 17.scaled))
+                .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
 
             Text(album.assetCount.formatted())
-                .font(.custom(PretendardWeight.regular.rawValue, fixedSize: 14.scaled))
+                .plobbyFont(.label)
                 .foregroundStyle(Color(.textSecondary))
         }
     }
@@ -392,7 +371,7 @@ private extension PhotosPickerView {
                 .foregroundStyle(Color(.textPrimary))
 
             Text("설정에서 사진 접근을 허용하면\n활동 사진을 기록에 추가할 수 있어요")
-                .font(.custom(PretendardWeight.regular.rawValue, fixedSize: 14.scaled))
+                .plobbyFont(.label)
                 .foregroundStyle(Color(.textSecondary))
                 .multilineTextAlignment(.center)
         }
@@ -403,7 +382,7 @@ private extension PhotosPickerView {
             store.send(.openSettingsTapped)
         } label: {
             Text("설정으로 이동")
-                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 15.scaled))
+                .plobbyFont(.notification)
                 .foregroundStyle(Color(.gray0))
                 .padding(.horizontal, 20.scaled)
                 .frame(height: 44.scaled)
