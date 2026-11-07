@@ -15,10 +15,8 @@ struct MapView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<MapFeature>
-
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var visibleRegion: MKCoordinateRegion?
-    /// MapKit이 알려주는 탭한 마커. 바텀시트를 여는 신호로만 쓰고 바로 비워요.
     @State private var tappedMarkerID: UUID?
     @State private var mapSize: CGSize = .zero
     @Environment(\.scenePhase) private var scenePhase
