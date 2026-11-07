@@ -22,14 +22,11 @@ struct SearchBeachView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             searchField
+            favoriteSection
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     if InputText.isBlank(store.query) {
-                        if store.isMember, !store.favoriteBeaches.isEmpty {
-                            favoriteSection
-                        }
-
                         if !store.recentSearches.isEmpty {
                             recentSection
                         }
@@ -69,6 +66,7 @@ private extension SearchBeachView {
         }
         .padding(.horizontal, 20.scaled)
         .padding(.vertical, 8.scaled)
+        .padding(.bottom, 8.scaled)
     }
     
     var backButton: some View {
@@ -88,12 +86,11 @@ private extension SearchBeachView {
             "",
             text: $store.query,
             prompt: Text("해변, 해수욕장 이름을 검색해주세요.")
-                .foregroundStyle(Color(.textTertiary))
+                .foregroundStyle(Color(.gray600))
         )
         .focused($isSearchFocused)
         .plobbyFont(.body)
-        // TODO: 컬러셋 확정 후 교체 (#1A1A1A)
-        .foregroundStyle(Color(red: 0x1A / 255, green: 0x1A / 255, blue: 0x1A / 255))
+        .foregroundStyle(Color(.gray900))
         .submitLabel(.search)
     }
 }
@@ -102,7 +99,6 @@ private extension SearchBeachView {
 
 private extension SearchBeachView {
 
-    // TODO: 관심 해변 추가 흐름이 정해지면 "+ 추가" 버튼 연결
     var favoriteSection: some View {
         section("관심 해변") {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -115,10 +111,20 @@ private extension SearchBeachView {
                         }
                         .buttonStyle(.plain)
                     }
+
+                    if store.favoriteBeaches.count < HomeFeature.maximumFavoriteBeachCount {
+                        Button {
+                            // TODO: 관심 해변 추가 흐름 연결
+                        } label: {
+                            BeachChip(title: "추가", style: .add)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
             .scrollClipDisabled()
         }
+        .padding(.horizontal, 20.scaled)
     }
 }
 
@@ -128,9 +134,9 @@ private extension SearchBeachView {
 
     var recentSection: some View {
         section("최근 검색") {
-            VStack(spacing: 4) {
+            VStack(spacing: 4.scaled) {
                 ForEach(store.recentSearches) { beach in
-                    HStack(spacing: 8) {
+                    HStack(spacing: 8.scaled) {
                         favoriteIcon(beach)
 
                         Button {
@@ -138,7 +144,7 @@ private extension SearchBeachView {
                         } label: {
                             Text(beach.name)
                                 .plobbyFont(.body)
-                                .foregroundStyle(Color(.textPrimary))
+                                .foregroundStyle(Color(.gray900))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .contentShape(Rectangle())
                         }
@@ -147,33 +153,38 @@ private extension SearchBeachView {
                         Button {
                             store.send(.recentDeleteTapped(beach), animation: .default)
                         } label: {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 11))
-                                .foregroundStyle(Color(.textTertiary))
-                                .frame(width: 36, height: 36)
-                                .contentShape(Rectangle())
+                            Image(.mapXmark)
+                                .resizable()
+                                .frame(width: 36.scaled, height: 36.scaled)
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel("\(beach.name) 최근 검색 삭제")
+                        .accessibilityLabel("최근 검색 삭제")
                     }
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 8.scaled)
                 }
             }
         }
     }
 
-    /// 관심 해변이면 별, 아니면 핀. 로그인했으면 눌러서 관심 해변을 바꿀 수 있어요.
     func favoriteIcon(_ beach: Beach) -> some View {
         let isFavorite = store.isMember && store.favoriteBeaches.contains { $0.id == beach.id }
 
         return Button {
             store.send(.favoriteTapped(beach))
         } label: {
-            Image(systemName: isFavorite ? "star.fill" : "mappin.circle.fill")
-                .font(.system(size: isFavorite ? 16 : 20))
-                .foregroundStyle(isFavorite ? Color(.green500) : Color(.textTertiary))
-                .frame(width: 36, height: 36)
-                .background(Color(.gray50), in: Circle())
+            Group {
+                if isFavorite {
+                    Image(.starGreen)
+                        .resizable()
+                        .frame(width: 24.scaled, height: 24.scaled)
+                } else {
+                    Image(.mapPin)
+                        .resizable()
+                        .frame(width: 36.scaled, height: 36.scaled)
+                }
+            }
+            .frame(width: 36.scaled, height: 36.scaled)
+            .background(Color(.gray50), in: Circle())
         }
         .buttonStyle(.plain)
         .disabled(!store.isMember)
@@ -233,12 +244,19 @@ private extension SearchBeachView {
             .padding(.top, 80)
         }
     }
+}
 
-    func section(_ title: String, @ViewBuilder content: () -> some View) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
+private extension SearchBeachView {
+    
+    func section(
+        _ title: String
+        , @ViewBuilder content: () -> some View)
+    -> some View {
+        VStack(alignment: .leading, spacing: 0) {
             Text(title)
                 .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
+                .foregroundStyle(Color(.gray900))
+                .padding(.bottom, 16)
 
             content()
         }
