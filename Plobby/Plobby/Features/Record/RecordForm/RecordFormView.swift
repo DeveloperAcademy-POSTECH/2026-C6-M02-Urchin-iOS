@@ -467,32 +467,14 @@ private extension RecordFormView {
 
     var trashSection: some View {
         VStack(alignment: .leading, spacing: 16.scaled) {
-            sectionTitle("수거한 쓰레기 *")
+            sectionTitle("수거한 쓰레기")
 
             VStack(spacing: 0) {
-                Button {
-                    store.send(.trashFieldTapped)
-                } label: {
-                    VStack(alignment: .leading, spacing: 4.scaled) {
-                        fieldCaption("종류와 개수 선택")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(12.scaled)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
+                trashSelectRow
 
-                Rectangle()
-                    .fill(Color(.gray200))
-                    .frame(height: 1)
+                fieldDivider
 
-                VStack(alignment: .leading, spacing: 4.scaled) {
-                    fieldCaption("총무게")
-
-                    unitTextField("0", text: $store.totalWeightText, unit: "kg")
-                        .focused($focusedField, equals: .totalWeight)
-                }
-                .padding(12.scaled)
+                totalWeightRow
             }
             .formFieldBorder(isError: store.totalWeightError != nil)
 
@@ -501,6 +483,43 @@ private extension RecordFormView {
                     .padding(.top, -8.scaled)
             }
         }
+    }
+
+    var trashSelectRow: some View {
+        Button {
+            store.send(.trashFieldTapped)
+        } label: {
+            HStack(spacing: 8.scaled) {
+                // 직접 입력이 아니라 선택 창으로 가는 필드라 placeholder도 SemiBold
+                Text(store.trash.summary ?? "종류와 개수 선택")
+                    .plobbyFont(.actionLabel)
+                    .foregroundStyle(store.trash.summary == nil ? Color(.textSecondary) : Color(.textPrimary))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 14.scaled, weight: .medium))
+                    .foregroundStyle(Color(.textPrimary))
+                    .frame(width: 24.scaled, height: 24.scaled)
+            }
+            .padding(.horizontal, 13.scaled)
+            .frame(height: 64.scaled)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    var totalWeightRow: some View {
+        HStack(spacing: 12.scaled) {
+            Text("총무게")
+                .plobbyFont(.body)
+                .foregroundStyle(Color(.textPrimary))
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            unitInputBox("50", text: $store.totalWeightText, unit: "kg")
+                .focused($focusedField, equals: .totalWeight)
+        }
+        .padding(.horizontal, 13.scaled)
+        .padding(.vertical, 8.scaled)
     }
 }
 
@@ -516,7 +535,7 @@ private extension RecordFormView {
                 TextField(
                     "",
                     text: $store.memo,
-                    prompt: Text("활동하며 느낀 점을 자유롭게 남겨주세요")
+                    prompt: Text("바위 틈에 유리 조각이 많았어요")
                         .foregroundStyle(Color(.textTertiary)),
                     axis: .vertical
                 )
@@ -603,12 +622,6 @@ private extension RecordFormView {
         Rectangle()
             .fill(Color(.gray200))
             .frame(height: 1)
-    }
-
-    func fieldCaption(_ text: String) -> some View {
-        Text(text)
-            .plobbyFont(.body)
-            .foregroundStyle(Color(.textPrimary))
     }
 
     func errorText(_ text: String) -> some View {
