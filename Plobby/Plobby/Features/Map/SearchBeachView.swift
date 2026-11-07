@@ -14,7 +14,6 @@ struct SearchBeachView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<SearchBeachFeature>
-
     @FocusState private var isSearchFocused: Bool
 
     // MARK: - Body
@@ -34,7 +33,7 @@ struct SearchBeachView: View {
                         searchResults
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 20.scaled)
             }
             .scrollDismissesKeyboard(.interactively)
         }
@@ -102,7 +101,7 @@ private extension SearchBeachView {
     var favoriteSection: some View {
         section("관심 해변") {
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: 8.scaled) {
                     ForEach(store.favoriteBeaches) { beach in
                         Button {
                             store.send(.resultTapped(beach.id))
@@ -208,7 +207,7 @@ private extension SearchBeachView {
                     Button {
                         store.send(.resultTapped(result.id))
                     } label: {
-                        VStack(alignment: .leading, spacing: 4) {
+                        VStack(alignment: .leading, spacing: 4.scaled) {
                             Text(result.name)
                                 .plobbyFont(.body)
                                 .foregroundStyle(Color(.textPrimary))
@@ -218,7 +217,7 @@ private extension SearchBeachView {
                                 .foregroundStyle(Color(.textSecondary))
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.vertical, 12)
+                        .padding(.vertical, 12.scaled)
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
@@ -231,7 +230,7 @@ private extension SearchBeachView {
             }
 
         case .empty:
-            VStack(spacing: 4) {
+            VStack(spacing: 4.scaled) {
                 Text("검색 결과가 없어요")
                     .plobbyFont(.body)
                     .foregroundStyle(Color(.textPrimary))
@@ -241,7 +240,7 @@ private extension SearchBeachView {
                     .foregroundStyle(Color(.textSecondary))
             }
             .frame(maxWidth: .infinity)
-            .padding(.top, 80)
+            .padding(.top, 80.scaled)
         }
     }
 }
@@ -256,10 +255,10 @@ private extension SearchBeachView {
             Text(title)
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.gray900))
-                .padding(.bottom, 16)
+                .padding(.bottom, 16.scaled)
 
             content()
         }
-        .padding(.vertical, 16)
+        .padding(.vertical, 16.scaled)
     }
 }
