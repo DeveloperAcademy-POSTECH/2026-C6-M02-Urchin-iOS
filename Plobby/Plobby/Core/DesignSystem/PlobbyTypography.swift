@@ -15,6 +15,7 @@ enum PretendardWeight: String {
 }
 
 enum PlobbyTypography {
+    case metricLarge
     case headingLarge
     case heading
     case cardTitle
@@ -26,10 +27,10 @@ enum PlobbyTypography {
     case helper
     case metadata
     case metric
-    case metricLarge
 
     var weight: PretendardWeight {
         switch self {
+        case .metricLarge: .semiBold
         case .headingLarge: .semiBold
         case .heading: .semiBold
         case .cardTitle: .semiBold
@@ -41,12 +42,12 @@ enum PlobbyTypography {
         case .helper: .regular
         case .metadata: .regular
         case .metric: .semiBold
-        case .metricLarge: .semiBold
         }
     }
 
     var size: CGFloat {
         switch self {
+        case .metricLarge : 32
         case .headingLarge: 24
         case .heading: 20
         case .cardTitle: 17
@@ -58,12 +59,12 @@ enum PlobbyTypography {
         case .helper: 13
         case .metadata: 12
         case .metric: 22
-        case .metricLarge: 32
         }
     }
 
     var lineHeight: CGFloat {
         switch self {
+        case .metricLarge : 40
         case .headingLarge: 32
         case .heading: 28
         case .cardTitle: 22
@@ -75,7 +76,6 @@ enum PlobbyTypography {
         case .helper: 20
         case .metadata: 18
         case .metric: 28
-        case .metricLarge: 40
         }
     }
 }

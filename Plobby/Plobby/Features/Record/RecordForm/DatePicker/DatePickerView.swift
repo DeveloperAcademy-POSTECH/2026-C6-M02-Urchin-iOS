@@ -21,19 +21,19 @@ struct DatePickerView: View {
     private let weekdaySymbols = DayOfWeek.allCases.map { $0.koreanName }
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 7)
 
-    private static let dayHeight: CGFloat = 44
+    private static let dayHeight: CGFloat = 44.scaled
 
     static func sheetHeight(weekCount: Int) -> CGFloat {
-        236 + dayHeight * CGFloat(weekCount)
+        236.scaled + dayHeight * CGFloat(weekCount)
     }
 
     // MARK: - Body
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16.scaled) {
             dateSelectionTitle
 
-            VStack(spacing: 6) {
+            VStack(spacing: 6.scaled) {
                 monthHeader
                 weekdayHeader
                 dayGrid
@@ -41,11 +41,11 @@ struct DatePickerView: View {
 
             compeletionButton
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
-        .padding(.bottom, 24)
+        .padding(.horizontal, 20.scaled)
+        .padding(.top, 20.scaled)
+        .padding(.bottom, 24.scaled)
         .frame(maxHeight: .infinity, alignment: .top)
-        .background(Color.white)
+        .background(Color(.gray0))
     }
 }
 
@@ -55,9 +55,9 @@ private extension DatePickerView {
     
     var dateSelectionTitle: some View {
         Text(store.field.dateTitle)
-            .font(.system(size: 20, weight: .semibold))
-            .foregroundStyle(Color.formPrimaryText)
-            .frame(height: 28)
+            .plobbyFont(.heading)
+            .foregroundStyle(Color(.textPrimary))
+            .frame(height: 28.scaled)
     }
     
     var compeletionButton: some View {
@@ -65,11 +65,11 @@ private extension DatePickerView {
             store.send(.confirmTapped)
         } label: {
             Text("완료")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(.white)
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.gray0))
                 .frame(maxWidth: .infinity)
-                .frame(height: 54)
-                .background(Color.formAccent, in: RoundedRectangle(cornerRadius: 8))
+                .frame(height: 54.scaled)
+                .background(Color(.green500), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .buttonStyle(.plain)
     }
@@ -82,8 +82,8 @@ private extension DatePickerView {
     var monthHeader: some View {
         HStack(spacing: 0) {
             Text(monthTitle)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(Color.formPrimaryText)
+                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 18.scaled))
+                .foregroundStyle(Color(.textPrimary))
 
             Spacer()
 
@@ -102,7 +102,7 @@ private extension DatePickerView {
                 store.send(.nextMonthTapped)
             }
         }
-        .frame(height: 44)
+        .frame(height: 44.scaled)
     }
 
     var monthTitle: String {
@@ -118,9 +118,9 @@ private extension DatePickerView {
     ) -> some View {
         Button(action: action) {
             Image(systemName: systemName)
-                .font(.system(size: 17, weight: .medium))
-                .foregroundStyle(isEnabled ? Color.formAccent : Color.formDisabledText)
-                .frame(width: 44, height: 44)
+                .font(.system(size: 17.scaled, weight: .medium))
+                .foregroundStyle(isEnabled ? Color(.green500) : Color(.textDisabled))
+                .frame(width: 44.scaled, height: 44.scaled)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -137,12 +137,12 @@ private extension DatePickerView {
         HStack(spacing: 0) {
             ForEach(weekdaySymbols, id: \.self) { symbol in
                 Text(symbol)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(Color.formSecondaryText)
+                    .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 13.scaled))
+                    .foregroundStyle(Color(.textSecondary))
                     .frame(maxWidth: .infinity)
             }
         }
-        .frame(height: 22)
+        .frame(height: 22.scaled)
     }
 
     var dayGrid: some View {
@@ -184,7 +184,7 @@ private extension DatePickerView {
         isDisabled: Bool
     ) -> some View {
         Text("\(calendar.component(.day, from: day))")
-            .font(.system(size: 18, weight: isToday && !isSelected ? .semibold : .regular))
+            .font(.custom((isToday && !isSelected ? PretendardWeight.semiBold : .regular).rawValue, fixedSize: 18.scaled))
             .foregroundStyle(
                 dayColor(
                     isSelected: isSelected,
@@ -192,11 +192,11 @@ private extension DatePickerView {
                     isDisabled: isDisabled
                 )
             )
-            .frame(width: 36, height: 36)
+            .frame(width: 36.scaled, height: 36.scaled)
             .background {
                 if isSelected {
                     Circle()
-                        .fill(Color.formAccent)
+                        .fill(Color(.green500))
                 }
             }
             .frame(maxWidth: .infinity)
@@ -210,20 +210,14 @@ private extension DatePickerView {
         isDisabled: Bool
     ) -> Color {
         if isSelected {
-            return .white
+            return Color(.gray0)
         }
         if isDisabled {
-            return .formDisabledText
+            return Color(.textDisabled)
         }
         if isToday {
-            return .formToday
+            return Color(.currentBrandText)
         }
-        return .formPrimaryText
+        return Color(.textPrimary)
     }
-}
-
-// MARK: - Color
-
-private extension Color {
-    static let formToday = Color(red: 0x08 / 255, green: 0x7A / 255, blue: 0x54 / 255)
 }

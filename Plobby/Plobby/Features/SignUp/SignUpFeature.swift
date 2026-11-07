@@ -16,6 +16,7 @@ struct SignUpFeature {
     
     @Reducer
     enum Path {
+        case region(RegionFeature)
         case complete(CompleteFeature)
     }
 
@@ -154,10 +155,16 @@ struct SignUpFeature {
                 state.isCheckingNickname = false
                 return .none
                 
-            // 프로필 등록에서 바로 가입하고 완료 화면으로 가요 (관심 해변 선택 단계 없음)
             case .nextButtonTapped:
                 guard state.canGoNext else { return .none }
-                
+
+                state.path.append(.region(RegionFeature.State()))
+                return .none
+
+            // 관심 해변을 고르고 다음을 누르면 가입하고 완료 화면으로 가요
+            case let .path(.element(id: id, action: .region(.nextButtonTapped))):
+                guard !state.isSigningUp else { return .none }
+
                 state.isSigningUp = true
                 
                 return signUp(SignUpProfile(
@@ -165,7 +172,7 @@ struct SignUpFeature {
                     profileImage: state.profileImage,
                     name: state.fullName,
                     nickname: state.nickname,
-                    favoriteBeachIDs: []
+                    favoriteBeachIDs: Array(state.path[id: id]?.region?.selectedBeachIDs ?? [])
                 ))
                 
             case .signUpResponse(.success):

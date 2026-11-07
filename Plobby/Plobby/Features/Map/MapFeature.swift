@@ -168,6 +168,7 @@ struct MapFeature {
                 return .none
 
             case .searchButtonTapped:
+                state.beachSheet = nil
                 state.path.append(.searchBeach(SearchBeachFeature.State()))
                 return .none
 

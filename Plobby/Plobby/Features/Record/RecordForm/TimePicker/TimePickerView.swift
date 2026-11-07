@@ -16,21 +16,21 @@ struct TimePickerView: View {
 
     let store: StoreOf<TimePickerFeature>
 
-    static let sheetHeight: CGFloat = 298
+    static let sheetHeight: CGFloat = 298.scaled
 
     // MARK: - Body
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16.scaled) {
             timeSelectionTitle
             timePickers
             completionButton
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
-        .padding(.bottom, 24)
+        .padding(.horizontal, 20.scaled)
+        .padding(.top, 20.scaled)
+        .padding(.bottom, 24.scaled)
         .frame(maxHeight: .infinity, alignment: .top)
-        .background(Color.white)
+        .background(Color(.gray0))
     }
 }
 
@@ -40,9 +40,9 @@ private extension TimePickerView {
     
     var timeSelectionTitle: some View {
         Text(store.field.timeTitle)
-            .font(.system(size: 20, weight: .semibold))
-            .foregroundStyle(Color.formPrimaryText)
-            .frame(height: 28)
+            .plobbyFont(.heading)
+            .foregroundStyle(Color(.textPrimary))
+            .frame(height: 28.scaled)
     }
     
     var timePickers: some View {
@@ -57,8 +57,8 @@ private extension TimePickerView {
                 String(format: "%02d", minute)
             }
         }
-        .padding(.vertical, 10)
-        .background(Color.formFieldBackground, in: RoundedRectangle(cornerRadius: 14))
+        .padding(.vertical, 10.scaled)
+        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 14.scaled))
     }
     
     func wheelPicker<Value: Hashable>(
@@ -79,11 +79,11 @@ private extension TimePickerView {
             store.send(.confirmTapped)
         } label: {
             Text("완료")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(.white)
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.gray0))
                 .frame(maxWidth: .infinity)
-                .frame(height: 54)
-                .background(Color.formAccent, in: RoundedRectangle(cornerRadius: 8))
+                .frame(height: 54.scaled)
+                .background(Color(.green500), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .buttonStyle(.plain)
     }
@@ -98,7 +98,7 @@ private struct WheelPicker: View {
     let label: (Int) -> String
     let onScroll: (Int) -> Void
 
-    private let rowHeight: CGFloat = 40
+    private let rowHeight: CGFloat = 40.scaled
     private let visibleRowCount = 3
 
     var body: some View {
@@ -133,8 +133,8 @@ private struct WheelPicker: View {
         let isSelected = row == selectedRow
 
         return Text(label(row))
-            .font(.system(size: 20, weight: isSelected ? .semibold : .regular))
-            .foregroundStyle(isSelected ? Color.formPrimaryText : Color.formSecondaryText.opacity(0.55))
+            .font(.custom((isSelected ? PretendardWeight.semiBold : .regular).rawValue, fixedSize: 20.scaled))
+            .foregroundStyle(isSelected ? Color(.textPrimary) : Color(.textSecondary).opacity(0.55))
             .frame(maxWidth: .infinity)
             .frame(height: rowHeight)
     }

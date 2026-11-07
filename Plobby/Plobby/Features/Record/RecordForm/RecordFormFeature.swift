@@ -384,11 +384,15 @@ extension RecordFormFeature {
         return canComplete(state)
     }
 
+    /// 최대 수심과 메모만 선택이고 나머지는 모두 입력해야 해요
     private func canComplete(_ state: State) -> Bool {
         guard !state.isSubmitting,
+              !state.photos.isEmpty,
               state.beach != nil,
               periodError(for: state.period) == nil,
               maxDepthError(for: state.maxDepthText) == nil,
+              !state.trash.isEmpty,
+              !InputText.isBlank(state.totalWeightText),
               totalWeightError(for: state.totalWeightText) == nil,
               !state.isMemoOverLimit
         else { return false }

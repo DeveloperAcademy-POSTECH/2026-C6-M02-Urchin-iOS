@@ -39,9 +39,14 @@ struct RecordFlowFeatureTests {
 
     @Test
     func 필수_항목만_입력하고_저장하면_리워드로_이동한다() async {
+        var trash = TrashSelection()
+        trash[.plastic] = 3
         var form = RecordFormFeature.State(recordType: .plobbing)
+        form.photos = [.remote(storageKey: "photo", url: nil)]
         form.beach = Beach(id: UUID(), region: .east, name: "영일대 해수욕장", address: "", latitude: 0, longitude: 0)
         form.period = ActivityPeriod(start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 3600))
+        form.trash = trash
+        form.totalWeightText = "2"
         let store = makeStore(step: .form(form))
 
         await store.send(\.step.form.completeTapped) {
@@ -54,7 +59,7 @@ struct RecordFlowFeatureTests {
             }
         }
         await store.receive(\.step.form.delegate.recordCreated) {
-            $0.step = .reward(RecordRewardFeature.State(recordID: UUID(0), beachName: "영일대 해수욕장"))
+            $0.step = .reward(RecordRewardFeature.State(recordID: UUID(0), beachName: "영일대 해수욕장", trash: trash, weightKg: 2))
         }
     }
 
