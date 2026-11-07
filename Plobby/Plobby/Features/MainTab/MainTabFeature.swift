@@ -101,6 +101,7 @@ struct MainTabFeature {
                 guard state.recordFlow == nil else { return .none }
 
                 state.isRecordMenuPresented = false
+                state.pendingRecordBeach = nil
                 state.selectedTab = .home
                 state.home.notification = NotificationFeature.State(
                     recordDetail: RecordDetailFeature.State(recordID: recordID)
@@ -115,6 +116,7 @@ struct MainTabFeature {
             case let .tabSelected(tab):
                 state.selectedTab = tab
                 state.isRecordMenuPresented = false
+                state.pendingRecordBeach = nil
                 return .none
                 
             case .recordMenuDismissed:
