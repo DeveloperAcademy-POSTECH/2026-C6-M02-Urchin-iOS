@@ -9,7 +9,6 @@ import SwiftUI
 
 import ComposableArchitecture
 
-// TODO: 추후 디자인 시스템에 맞게 색상과 폰트를 수정
 struct PhotosPickerView: View {
 
     // MARK: - Properties
@@ -78,7 +77,6 @@ private extension PhotosPickerView {
         .accessibilityLabel("앨범 선택, \(albumTitle)")
     }
 
-    /// 화살표와 같은 너비의 빈 칸을 왼쪽에 둬서 제목이 화면 가운데에 오게 해요.
     var albumToggleLabel: some View {
         HStack(spacing: 8.scaled) {
             Color.clear
@@ -88,10 +86,14 @@ private extension PhotosPickerView {
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
 
-            Image(systemName: store.isAlbumListExpanded ? "chevron.up" : "chevron.down")
-                .font(.system(size: 15.scaled, weight: .medium))
-                .foregroundStyle(Color(.textPrimary))
-                .frame(width: 24.scaled, height: 24.scaled)
+            Image(
+                systemName: store.isAlbumListExpanded
+                ? "chevron.up"
+                : "chevron.down"
+            )
+            .plobbyFont(.cardTitle)
+            .foregroundStyle(Color(.textPrimary))
+            .frame(width: 24.scaled, height: 24.scaled)
         }
         .frame(height: 44.scaled)
         .contentShape(Rectangle())
@@ -125,8 +127,8 @@ private extension PhotosPickerView {
                 .foregroundStyle(Color(.textPrimary))
                 .frame(width: 20.scaled, height: 20.scaled)
 
-            Text("\(store.recordType.name) 중 찍은 사진을 최대 \(PhotoSelection.maxCount)장까지 추가할 수 있어요")
-                .plobbyFont(.helper)
+            Text("최대 \(PhotoSelection.maxCount)장까지 추가할 수 있어요")
+                .plobbyFont(.notification)
                 .foregroundStyle(Color(.textPrimary))
 
             Spacer(minLength: 0)
@@ -153,9 +155,7 @@ private extension PhotosPickerView {
             }
         }
         .background(Color(.gray0))
-        .overlay(alignment: .bottom) {
-            toast
-        }
+        .plobbyToast(store.toast.toastMessage)
     }
 
     func cellLength(in width: CGFloat) -> CGFloat {
@@ -226,7 +226,6 @@ private extension PhotosPickerView {
         }
     }
 
-    /// 선택 전에는 빈 원, 선택하면 순서 번호를 보여줘요.
     func selectionBadge(order: Int?) -> some View {
         Group {
             if let order {
@@ -256,31 +255,6 @@ private extension PhotosPickerView {
                 Circle()
                     .strokeBorder(Color(.gray0), lineWidth: 1)
             }
-    }
-}
-
-// MARK: - 토스트
-
-private extension PhotosPickerView {
-
-    @ViewBuilder
-    var toast: some View {
-        if let message = store.toast.toastMessage {
-            Text(message)
-                .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 16.scaled))
-                .foregroundStyle(Color(.gray0))
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 24.scaled)
-                .padding(.vertical, 16.scaled)
-                .background(
-                    Color(.textPrimary).opacity(0.6),
-                    in: RoundedRectangle(cornerRadius: 8.scaled)
-                )
-                .padding(.horizontal, 20.scaled)
-                .padding(.bottom, 16.scaled)
-                .transition(.opacity)
-                .accessibilityAddTraits(.isStaticText)
-        }
     }
 }
 
@@ -459,7 +433,6 @@ private extension PhotosPickerView {
             )
             .ignoresSafeArea()
         } else {
-            // 시뮬레이터처럼 카메라가 없는 기기에서는 바로 닫아요.
             Color.clear
                 .onAppear { store.send(.cameraDismissed) }
         }

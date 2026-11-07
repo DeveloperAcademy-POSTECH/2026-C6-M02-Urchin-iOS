@@ -150,6 +150,7 @@
 		EC0D4BA13098E1D0000E7BB7 /* Effect+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */; };
 		EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */; };
 		7B3C1A0D309D0000004C5301 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A0E309D0000004C5301 /* SearchBar.swift */; };
+		7B3C1A0F309D0000004C5301 /* PlobbyToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A10309D0000004C5301 /* PlobbyToast.swift */; };
 		EC17D65B309D82630031D2BD /* SignInFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC17D65A309D82630031D2BD /* SignInFeature.swift */; };
 		EC196745309C579100BC4C19 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196743309C579100BC4C19 /* Pretendard-Regular.otf */; };
 		EC196746309C579100BC4C19 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC196742309C579100BC4C19 /* Pretendard-Medium.otf */; };
@@ -376,6 +377,7 @@
 		EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Effect+.swift"; sourceTree = "<group>"; };
 		EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachChip.swift; sourceTree = "<group>"; };
 		7B3C1A0E309D0000004C5301 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		7B3C1A10309D0000004C5301 /* PlobbyToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyToast.swift; sourceTree = "<group>"; };
 		EC17D65A309D82630031D2BD /* SignInFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInFeature.swift; sourceTree = "<group>"; };
 		EC196742309C579100BC4C19 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		EC196743309C579100BC4C19 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
@@ -1057,6 +1059,7 @@
 				ECE6F2923098338400C4916C /* PlobbyButton.swift */,
 				EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */,
 				7B3C1A0E309D0000004C5301 /* SearchBar.swift */,
+				7B3C1A10309D0000004C5301 /* PlobbyToast.swift */,
 				EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */,
 				EC196748309C58BA00BC4C19 /* PlobbyTypography.swift */,
 			);
@@ -1588,6 +1591,7 @@
 				DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */,
 				EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */,
 				7B3C1A0D309D0000004C5301 /* SearchBar.swift in Sources */,
+				7B3C1A0F309D0000004C5301 /* PlobbyToast.swift in Sources */,
 				DA5B106430997215003FEDF9 /* CreateRecordRequestDTO.swift in Sources */,
 				DA5B106530997215003FEDF9 /* DeletedAtUpdateRequestDTO.swift in Sources */,
 				DA5B106630997215003FEDF9 /* RecordLikeInsertRequestDTO.swift in Sources */,

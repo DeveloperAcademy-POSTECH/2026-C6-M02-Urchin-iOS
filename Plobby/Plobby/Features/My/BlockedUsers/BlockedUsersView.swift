@@ -25,10 +25,7 @@ struct BlockedUsersView: View {
         }
         .background(Color(.gray0))
         .toolbar(.hidden, for: .navigationBar)
-        .overlay(alignment: .bottom) {
-            toast
-        }
-        .animation(.easeInOut(duration: 0.2), value: store.toast.toastMessage)
+        .plobbyToast(store.toast.toastMessage)
         .task {
             await store.send(.task).finish()
         }
@@ -149,22 +146,5 @@ extension BlockedUsersView {
             .plobbyFont(.label)
             .foregroundStyle(Color(.textTertiary))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    @ViewBuilder
-    private var toast: some View {
-        if let message = store.toast.toastMessage {
-            Text(message)
-                .plobbyFont(.body)
-                .foregroundStyle(Color(.gray0))
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 16)
-                .background(Color(.gray800), in: RoundedRectangle(cornerRadius: 8))
-                .padding(.horizontal, 20)
-                .padding(.bottom, 16)
-                .transition(.opacity)
-                .accessibilityAddTraits(.isStaticText)
-        }
     }
 }

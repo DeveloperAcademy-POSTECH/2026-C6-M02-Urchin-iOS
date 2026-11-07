@@ -189,7 +189,7 @@ struct PhotosPickerFeature {
 
 extension PhotosPickerFeature {
     
-    static let limitExceededMessage = "이미지는 최대 \(PhotoSelection.maxCount)장까지 선택할 수 있어요."
+    static let limitExceededMessage = "사진은 최대 \(PhotoSelection.maxCount)장까지 선택할 수 있어요."
     static let cameraSaveFailedMessage = "사진을 저장하지 못했어요. 다시 시도해주세요."
 }
 
