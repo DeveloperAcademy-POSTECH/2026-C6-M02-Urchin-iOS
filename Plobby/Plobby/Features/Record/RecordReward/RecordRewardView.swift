@@ -43,7 +43,7 @@ struct RecordRewardView: View {
                     .opacity(isSummaryVisible ? 1 : 0)
             }
             .overlay(alignment: .bottom) {
-                PlobbyButton(text: "다음") {
+                PlobbyButton(text: "다음", style: .highlight) {
                     store.send(.nextButtonTapped)
                 }
                 .padding(.horizontal, 20.scaled)
@@ -53,7 +53,6 @@ struct RecordRewardView: View {
             .onAppear {
                 store.send(.onAppear)
 
-                // 쓰레기는 선택 입력이라, 없으면 낙하 없이 검정 화면이 덮이자마자 문구를 보여 줘요
                 guard !store.trash.isEmpty else {
                     withAnimation(.easeInOut(duration: 0.5).delay(Self.curtainDuration)) {
                         isSummaryVisible = true
@@ -108,14 +107,15 @@ extension RecordRewardView {
         VStack(alignment: .leading, spacing: 8.scaled) {
             HStack(alignment: .firstTextBaseline, spacing: 4.scaled) {
                 Text(value)
-                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 32.scaled))
+                    .plobbyFont(.metricLarge)
+                
                 Text(unit)
                     .plobbyFont(.cardTitle)
             }
             .foregroundStyle(Color(.gray0))
 
             Text(title)
-                .plobbyFont(.metadata)
+                .plobbyFont(.helper)
                 .foregroundStyle(Color(.gray0))
                 .opacity(0.72)
         }

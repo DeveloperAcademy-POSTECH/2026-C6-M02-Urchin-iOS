@@ -44,6 +44,7 @@ extension PlobbyButton {
     /// 비활성(deactivate)은 `.disabled(true)`로 표현
     enum Style {
         case `default`
+        case highlight
         case alternative
         case onlyText
     }
@@ -53,6 +54,7 @@ extension PlobbyButton {
         
         switch style {
         case .default: return Color(.green500)
+        case .highlight: return Color(red: 0x06 / 255, green: 0xC6 / 255, blue: 0x5F / 255)
         case .alternative: return Color(.gray0)
         case .onlyText: return .clear
         }
@@ -62,7 +64,7 @@ extension PlobbyButton {
         guard isEnabled else { return Color(.textDisabled) }
         
         switch style {
-        case .default: return Color(.gray0)
+        case .default, .highlight: return Color(.gray0)
         case .alternative: return Color(.textPrimary)
         case .onlyText: return Color(.textSecondary)
         }
