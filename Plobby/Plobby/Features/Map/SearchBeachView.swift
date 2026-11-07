@@ -51,14 +51,11 @@ struct SearchBeachView: View {
 private extension SearchBeachView {
 
     var searchField: some View {
-        HStack(spacing: 8.scaled) {
+        SearchBar {
             backButton
+        } content: {
             searchTextField
         }
-        .padding(.horizontal, 12.scaled)
-        .padding(.vertical, 16.scaled)
-        .frame(height: 56.scaled)
-        .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 12.scaled))
         .overlay {
             RoundedRectangle(cornerRadius: 12.scaled)
                 .stroke(Color(.currentWarmBorder), lineWidth: 1)
@@ -84,7 +81,7 @@ private extension SearchBeachView {
         TextField(
             "",
             text: $store.query,
-            prompt: Text("해변, 해수욕장 이름을 검색해주세요.")
+            prompt: Text(SearchBarText.placeholder)
                 .foregroundStyle(Color(.gray600))
         )
         .focused($isSearchFocused)

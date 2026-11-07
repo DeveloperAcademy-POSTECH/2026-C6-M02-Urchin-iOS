@@ -152,21 +152,15 @@ private extension MapView {
         Button {
             store.send(.searchButtonTapped)
         } label: {
-            HStack(spacing: 8) {
+            SearchBar {
                 Image(systemName: "magnifyingglass")
-                    .font(.system(size: 17, weight: .medium))
+                    .font(.system(size: 17.scaled, weight: .medium))
                     .foregroundStyle(Color(.textSecondary))
-                    .frame(width: 24, height: 24)
-
-                Text("해변, 해수욕장 이름을 검색해주세요.")
+            } content: {
+                Text(SearchBarText.placeholder)
                     .plobbyFont(.body)
-                    .foregroundStyle(Color(.textTertiary))
-
-                Spacer(minLength: 0)
+                    .foregroundStyle(Color(.gray600))
             }
-            .padding(.horizontal, 12)
-            .frame(height: 56)
-            .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 12))
             .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
         }
         .buttonStyle(.plain)
