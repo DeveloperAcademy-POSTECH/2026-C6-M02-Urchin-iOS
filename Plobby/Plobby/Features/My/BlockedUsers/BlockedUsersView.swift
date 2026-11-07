@@ -54,8 +54,8 @@ extension BlockedUsersView {
             .accessibilityLabel("뒤로")
 
             Text("차단한 사용자")
-                .font(.custom(PretendardWeight.semiBold.rawValue, size: 18))
-                .foregroundStyle(Color(.textPrimary))
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color.textPrimary)
 
             Spacer(minLength: 0)
         }
@@ -146,7 +146,7 @@ extension BlockedUsersView {
 
     private func message(_ text: String) -> some View {
         Text(text)
-            .plobbyFont(.label)
+            .plobbyFont(.body)
             .foregroundStyle(Color(.textTertiary))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

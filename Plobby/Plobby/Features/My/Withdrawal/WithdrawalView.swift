@@ -77,8 +77,8 @@ extension WithdrawalView {
             .accessibilityLabel("뒤로")
 
             Text("회원 탈퇴")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
+                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 18))
+                .foregroundStyle(Color.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(height: 56)
@@ -89,8 +89,8 @@ extension WithdrawalView {
             sectionTitle("탈퇴하는 이유가 궁금해요")
 
             VStack(alignment: .leading, spacing: 12) {
-                ForEach(WithdrawalReason.allCases, id: \.self) { reason in
-                    reasonButton(reason)
+                ForEach(WithdrawalReason.allCases, id: \.self) {
+                    reasonButton($0)
                 }
             }
         }

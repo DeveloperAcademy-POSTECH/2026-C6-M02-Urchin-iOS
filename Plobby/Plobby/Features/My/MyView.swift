@@ -57,7 +57,8 @@ extension MyView {
     private var header: some View {
         HStack(alignment: .center, spacing: 0) {
             Text("마이")
-                .font(.system(size: 20, weight: .semibold))
+                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 20))
+                .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             // FIXME: 설정 목록을 프로필 아래로 임시 이동해서 설정 아이콘을 숨겨둠
@@ -77,8 +78,8 @@ extension MyView {
             profileImage
 
             Text(store.profile?.nickname ?? "")
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundStyle(.black)
+                .plobbyFont(.metric)
+                .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             profileEditButton
@@ -121,7 +122,7 @@ extension MyView {
                         .scaledToFill()
                 } placeholder: {
                     Circle()
-                        .fill(.gray.opacity(0.2))
+                        .fill(Color(.gray100))
                 }
             }
         }
@@ -134,13 +135,14 @@ extension MyView {
             store.send(.profileEditButtonTapped)
         } label: {
             Text("프로필 수정")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.gray)
+                .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 13))
+                .foregroundStyle(Color(.textSecondary))
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
+                .background(Color(.gray50), in: Capsule())
                 .overlay {
                     Capsule()
-                        .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                        .stroke(Color(.gray500), lineWidth: 1)
                 }
         }
     }

@@ -31,7 +31,6 @@ struct ProfileEditView: View {
         .padding(.horizontal, 20)
         .frame(maxHeight: .infinity, alignment: .top)
         .background(Color(.gray0))
-        // 빈 곳을 누르면 키보드를 내려요
         .contentShape(Rectangle())
         .onTapGesture {
             isNicknameFocused = false
@@ -76,7 +75,7 @@ extension ProfileEditView {
 
             Text("프로필 수정")
                 .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
+                .foregroundStyle(Color.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Button {
@@ -171,8 +170,8 @@ extension ProfileEditView {
     private var nicknameSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("닉네임")
-                .plobbyFont(.actionLabel)
-                .foregroundStyle(Color(.textPrimary))
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.neutralBlack))
 
             HStack(alignment: .center, spacing: 10) {
                 nicknameField
@@ -218,7 +217,7 @@ extension ProfileEditView {
             store.send(.nicknameCheckButtonTapped)
         } label: {
             Text("중복확인")
-                .plobbyFont(.actionLabel)
+                .plobbyFont(store.canCheckNickname ? .labelSelected : .label)
                 .foregroundStyle(Color(.textPrimary))
                 .padding(.horizontal, 12)
                 .frame(height: 52)
