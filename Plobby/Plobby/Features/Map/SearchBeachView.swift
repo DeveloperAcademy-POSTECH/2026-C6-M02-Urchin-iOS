@@ -175,7 +175,7 @@ private extension SearchBeachView {
                 if isFavorite {
                     Image(.starGreen)
                         .resizable()
-                        .frame(width: 24.scaled, height: 24.scaled)
+                        .frame(width: 32.scaled, height: 32.scaled)
                 } else {
                     Image(.mapPin)
                         .resizable()
