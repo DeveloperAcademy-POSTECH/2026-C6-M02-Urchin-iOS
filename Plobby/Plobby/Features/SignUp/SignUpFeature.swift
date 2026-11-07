@@ -16,7 +16,6 @@ struct SignUpFeature {
     
     @Reducer
     enum Path {
-        case region(RegionFeature)
         case complete(CompleteFeature)
     }
 
@@ -31,6 +30,11 @@ struct SignUpFeature {
         var isCheckingNickname = false
         var isNicknameAvailable: Bool?
         var isSigningUp = false
+        var isAgeConfirmed = false
+        var isTermsAgreed = false
+        var isPrivacyAgreed = false
+        /// 약관 동의를 마치면 프로필 등록 화면으로 넘어가요
+        var isAgreementCompleted = false
         var path = StackState<Path.State>()
         @Presents var alert: AlertState<Action.Alert>?
         
@@ -42,14 +46,23 @@ struct SignUpFeature {
             Nickname.isValid(nickname) && !isCheckingNickname
         }
         
+        var isAllAgreed: Bool {
+            isAgeConfirmed && isTermsAgreed && isPrivacyAgreed
+        }
+
         var canGoNext: Bool {
-            isNicknameAvailable == true
+            isNicknameAvailable == true && !isSigningUp
         }
     }
 
     // MARK: - Action
     
     enum Action {
+        case allAgreementTapped
+        case ageConfirmationTapped
+        case termsAgreementTapped
+        case privacyAgreementTapped
+        case agreementNextButtonTapped
         case profileImageSelected(Data)
         case profileImageCompressed(Data?)
         case alert(PresentationAction<Alert>)
@@ -80,6 +93,31 @@ struct SignUpFeature {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .allAgreementTapped:
+                let isAgreed = !state.isAllAgreed
+                state.isAgeConfirmed = isAgreed
+                state.isTermsAgreed = isAgreed
+                state.isPrivacyAgreed = isAgreed
+                return .none
+
+            case .ageConfirmationTapped:
+                state.isAgeConfirmed.toggle()
+                return .none
+
+            case .termsAgreementTapped:
+                state.isTermsAgreed.toggle()
+                return .none
+
+            case .privacyAgreementTapped:
+                state.isPrivacyAgreed.toggle()
+                return .none
+
+            case .agreementNextButtonTapped:
+                guard state.isAllAgreed else { return .none }
+
+                state.isAgreementCompleted = true
+                return .none
+
             case let .profileImageSelected(data):
                 return compressProfileImage(data)
                 
@@ -116,14 +154,9 @@ struct SignUpFeature {
                 state.isCheckingNickname = false
                 return .none
                 
+            // 프로필 등록에서 바로 가입하고 완료 화면으로 가요 (관심 해변 선택 단계 없음)
             case .nextButtonTapped:
                 guard state.canGoNext else { return .none }
-                
-                state.path.append(.region(RegionFeature.State()))
-                return .none
-
-            case let .path(.element(id: id, action: .region(.nextButtonTapped))):
-                guard !state.isSigningUp else { return .none }
                 
                 state.isSigningUp = true
                 
@@ -132,7 +165,7 @@ struct SignUpFeature {
                     profileImage: state.profileImage,
                     name: state.fullName,
                     nickname: state.nickname,
-                    favoriteBeachIDs: Array(state.path[id: id]?.region?.selectedBeachIDs ?? [])
+                    favoriteBeachIDs: []
                 ))
                 
             case .signUpResponse(.success):

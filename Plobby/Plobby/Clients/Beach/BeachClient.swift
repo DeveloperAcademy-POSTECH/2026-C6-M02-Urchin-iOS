@@ -113,13 +113,10 @@ extension BeachClient: DependencyKey {
                     .execute()
                     .value
 
-                let imageBucket = supabase.storage.from(StorageBucket.image)
-                let profileBucket = supabase.storage.from(StorageBucket.profile)
-
                 return responseDTOs.compactMap {
                     $0.toDomain(
-                        photoURL: { try? imageBucket.getPublicURL(path: $0) },
-                        profileImageURL: { try? profileBucket.getPublicURL(path: $0) }
+                        photoURL: supabase.recordPhotoURL,
+                        profileImageURL: supabase.profileImageURL
                     )
                 }
             }

@@ -10,6 +10,7 @@
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */; };
+		173357ED8AF6DD3069DDB1FF /* BlockedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE094AF2875967D2DDAF62E /* BlockedUsersView.swift */; };
 		21ECFACF111E9F703BA57978 /* BlockedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C528DE8674E08CD648B87 /* BlockedUser.swift */; };
 		24C6452813AA7BFB5C379537 /* CheckNicknameRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FC37464B922253D6A55F95 /* CheckNicknameRequestDTO.swift */; };
 		3172447EB0D6D8602AD55D82 /* TimePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA7146257B2B7E18DD4D375 /* TimePickerFeatureTests.swift */; };
@@ -22,7 +23,6 @@
 		45821C3C7A67C61EF3E96A02 /* BeachSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */; };
 		499182C602791D918B8E9019 /* FavoriteBeachToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B273C5294323568F70EF6E48 /* FavoriteBeachToggle.swift */; };
 		49C55E872A91D91FB1E0434A /* RecordFormFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */; };
-		7B3C1A06309D0000004C5301 /* AppFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */; };
 		49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */; };
 		4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */; };
 		5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1C0E7B2F4D4E8A9B3C6D12 /* TrashPickerView.swift */; };
@@ -32,14 +32,18 @@
 		6654B8A74949402D91998335 /* PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19CD6EEB73AF4C7797870AF0 /* PushClient.swift */; };
 		68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */; };
 		68C5E3F70B1137E8CEB2DFEC /* BeachHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8F8CE124E253309CA4EE3A /* BeachHomeView.swift */; };
+		6991DBAB53BB6568C60D6B47 /* BlockedUsersFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */; };
 		6AE40B8B8ADA51329BCAB48D /* Calendar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A683DF52E8FC8F413240B638 /* Calendar+.swift */; };
 		6C58EF6B7AEFD90EBE7571E4 /* ProfileResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22117CDC3BC2454F4CDAC201 /* ProfileResponseDTO.swift */; };
 		6C922A2E679C44E28DA507F7 /* AppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B876495304224301BF46BD28 /* AppNotification.swift */; };
 		73CD656240EA8E75250648CC /* BeachRecordResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99CF10416380E0C7057BE2D /* BeachRecordResponseDTO.swift */; };
 		781821F67D47B4EA5D000A8E /* RecordMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B11A53BEC65644616587EA /* RecordMenuView.swift */; };
-		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		7B3C1A02309D0000004C5301 /* LoginRequiredSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */; };
 		7B3C1A04309D0000004C5301 /* AppleSignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A03309D0000004C5301 /* AppleSignInCoordinator.swift */; };
+		7B3C1A06309D0000004C5301 /* AppFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */; };
+		7B3C1A09309D0000004C5301 /* ServiceLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A08309D0000004C5301 /* ServiceLink.swift */; };
+		7B3C1A0B309D0000004C5301 /* TermsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */; };
+		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
 		A29D1CFD3712AA87F7389274 /* DependencyValues+UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */; };
@@ -52,23 +56,22 @@
 		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
 		B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5951FB2309BA4AB0089A019 /* MyView.swift */; };
-		D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */; };
-		D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F5 /* SettingsFeature.swift */; };
-		D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F7 /* SettingsView.swift */; };
-		6991DBAB53BB6568C60D6B47 /* BlockedUsersFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */; };
-		173357ED8AF6DD3069DDB1FF /* BlockedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE094AF2875967D2DDAF62E /* BlockedUsersView.swift */; };
-		D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */; };
-		D1A0C0DE00000000000000FC /* WithdrawalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000FB /* WithdrawalView.swift */; };
-		D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */; };
-		D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C03 /* ProfileEditView.swift */; };
 		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
 		B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */; };
 		BDA985C8CDA5A070AC9A1B00 /* PhotosPickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */; };
 		BDB670B496D64EBBFC6DFA20 /* BeachSheetFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7000C176F646DD10B4458C46 /* BeachSheetFeature.swift */; };
 		C32FD956A6EA5A1EAD5DFC52 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */; };
 		CDA93DA11F36AA86D9204B04 /* BeachHomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */; };
+		D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */; };
+		D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F5 /* SettingsFeature.swift */; };
+		D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F7 /* SettingsView.swift */; };
+		D1A0C0DE00000000000000FA /* WithdrawalFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */; };
+		D1A0C0DE00000000000000FC /* WithdrawalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE00000000000000FB /* WithdrawalView.swift */; };
+		D1A0C0DE0000000000000A02 /* NotificationFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000A01 /* NotificationFeature.swift */; };
+		D1A0C0DE0000000000000A04 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000A03 /* NotificationView.swift */; };
 		D1A0C0DE0000000000000B01 /* Sea.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B02 /* Sea.swift */; };
 		D1A0C0DE0000000000000B03 /* BeachStorageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */; };
+		D1A0C0DE0000000000000B12 /* PushAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B11 /* PushAuthorization.swift */; };
 		D1A0C0DE0000000000000C02 /* ProfileEditFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */; };
 		D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000C03 /* ProfileEditView.swift */; };
 		DA032D05309B0DEE00D97C80 /* DayOfWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA032D04309B0DE500D97C80 /* DayOfWeek.swift */; };
@@ -81,7 +84,6 @@
 		DA0A9D03309A155A006D2504 /* TrashSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9D02309A1555006D2504 /* TrashSelection.swift */; };
 		DA0A9D05309A1586006D2504 /* PeriodField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0A9D04309A1583006D2504 /* PeriodField.swift */; };
 		DA0BB75B309B1BB5003400FB /* PhotoAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75A309B1BB1003400FB /* PhotoAuthorization.swift */; };
-		D1A0C0DE0000000000000B12 /* PushAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000B11 /* PushAuthorization.swift */; };
 		DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */; };
 		DA0BB75F309B1C5D003400FB /* PhotoSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */; };
 		DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */; };
@@ -191,8 +193,6 @@
 		ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AF3098338400C4916C /* WaterDepth.swift */; };
 		ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B33098338400C4916C /* HomeFeature.swift */; };
 		ECE6F2F23098338400C4916C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B43098338400C4916C /* HomeView.swift */; };
-		D1A0C0DE0000000000000A02 /* NotificationFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000A01 /* NotificationFeature.swift */; };
-		D1A0C0DE0000000000000A04 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A0C0DE0000000000000A03 /* NotificationView.swift */; };
 		ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */; };
 		ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */; };
 		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
@@ -250,6 +250,7 @@
 		5A1C0E7B2F4D4E8A9B3C6D12 /* TrashPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashPickerView.swift; sourceTree = "<group>"; };
 		5A1C0E7B2F4D4E8A9B3C6E02 /* LocationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationClient.swift; sourceTree = "<group>"; };
 		5A1C0E7B2F4D4E8A9B3C6E04 /* DependencyValues+LocationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+LocationClient.swift"; sourceTree = "<group>"; };
+		5CE094AF2875967D2DDAF62E /* BlockedUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersView.swift; sourceTree = "<group>"; };
 		684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerFeatureTests.swift; sourceTree = "<group>"; };
 		6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormFeatureTests.swift; sourceTree = "<group>"; };
 		7000C176F646DD10B4458C46 /* BeachSheetFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSheetFeature.swift; sourceTree = "<group>"; };
@@ -258,6 +259,9 @@
 		79BA895394908AB08392483E /* SearchBeachFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBeachFeature.swift; sourceTree = "<group>"; };
 		7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequiredSheet.swift; sourceTree = "<group>"; };
 		7B3C1A03309D0000004C5301 /* AppleSignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInCoordinator.swift; sourceTree = "<group>"; };
+		7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureTests.swift; sourceTree = "<group>"; };
+		7B3C1A08309D0000004C5301 /* ServiceLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceLink.swift; sourceTree = "<group>"; };
+		7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAgreementView.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -274,24 +278,23 @@
 		B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDeviceTokenRequestDTO.swift; sourceTree = "<group>"; };
 		B5951FB2309BA4AB0089A019 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
-		D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppleAuthorizationRequester.swift"; sourceTree = "<group>"; };
-		D1A0C0DE00000000000000F5 /* SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsFeature.swift"; sourceTree = "<group>"; };
-		D1A0C0DE00000000000000F7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView.swift"; sourceTree = "<group>"; };
-		BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersFeature.swift; sourceTree = "<group>"; };
-		5CE094AF2875967D2DDAF62E /* BlockedUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersView.swift; sourceTree = "<group>"; };
-		D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WithdrawalFeature.swift"; sourceTree = "<group>"; };
-		D1A0C0DE00000000000000FB /* WithdrawalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WithdrawalView.swift"; sourceTree = "<group>"; };
-		D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditFeature.swift; sourceTree = "<group>"; };
-		D1A0C0DE0000000000000C03 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
 		B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
+		BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersFeature.swift; sourceTree = "<group>"; };
 		BCA7146257B2B7E18DD4D375 /* TimePickerFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerFeatureTests.swift; sourceTree = "<group>"; };
-		7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureTests.swift; sourceTree = "<group>"; };
 		BFD8EB2F9562114130AB9066 /* SearchBeachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBeachView.swift; sourceTree = "<group>"; };
 		CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastFeatureTests.swift; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F1 /* AppleAuthorizationRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthorizationRequester.swift; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F5 /* SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFeature.swift; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalFeature.swift; sourceTree = "<group>"; };
+		D1A0C0DE00000000000000FB /* WithdrawalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalView.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000A01 /* NotificationFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFeature.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000A03 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000B02 /* Sea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sea.swift; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachStorageDTO.swift; sourceTree = "<group>"; };
+		D1A0C0DE0000000000000B11 /* PushAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAuthorization.swift; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditFeature.swift; sourceTree = "<group>"; };
 		D1A0C0DE0000000000000C03 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		D99CF10416380E0C7057BE2D /* BeachRecordResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachRecordResponseDTO.swift; sourceTree = "<group>"; };
@@ -305,7 +308,6 @@
 		DA0A9D02309A1555006D2504 /* TrashSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashSelection.swift; sourceTree = "<group>"; };
 		DA0A9D04309A1583006D2504 /* PeriodField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodField.swift; sourceTree = "<group>"; };
 		DA0BB75A309B1BB1003400FB /* PhotoAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAuthorization.swift; sourceTree = "<group>"; };
-		D1A0C0DE0000000000000B11 /* PushAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAuthorization.swift; sourceTree = "<group>"; };
 		DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
 		DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelection.swift; sourceTree = "<group>"; };
 		DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryClient.swift; sourceTree = "<group>"; };
@@ -417,8 +419,6 @@
 		ECE6F2AF3098338400C4916C /* WaterDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepth.swift; sourceTree = "<group>"; };
 		ECE6F2B33098338400C4916C /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		ECE6F2B43098338400C4916C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		D1A0C0DE0000000000000A01 /* NotificationFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFeature.swift; sourceTree = "<group>"; };
-		D1A0C0DE0000000000000A03 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginLabel.swift; sourceTree = "<group>"; };
 		ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageIndicator.swift; sourceTree = "<group>"; };
 		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
@@ -495,6 +495,15 @@
 			path = Photo;
 			sourceTree = "<group>";
 		};
+		3AE34934580277078535F3C4 /* BlockedUsers */ = {
+			isa = PBXGroup;
+			children = (
+				BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */,
+				5CE094AF2875967D2DDAF62E /* BlockedUsersView.swift */,
+			);
+			path = BlockedUsers;
+			sourceTree = "<group>";
+		};
 		3BC523B89D31C094B9AD61AE /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -522,6 +531,22 @@
 				5A1C0E7B2F4D4E8A9B3C6E04 /* DependencyValues+LocationClient.swift */,
 			);
 			path = Location;
+			sourceTree = "<group>";
+		};
+		7B3C1A07309D0000004C5301 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		7B3C1A0C309D0000004C5301 /* Terms */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */,
+			);
+			path = Terms;
 			sourceTree = "<group>";
 		};
 		84C514248E87412C8FC65AA2 /* Push */ = {
@@ -599,12 +624,47 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
+		D1A0C0DE00000000000000FE /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE00000000000000F5 /* SettingsFeature.swift */,
+				D1A0C0DE00000000000000F7 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE00000000000000FF /* Withdrawal */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */,
+				D1A0C0DE00000000000000FB /* WithdrawalView.swift */,
+			);
+			path = Withdrawal;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE0000000000000A05 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE0000000000000A01 /* NotificationFeature.swift */,
+				D1A0C0DE0000000000000A03 /* NotificationView.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		D1A0C0DE0000000000000B05 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
 				D1A0C0DE0000000000000B04 /* BeachStorageDTO.swift */,
 			);
 			path = Storage;
+			sourceTree = "<group>";
+		};
+		D1A0C0DE0000000000000B13 /* Push */ = {
+			isa = PBXGroup;
+			children = (
+				D1A0C0DE0000000000000B11 /* PushAuthorization.swift */,
+			);
+			path = Push;
 			sourceTree = "<group>";
 		};
 		D1A0C0DE0000000000000C05 /* ProfileEdit */ = {
@@ -780,51 +840,6 @@
 				B5951FB2309BA4AB0089A019 /* MyView.swift */,
 			);
 			path = My;
-			sourceTree = "<group>";
-		};
-		D1A0C0DE0000000000000A05 /* Notification */ = {
-			isa = PBXGroup;
-			children = (
-				D1A0C0DE0000000000000A01 /* NotificationFeature.swift */,
-				D1A0C0DE0000000000000A03 /* NotificationView.swift */,
-			);
-			path = Notification;
-			sourceTree = "<group>";
-		};
-		D1A0C0DE00000000000000FE /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				D1A0C0DE00000000000000F5 /* SettingsFeature.swift */,
-				D1A0C0DE00000000000000F7 /* SettingsView.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		3AE34934580277078535F3C4 /* BlockedUsers */ = {
-			isa = PBXGroup;
-			children = (
-				BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */,
-				5CE094AF2875967D2DDAF62E /* BlockedUsersView.swift */,
-			);
-			path = BlockedUsers;
-			sourceTree = "<group>";
-		};
-		D1A0C0DE00000000000000FF /* Withdrawal */ = {
-			isa = PBXGroup;
-			children = (
-				D1A0C0DE00000000000000F9 /* WithdrawalFeature.swift */,
-				D1A0C0DE00000000000000FB /* WithdrawalView.swift */,
-			);
-			path = Withdrawal;
-			sourceTree = "<group>";
-		};
-		D1A0C0DE0000000000000C05 /* ProfileEdit */ = {
-			isa = PBXGroup;
-			children = (
-				D1A0C0DE0000000000000C01 /* ProfileEditFeature.swift */,
-				D1A0C0DE0000000000000C03 /* ProfileEditView.swift */,
-			);
-			path = ProfileEdit;
 			sourceTree = "<group>";
 		};
 		DA5B10E630998932003FEDF9 /* Record */ = {
@@ -1048,6 +1063,7 @@
 		ECE6F2963098338400C4916C /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				7B3C1A08309D0000004C5301 /* ServiceLink.swift */,
 				ECE6F2943098338400C4916C /* AlertType.swift */,
 				ECE6F2953098338400C4916C /* Secrets.swift */,
 			);
@@ -1168,14 +1184,6 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
-		D1A0C0DE0000000000000B13 /* Push */ = {
-			isa = PBXGroup;
-			children = (
-				D1A0C0DE0000000000000B11 /* PushAuthorization.swift */,
-			);
-			path = Push;
-			sourceTree = "<group>";
-		};
 		ECE6F2B53098338400C4916C /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -1226,6 +1234,7 @@
 		ECE6F2C53098338400C4916C /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				7B3C1A0C309D0000004C5301 /* Terms */,
 				ECE6F2BF3098338400C4916C /* Complete */,
 				ECE6F2C23098338400C4916C /* Region */,
 				ECE6F2C33098338400C4916C /* SignUpFeature.swift */,
@@ -1312,14 +1321,6 @@
 				ECE6F30D309833A900C4916C /* Record */,
 			);
 			path = Domain;
-			sourceTree = "<group>";
-		};
-		7B3C1A07309D0000004C5301 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */,
-			);
-			path = App;
 			sourceTree = "<group>";
 		};
 		ECE6F30F309833A900C4916C /* PlobbyTests */ = {
@@ -1680,6 +1681,8 @@
 				ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */,
 				EC17D65B309D82630031D2BD /* SignInFeature.swift in Sources */,
 				ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */,
+				7B3C1A0B309D0000004C5301 /* TermsAgreementView.swift in Sources */,
+				7B3C1A09309D0000004C5301 /* ServiceLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1868,6 +1871,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Plobby/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Plobby - 해변 정화 기록";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1879,18 +1884,22 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.plobby;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Plobby Provisioning Profile";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1910,6 +1919,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Plobby/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Plobby - 해변 정화 기록";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1921,18 +1932,22 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.plobby;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Plobby Provisioning Profile";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -1953,7 +1968,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Plobby.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Plobby";
 			};
 			name = Debug;
@@ -1975,7 +1990,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Plobby.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Plobby";
 			};
 			name = Release;
@@ -1995,7 +2010,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = Plobby;
 			};
 			name = Debug;
@@ -2015,7 +2030,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = Plobby;
 			};
 			name = Release;

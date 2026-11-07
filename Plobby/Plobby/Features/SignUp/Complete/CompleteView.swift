@@ -19,9 +19,12 @@ struct CompleteView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Text("회원가입이 완료되었습니다.")
-                .font(.system(size: 26, weight: .semibold))
-                .padding(.top, 85)
+            
+            Spacer()
+            
+            Text("회원가입이 완료되었습니다\n활동을 기록해보세요")
+                .plobbyFont(.heading)
+                .multilineTextAlignment(.center)
             
             Spacer()
 

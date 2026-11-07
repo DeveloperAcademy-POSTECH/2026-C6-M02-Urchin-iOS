@@ -21,6 +21,8 @@ struct MainTabFeature {
 
         var selectedTab: MainTab = .home
         var isRecordMenuPresented = false
+        /// 지도에서 기록하기를 눌러 연 기록 메뉴라면, 고른 해변을 기록 작성까지 넘겨요
+        var pendingRecordBeach: Beach?
         var isLoginSheetPresented = false
         var home: HomeFeature.State
         var map = MapFeature.State()
@@ -73,6 +75,7 @@ struct MainTabFeature {
             switch action {
             case .recordTypeSelected where state.membershipStatus == .guest:
                 state.isRecordMenuPresented = false
+                state.pendingRecordBeach = nil
                 guard !state.signIn.isSigningIn else { return .none }
 
                 state.isLoginSheetPresented = true
@@ -98,6 +101,7 @@ struct MainTabFeature {
                 guard state.recordFlow == nil else { return .none }
 
                 state.isRecordMenuPresented = false
+                state.pendingRecordBeach = nil
                 state.selectedTab = .home
                 state.home.notification = NotificationFeature.State(
                     recordDetail: RecordDetailFeature.State(recordID: recordID)
@@ -106,20 +110,24 @@ struct MainTabFeature {
 
             case .tabSelected(.record):
                 state.isRecordMenuPresented.toggle()
+                state.pendingRecordBeach = nil
                 return .none
                 
             case let .tabSelected(tab):
                 state.selectedTab = tab
                 state.isRecordMenuPresented = false
+                state.pendingRecordBeach = nil
                 return .none
                 
             case .recordMenuDismissed:
                 state.isRecordMenuPresented = false
+                state.pendingRecordBeach = nil
                 return .none
                 
             case let .recordTypeSelected(recordType):
                 state.isRecordMenuPresented = false
-                state.recordFlow = RecordFlowFeature.State(recordType: recordType)
+                state.recordFlow = RecordFlowFeature.State(recordType: recordType, beach: state.pendingRecordBeach)
+                state.pendingRecordBeach = nil
                 return .none
                 
             case .recordFlow(.presented(.delegate(.closed))):
@@ -137,13 +145,17 @@ struct MainTabFeature {
             case .home:
                 return .none
             
-            case .map(.delegate(.recordStartRequested)):
+            case let .map(.delegate(.recordStartRequested(beach))):
                 state.isRecordMenuPresented = true
+                state.pendingRecordBeach = beach
                 return .none
             
             case .map:
                 return .none
             
+            case .my(.delegate(.signInRequested)):
+                return .send(.signIn(.appleSignInRequested))
+
             case .my(.delegate(.signedOut)):
                 return .send(.delegate(.signedOut))
             

@@ -21,6 +21,8 @@ struct MyFeature {
         var savedProfileImage: Data?
         @Presents var profileEdit: ProfileEditFeature.State?
         @Presents var settings: SettingsFeature.State?
+        // FIXME: 설정 화면 진입 방식 정해지면 제거 (임시로 마이 화면에 설정 목록을 바로 보여줘요)
+        var settingsList = SettingsFeature.State()
     }
 
     // MARK: - Action
@@ -30,12 +32,15 @@ struct MyFeature {
         case profileResponse(Result<Profile?, any Error>)
         case profileEditButtonTapped
         case settingsButtonTapped
+        case appleLoginButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
         case settings(PresentationAction<SettingsFeature.Action>)
+        case settingsList(SettingsFeature.Action)
         case delegate(Delegate)
 
         enum Delegate {
             case loginRequired
+            case signInRequested
             case signedOut
         }
     }
@@ -47,6 +52,10 @@ struct MyFeature {
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
+        Scope(state: \.settingsList, action: \.settingsList) {
+            SettingsFeature()
+        }
+
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -79,6 +88,10 @@ struct MyFeature {
                 state.settings = SettingsFeature.State()
                 return .none
 
+            // 로그인은 MainTab의 SignInFeature가 처리해요
+            case .appleLoginButtonTapped:
+                return .send(.delegate(.signInRequested))
+
             case let .profileEdit(.presented(.delegate(.saved(profile, profileImage)))):
                 state.profile = profile
 
@@ -91,7 +104,10 @@ struct MyFeature {
                 state.settings = nil
                 return .send(.delegate(.signedOut))
 
-            case .profileEdit, .settings, .delegate:
+            case .settingsList(.delegate(.signedOut)):
+                return .send(.delegate(.signedOut))
+
+            case .profileEdit, .settings, .settingsList, .delegate:
                 return .none
             }
         }

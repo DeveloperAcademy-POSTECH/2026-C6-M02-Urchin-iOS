@@ -27,7 +27,7 @@ nonisolated extension RecordClient: DependencyKey {
             fetchRecord: { recordID in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
-                let userID = try? await supabaseClient.currentUserID()
+                let userID = try await supabaseClient.currentUserIDIfSignedIn()
                 
                 var query = supabaseClient
                     .from("records")
@@ -44,18 +44,15 @@ nonisolated extension RecordClient: DependencyKey {
                     .execute()
                     .value
                 
-                let imageBucket = supabaseClient.storage.from(StorageBucket.image)
-                let profileBucket = supabaseClient.storage.from(StorageBucket.profile)
-
                 return try responseDTO.toDomain(
                     currentUserID: userID,
-                    photoURL: { try? imageBucket.getPublicURL(path: $0) },
-                    profileImageURL: { try? profileBucket.getPublicURL(path: $0) }
+                    photoURL: supabaseClient.recordPhotoURL,
+                    profileImageURL: supabaseClient.profileImageURL
                 )
             }, fetchRecords: { offset, limit in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
-                let userID = try? await supabaseClient.currentUserID()
+                let userID = try await supabaseClient.currentUserIDIfSignedIn()
                 let hiddenRecords = try await supabaseClient.hiddenRecords()
 
                 var query = supabaseClient
@@ -74,14 +71,11 @@ nonisolated extension RecordClient: DependencyKey {
                     .execute()
                     .value
 
-                let imageBucket = supabaseClient.storage.from(StorageBucket.image)
-                let profileBucket = supabaseClient.storage.from(StorageBucket.profile)
-
                 return responseDTOs.compactMap {
                     $0.toDomain(
                         currentUserID: userID,
-                        photoURL: { try? imageBucket.getPublicURL(path: $0) },
-                        profileImageURL: { try? profileBucket.getPublicURL(path: $0) }
+                        photoURL: supabaseClient.recordPhotoURL,
+                        profileImageURL: supabaseClient.profileImageURL
                     )
                 }
             }, submitRecord: { record in

@@ -38,7 +38,7 @@ extension OnboardingView {
         VStack(alignment: .center, spacing: 0) {
             indicator
 
-            Spacer()
+            pageImage
 
             pageDescription
         }
@@ -54,22 +54,34 @@ extension OnboardingView {
             currentIndex: store.currentPageIndex,
             pageCount: OnboardingPage.allCases.count
         )
-        .padding(.top, 20)
-        .padding(.horizontal, 65)
+        .padding(.top, 20.scaled)
+        .padding(.horizontal, 65.scaled)
     }
     
+    private var pageImage: some View {
+        Image(store.currentPage.image)
+            .resizable()
+            .scaledToFit()
+            .scaleEffect(store.currentPage.imageScale)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.horizontal, 20.scaled)
+            .padding(.vertical, 24.scaled)
+            .animation(.easeInOut(duration: 0.3), value: store.currentPage)
+    }
+
     private var pageDescription: some View {
-        VStack(alignment: .center, spacing: 12) {
+        VStack(alignment: .center, spacing: 12.scaled) {
             Text(store.currentPage.title)
-                .font(.system(size: 28, weight: .bold))
+                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: store.currentPage.titleSize.scaled))
             
             Text(store.currentPage.description)
-                .font(.system(size: 16, weight: .regular))
+                .font(.custom(PretendardWeight.regular.rawValue, fixedSize: store.currentPage.descriptionSize.scaled))
         }
+        .foregroundStyle(Color(.neutralBlack))
         .multilineTextAlignment(.center)
         .animation(.easeInOut(duration: 0.3), value: store.currentPage)
-        .padding(.horizontal, 20)
-        .padding(.bottom, 77)
+        .padding(.horizontal, 20.scaled)
+        .padding(.bottom, 77.scaled)
     }
     
     private var appleLoginButton: some View {
@@ -79,18 +91,41 @@ extension OnboardingView {
             AppleLoginLabel()
         }
         .disabled(store.signIn.isSigningIn)
-        .padding(.horizontal, 38.5)
-        .padding(.bottom, 17)
+        .padding(.horizontal, CGFloat(38.5).scaled)
+        .padding(.bottom, 17.scaled)
     }
     
+    // TODO: 컬러셋 확정 후 교체 (#555D6D)
+    private static let browseTextColor = Color(red: 0x55 / 255, green: 0x5D / 255, blue: 0x6D / 255)
+
     private var browseButton: some View {
         Button {
             store.send(.browseButtonTapped)
         } label: {
             Text("회원가입 없이 둘러보기")
-                .font(.system(size: 14, weight: .regular))
-                .foregroundStyle(.gray)
+                .font(.custom(PretendardWeight.regular.rawValue, fixedSize: 14.scaled))
+                .foregroundStyle(Self.browseTextColor)
         }
-        .padding(.bottom, 17)
+        .padding(.bottom, 17.scaled)
+    }
+}
+
+// MARK: - OnboardingPage
+
+private extension OnboardingPage {
+
+    var titleSize: CGFloat {
+        self == .trashAmount ? 36 : 28
+    }
+
+    var descriptionSize: CGFloat {
+        self == .trashAmount ? 17 : 16
+    }
+
+    var imageScale: CGFloat {
+        switch self {
+        case .trashAmount, .together: 0.6
+        case .record, .photo: 1
+        }
     }
 }

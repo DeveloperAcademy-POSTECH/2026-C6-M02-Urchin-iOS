@@ -14,14 +14,18 @@ struct SettingsView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<SettingsFeature>
+    /// 마이 화면에 목록만 넣을 때는 상단 바를 숨겨요
+    var showsNavigationBar = true
     @Environment(\.openURL) private var openURL
 
     // MARK: - Body
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
-                .padding(.horizontal, 20)
+            if showsNavigationBar {
+                navigationBar
+                    .padding(.horizontal, 20)
+            }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
@@ -187,33 +191,5 @@ extension SettingsView {
             .plobbyFont(.body)
             .foregroundStyle(color)
             .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-// MARK: - ServiceLink
-
-extension SettingsView {
-
-    private enum ServiceLink: CaseIterable {
-        case notice
-        case inquiry
-        case termsOfService
-        case privacyPolicy
-
-        var title: String {
-            switch self {
-            case .notice: "공지사항"
-            case .inquiry: "문의하기"
-            case .termsOfService: "이용약관"
-            case .privacyPolicy: "개인정보 처리방침"
-            }
-        }
-
-        // TODO: 링크 주소 정해지면 연결
-        var url: URL? {
-            switch self {
-            case .notice, .inquiry, .termsOfService, .privacyPolicy: nil
-            }
-        }
     }
 }
