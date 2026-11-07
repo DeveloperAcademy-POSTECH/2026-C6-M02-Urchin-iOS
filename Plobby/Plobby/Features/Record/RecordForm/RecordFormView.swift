@@ -21,7 +21,7 @@ struct RecordFormView: View {
     @State private var contentHeight: CGFloat = 0
 
     private let maxPhotoCount = RecordFormFeature.maxPhotoCount
-    private static let navigationBarHeight: CGFloat = 56
+    private static let navigationBarHeight: CGFloat = 56.scaled
 
     // MARK: - Body
 
@@ -53,7 +53,7 @@ private extension RecordFormView {
             navigationBar
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 40) {
+                VStack(alignment: .leading, spacing: 40.scaled) {
                     photoSection
                     locationSection
                     periodSection
@@ -66,13 +66,13 @@ private extension RecordFormView {
                     memoSection
                     completeButton
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 40)
-                .padding(.bottom, 40)
+                .padding(.horizontal, 20.scaled)
+                .padding(.top, 40.scaled)
+                .padding(.bottom, 40.scaled)
             }
             .scrollDismissesKeyboard(.interactively)
         }
-        .background(Color.white)
+        .background(Color(.gray0))
         .background {
             Color.clear
                 .ignoresSafeArea(.keyboard)
@@ -148,24 +148,24 @@ private extension RecordFormView {
     var navigationBar: some View {
         ZStack {
             Text(store.title)
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(Color.formPrimaryText)
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
 
             HStack {
                 Button {
                     store.send(.closeTapped)
                 } label: {
                     Image(systemName: "xmark")
-                        .font(.system(size: 17, weight: .medium))
-                        .foregroundStyle(Color.formPrimaryText)
-                        .frame(width: 24, height: 24)
+                        .font(.system(size: 17.scaled, weight: .medium))
+                        .foregroundStyle(Color(.textPrimary))
+                        .frame(width: 24.scaled, height: 24.scaled)
                 }
                 .accessibilityLabel("닫기")
 
                 Spacer()
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 20.scaled)
         .frame(height: Self.navigationBarHeight)
     }
     
@@ -182,17 +182,17 @@ private extension RecordFormView {
 private extension RecordFormView {
 
     var photoSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16.scaled) {
             VStack(alignment: .leading, spacing: 0) {
                 sectionTitle("활동 사진")
 
                 Text("사진을 최대 \(maxPhotoCount)장까지 올릴 수 있어요")
-                    .font(.system(size: 13))
-                    .foregroundStyle(Color.formSecondaryText)
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.textSecondary))
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: 8.scaled) {
                     cameraButton
 
                     ForEach(Array(store.photos.enumerated()), id: \.element.id) { index, photo in
@@ -210,18 +210,18 @@ private extension RecordFormView {
         } label: {
             VStack(spacing: 0) {
                 Image(systemName: "camera.fill")
-                    .font(.system(size: 15))
-                    .foregroundStyle(Color.formPlaceholderText)
-                    .frame(width: 20, height: 20)
+                    .font(.system(size: 15.scaled))
+                    .foregroundStyle(Color(.textTertiary))
+                    .frame(width: 20.scaled, height: 20.scaled)
 
                 (
                     Text("\(store.photos.count)/\(maxPhotoCount)")
-                        .foregroundStyle(store.photos.isEmpty ? Color.formPlaceholderText : Color.formAccent)
+                        .foregroundStyle(store.photos.isEmpty ? Color(.textTertiary) : Color(.green500))
                 )
-                .font(.system(size: 10, weight: .medium))
+                .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 10.scaled))
             }
-            .frame(width: 100, height: 100)
-            .background(Color.formFieldBackground, in: RoundedRectangle(cornerRadius: 8))
+            .frame(width: 100.scaled, height: 100.scaled)
+            .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .disabled(store.photos.count >= maxPhotoCount)
         .accessibilityLabel("사진 추가, \(store.photos.count)/\(maxPhotoCount)")
@@ -232,7 +232,7 @@ private extension RecordFormView {
             .overlay(alignment: .bottom) {
                 representativeLabel(isRepresentative: isRepresentative)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
             .overlay(alignment: .topTrailing) {
                 photoDeleteButton(photo.id)
             }
@@ -248,11 +248,11 @@ private extension RecordFormView {
     func representativeLabel(isRepresentative: Bool) -> some View {
         if isRepresentative {
             Text("대표사진")
-                .font(.system(size: 11, weight: .medium))
-                .foregroundStyle(.white)
+                .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 11.scaled))
+                .foregroundStyle(Color(.gray0))
                 .frame(maxWidth: .infinity)
-                .frame(height: 22)
-                .background(Color.black)
+                .frame(height: 22.scaled)
+                .background(Color(.neutralBlack))
         }
     }
 
@@ -286,11 +286,11 @@ private extension RecordFormView {
             store.send(.photoDeleteTapped(photoID), animation: .default)
         } label: {
             Image(systemName: "xmark")
-                .font(.system(size: 7, weight: .bold))
-                .foregroundStyle(.white)
-                .frame(width: 14, height: 14)
-                .background(Color.black, in: Circle())
-                .frame(width: 32, height: 32)
+                .font(.system(size: 7.scaled, weight: .bold))
+                .foregroundStyle(Color(.gray0))
+                .frame(width: 14.scaled, height: 14.scaled)
+                .background(Color(.neutralBlack), in: Circle())
+                .frame(width: 32.scaled, height: 32.scaled)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -330,25 +330,25 @@ private struct PhotoDropDelegate: DropDelegate {
 private extension RecordFormView {
 
     var locationSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16.scaled) {
             sectionTitle("활동 장소 *")
 
             Button {
                 store.send(.locationFieldTapped)
             } label: {
-                HStack(spacing: 8) {
+                HStack(spacing: 8.scaled) {
                     Text(store.beach?.name ?? "활동한 해변을 선택해주세요")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundStyle(store.beach == nil ? Color.formPlaceholderText : Color.formPrimaryText)
+                        .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 16.scaled))
+                        .foregroundStyle(store.beach == nil ? Color(.textTertiary) : Color(.textPrimary))
 
                     Spacer()
 
                     Image(systemName: "chevron.right")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(Color.formPrimaryText)
-                        .frame(width: 20, height: 20)
+                        .font(.system(size: 14.scaled, weight: .medium))
+                        .foregroundStyle(Color(.textPrimary))
+                        .frame(width: 20.scaled, height: 20.scaled)
                 }
-                .padding(12)
+                .padding(12.scaled)
                 .contentShape(Rectangle())
                 .formFieldBorder(isError: store.isLocationErrorVisible)
             }
@@ -356,7 +356,7 @@ private extension RecordFormView {
 
             if store.isLocationErrorVisible {
                 errorText("활동한 해변을 선택해주세요.")
-                    .padding(.top, -8)
+                    .padding(.top, -8.scaled)
             }
         }
     }
@@ -367,44 +367,44 @@ private extension RecordFormView {
 private extension RecordFormView {
 
     var periodSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16.scaled) {
             sectionTitle("활동 날짜와 시간 *")
 
             VStack(spacing: 0) {
                 periodRow(title: "시작", field: .start, date: store.period.start)
-                    .padding(12)
+                    .padding(12.scaled)
 
                 Rectangle()
-                    .fill(Color.formBorder)
+                    .fill(Color(.currentWarmBorder))
                     .frame(height: 1)
 
                 periodRow(title: "종료", field: .end, date: store.period.end)
-                    .padding(12)
+                    .padding(12.scaled)
             }
             .formFieldBorder(isError: store.periodError != nil)
 
             if let error = store.periodError {
                 errorText(error)
-                    .padding(.top, -8)
+                    .padding(.top, -8.scaled)
             }
         }
     }
 
     func periodRow(title: String, field: PeriodField, date: Date?) -> some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 12.scaled) {
             Text(title)
-                .font(.system(size: 13))
-                .foregroundStyle(Color.formSecondaryText)
+                .plobbyFont(.helper)
+                .foregroundStyle(Color(.textSecondary))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            HStack(spacing: 8) {
+            HStack(spacing: 8.scaled) {
                 periodChip(
                     text: date.map(Self.dateText) ?? "날짜 선택",
                     isPlaceholder: date == nil
                 ) {
                     store.send(.dateTapped(field))
                 }
-                .frame(width: 144)
+                .frame(width: 144.scaled)
 
                 periodChip(
                     text: date.map(Self.timeText) ?? "시간 선택",
@@ -412,7 +412,7 @@ private extension RecordFormView {
                 ) {
                     store.send(.timeTapped(field))
                 }
-                .frame(width: 108)
+                .frame(width: 108.scaled)
             }
         }
     }
@@ -420,13 +420,13 @@ private extension RecordFormView {
     func periodChip(text: String, isPlaceholder: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(text)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(isPlaceholder ? Color.formPlaceholderText : Color.formPrimaryText)
+                .plobbyFont(.label)
+                .foregroundStyle(isPlaceholder ? Color(.textTertiary) : Color(.textPrimary))
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
                 .frame(maxWidth: .infinity)
-                .frame(height: 48)
-                .background(Color.formFieldBackground, in: RoundedRectangle(cornerRadius: 8))
+                .frame(height: 48.scaled)
+                .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .buttonStyle(.plain)
     }
@@ -453,21 +453,21 @@ private extension RecordFormView {
 private extension RecordFormView {
 
     var maxDepthSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16.scaled) {
             sectionTitle("최대 수심")
 
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 8.scaled) {
                 unitTextField("0.0", text: $store.maxDepthText, unit: "m")
                     .focused($focusedField, equals: .maxDepth)
-                    .padding(12)
+                    .padding(12.scaled)
                 .formFieldBorder(isError: store.maxDepthError != nil)
 
                 if let error = store.maxDepthError {
                     errorText(error)
                 } else {
                     Text("활동 중 가장 깊이 내려간 수심을 입력해주세요.")
-                        .font(.system(size: 13))
-                        .foregroundStyle(Color.formSecondaryText)
+                        .plobbyFont(.helper)
+                        .foregroundStyle(Color(.textSecondary))
                 }
             }
         }
@@ -479,43 +479,43 @@ private extension RecordFormView {
 private extension RecordFormView {
 
     var trashSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16.scaled) {
             sectionTitle("주운 쓰레기")
 
             VStack(spacing: 0) {
                 Button {
                     store.send(.trashFieldTapped)
                 } label: {
-                    VStack(alignment: .leading, spacing: 4) {
+                    VStack(alignment: .leading, spacing: 4.scaled) {
                         fieldCaption("종류와 개수 (선택)")
 
                         Text(store.trash.summary ?? "주운 쓰레기를 선택해주세요")
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundStyle(store.trash.summary == nil ? Color.formPlaceholderText : Color.formPrimaryText)
+                            .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 16.scaled))
+                            .foregroundStyle(store.trash.summary == nil ? Color(.textTertiary) : Color(.textPrimary))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(12)
+                    .padding(12.scaled)
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
 
                 Rectangle()
-                    .fill(Color.formBorder)
+                    .fill(Color(.currentWarmBorder))
                     .frame(height: 1)
 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 4.scaled) {
                     fieldCaption("총무게 (선택)")
 
                     unitTextField("0", text: $store.totalWeightText, unit: "kg")
                         .focused($focusedField, equals: .totalWeight)
                 }
-                .padding(12)
+                .padding(12.scaled)
             }
             .formFieldBorder(isError: store.totalWeightError != nil)
 
             if let error = store.totalWeightError {
                 errorText(error)
-                    .padding(.top, -8)
+                    .padding(.top, -8.scaled)
             }
         }
     }
@@ -526,7 +526,7 @@ private extension RecordFormView {
 private extension RecordFormView {
 
     var memoSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16.scaled) {
             sectionTitle("활동 메모")
 
             VStack(alignment: .trailing, spacing: 0) {
@@ -534,26 +534,26 @@ private extension RecordFormView {
                     "",
                     text: $store.memo,
                     prompt: Text("활동하며 느낀 점을 자유롭게 남겨주세요")
-                        .foregroundStyle(Color.formPlaceholderText),
+                        .foregroundStyle(Color(.textTertiary)),
                     axis: .vertical
                 )
                 .focused($focusedField, equals: .memo)
-                .font(.system(size: 16))
-                .foregroundStyle(Color.formPrimaryText)
-                .lineSpacing(4)
+                .plobbyFont(.body)
+                .foregroundStyle(Color(.textPrimary))
+                .lineSpacing(4.scaled)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 
                 Text("\(store.memo.count)/\(RecordMemo.maximumLength)")
-                    .font(.system(size: 13))
-                    .foregroundStyle(store.isMemoOverLimit ? Color.formError : Color.formSecondaryText)
+                    .plobbyFont(.helper)
+                    .foregroundStyle(store.isMemoOverLimit ? Color(.currentError) : Color(.textSecondary))
             }
-            .padding(12)
-            .frame(minHeight: 144)
+            .padding(12.scaled)
+            .frame(minHeight: 144.scaled)
             .formFieldBorder(isError: store.isMemoOverLimit)
 
             if store.isMemoOverLimit {
                 errorText("메모를 \(RecordMemo.maximumLength)자 이내로 줄여주세요.")
-                    .padding(.top, -8)
+                    .padding(.top, -8.scaled)
             }
         }
     }
@@ -572,18 +572,18 @@ private extension RecordFormView {
             ZStack {
                 if store.isSubmitting {
                     ProgressView()
-                        .tint(.white)
+                        .tint(Color(.gray0))
                 } else {
                     Text("완료")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundStyle(isActive ? Color.white : Color.formDisabledText)
+                        .plobbyFont(.cardTitle)
+                        .foregroundStyle(isActive ? Color(.gray0) : Color(.textDisabled))
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 56)
+            .frame(height: 56.scaled)
             .background(
-                isActive ? Color.formAccent : Color.formFieldBackground,
-                in: RoundedRectangle(cornerRadius: 8)
+                isActive ? Color(.green500) : Color(.gray50),
+                in: RoundedRectangle(cornerRadius: 8.scaled)
             )
         }
         .disabled(!store.isCompleteEnabled)
@@ -602,24 +602,24 @@ private extension RecordFormView {
             Text(title)
             requiredFieldLabel(isRequired: isRequired)
         }
-        .font(.system(size: 17, weight: .semibold))
-        .foregroundStyle(Color.formPrimaryText)
+        .plobbyFont(.cardTitle)
+        .foregroundStyle(Color(.textPrimary))
     }
 
     func requiredFieldLabel(isRequired: Bool) -> some View {
-        isRequired ? Text("*").foregroundStyle(.red) : Text("")
+        isRequired ? Text("*").foregroundStyle(Color(.currentError)) : Text("")
     }
 
     func fieldCaption(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 13))
-            .foregroundStyle(Color.formPlaceholderText)
+            .plobbyFont(.helper)
+            .foregroundStyle(Color(.textTertiary))
     }
 
     func errorText(_ text: String) -> some View {
         Text(text)
-            .font(.system(size: 13))
-            .foregroundStyle(Color.formError)
+            .plobbyFont(.helper)
+            .foregroundStyle(Color(.currentError))
     }
 
     func unitTextField(
@@ -627,19 +627,19 @@ private extension RecordFormView {
         text: Binding<String>,
         unit: String
     ) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 8.scaled) {
             TextField(
                 "",
                 text: text,
-                prompt: Text(placeholder).foregroundStyle(Color.formPlaceholderText)
+                prompt: Text(placeholder).foregroundStyle(Color(.textTertiary))
             )
             .keyboardType(.decimalPad)
-            .font(.system(size: 16, weight: .medium))
-            .foregroundStyle(Color.formPrimaryText)
+            .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 16.scaled))
+            .foregroundStyle(Color(.textPrimary))
 
             Text(unit)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(Color.formSecondaryText)
+                .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 16.scaled))
+                .foregroundStyle(Color(.textSecondary))
         }
     }
 }
@@ -650,20 +650,8 @@ private extension View {
 
     func formFieldBorder(isError: Bool = false) -> some View {
         overlay {
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(isError ? Color.formError : Color.formBorder, lineWidth: 1)
+            RoundedRectangle(cornerRadius: 8.scaled)
+                .stroke(isError ? Color(.currentError) : Color(.currentWarmBorder), lineWidth: 1)
         }
     }
-}
-
-extension Color {
-
-    static let formPrimaryText = Color(red: 0x25 / 255, green: 0x27 / 255, blue: 0x29 / 255)
-    static let formSecondaryText = Color(red: 0x6B / 255, green: 0x72 / 255, blue: 0x80 / 255)
-    static let formPlaceholderText = Color(red: 0x8F / 255, green: 0x93 / 255, blue: 0x98 / 255)
-    static let formBorder = Color(red: 0xE7 / 255, green: 0xE7 / 255, blue: 0xE4 / 255)
-    static let formFieldBackground = Color(red: 0xF8 / 255, green: 0xF9 / 255, blue: 0xFA / 255)
-    static let formAccent = Color(red: 0x13 / 255, green: 0xBD / 255, blue: 0x7E / 255)
-    static let formDisabledText = Color(red: 0xB5 / 255, green: 0xB9 / 255, blue: 0xBD / 255)
-    static let formError = Color(red: 0xD9 / 255, green: 0x2D / 255, blue: 0x20 / 255)
 }
