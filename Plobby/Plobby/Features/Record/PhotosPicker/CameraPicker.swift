@@ -8,7 +8,7 @@
 import SwiftUI
 import UIKit
 
-struct CameraPicker: UIViewControllerRepresentable {
+struct CameraPicker {
 
     // MARK: - Properties
 
@@ -18,21 +18,6 @@ struct CameraPicker: UIViewControllerRepresentable {
     static var isAvailable: Bool {
         UIImagePickerController.isSourceTypeAvailable(.camera)
     }
-
-    // MARK: - UIViewControllerRepresentable
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(onCapture: onCapture, onCancel: onCancel)
-    }
-
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.sourceType = .camera
-        picker.delegate = context.coordinator
-        return picker
-    }
-
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 
     // MARK: - Coordinator
 
@@ -66,4 +51,22 @@ struct CameraPicker: UIViewControllerRepresentable {
             onCancel()
         }
     }
+}
+
+// MARK: - UIViewControllerRepresentable
+
+extension CameraPicker: UIViewControllerRepresentable {
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(onCapture: onCapture, onCancel: onCancel)
+    }
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 }
