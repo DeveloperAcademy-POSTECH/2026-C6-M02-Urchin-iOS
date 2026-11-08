@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-/// 화면 하단에 잠깐 떴다 사라지는 안내 메시지
-/// - 보통은 `.plobbyToast(_:)`로 화면에 붙여 써요.
+/// 토스트 메시지 UI
+/// - 보통은 `.plobbyToast(_:)`로 화면에 붙여 사용합니다.
+///
 struct PlobbyToast: View {
 
     // MARK: - Properties
@@ -35,7 +36,6 @@ struct PlobbyToast: View {
 
 extension View {
 
-    /// `message`가 있으면 하단에 토스트를 띄우고, `nil`이 되면 사라져요
     func plobbyToast(_ message: String?) -> some View {
         overlay(alignment: .bottom) {
             if let message {
@@ -45,9 +45,4 @@ extension View {
         }
         .animation(.easeInOut(duration: 0.2), value: message)
     }
-}
-
-#Preview {
-    Color(.gray0)
-        .plobbyToast("사진은 최대 5장까지 선택할 수 있어요")
 }
