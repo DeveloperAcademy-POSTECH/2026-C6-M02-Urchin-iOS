@@ -14,10 +14,7 @@ struct CollectionView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<CollectionFeature>
-
-    /// 공유할 때 가운데 카드 영역을 잘라내려고 카드 스크롤 영역의 화면 위치를 기억해요
     @State private var cardsFrame: CGRect = .zero
-    /// 스크롤 뷰가 직접 읽고 쓰는 현재 카드예요. 스토어의 selectedCategory와 서로 맞춰줘요
     @State private var scrolledCategory: TrashCategory?
 
     // MARK: - Body
@@ -95,7 +92,6 @@ private extension CollectionView {
     var collectionCards: some View {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 7.scaled) {
-                // Store의 기본 id는 객체 주소라서, 스크롤 위치(TrashCategory)와 맞도록 카드 종류를 id로 써요
                 ForEach(store.scope(state: \.cards, action: \.cards), id: \.state.id) { cardStore in
                     CollectionCardView(store: cardStore)
                         .containerRelativeFrame(.horizontal)
@@ -128,6 +124,7 @@ private extension CollectionView {
             }
         }
         .scrollIndicators(.hidden)
+        .scrollClipDisabled()
         .onGeometryChange(for: CGRect.self) { proxy in
             proxy.frame(in: .global)
         } action: { frame in
