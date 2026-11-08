@@ -960,6 +960,7 @@
 			children = (
 				ECD3271030A064E800C1E655 /* CollectionView.swift */,
 				ECD3271230A064F000C1E655 /* CollectionFeature.swift */,
+				EC19674A309CE77100BC4C19 /* CollectionCard */,
 			);
 			path = Collection;
 			sourceTree = "<group>";
@@ -1270,7 +1271,6 @@
 				DA5B10E330998932003FEDF9 /* My */,
 				ECD3270F30A064DA00C1E655 /* Collection */,
 				D1A0C0DE0000000000000A05 /* Notification */,
-				EC19674A309CE77100BC4C19 /* CollectionCard */,
 				DA5B10E030998932003FEDF9 /* Map */,
 				DA5B107630997758003FEDF9 /* MainTab */,
 				ECE6F2B53098338400C4916C /* Home */,
