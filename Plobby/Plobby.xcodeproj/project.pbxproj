@@ -158,6 +158,8 @@
 		EC196749309C58BA00BC4C19 /* PlobbyTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC196748309C58BA00BC4C19 /* PlobbyTypography.swift */; };
 		EC19674C309CE77F00BC4C19 /* CollectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC19674B309CE77F00BC4C19 /* CollectionCardView.swift */; };
 		EC19674E309CE78F00BC4C19 /* CollectionCardFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */; };
+		ECD3271130A064E800C1E655 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271030A064E800C1E655 /* CollectionView.swift */; };
+		ECD3271330A064F000C1E655 /* CollectionFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271230A064F000C1E655 /* CollectionFeature.swift */; };
 		ECDDDAB4309AC1F800FB04D5 /* RegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
@@ -385,6 +387,8 @@
 		EC196748309C58BA00BC4C19 /* PlobbyTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyTypography.swift; sourceTree = "<group>"; };
 		EC19674B309CE77F00BC4C19 /* CollectionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCardView.swift; sourceTree = "<group>"; };
 		EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCardFeature.swift; sourceTree = "<group>"; };
+		ECD3271030A064E800C1E655 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
+		ECD3271230A064F000C1E655 /* CollectionFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionFeature.swift; sourceTree = "<group>"; };
 		ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPicker.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
@@ -951,6 +955,15 @@
 			path = CollectionCard;
 			sourceTree = "<group>";
 		};
+		ECD3270F30A064DA00C1E655 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				ECD3271030A064E800C1E655 /* CollectionView.swift */,
+				ECD3271230A064F000C1E655 /* CollectionFeature.swift */,
+			);
+			path = Collection;
+			sourceTree = "<group>";
+		};
 		ECDDD9AA3099781C00FB04D5 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -1255,6 +1268,7 @@
 				ECDDDAB3309AC1F800FB04D5 /* Common */,
 				DA5B10E630998932003FEDF9 /* Record */,
 				DA5B10E330998932003FEDF9 /* My */,
+				ECD3270F30A064DA00C1E655 /* Collection */,
 				D1A0C0DE0000000000000A05 /* Notification */,
 				EC19674A309CE77100BC4C19 /* CollectionCard */,
 				DA5B10E030998932003FEDF9 /* Map */,
@@ -1528,6 +1542,7 @@
 				ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */,
 				DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */,
 				ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */,
+				ECD3271330A064F000C1E655 /* CollectionFeature.swift in Sources */,
 				DAEC87A4309B7F2A0086965E /* ToastFeature.swift in Sources */,
 				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
 				DA5B10E130998932003FEDF9 /* MapFeature.swift in Sources */,
@@ -1632,6 +1647,7 @@
 				3AD5D28536A9C7C3BEF7C27C /* BeachMarker.swift in Sources */,
 				D1A0C0DE0000000000000B01 /* Sea.swift in Sources */,
 				D1A0C0DE0000000000000B03 /* BeachStorageDTO.swift in Sources */,
+				ECD3271130A064E800C1E655 /* CollectionView.swift in Sources */,
 				ECE6F2E63098338400C4916C /* DecimalInput.swift in Sources */,
 				EC0D4B843098E1A7000E7BB7 /* BeachClient.swift in Sources */,
 				EC0D4B873098E1D0000E7BB7 /* DependencyValues+BeachClient.swift in Sources */,

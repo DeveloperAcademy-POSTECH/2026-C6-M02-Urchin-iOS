@@ -43,27 +43,8 @@ struct MainTabView: View {
                 MapView(store: store.scope(state: \.map, action: \.map))
             }
 
-            Tab("마이", systemImage: "person", value: .my) {
-                NavigationStack {
-                    MyView(store: store.scope(state: \.my, action: \.my))
-                        .toolbar(.hidden, for: .navigationBar)
-                        .navigationDestination(
-                            item: $store.scope(state: \.my.profileEdit, action: \.my.profileEdit)
-                        ) { store in
-                            ProfileEditView(store: store)
-                                .toolbar(.hidden, for: .tabBar)
-                        }
-                        .navigationDestination(
-                            item: $store.scope(state: \.my.settings, action: \.my.settings)
-                        ) { store in
-                            SettingsView(store: store)
-                                .toolbar(.hidden, for: .tabBar)
-                        }
-                }
-            }
-
-            Tab("기록", systemImage: store.isRecordMenuPresented ? "xmark" : "plus", value: .record, role: .search) {
-                EmptyView()
+            Tab("컬렉션", systemImage: "books.vertical", value: .collection) {
+                CollectionView(store: store.scope(state: \.collection, action: \.collection))
             }
         }
         .tint(.primary)
