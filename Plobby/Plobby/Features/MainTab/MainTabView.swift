@@ -108,6 +108,7 @@ extension MainTabView {
         @Bindable var store = store
 
         return MyView(store: store)
+            .toolbar(.hidden, for: .navigationBar)
             .toolbar(.hidden, for: .tabBar)
             .navigationDestination(
                 item: $store.scope(state: \.profileEdit, action: \.profileEdit)

@@ -51,6 +51,7 @@ struct CollectionFeature {
                 return .run { send in
                     await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
                 }
+                .cancellable(id: CancelID.profile, cancelInFlight: true)
 
             case let .profileResponse(.success(profile)):
                 state.profile = profile
@@ -114,6 +115,10 @@ extension CollectionFeature {
     static let initialCards = IdentifiedArray(uniqueElements: categoryOrder.map { category in
         CollectionCardFeature.State(category: category, collectedCount: sampleCounts[category, default: 0])
     })
+
+    private nonisolated enum CancelID {
+        case profile
+    }
 
     private static let sampleCounts: [TrashCategory: Int] = [
         .plastic: 128, .glass: 12, .metal: 4, .fishingGear: 19,

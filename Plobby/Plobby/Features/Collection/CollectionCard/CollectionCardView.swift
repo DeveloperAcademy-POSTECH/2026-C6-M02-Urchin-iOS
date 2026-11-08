@@ -150,14 +150,16 @@ private extension CollectionCardView {
         return Text(text)
             .plobbyFont(.metric)
             .foregroundStyle(Color(.gray0))
+            .fixedSize(horizontal: false, vertical: true)
             .padding(.top, 25.scaled)
             .padding(.horizontal, 20.scaled)
     }
 
     // TODO: 종류별 일러스트 에셋 나오면 교체
     var illustration: some View {
-        Color.red
-            .frame(width: 167.scaled, height: 141.scaled)
+        Color.clear
+            .frame(width: 167.scaled)
+            .frame(minHeight: 0, maxHeight: 141.scaled)
             .padding(.top, 30.scaled)
     }
 
@@ -165,6 +167,7 @@ private extension CollectionCardView {
         Text(text)
             .plobbyFont(.body)
             .foregroundStyle(Color(.gray0))
+            .fixedSize(horizontal: false, vertical: true)
             .padding(.top, 22.scaled)
             .padding(.horizontal, 16.scaled)
     }
@@ -173,6 +176,7 @@ private extension CollectionCardView {
         Text(text)
             .plobbyFont(.metadata)
             .foregroundStyle(Color(.gray0).opacity(0.72))
+            .fixedSize(horizontal: false, vertical: true)
             .padding(.bottom, 36.scaled)
             .padding(.horizontal, 16.scaled)
     }
