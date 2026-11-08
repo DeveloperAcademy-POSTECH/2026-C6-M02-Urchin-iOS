@@ -48,6 +48,15 @@ private extension CollectionView {
     }
 
     var profileImage: some View {
+        Button {
+            store.send(.profileTapped)
+        } label: {
+            profileThumbnail
+        }
+        .buttonStyle(.plain)
+    }
+
+    var profileThumbnail: some View {
         AsyncImage(url: store.profile?.profileImageURL) { image in
             image
                 .resizable()

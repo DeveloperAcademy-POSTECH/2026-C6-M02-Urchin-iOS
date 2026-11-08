@@ -81,6 +81,7 @@ struct MainTabFeature {
                 return .none
                 
             case .home(.delegate(.loginRequired)) where !state.signIn.isSigningIn,
+                 .collection(.my(.presented(.delegate(.loginRequired)))) where !state.signIn.isSigningIn,
                  .map(.delegate(.loginRequired)) where !state.signIn.isSigningIn:
                 state.isLoginSheetPresented = true
                 return .none
@@ -146,6 +147,12 @@ struct MainTabFeature {
             case .map:
                 return .none
             
+            case .collection(.my(.presented(.delegate(.signInRequested)))):
+                return .send(.signIn(.appleSignInRequested))
+
+            case .collection(.my(.presented(.delegate(.signedOut)))):
+                return .send(.delegate(.signedOut))
+
             case .collection, .recordFlow, .signIn, .delegate:
                 return .none
             }

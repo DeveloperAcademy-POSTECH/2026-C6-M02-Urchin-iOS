@@ -44,7 +44,15 @@ struct MainTabView: View {
             }
 
             Tab("컬렉션", systemImage: "books.vertical", value: .collection) {
-                CollectionView(store: store.scope(state: \.collection, action: \.collection))
+                NavigationStack {
+                    CollectionView(store: store.scope(state: \.collection, action: \.collection))
+                        .toolbar(.hidden, for: .navigationBar)
+                        .navigationDestination(
+                            item: $store.scope(state: \.collection.my, action: \.collection.my)
+                        ) { store in
+                            myView(store: store)
+                        }
+                }
             }
         }
         .tint(.primary)
@@ -82,6 +90,23 @@ struct MainTabView: View {
 // MARK: - Subviews
 
 extension MainTabView {
+
+    private func myView(store: StoreOf<MyFeature>) -> some View {
+        @Bindable var store = store
+
+        return MyView(store: store)
+            .toolbar(.hidden, for: .tabBar)
+            .navigationDestination(
+                item: $store.scope(state: \.profileEdit, action: \.profileEdit)
+            ) { store in
+                ProfileEditView(store: store)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.settings, action: \.settings)
+            ) { store in
+                SettingsView(store: store)
+            }
+    }
     
     private var recordMenu: some View {
         ZStack(alignment: .bottomTrailing) {

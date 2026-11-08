@@ -15,6 +15,7 @@ struct CollectionFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
+        @Presents var my: MyFeature.State?
         var profile: Profile?
     }
 
@@ -23,6 +24,8 @@ struct CollectionFeature {
     enum Action {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
+        case profileTapped
+        case my(PresentationAction<MyFeature.Action>)
     }
 
     // MARK: - Dependency
@@ -48,7 +51,17 @@ struct CollectionFeature {
             case let .profileResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 return .none
+
+            case .profileTapped:
+                state.my = MyFeature.State()
+                return .none
+
+            case .my:
+                return .none
             }
+        }
+        .ifLet(\.$my, action: \.my) {
+            MyFeature()
         }
     }
 }
