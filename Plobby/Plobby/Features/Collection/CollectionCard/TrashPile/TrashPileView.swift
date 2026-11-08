@@ -12,9 +12,12 @@ struct TrashPileView: View {
 
     private static let maximumDropCount = 200
 
+    let isActive: Bool
+
     @State private var scene: TrashPileScene
 
-    init(category: TrashCategory, count: Int) {
+    init(category: TrashCategory, count: Int, isActive: Bool) {
+        self.isActive = isActive
         let candidates = category.imageNames
         let scene = TrashPileScene()
         scene.scaleMode = .resizeFill
@@ -24,5 +27,8 @@ struct TrashPileView: View {
 
     var body: some View {
         SpriteView(scene: scene)
+            .onChange(of: isActive, initial: true) { _, isActive in
+                scene.isActive = isActive
+            }
     }
 }

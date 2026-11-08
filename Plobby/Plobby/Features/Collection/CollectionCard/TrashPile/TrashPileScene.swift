@@ -19,6 +19,10 @@ final class TrashPileScene: SKScene {
     private let maxDropDuration: TimeInterval = 2.5
 
     var imageNames: [String] = []
+    /// 카드가 화면 가운데에 올 때 true가 되고, 그때 처음 한 번만 쌓기 시작해요
+    var isActive = false {
+        didSet { startIfNeeded() }
+    }
     private var hasStarted = false
 
     // MARK: - Lifecycle
@@ -38,7 +42,7 @@ final class TrashPileScene: SKScene {
 extension TrashPileScene {
 
     private func startIfNeeded() {
-        guard !hasStarted, size.width > 0, size.height > 0, view != nil else { return }
+        guard isActive, !hasStarted, size.width > 0, size.height > 0, view != nil else { return }
         hasStarted = true
 
         let targets = pileTargets(count: imageNames.count)

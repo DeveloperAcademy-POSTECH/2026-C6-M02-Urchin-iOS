@@ -14,6 +14,7 @@ struct CollectionCardView: View {
     // MARK: - Properties
 
     let store: StoreOf<CollectionCardFeature>
+    var isActive = true
 
     // MARK: - Body
 
@@ -88,7 +89,8 @@ private extension CollectionCardView {
     var trashPile: some View {
         TrashPileView(
             category: store.category,
-            count: store.collectedCount
+            count: store.collectedCount,
+            isActive: isActive
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 16.scaled)

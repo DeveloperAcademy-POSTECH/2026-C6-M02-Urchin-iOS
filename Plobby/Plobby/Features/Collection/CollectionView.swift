@@ -93,7 +93,7 @@ private extension CollectionView {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 7.scaled) {
                 ForEach(store.scope(state: \.cards, action: \.cards), id: \.state.id) { cardStore in
-                    CollectionCardView(store: cardStore)
+                    CollectionCardView(store: cardStore, isActive: cardStore.category == scrolledCategory)
                         .containerRelativeFrame(.horizontal)
                         .scrollTransition(axis: .horizontal) { content, phase in
                             content.scaleEffect(
