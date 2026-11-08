@@ -9,6 +9,23 @@ import UIKit
 
 extension TrashCategory {
 
+    /// 분류 목록에서 종류를 대표하는 이미지예요
+    var thumbnailName: String {
+        switch self {
+        case .glass: "category_glass"
+        case .plastic: "category_plastic"
+        case .metal: "category_metal"
+        case .wood: "category_wood"
+        case .fishingGear: "category_fishing_gear"
+        case .clothing: "category_clothing"
+        case .styrofoam: "category_styrofoam"
+        case .can: "category_can"
+        case .paper: "category_paper"
+        case .rubber: "category_rubber"
+        case .etc: "category_etc"
+        }
+    }
+
     var imageNames: [String] {
         assetNames.flatMap { name in
             ["S", "M", "L"]

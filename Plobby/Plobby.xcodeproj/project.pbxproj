@@ -50,6 +50,7 @@
 		7B3C1A15309D0000004C5301 /* TrashPileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A16309D0000004C5301 /* TrashPileView.swift */; };
 		7B3C1A17309D0000004C5301 /* TrashPileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A18309D0000004C5301 /* TrashPileScene.swift */; };
 		7B3C1A19309D0000004C5301 /* TrashCategory+Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A1A309D0000004C5301 /* TrashCategory+Asset.swift */; };
+		7B3C1A1C309D0000004C5301 /* CollectionCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A1D309D0000004C5301 /* CollectionCategorySheet.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
@@ -278,6 +279,7 @@
 		7B3C1A16309D0000004C5301 /* TrashPileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashPileView.swift; sourceTree = "<group>"; };
 		7B3C1A18309D0000004C5301 /* TrashPileScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashPileScene.swift; sourceTree = "<group>"; };
 		7B3C1A1A309D0000004C5301 /* TrashCategory+Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrashCategory+Asset.swift"; sourceTree = "<group>"; };
+		7B3C1A1D309D0000004C5301 /* CollectionCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCategorySheet.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -982,6 +984,7 @@
 			children = (
 				ECD3271030A064E800C1E655 /* CollectionView.swift */,
 				ECD3271230A064F000C1E655 /* CollectionFeature.swift */,
+				7B3C1A1D309D0000004C5301 /* CollectionCategorySheet.swift */,
 				EC19674A309CE77100BC4C19 /* CollectionCard */,
 			);
 			path = Collection;
@@ -1544,6 +1547,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC19674C309CE77F00BC4C19 /* CollectionCardView.swift in Sources */,
+				7B3C1A1C309D0000004C5301 /* CollectionCategorySheet.swift in Sources */,
 				7B3C1A19309D0000004C5301 /* TrashCategory+Asset.swift in Sources */,
 				7B3C1A17309D0000004C5301 /* TrashPileScene.swift in Sources */,
 				7B3C1A15309D0000004C5301 /* TrashPileView.swift in Sources */,

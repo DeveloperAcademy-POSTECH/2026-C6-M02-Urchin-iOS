@@ -18,6 +18,7 @@ struct CollectionFeature {
         @Presents var my: MyFeature.State?
         var profile: Profile?
         var card = CollectionCardFeature.State()
+        var isCategorySheetPresented = false
     }
 
     // MARK: - Action
@@ -27,6 +28,8 @@ struct CollectionFeature {
         case profileResponse(Result<Profile?, any Error>)
         case profileTapped
         case allCategoryTapped
+        case categorySheetPresentationChanged(Bool)
+        case categoryTapped(TrashCategory)
         case shareTapped
         case card(CollectionCardFeature.Action)
         case my(PresentationAction<MyFeature.Action>)
@@ -65,9 +68,19 @@ struct CollectionFeature {
                 state.my = MyFeature.State()
                 return .none
 
-            // TODO: 전체 분류 화면 연결
             case .allCategoryTapped:
+                state.isCategorySheetPresented = true
                 return .none
+
+            case let .categorySheetPresentationChanged(isPresented):
+                state.isCategorySheetPresented = isPresented
+                return .none
+
+            case let .categoryTapped(category):
+                guard Self.selectableCategories.contains(category) else { return .none }
+
+                state.isCategorySheetPresented = false
+                return .send(.card(.categorySelected(category)))
 
             // TODO: 카드 공유 연결
             case .shareTapped:
@@ -81,4 +94,12 @@ struct CollectionFeature {
             MyFeature()
         }
     }
+}
+
+// MARK: - Constants
+
+extension CollectionFeature {
+
+    /// 시범 운영에서는 이 종류만 카드로 볼 수 있어요
+    static let selectableCategories: Set<TrashCategory> = [.plastic, .glass, .wood]
 }

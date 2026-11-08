@@ -13,7 +13,7 @@ struct CollectionView: View {
 
     // MARK: - Properties
 
-    let store: StoreOf<CollectionFeature>
+    @Bindable var store: StoreOf<CollectionFeature>
 
     // MARK: - Body
 
@@ -30,6 +30,11 @@ struct CollectionView: View {
         }
         .onAppear {
             store.send(.onAppear)
+        }
+        .sheet(isPresented: $store.isCategorySheetPresented.sending(\.categorySheetPresentationChanged)) {
+            CollectionCategorySheet(store: store)
+                .presentationDetents([.height(684.scaled)])
+                .presentationDragIndicator(.visible)
         }
     }
 }

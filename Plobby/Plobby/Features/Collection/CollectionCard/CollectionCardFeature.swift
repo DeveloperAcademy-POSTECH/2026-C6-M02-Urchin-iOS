@@ -16,10 +16,17 @@ struct CollectionCardFeature {
     struct State: Equatable {
         var selectedCategory: TrashCategory = .plastic
         // TODO: 컬렉션 데이터 연동 후 실제 개수로 교체
-        var collectedCount: Int = 128
+        var collectedCounts: [TrashCategory: Int] = [
+            .plastic: 128, .glass: 12, .metal: 4, .fishingGear: 19,
+            .styrofoam: 8, .can: 17, .rubber: 3, .etc: 3
+        ]
         // TODO: 프로필 연동 후 실제 닉네임으로 교체
         var nickname: String?
         var isFlipped = false
+
+        var collectedCount: Int {
+            collectedCounts[selectedCategory, default: 0]
+        }
     }
 
     // MARK: - Action
