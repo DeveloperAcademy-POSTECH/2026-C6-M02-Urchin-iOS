@@ -21,8 +21,6 @@ struct MyFeature {
         var savedProfileImage: Data?
         @Presents var profileEdit: ProfileEditFeature.State?
         @Presents var settings: SettingsFeature.State?
-        // FIXME: 설정 화면 진입 방식 정해지면 제거 (임시로 마이 화면에 설정 목록을 바로 보여줘요)
-        var settingsList = SettingsFeature.State()
     }
 
     // MARK: - Action
@@ -35,7 +33,6 @@ struct MyFeature {
         case appleLoginButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
         case settings(PresentationAction<SettingsFeature.Action>)
-        case settingsList(SettingsFeature.Action)
         case delegate(Delegate)
 
         enum Delegate {
@@ -52,10 +49,6 @@ struct MyFeature {
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
-        Scope(state: \.settingsList, action: \.settingsList) {
-            SettingsFeature()
-        }
-
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -104,10 +97,7 @@ struct MyFeature {
                 state.settings = nil
                 return .send(.delegate(.signedOut))
 
-            case .settingsList(.delegate(.signedOut)):
-                return .send(.delegate(.signedOut))
-
-            case .profileEdit, .settings, .settingsList, .delegate:
+            case .profileEdit, .settings, .delegate:
                 return .none
             }
         }

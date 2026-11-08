@@ -20,26 +20,15 @@ struct MyView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Group {
-                header
+            header
 
-                if case .member = store.membershipStatus {
-                    profile
-                } else {
-                    guestLoginPrompt
-                }
-            }
-            .padding(.horizontal, 20)
-
-            // FIXME: 설정 화면 진입 방식 정해지면 제거 (임시로 프로필 아래에 설정 목록을 보여줘요)
             if case .member = store.membershipStatus {
-                SettingsView(
-                    store: store.scope(state: \.settingsList, action: \.settingsList),
-                    showsNavigationBar: false
-                )
-                .padding(.top, 24)
+                profile
+            } else {
+                guestLoginPrompt
             }
         }
+        .padding(.horizontal, 20)
         .frame(maxHeight: .infinity, alignment: .top)
         .onAppear {
             store.send(.onAppear)
@@ -61,16 +50,23 @@ extension MyView {
                 .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            // FIXME: 설정 목록을 프로필 아래로 임시 이동해서 설정 아이콘을 숨겨둠
-            // Button {
-            //     store.send(.settingsButtonTapped)
-            // } label: {
-            //     Image(systemName: "gearshape")
-            //         .font(.system(size: 24, weight: .regular))
-            //         .foregroundStyle(.black)
-            // }
+            settingsButton
         }
         .frame(height: 56)
+    }
+
+    private var settingsButton: some View {
+        Button {
+            store.send(.settingsButtonTapped)
+        } label: {
+            Image(systemName: "gearshape")
+                .font(.system(size: 24, weight: .regular))
+                .foregroundStyle(Color(.textPrimary))
+                .frame(width: 44, height: 44, alignment: .trailing)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("설정")
     }
 
     private var profile: some View {

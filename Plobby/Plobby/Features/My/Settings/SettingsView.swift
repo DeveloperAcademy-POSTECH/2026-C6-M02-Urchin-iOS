@@ -14,17 +14,14 @@ struct SettingsView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<SettingsFeature>
-    var showsNavigationBar = true
     @Environment(\.openURL) private var openURL
 
     // MARK: - Body
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if showsNavigationBar {
-                navigationBar
-                    .padding(.horizontal, 20)
-            }
+            navigationBar
+                .padding(.horizontal, 20)
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
