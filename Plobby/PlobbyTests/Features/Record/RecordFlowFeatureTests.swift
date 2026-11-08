@@ -47,6 +47,7 @@ struct RecordFlowFeatureTests {
         form.period = ActivityPeriod(start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 3600))
         form.trash = trash
         form.totalWeightText = "2"
+        form.memo = "깨끗해졌어요"
         let store = makeStore(step: .form(form))
 
         await store.send(\.step.form.completeTapped) {

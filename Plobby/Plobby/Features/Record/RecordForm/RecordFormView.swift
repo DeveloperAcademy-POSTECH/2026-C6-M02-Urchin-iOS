@@ -132,6 +132,12 @@ private extension RecordFormView {
         if newField == .totalWeight {
             store.send(.totalWeightFocusChanged(isFocused: true))
         }
+        if oldField == .memo {
+            store.send(.memoFocusChanged(isFocused: false))
+        }
+        if newField == .memo {
+            store.send(.memoFocusChanged(isFocused: true))
+        }
     }
 }
 
@@ -338,7 +344,7 @@ private extension RecordFormView {
                         .foregroundStyle(Color(.textSecondary))
                     
                     Text(store.beach?.name ?? "장소 검색")
-                        .plobbyFont(.actionLabel)
+                        .plobbyFont(.body)
                         .foregroundStyle(store.beach == nil ? Color(.textSecondary) : Color(.textPrimary))
 
                     Spacer()
@@ -491,7 +497,7 @@ private extension RecordFormView {
         } label: {
             HStack(spacing: 8.scaled) {
                 Text(store.trash.summary ?? "종류와 개수 선택")
-                    .plobbyFont(.actionLabel)
+                    .plobbyFont(.body)
                     .foregroundStyle(store.trash.summary == nil ? Color(.textSecondary) : Color(.textPrimary))
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -509,7 +515,8 @@ private extension RecordFormView {
 
     var totalWeightRow: some View {
         HStack(spacing: 12.scaled) {
-            requiredTitle("총무게 *", typography: .body)
+            Text("총무게")
+                .plobbyFont(.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             unitInputBox("50", text: $store.totalWeightText, unit: "kg")
@@ -526,13 +533,13 @@ private extension RecordFormView {
 
     var memoSection: some View {
         VStack(alignment: .leading, spacing: 16.scaled) {
-            sectionTitle("활동 메모")
+            sectionTitle("활동 메모 *")
 
             VStack(alignment: .trailing, spacing: 0) {
                 TextField(
                     "",
                     text: $store.memo,
-                    prompt: Text("바위 틈에 유리 조각이 많았어요")
+                    prompt: Text("활동 중 기억에 남는 점을 적어 주세요.")
                         .foregroundStyle(Color(.textTertiary)),
                     axis: .vertical
                 )
@@ -548,9 +555,12 @@ private extension RecordFormView {
             }
             .padding(12.scaled)
             .frame(minHeight: 144.scaled)
-            .formFieldBorder(isError: store.isMemoOverLimit)
+            .formFieldBorder(isError: store.isMemoErrorVisible || store.isMemoOverLimit)
 
-            if store.isMemoOverLimit {
+            if store.isMemoErrorVisible {
+                errorText("활동 메모를 입력해 주세요")
+                    .padding(.top, -8.scaled)
+            } else if store.isMemoOverLimit {
                 errorText("메모를 \(RecordMemo.maximumLength)자 이내로 줄여주세요.")
                     .padding(.top, -8.scaled)
             }
@@ -565,7 +575,19 @@ private extension RecordFormView {
     var completeButton: some View {
         let isActive = store.isCompleteEnabled || store.isSubmitting
 
-        return Button {
+        return VStack(spacing: 8.scaled) {
+            if !isActive {
+                Text("필수 항목을 모두 채워 주세요")
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.textSecondary))
+            }
+
+            saveButton(isActive: isActive)
+        }
+    }
+
+    func saveButton(isActive: Bool) -> some View {
+        Button {
             store.send(.completeTapped)
         } label: {
             ZStack {
@@ -573,7 +595,7 @@ private extension RecordFormView {
                     ProgressView()
                         .tint(Color(.gray0))
                 } else {
-                    Text("완료")
+                    Text("기록 저장")
                         .plobbyFont(.actionLabel)
                         .foregroundStyle(isActive ? Color(.gray0) : Color(.textDisabled))
                 }
@@ -594,7 +616,7 @@ private extension RecordFormView {
 private extension RecordFormView {
 
     func sectionTitle(_ text: String) -> some View {
-        requiredTitle(text, typography: .heading)
+        requiredTitle(text, typography: .cardTitle)
     }
 
     func requiredTitle(_ text: String, typography: PlobbyTypography) -> some View {

@@ -31,6 +31,7 @@ struct RecordFormFeature {
         var totalWeightText: String
         var totalWeightError: String?
         var memo: String
+        var isMemoErrorVisible: Bool = false
         var isSubmitting: Bool = false
         var isCompleteEnabled: Bool = false
         @Presents var destination: Destination.State?
@@ -144,6 +145,7 @@ struct RecordFormFeature {
         case timeTapped(PeriodField)
         case maxDepthFocusChanged(isFocused: Bool)
         case totalWeightFocusChanged(isFocused: Bool)
+        case memoFocusChanged(isFocused: Bool)
         case trashFieldTapped
         case completeTapped
         case submitResponse(Result<UUID, any Error>)
@@ -183,6 +185,12 @@ struct RecordFormFeature {
                 
             case .binding(\.totalWeightText):
                 state.totalWeightError = nil
+                return .none
+
+            case .binding(\.memo):
+                if !InputText.isBlank(state.memo) {
+                    state.isMemoErrorVisible = false
+                }
                 return .none
                 
             case .closeTapped:
@@ -258,6 +266,14 @@ struct RecordFormFeature {
                 
             case .totalWeightFocusChanged(isFocused: false):
                 state.totalWeightError = totalWeightError(for: state.totalWeightText)
+                return .none
+
+            case .memoFocusChanged(isFocused: true):
+                return .none
+
+            // 메모 칸을 벗어날 때 비어 있으면 필수 오류를 보여줘요
+            case .memoFocusChanged(isFocused: false):
+                state.isMemoErrorVisible = InputText.isBlank(state.memo)
                 return .none
                 
             case .trashFieldTapped:
@@ -380,11 +396,12 @@ extension RecordFormFeature {
         state.periodError = periodError(for: state.period)
         state.maxDepthError = maxDepthError(for: state.maxDepthText)
         state.totalWeightError = totalWeightError(for: state.totalWeightText)
+        state.isMemoErrorVisible = InputText.isBlank(state.memo)
 
         return canComplete(state)
     }
 
-    /// 최대 수심과 메모만 선택이고 나머지는 모두 입력해야 해요
+    /// 최대 수심만 선택이고 나머지는 모두 입력해야 해요
     private func canComplete(_ state: State) -> Bool {
         guard !state.isSubmitting,
               !state.photos.isEmpty,
@@ -394,6 +411,7 @@ extension RecordFormFeature {
               !state.trash.isEmpty,
               !InputText.isBlank(state.totalWeightText),
               totalWeightError(for: state.totalWeightText) == nil,
+              !InputText.isBlank(state.memo),
               !state.isMemoOverLimit
         else { return false }
 
