@@ -19,7 +19,7 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
-            Tab("홈", systemImage: "house", value: .home) {
+            Tab(value: .home) {
                 NavigationStack {
                     HomeView(store: store.scope(state: \.home, action: \.home))
                         .toolbar(.hidden, for: .navigationBar)
@@ -37,33 +37,28 @@ struct MainTabView: View {
                                 .toolbar(.hidden, for: .tabBar)
                         }
                 }
+            } label: {
+                tabLabel("홈", icon: "house", tab: .home)
             }
 
-            Tab("지도", systemImage: "map", value: .map) {
+            Tab(value: .map) {
                 MapView(store: store.scope(state: \.map, action: \.map))
+            } label: {
+                tabLabel("지도", icon: "map", tab: .map)
             }
 
-            Tab("마이", systemImage: "person", value: .my) {
+            Tab(value: .collection) {
                 NavigationStack {
-                    MyView(store: store.scope(state: \.my, action: \.my))
+                    CollectionView(store: store.scope(state: \.collection, action: \.collection))
                         .toolbar(.hidden, for: .navigationBar)
                         .navigationDestination(
-                            item: $store.scope(state: \.my.profileEdit, action: \.my.profileEdit)
+                            item: $store.scope(state: \.collection.my, action: \.collection.my)
                         ) { store in
-                            ProfileEditView(store: store)
-                                .toolbar(.hidden, for: .tabBar)
-                        }
-                        .navigationDestination(
-                            item: $store.scope(state: \.my.settings, action: \.my.settings)
-                        ) { store in
-                            SettingsView(store: store)
-                                .toolbar(.hidden, for: .tabBar)
+                            myView(store: store)
                         }
                 }
-            }
-
-            Tab("기록", systemImage: store.isRecordMenuPresented ? "xmark" : "plus", value: .record, role: .search) {
-                EmptyView()
+            } label: {
+                tabLabel("컬렉션", icon: "books.vertical", tab: .collection)
             }
         }
         .tint(.primary)
@@ -101,6 +96,31 @@ struct MainTabView: View {
 // MARK: - Subviews
 
 extension MainTabView {
+
+    /// 선택된 탭만 채워진 아이콘을 보여줘요
+    private func tabLabel(_ title: String, icon: String, tab: MainTab) -> some View {
+        Label(title, systemImage: store.selectedTab == tab ? "\(icon).fill" : icon)
+            // 탭바가 아이콘을 자동으로 채우지 않게 해요
+            .environment(\.symbolVariants, .none)
+    }
+
+    private func myView(store: StoreOf<MyFeature>) -> some View {
+        @Bindable var store = store
+
+        return MyView(store: store)
+            .toolbar(.hidden, for: .navigationBar)
+            .toolbar(.hidden, for: .tabBar)
+            .navigationDestination(
+                item: $store.scope(state: \.profileEdit, action: \.profileEdit)
+            ) { store in
+                ProfileEditView(store: store)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.settings, action: \.settings)
+            ) { store in
+                SettingsView(store: store)
+            }
+    }
     
     private var recordMenu: some View {
         ZStack(alignment: .bottomTrailing) {

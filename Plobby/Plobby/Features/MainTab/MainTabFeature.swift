@@ -21,12 +21,11 @@ struct MainTabFeature {
 
         var selectedTab: MainTab = .home
         var isRecordMenuPresented = false
-        /// 지도에서 기록하기를 눌러 연 기록 메뉴라면, 고른 해변을 기록 작성까지 넘겨요
         var pendingRecordBeach: Beach?
         var isLoginSheetPresented = false
         var home: HomeFeature.State
         var map = MapFeature.State()
-        var my = MyFeature.State()
+        var collection = CollectionFeature.State()
         var signIn = SignInFeature.State()
     }
     
@@ -41,7 +40,7 @@ struct MainTabFeature {
         case pushTapped(UUID)
         case home(HomeFeature.Action)
         case map(MapFeature.Action)
-        case my(MyFeature.Action)
+        case collection(CollectionFeature.Action)
         case recordFlow(PresentationAction<RecordFlowFeature.Action>)
         case signIn(SignInFeature.Action)
         case delegate(Delegate)
@@ -67,8 +66,8 @@ struct MainTabFeature {
         Scope(state: \.map, action: \.map) {
             MapFeature()
         }
-        Scope(state: \.my, action: \.my) {
-            MyFeature()
+        Scope(state: \.collection, action: \.collection) {
+            CollectionFeature()
         }
         
         Reduce { state, action in
@@ -82,7 +81,7 @@ struct MainTabFeature {
                 return .none
                 
             case .home(.delegate(.loginRequired)) where !state.signIn.isSigningIn,
-                 .my(.delegate(.loginRequired)) where !state.signIn.isSigningIn,
+                 .collection(.my(.presented(.delegate(.loginRequired)))) where !state.signIn.isSigningIn,
                  .map(.delegate(.loginRequired)) where !state.signIn.isSigningIn:
                 state.isLoginSheetPresented = true
                 return .none
@@ -108,11 +107,6 @@ struct MainTabFeature {
                 )
                 return .none
 
-            case .tabSelected(.record):
-                state.isRecordMenuPresented.toggle()
-                state.pendingRecordBeach = nil
-                return .none
-                
             case let .tabSelected(tab):
                 state.selectedTab = tab
                 state.isRecordMenuPresented = false
@@ -153,16 +147,13 @@ struct MainTabFeature {
             case .map:
                 return .none
             
-            case .my(.delegate(.signInRequested)):
+            case .collection(.my(.presented(.delegate(.signInRequested)))):
                 return .send(.signIn(.appleSignInRequested))
 
-            case .my(.delegate(.signedOut)):
+            case .collection(.my(.presented(.delegate(.signedOut)))):
                 return .send(.delegate(.signedOut))
-            
-            case .my:
-                return .none
-            
-            case .recordFlow, .signIn, .delegate:
+
+            case .collection, .recordFlow, .signIn, .delegate:
                 return .none
             }
         }

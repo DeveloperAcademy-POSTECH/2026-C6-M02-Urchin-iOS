@@ -8,6 +8,5 @@
 enum MainTab {
     case home
     case map
-    case my
-    case record
+    case collection
 }
