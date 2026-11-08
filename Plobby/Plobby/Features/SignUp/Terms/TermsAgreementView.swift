@@ -134,5 +134,7 @@ private extension TermsAgreementView {
             .resizable()
             .frame(width: 24.scaled, height: 24.scaled)
             .foregroundStyle(isChecked ? Color(.green500) : Color(.gray300))
+            .contentTransition(.identity)
+            .transaction { $0.animation = nil }
     }
 }
