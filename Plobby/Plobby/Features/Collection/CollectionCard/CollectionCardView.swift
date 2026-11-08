@@ -27,18 +27,14 @@ struct CollectionCardView: View {
     }
 }
 
-// MARK: - 카드 앞면
+// MARK: - 카드 공통
 
 private extension CollectionCardView {
 
-    var front: some View {
-        VStack(spacing: 0) {
-            header
-            trashPile
-            collectedCountLabel
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.darkBG), in: RoundedRectangle(cornerRadius: 20.scaled))
+    func cardFace(_ content: some View) -> some View {
+        content
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.darkBG), in: RoundedRectangle(cornerRadius: 20.scaled))
     }
 
     var header: some View {
@@ -72,6 +68,21 @@ private extension CollectionCardView {
                 }
         }
         .buttonStyle(.plain)
+    }
+}
+
+// MARK: - 카드 앞면
+
+private extension CollectionCardView {
+
+    var front: some View {
+        cardFace(
+            VStack(spacing: 0) {
+                header
+                trashPile
+                collectedCountLabel
+            }
+        )
     }
 
     var trashPile: some View {
@@ -109,19 +120,19 @@ private extension CollectionCardView {
     var back: some View {
         let fact = store.selectedCategory.collectionFact(count: store.collectedCount, nickname: store.nickname)
 
-        return VStack(spacing: 0) {
-            header
-            factTitle(fact.title)
-            illustration
-            factDescription(fact.description)
+        return cardFace(
+            VStack(spacing: 0) {
+                header
+                factTitle(fact.title)
+                illustration
+                factDescription(fact.description)
 
-            Spacer()
+                Spacer()
 
-            factSource(fact.source)
-        }
-        .multilineTextAlignment(.center)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.darkBG), in: RoundedRectangle(cornerRadius: 20.scaled))
+                factSource(fact.source)
+            }
+            .multilineTextAlignment(.center)
+        )
     }
 
     func factTitle(_ title: String) -> some View {
