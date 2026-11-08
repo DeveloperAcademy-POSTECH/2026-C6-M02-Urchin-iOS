@@ -19,7 +19,7 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
-            Tab("홈", systemImage: "house", value: .home) {
+            Tab(value: .home) {
                 NavigationStack {
                     HomeView(store: store.scope(state: \.home, action: \.home))
                         .toolbar(.hidden, for: .navigationBar)
@@ -37,13 +37,17 @@ struct MainTabView: View {
                                 .toolbar(.hidden, for: .tabBar)
                         }
                 }
+            } label: {
+                tabLabel("홈", icon: "house", tab: .home)
             }
 
-            Tab("지도", systemImage: "map", value: .map) {
+            Tab(value: .map) {
                 MapView(store: store.scope(state: \.map, action: \.map))
+            } label: {
+                tabLabel("지도", icon: "map", tab: .map)
             }
 
-            Tab("컬렉션", systemImage: "books.vertical", value: .collection) {
+            Tab(value: .collection) {
                 NavigationStack {
                     CollectionView(store: store.scope(state: \.collection, action: \.collection))
                         .toolbar(.hidden, for: .navigationBar)
@@ -53,6 +57,8 @@ struct MainTabView: View {
                             myView(store: store)
                         }
                 }
+            } label: {
+                tabLabel("컬렉션", icon: "books.vertical", tab: .collection)
             }
         }
         .tint(.primary)
@@ -90,6 +96,13 @@ struct MainTabView: View {
 // MARK: - Subviews
 
 extension MainTabView {
+
+    /// 선택된 탭만 채워진 아이콘을 보여줘요
+    private func tabLabel(_ title: String, icon: String, tab: MainTab) -> some View {
+        Label(title, systemImage: store.selectedTab == tab ? "\(icon).fill" : icon)
+            // 탭바가 아이콘을 자동으로 채우지 않게 해요
+            .environment(\.symbolVariants, .none)
+    }
 
     private func myView(store: StoreOf<MyFeature>) -> some View {
         @Bindable var store = store
