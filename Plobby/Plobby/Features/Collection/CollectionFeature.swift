@@ -17,6 +17,7 @@ struct CollectionFeature {
         @Shared(.membershipStatus) var membershipStatus
         @Presents var my: MyFeature.State?
         var profile: Profile?
+        var card = CollectionCardFeature.State()
     }
 
     // MARK: - Action
@@ -25,6 +26,7 @@ struct CollectionFeature {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
         case profileTapped
+        case card(CollectionCardFeature.Action)
         case my(PresentationAction<MyFeature.Action>)
     }
 
@@ -35,6 +37,10 @@ struct CollectionFeature {
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
+        Scope(state: \.card, action: \.card) {
+            CollectionCardFeature()
+        }
+
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -46,6 +52,7 @@ struct CollectionFeature {
 
             case let .profileResponse(.success(profile)):
                 state.profile = profile
+                state.card.nickname = profile?.nickname
                 return .none
 
             case let .profileResponse(.failure(error)):
@@ -56,7 +63,7 @@ struct CollectionFeature {
                 state.my = MyFeature.State()
                 return .none
 
-            case .my:
+            case .card, .my:
                 return .none
             }
         }

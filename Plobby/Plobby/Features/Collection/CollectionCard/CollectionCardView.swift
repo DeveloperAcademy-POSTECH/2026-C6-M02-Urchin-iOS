@@ -25,7 +25,6 @@ struct CollectionCardView: View {
             back: back
         )
         .animation(.easeInOut(duration: 0.6), value: store.isFlipped)
-        .padding(.horizontal, 20)
     }
 }
 

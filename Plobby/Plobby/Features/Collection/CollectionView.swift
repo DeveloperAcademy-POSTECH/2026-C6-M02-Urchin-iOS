@@ -20,8 +20,7 @@ struct CollectionView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-
-            Spacer()
+            collectionCard
         }
         .onAppear {
             store.send(.onAppear)
@@ -68,5 +67,16 @@ private extension CollectionView {
         }
         .frame(width: 36.scaled, height: 36.scaled)
         .clipShape(Circle())
+    }
+}
+
+// MARK: - Collection Card
+
+private extension CollectionView {
+    
+    private var collectionCard: some View {
+        CollectionCardView(store: store.scope(state: \.card, action: \.card))
+            .padding(.horizontal, 32.scaled)
+            .padding(.vertical, 24.scaled)
     }
 }
