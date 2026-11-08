@@ -21,6 +21,12 @@ struct CollectionView: View {
         VStack(spacing: 0) {
             header
             collectionCard
+            
+            Spacer()
+            
+            bottomButtons
+            
+            Spacer()
         }
         .onAppear {
             store.send(.onAppear)
@@ -78,5 +84,53 @@ private extension CollectionView {
         CollectionCardView(store: store.scope(state: \.card, action: \.card))
             .padding(.horizontal, 32.scaled)
             .padding(.vertical, 24.scaled)
+    }
+}
+
+// MARK: - Bottom
+
+private extension CollectionView {
+
+    var bottomButtons: some View {
+        HStack(spacing: 8.scaled) {
+            allCategoryButton
+            shareButton
+        }
+        .padding(.horizontal, 32.scaled)
+        .padding(.bottom, 28.scaled)
+    }
+
+    var allCategoryButton: some View {
+        Button {
+            store.send(.allCategoryTapped)
+        } label: {
+            HStack(spacing: 0) {
+                Image(systemName: "square.grid.2x2")
+                    .font(.system(size: 16.scaled, weight: .regular))
+                    .frame(width: 24.scaled, height: 24.scaled)
+
+                Text("전체 분류")
+                    .plobbyFont(.actionLabel)
+            }
+            .foregroundStyle(.textPrimary)
+            .frame(maxWidth: .infinity)
+            .frame(height: 56.scaled)
+            .background(Color(.gray100), in: RoundedRectangle(cornerRadius: 10.scaled))
+        }
+        .buttonStyle(.plain)
+    }
+
+    var shareButton: some View {
+        Button {
+            store.send(.shareTapped)
+        } label: {
+            Image(systemName: "square.and.arrow.up")
+                .font(.system(size: 18.scaled, weight: .medium))
+                .frame(width: 24.scaled, height: 24.scaled)
+                .foregroundStyle(.textPrimary)
+                .frame(width: 56.scaled, height: 56.scaled)
+                .background(Color(.gray100), in: RoundedRectangle(cornerRadius: 10.scaled))
+        }
+        .buttonStyle(.plain)
     }
 }

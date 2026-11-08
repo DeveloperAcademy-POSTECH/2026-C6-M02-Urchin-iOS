@@ -26,6 +26,8 @@ struct CollectionFeature {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
         case profileTapped
+        case allCategoryTapped
+        case shareTapped
         case card(CollectionCardFeature.Action)
         case my(PresentationAction<MyFeature.Action>)
     }
@@ -61,6 +63,14 @@ struct CollectionFeature {
 
             case .profileTapped:
                 state.my = MyFeature.State()
+                return .none
+
+            // TODO: 전체 분류 화면 연결
+            case .allCategoryTapped:
+                return .none
+
+            // TODO: 카드 공유 연결
+            case .shareTapped:
                 return .none
 
             case .card, .my:
