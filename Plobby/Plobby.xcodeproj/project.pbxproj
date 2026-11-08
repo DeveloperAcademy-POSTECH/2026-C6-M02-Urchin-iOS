@@ -61,6 +61,12 @@
 		B593430730A0D77F005EAF07 /* GoalProgressResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593430430A0D77F005EAF07 /* GoalProgressResponseDTO.swift */; };
 		B593430930A0D874005EAF07 /* GoalClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593430830A0D874005EAF07 /* GoalClient.swift */; };
 		B593430B30A0D9A1005EAF07 /* DependencyValues+GoalClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593430A30A0D9A1005EAF07 /* DependencyValues+GoalClient.swift */; };
+		B593430D30A0DA00005EAF07 /* GoalDailyProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593430C30A0DA00005EAF07 /* GoalDailyProgress.swift */; };
+		B593430F30A0DA00005EAF07 /* GoalTrashSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593430E30A0DA00005EAF07 /* GoalTrashSummary.swift */; };
+		B593431130A0DA00005EAF07 /* GoalParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593431030A0DA00005EAF07 /* GoalParticipant.swift */; };
+		B593431330A0DA00005EAF07 /* GoalDailyProgressResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593431230A0DA00005EAF07 /* GoalDailyProgressResponseDTO.swift */; };
+		B593431530A0DA00005EAF07 /* GoalTrashSummaryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593431430A0DA00005EAF07 /* GoalTrashSummaryResponseDTO.swift */; };
+		B593431730A0DA00005EAF07 /* GoalParticipantResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593431630A0DA00005EAF07 /* GoalParticipantResponseDTO.swift */; };
 		B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5951FB2309BA4AB0089A019 /* MyView.swift */; };
 		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
 		B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */; };
@@ -289,6 +295,12 @@
 		B593430430A0D77F005EAF07 /* GoalProgressResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalProgressResponseDTO.swift; sourceTree = "<group>"; };
 		B593430830A0D874005EAF07 /* GoalClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalClient.swift; sourceTree = "<group>"; };
 		B593430A30A0D9A1005EAF07 /* DependencyValues+GoalClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+GoalClient.swift"; sourceTree = "<group>"; };
+		B593430C30A0DA00005EAF07 /* GoalDailyProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDailyProgress.swift; sourceTree = "<group>"; };
+		B593430E30A0DA00005EAF07 /* GoalTrashSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTrashSummary.swift; sourceTree = "<group>"; };
+		B593431030A0DA00005EAF07 /* GoalParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalParticipant.swift; sourceTree = "<group>"; };
+		B593431230A0DA00005EAF07 /* GoalDailyProgressResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDailyProgressResponseDTO.swift; sourceTree = "<group>"; };
+		B593431430A0DA00005EAF07 /* GoalTrashSummaryResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalTrashSummaryResponseDTO.swift; sourceTree = "<group>"; };
+		B593431630A0DA00005EAF07 /* GoalParticipantResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalParticipantResponseDTO.swift; sourceTree = "<group>"; };
 		B5951FB2309BA4AB0089A019 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
 		B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -631,6 +643,9 @@
 			isa = PBXGroup;
 			children = (
 				B59342F030A0CF68005EAF07 /* Goal.swift */,
+				B593430C30A0DA00005EAF07 /* GoalDailyProgress.swift */,
+				B593431030A0DA00005EAF07 /* GoalParticipant.swift */,
+				B593430E30A0DA00005EAF07 /* GoalTrashSummary.swift */,
 			);
 			path = Goal;
 			sourceTree = "<group>";
@@ -648,7 +663,10 @@
 		B593430530A0D77F005EAF07 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				B593431230A0DA00005EAF07 /* GoalDailyProgressResponseDTO.swift */,
+				B593431630A0DA00005EAF07 /* GoalParticipantResponseDTO.swift */,
 				B593430430A0D77F005EAF07 /* GoalProgressResponseDTO.swift */,
+				B593431430A0DA00005EAF07 /* GoalTrashSummaryResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1585,6 +1603,12 @@
 				68C5E3F70B1137E8CEB2DFEC /* BeachHomeView.swift in Sources */,
 				B593430930A0D874005EAF07 /* GoalClient.swift in Sources */,
 				B593430B30A0D9A1005EAF07 /* DependencyValues+GoalClient.swift in Sources */,
+				B593430D30A0DA00005EAF07 /* GoalDailyProgress.swift in Sources */,
+				B593430F30A0DA00005EAF07 /* GoalTrashSummary.swift in Sources */,
+				B593431130A0DA00005EAF07 /* GoalParticipant.swift in Sources */,
+				B593431330A0DA00005EAF07 /* GoalDailyProgressResponseDTO.swift in Sources */,
+				B593431530A0DA00005EAF07 /* GoalTrashSummaryResponseDTO.swift in Sources */,
+				B593431730A0DA00005EAF07 /* GoalParticipantResponseDTO.swift in Sources */,
 				DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */,
 				5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */,
 				B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */,
