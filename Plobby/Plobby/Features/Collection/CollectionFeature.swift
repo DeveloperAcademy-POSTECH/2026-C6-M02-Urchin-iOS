@@ -17,7 +17,8 @@ struct CollectionFeature {
         @Shared(.membershipStatus) var membershipStatus
         @Presents var my: MyFeature.State?
         var profile: Profile?
-        var card = CollectionCardFeature.State()
+        var cards: IdentifiedArrayOf<CollectionCardFeature.State> = CollectionFeature.initialCards
+        var selectedCategory: TrashCategory = .plastic
         var isCategorySheetPresented = false
     }
 
@@ -30,8 +31,9 @@ struct CollectionFeature {
         case allCategoryTapped
         case categorySheetPresentationChanged(Bool)
         case categoryTapped(TrashCategory)
+        case cardScrolled(TrashCategory)
         case shareTapped
-        case card(CollectionCardFeature.Action)
+        case cards(IdentifiedActionOf<CollectionCardFeature>)
         case my(PresentationAction<MyFeature.Action>)
     }
 
@@ -42,10 +44,6 @@ struct CollectionFeature {
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
-        Scope(state: \.card, action: \.card) {
-            CollectionCardFeature()
-        }
-
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -57,7 +55,9 @@ struct CollectionFeature {
 
             case let .profileResponse(.success(profile)):
                 state.profile = profile
-                state.card.nickname = profile?.nickname
+                for id in state.cards.ids {
+                    state.cards[id: id]?.nickname = profile?.nickname
+                }
                 return .none
 
             case let .profileResponse(.failure(error)):
@@ -80,15 +80,23 @@ struct CollectionFeature {
                 guard Self.selectableCategories.contains(category) else { return .none }
 
                 state.isCategorySheetPresented = false
-                return .send(.card(.categorySelected(category)))
+                state.selectedCategory = category
+                return .none
+
+            case let .cardScrolled(category):
+                state.selectedCategory = category
+                return .none
 
             // TODO: 카드 공유 연결
             case .shareTapped:
                 return .none
 
-            case .card, .my:
+            case .cards, .my:
                 return .none
             }
+        }
+        .forEach(\.cards, action: \.cards) {
+            CollectionCardFeature()
         }
         .ifLet(\.$my, action: \.my) {
             MyFeature()
@@ -100,6 +108,20 @@ struct CollectionFeature {
 
 extension CollectionFeature {
 
-    /// 시범 운영에서는 이 종류만 카드로 볼 수 있어요
     static let selectableCategories: Set<TrashCategory> = [.plastic, .glass, .wood]
+
+    static let categoryOrder: [TrashCategory] = [
+        .plastic, .glass, .metal, .wood, .fishingGear, .clothing,
+        .styrofoam, .can, .paper, .rubber, .etc
+    ]
+
+    // TODO: 컬렉션 데이터 연동 후 실제 개수로 교체
+    static let initialCards = IdentifiedArray(uniqueElements: categoryOrder.map { category in
+        CollectionCardFeature.State(category: category, collectedCount: sampleCounts[category, default: 0])
+    })
+
+    private static let sampleCounts: [TrashCategory: Int] = [
+        .plastic: 128, .glass: 12, .metal: 4, .fishingGear: 19,
+        .styrofoam: 8, .can: 17, .rubber: 3, .etc: 3
+    ]
 }

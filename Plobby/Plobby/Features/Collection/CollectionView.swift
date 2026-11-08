@@ -20,7 +20,7 @@ struct CollectionView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-            collectionCard
+            collectionCards
             
             Spacer()
             
@@ -81,14 +81,44 @@ private extension CollectionView {
     }
 }
 
-// MARK: - Collection Card
+// MARK: - Collection Cards
 
 private extension CollectionView {
-    
-    private var collectionCard: some View {
-        CollectionCardView(store: store.scope(state: \.card, action: \.card))
-            .padding(.horizontal, 32.scaled)
-            .padding(.vertical, 24.scaled)
+
+    nonisolated static let peekScale: CGFloat = 277 / 338
+
+    var collectionCards: some View {
+        ScrollView(.horizontal) {
+            LazyHStack(spacing: 7.scaled) {
+                ForEach(store.scope(state: \.cards, action: \.cards)) { cardStore in
+                    CollectionCardView(store: cardStore)
+                        .containerRelativeFrame(.horizontal)
+                        .scrollTransition(axis: .horizontal) { content, phase in
+                            content.scaleEffect(
+                                1 - (1 - Self.peekScale) * abs(phase.value),
+                                anchor: phase.value < 0 ? .trailing : .leading
+                            )
+                        }
+                }
+            }
+            .scrollTargetLayout()
+        }
+        .contentMargins(.horizontal, 32.scaled, for: .scrollContent)
+        .scrollTargetBehavior(.viewAligned)
+        .scrollPosition(id: selectedCategory)
+        .scrollIndicators(.hidden)
+        .padding(.vertical, 24.scaled)
+    }
+
+    var selectedCategory: Binding<TrashCategory?> {
+        Binding(
+            get: { store.selectedCategory },
+            set: { category in
+                guard let category, category != store.selectedCategory else { return }
+
+                store.send(.cardScrolled(category))
+            }
+        )
     }
 }
 

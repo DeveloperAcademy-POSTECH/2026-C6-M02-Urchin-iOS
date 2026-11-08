@@ -39,7 +39,7 @@ private extension CollectionCardView {
 
     var header: some View {
         HStack(spacing: 0) {
-            Text("플라스틱")    // TODO: - 수정 예정
+            Text(store.category.name)
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.gray0))
                 .padding(.leading, 8.scaled)
@@ -87,10 +87,9 @@ private extension CollectionCardView {
 
     var trashPile: some View {
         TrashPileView(
-            category: store.selectedCategory,
+            category: store.category,
             count: store.collectedCount
         )
-        .id(store.selectedCategory)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 16.scaled)
         .padding(.bottom, 8.scaled)
@@ -118,7 +117,7 @@ private extension CollectionCardView {
 private extension CollectionCardView {
     
     var back: some View {
-        let fact = store.selectedCategory.collectionFact(count: store.collectedCount, nickname: store.nickname)
+        let fact = store.category.collectionFact(count: store.collectedCount, nickname: store.nickname)
 
         return cardFace(
             VStack(spacing: 0) {

@@ -90,7 +90,7 @@ private extension CollectionCategorySheet {
     
     var categoryGrid: some View {
         LazyVGrid(columns: columns, spacing: 10.scaled) {
-            ForEach(TrashCategory.allCases, id: \.self) { category in
+            ForEach(CollectionFeature.categoryOrder, id: \.self) { category in
                 categoryCell(category)
             }
         }
@@ -98,11 +98,11 @@ private extension CollectionCategorySheet {
     }
 
     func categoryCell(_ category: TrashCategory) -> some View {
-        let isSelected = store.card.selectedCategory == category
-        let count = store.card.collectedCounts[category, default: 0]
+        let isSelected = store.selectedCategory == category
+        let count = store.cards[id: category]?.collectedCount ?? 0
 
         return Button {
-            store.send(.categoryTapped(category))
+            store.send(.categoryTapped(category), animation: .default)
         } label: {
             VStack(alignment: .leading, spacing: 0) {
                 thumbnail(category)
