@@ -28,7 +28,7 @@ struct CollectionCardView: View {
     }
 }
 
-// MARK: - Front
+// MARK: - 카드 앞면
 
 private extension CollectionCardView {
 
@@ -39,81 +39,71 @@ private extension CollectionCardView {
             collectedCount
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.neutralBlack), in: RoundedRectangle(cornerRadius: 20))
+        .background(Color(.gray900), in: RoundedRectangle(cornerRadius: 20.scaled))
     }
 
     var header: some View {
-        HStack {
-            Menu {
-                ForEach(TrashCategory.allCases, id: \.self) { category in
-                    Button(category.name) {
-                        store.send(.categorySelected(category))
-                    }
-                }
-            } label: {
-                HStack(spacing: 7) {
-                    Text(store.selectedCategory.name)
-                        .plobbyFont(.metric)
-                    Image(systemName: "chevron.down")
-                        .font(.system(size: 18, weight: .medium))
-                }
+        HStack(spacing: 0) {
+            Text("플라스틱")    // TODO: - 수정 예정
+                .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.gray0))
-                .fixedSize()
-            }
-            .id(store.selectedCategory)
+                .padding(.leading, 8.scaled)
 
             Spacer()
 
             flipButton
         }
-        .padding(.top, 16)
-        .padding(.horizontal, 20)
+        .padding(.top, 16.scaled)
+        .padding(.horizontal, 16.scaled)
     }
 
     var flipButton: some View {
         Button {
             store.send(.flipButtonTapped)
         } label: {
-            // TODO: 디자인 시스템 확정 후 변경
             Image(.collectionCardFlip)
                 .resizable()
-                .frame(width: 24, height: 24)
-                .frame(width: 44, height: 44)
+                .frame(width: 23.scaled, height: 23.scaled)
+                .frame(width: 42.scaled, height: 42.scaled)
+                .foregroundStyle(Color(.gray0))
                 .background(Color(.gray900), in: Circle())
                 .overlay {
                     Circle()
-                        .strokeBorder(Color(.gray700), lineWidth: 1)
+                        .strokeBorder(Color(.currentNeutralGray), lineWidth: 1)
                 }
         }
+        .buttonStyle(.plain)
     }
 
     var trashPile: some View {
-        TrashPileView(category: store.selectedCategory, count: store.collectedCount)
-            .id(store.selectedCategory)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 16.5)
+        TrashPileView(
+            category: store.selectedCategory,
+            count: store.collectedCount
+        )
+        .id(store.selectedCategory)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, 16.scaled)
+        .padding(.bottom, 8.scaled)
     }
 
     var collectedCount: some View {
         HStack(alignment: .lastTextBaseline) {
             Text("지금까지 모은 개수")
-                .plobbyFont(.helper)
-                // TODO: 컬러셋 확정 후 교체
-                .foregroundStyle(Color(red: 0xB7 / 255, green: 0xC3 / 255, blue: 0xBC / 255))
+                .plobbyFont(.metadata)
+                .foregroundStyle(Color(.gray500))
 
             Spacer()
 
             Text("\(store.collectedCount)개")
-                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 44))
+                .plobbyFont(.metricExtra)
                 .foregroundStyle(Color(.gray0))
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 48)
+        .padding(.horizontal, 16.scaled)
+        .padding(.bottom, 20.scaled)
     }
 }
 
-// MARK: - Back
+// MARK: - 카드 뒷면
 
 private extension CollectionCardView {
 
@@ -173,7 +163,7 @@ private extension CollectionCardView {
         }
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.neutralBlack), in: RoundedRectangle(cornerRadius: 20))
+        .background(Color(.gray900), in: RoundedRectangle(cornerRadius: 20.scaled))
     }
 }
 
@@ -325,7 +315,7 @@ private final class TrashPileScene: SKScene {
     // MARK: - Lifecycle
 
     override func didMove(to view: SKView) {
-        backgroundColor = .black
+        backgroundColor = UIColor(resource: .gray900)
         startIfNeeded()
     }
 
