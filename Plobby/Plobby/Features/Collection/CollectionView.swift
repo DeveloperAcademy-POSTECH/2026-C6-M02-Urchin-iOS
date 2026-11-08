@@ -17,6 +17,8 @@ struct CollectionView: View {
 
     /// 공유할 때 가운데 카드 영역을 잘라내려고 카드 스크롤 영역의 화면 위치를 기억해요
     @State private var cardsFrame: CGRect = .zero
+    /// 스크롤 뷰가 직접 읽고 쓰는 현재 카드예요. 스토어의 selectedCategory와 서로 맞춰줘요
+    @State private var scrolledCategory: TrashCategory?
 
     // MARK: - Body
 
@@ -93,7 +95,8 @@ private extension CollectionView {
     var collectionCards: some View {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 7.scaled) {
-                ForEach(store.scope(state: \.cards, action: \.cards)) { cardStore in
+                // Store의 기본 id는 객체 주소라서, 스크롤 위치(TrashCategory)와 맞도록 카드 종류를 id로 써요
+                ForEach(store.scope(state: \.cards, action: \.cards), id: \.state.id) { cardStore in
                     CollectionCardView(store: cardStore)
                         .containerRelativeFrame(.horizontal)
                         .scrollTransition(axis: .horizontal) { content, phase in
@@ -108,7 +111,22 @@ private extension CollectionView {
         }
         .contentMargins(.horizontal, 32.scaled, for: .scrollContent)
         .scrollTargetBehavior(.viewAligned)
-        .scrollPosition(id: selectedCategory)
+        .scrollPosition(id: $scrolledCategory)
+        .onAppear {
+            scrolledCategory = store.selectedCategory
+        }
+        .onChange(of: scrolledCategory) { _, category in
+            guard let category, category != store.selectedCategory else { return }
+
+            store.send(.cardScrolled(category))
+        }
+        .onChange(of: store.selectedCategory) { _, category in
+            guard category != scrolledCategory else { return }
+
+            withAnimation {
+                scrolledCategory = category
+            }
+        }
         .scrollIndicators(.hidden)
         .onGeometryChange(for: CGRect.self) { proxy in
             proxy.frame(in: .global)
@@ -116,17 +134,6 @@ private extension CollectionView {
             cardsFrame = frame
         }
         .padding(.vertical, 24.scaled)
-    }
-
-    var selectedCategory: Binding<TrashCategory?> {
-        Binding(
-            get: { store.selectedCategory },
-            set: { category in
-                guard let category, category != store.selectedCategory else { return }
-
-                store.send(.cardScrolled(category))
-            }
-        )
     }
 }
 
@@ -182,7 +189,6 @@ private extension CollectionView {
 
 private extension CollectionView {
 
-    /// 화면에 보이는 가운데 카드를 이미지로 찍어서 공유 시트를 띄워요
     func shareCurrentCard() {
         guard let window = UIApplication.shared.connectedScenes
             .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
@@ -193,7 +199,6 @@ private extension CollectionView {
         let format = UIGraphicsImageRendererFormat()
         format.opaque = false
 
-        // ImageRenderer는 SpriteView(쓰레기 더미)를 그리지 못해서 화면을 그대로 찍어요
         let image = UIGraphicsImageRenderer(bounds: cardFrame, format: format).image { _ in
             UIBezierPath(roundedRect: cardFrame, cornerRadius: 20.scaled).addClip()
             window.drawHierarchy(in: window.bounds, afterScreenUpdates: false)

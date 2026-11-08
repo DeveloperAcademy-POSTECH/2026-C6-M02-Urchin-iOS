@@ -102,7 +102,7 @@ private extension CollectionCategorySheet {
         let count = store.cards[id: category]?.collectedCount ?? 0
 
         return Button {
-            store.send(.categoryTapped(category), animation: .default)
+            store.send(.categoryTapped(category))
         } label: {
             VStack(alignment: .leading, spacing: 0) {
                 thumbnail(category)
