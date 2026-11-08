@@ -34,7 +34,7 @@ private extension CollectionCardView {
     func cardFace(_ content: some View) -> some View {
         content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.darkBG), in: RoundedRectangle(cornerRadius: 20.scaled))
+            .background(Color(.surfaceBlack), in: RoundedRectangle(cornerRadius: 20.scaled))
     }
 
     var header: some View {
@@ -125,6 +125,9 @@ private extension CollectionCardView {
                 header
                 factTitle(fact.title)
                 illustration
+                
+                Spacer()
+
                 factDescription(fact.description)
 
                 Spacer()

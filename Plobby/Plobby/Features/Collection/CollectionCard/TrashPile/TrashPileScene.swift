@@ -24,7 +24,7 @@ final class TrashPileScene: SKScene {
     // MARK: - Lifecycle
 
     override func didMove(to view: SKView) {
-        backgroundColor = UIColor(resource: .darkBG)
+        backgroundColor = UIColor(resource: .surfaceBlack)
         startIfNeeded()
     }
 
