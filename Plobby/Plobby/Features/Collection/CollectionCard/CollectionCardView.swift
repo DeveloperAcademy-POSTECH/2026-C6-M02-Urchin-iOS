@@ -39,7 +39,7 @@ private extension CollectionCardView {
             collectedCount
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.gray900), in: RoundedRectangle(cornerRadius: 20.scaled))
+        .background(Color(.darkBG), in: RoundedRectangle(cornerRadius: 20.scaled))
     }
 
     var header: some View {
@@ -163,7 +163,7 @@ private extension CollectionCardView {
         }
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.gray900), in: RoundedRectangle(cornerRadius: 20.scaled))
+        .background(Color(.darkBG), in: RoundedRectangle(cornerRadius: 20.scaled))
     }
 }
 
@@ -315,7 +315,7 @@ private final class TrashPileScene: SKScene {
     // MARK: - Lifecycle
 
     override func didMove(to view: SKView) {
-        backgroundColor = UIColor(resource: .gray900)
+        backgroundColor = UIColor(resource: .darkBG)
         startIfNeeded()
     }
 
