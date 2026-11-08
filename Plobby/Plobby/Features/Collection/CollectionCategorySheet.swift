@@ -23,6 +23,8 @@ struct CollectionCategorySheet: View {
         VStack(alignment: .leading, spacing: 0) {
             header
             categoryGrid
+
+            Spacer()
         }
         .background(Color(.gray0))
     }
@@ -87,16 +89,12 @@ private extension CollectionCategorySheet {
 private extension CollectionCategorySheet {
     
     var categoryGrid: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 10.scaled) {
-                ForEach(TrashCategory.allCases, id: \.self) { category in
-                    categoryCell(category)
-                }
+        LazyVGrid(columns: columns, spacing: 10.scaled) {
+            ForEach(TrashCategory.allCases, id: \.self) { category in
+                categoryCell(category)
             }
-            .padding(.horizontal, 20.scaled)
-            .padding(.bottom, 36.scaled)
         }
-        .scrollBounceBehavior(.basedOnSize)
+        .padding(.horizontal, 20.scaled)
     }
 
     func categoryCell(_ category: TrashCategory) -> some View {
