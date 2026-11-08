@@ -43,17 +43,16 @@ struct RecordRewardView: View {
                     .opacity(isSummaryVisible ? 1 : 0)
             }
             .overlay(alignment: .bottom) {
-                PlobbyButton(text: "다음") {
+                PlobbyButton(text: "다음", style: .highlight) {
                     store.send(.nextButtonTapped)
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 20.scaled)
                 .opacity(isSummaryVisible ? 1 : 0)
                 .allowsHitTesting(isSummaryVisible)
             }
             .onAppear {
                 store.send(.onAppear)
 
-                // 쓰레기는 선택 입력이라, 없으면 낙하 없이 검정 화면이 덮이자마자 문구를 보여 줘요
                 guard !store.trash.isEmpty else {
                     withAnimation(.easeInOut(duration: 0.5).delay(Self.curtainDuration)) {
                         isSummaryVisible = true
@@ -81,41 +80,42 @@ extension RecordRewardView {
                     .plobbyFont(.body)
                     .foregroundStyle(Color(.gray0))
                     .opacity(0.8)
-                    .padding(.bottom, 8)
+                    .padding(.bottom, 8.scaled)
             }
 
             Text("\(store.beachName.map { "\($0)이" } ?? "바다가")\n이만큼 깨끗해졌어요")
                 .plobbyFont(.headingLarge)
                 .foregroundStyle(Color(.gray0))
 
-            HStack(alignment: .top, spacing: 38) {
+            HStack(alignment: .top, spacing: 38.scaled) {
                 if !store.trash.isEmpty {
                     metric(value: "\(store.trash.totalCount)", unit: "개", title: "수거한 쓰레기")
-                        .frame(width: 154, alignment: .leading)
+                        .frame(width: 154.scaled, alignment: .leading)
                 }
 
                 if let weightKg = store.weightKg {
                     metric(value: weightKg.formatted(), unit: "kg", title: "총무게")
                 }
             }
-            .padding(.top, 24)
+            .padding(.top, 24.scaled)
         }
-        .padding(.horizontal, 28)
-        .padding(.top, 36)
+        .padding(.horizontal, 28.scaled)
+        .padding(.top, 36.scaled)
     }
 
     private func metric(value: String, unit: String, title: String) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8.scaled) {
+            HStack(alignment: .firstTextBaseline, spacing: 4.scaled) {
                 Text(value)
-                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 32))
+                    .plobbyFont(.metricLarge)
+                
                 Text(unit)
                     .plobbyFont(.cardTitle)
             }
             .foregroundStyle(Color(.gray0))
 
             Text(title)
-                .plobbyFont(.metadata)
+                .plobbyFont(.helper)
                 .foregroundStyle(Color(.gray0))
                 .opacity(0.72)
         }
@@ -145,7 +145,7 @@ private final class FallingTrashScene: SKScene {
     // MARK: - Lifecycle
 
     override func didMove(to view: SKView) {
-        backgroundColor = .black
+        backgroundColor = UIColor(resource: .neutralBlack)
         addChild(floorNode)
         updateBoundary()
         startDropping()

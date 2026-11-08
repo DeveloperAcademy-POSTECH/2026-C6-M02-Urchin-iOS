@@ -31,6 +31,9 @@ struct SignUpView: View {
             }
         } destination: { store in
             switch store.case {
+            case let .region(store):
+                RegionView(store: store)
+
             case let .complete(store):
                 CompleteView(store: store)
             }

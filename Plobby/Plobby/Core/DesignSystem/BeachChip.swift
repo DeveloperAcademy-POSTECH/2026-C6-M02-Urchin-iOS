@@ -7,33 +7,67 @@
 
 import SwiftUI
 
-// TODO: 추후 디자인 시스템에 맞게 색상 수정
+/// 관심 해변 칩
+/// - 관심 해변 목록(`.favorite`)과 추가 버튼(`.add`)에 사용합니다.
+///
 struct BeachChip: View {
 
     // MARK: - Properties
 
     let title: String
-    let systemImage: String
-    var iconColor: Color = .green
-    var textColor: Color = .black
+    var style: Style = .favorite
 
     // MARK: - Body
 
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: systemImage)
-                .foregroundStyle(iconColor)
+        HStack(spacing: 4.scaled) {
+            Image(style.image)
+                .resizable()
+                .frame(width: style.iconSize.scaled, height: style.iconSize.scaled)
+                .frame(width: 24.scaled, height: 24.scaled)
 
             Text(title)
-                .foregroundStyle(textColor)
+                .plobbyFont(.labelSelected)
+                .foregroundStyle(style.textColor)
         }
-        .font(.system(size: 15, weight: .medium))
-        .padding(.horizontal, 16)
-        .frame(height: 44)
-        .background(Color.gray.opacity(0.06), in: RoundedRectangle(cornerRadius: 10))
+        .padding(.leading, 8.scaled)
+        .padding(.trailing, 16.scaled)
+        .frame(height: 44.scaled)
+        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12.scaled))
         .overlay {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 12.scaled)
+                .stroke(Color(.currentWarmBorder), lineWidth: 1)
+        }
+    }
+}
+
+// MARK: - Style
+
+extension BeachChip {
+
+    enum Style {
+        case favorite
+        case add
+
+        var image: ImageResource {
+            switch self {
+            case .favorite: .starGreen
+            case .add: .plus
+            }
+        }
+
+        var iconSize: CGFloat {
+            switch self {
+            case .favorite: 24
+            case .add: 14
+            }
+        }
+
+        var textColor: Color {
+            switch self {
+            case .favorite: Color(.textPrimary)
+            case .add: Color(.textSecondary)
+            }
         }
     }
 }

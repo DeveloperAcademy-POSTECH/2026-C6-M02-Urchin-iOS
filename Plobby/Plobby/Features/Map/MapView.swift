@@ -15,15 +15,13 @@ struct MapView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<MapFeature>
-
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var visibleRegion: MKCoordinateRegion?
-    /// MapKit이 알려주는 탭한 마커. 바텀시트를 여는 신호로만 쓰고 바로 비워요.
     @State private var tappedMarkerID: UUID?
     @State private var mapSize: CGSize = .zero
     @Environment(\.scenePhase) private var scenePhase
 
-    private static let sheetHeight: CGFloat = 400
+    private static let sheetHeight: CGFloat = 357.scaled
 
     // MARK: - Body
 
@@ -38,9 +36,11 @@ struct MapView: View {
         }
         .sheet(item: $store.scope(state: \.beachSheet, action: \.beachSheet)) { store in
             BeachSheetView(store: store)
+                // 시안 높이(357)에 하단 안전 영역까지 포함돼 있어서 콘텐츠를 안전 영역까지 내려요
+                .ignoresSafeArea(.container, edges: .bottom)
                 .presentationDetents([.height(Self.sheetHeight)])
                 .presentationBackgroundInteraction(.enabled(upThrough: .height(Self.sheetHeight)))
-                .presentationCornerRadius(24)
+                .presentationCornerRadius(24.scaled)
         }
         .onAppear {
             cameraPosition = Self.cameraPosition(for: store.cameraCommand)
@@ -152,21 +152,15 @@ private extension MapView {
         Button {
             store.send(.searchButtonTapped)
         } label: {
-            HStack(spacing: 8) {
+            SearchBar {
                 Image(systemName: "magnifyingglass")
-                    .font(.system(size: 17, weight: .medium))
+                    .font(.system(size: 17.scaled, weight: .medium))
                     .foregroundStyle(Color(.textSecondary))
-                    .frame(width: 24, height: 24)
-
-                Text("해변, 해수욕장 이름을 검색해주세요.")
+            } content: {
+                Text(SearchBarText.placeholder)
                     .plobbyFont(.body)
-                    .foregroundStyle(Color(.textTertiary))
-
-                Spacer(minLength: 0)
+                    .foregroundStyle(Color(.gray600))
             }
-            .padding(.horizontal, 12)
-            .frame(height: 56)
-            .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 12))
             .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
         }
         .buttonStyle(.plain)

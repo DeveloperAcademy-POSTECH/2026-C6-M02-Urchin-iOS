@@ -9,7 +9,6 @@ import SwiftUI
 
 import ComposableArchitecture
 
-// TODO: 추후 디자인 시스템에 맞게 색상과 폰트를 수정
 struct PhotosPickerView: View {
 
     // MARK: - Properties
@@ -18,7 +17,7 @@ struct PhotosPickerView: View {
 
     private let columnCount = 3
     private let gridSpacing: CGFloat = 1
-    private let albumThumbnailLength: CGFloat = 48
+    private let albumThumbnailLength: CGFloat = 48.scaled
 
     // MARK: - Body
 
@@ -27,7 +26,7 @@ struct PhotosPickerView: View {
             navigationBar
             content
         }
-        .background(Color.white)
+        .background(Color(.gray0))
         .task {
             await store.send(.task).finish()
         }
@@ -60,8 +59,8 @@ private extension PhotosPickerView {
             albumToggleButton
             closeButton
         }
-        .padding(.horizontal, 20)
-        .frame(height: 56)
+        .padding(.horizontal, 20.scaled)
+        .frame(height: 56.scaled)
     }
 
     var albumTitle: String {
@@ -78,22 +77,25 @@ private extension PhotosPickerView {
         .accessibilityLabel("앨범 선택, \(albumTitle)")
     }
 
-    /// 화살표와 같은 너비의 빈 칸을 왼쪽에 둬서 제목이 화면 가운데에 오게 해요.
     var albumToggleLabel: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 8.scaled) {
             Color.clear
-                .frame(width: 24, height: 24)
+                .frame(width: 24.scaled, height: 24.scaled)
 
             Text(albumTitle)
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(Color.formPrimaryText)
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
 
-            Image(systemName: store.isAlbumListExpanded ? "chevron.up" : "chevron.down")
-                .font(.system(size: 15, weight: .medium))
-                .foregroundStyle(Color.formPrimaryText)
-                .frame(width: 24, height: 24)
+            Image(
+                systemName: store.isAlbumListExpanded
+                ? "chevron.up"
+                : "chevron.down"
+            )
+            .plobbyFont(.cardTitle)
+            .foregroundStyle(Color(.textPrimary))
+            .frame(width: 24.scaled, height: 24.scaled)
         }
-        .frame(height: 44)
+        .frame(height: 44.scaled)
         .contentShape(Rectangle())
     }
 
@@ -103,9 +105,9 @@ private extension PhotosPickerView {
                 store.send(.closeTapped)
             } label: {
                 Image(systemName: "xmark")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color.formPrimaryText)
-                    .frame(width: 24, height: 24)
+                    .font(.system(size: 17.scaled, weight: .medium))
+                    .foregroundStyle(Color(.textPrimary))
+                    .frame(width: 24.scaled, height: 24.scaled)
             }
             .accessibilityLabel("닫기")
 
@@ -119,21 +121,21 @@ private extension PhotosPickerView {
 private extension PhotosPickerView {
 
     var guideBanner: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 12.scaled) {
             Image(systemName: "plus.square.on.square")
-                .font(.system(size: 16))
-                .foregroundStyle(Color.formPrimaryText)
-                .frame(width: 20, height: 20)
+                .font(.system(size: 16.scaled))
+                .foregroundStyle(Color(.textPrimary))
+                .frame(width: 20.scaled, height: 20.scaled)
 
-            Text("\(store.recordType.name) 중 찍은 사진을 최대 \(PhotoSelection.maxCount)장까지 추가할 수 있어요")
-                .font(.system(size: 13))
-                .foregroundStyle(Color.formPrimaryText)
+            Text("최대 \(PhotoSelection.maxCount)장까지 추가할 수 있어요")
+                .plobbyFont(.notification)
+                .foregroundStyle(Color(.textPrimary))
 
             Spacer(minLength: 0)
         }
-        .padding(.horizontal, 20)
-        .frame(height: 56)
-        .background(Color.photoPickerBanner)
+        .padding(.horizontal, 20.scaled)
+        .frame(height: 56.scaled)
+        .background(Color(.currentBrandSubtle))
     }
 }
 
@@ -152,10 +154,8 @@ private extension PhotosPickerView {
                 }
             }
         }
-        .background(Color.white)
-        .overlay(alignment: .bottom) {
-            toast
-        }
+        .background(Color(.gray0))
+        .plobbyToast(store.toast.toastMessage)
     }
 
     func cellLength(in width: CGFloat) -> CGFloat {
@@ -175,22 +175,22 @@ private extension PhotosPickerView {
         } label: {
             cameraCellLabel
                 .frame(width: length, height: length)
-                .background(Color.white)
+                .background(Color(.gray0))
         }
         .buttonStyle(.plain)
         .accessibilityLabel("카메라로 촬영")
     }
 
     var cameraCellLabel: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 4.scaled) {
             Image(systemName: "camera.fill")
-                .font(.system(size: 18))
-                .foregroundStyle(Color.formPrimaryText)
-                .frame(width: 24, height: 24)
+                .font(.system(size: 18.scaled))
+                .foregroundStyle(Color(.textPrimary))
+                .frame(width: 24.scaled, height: 24.scaled)
 
             Text("카메라")
-                .font(.system(size: 12))
-                .foregroundStyle(Color.formPrimaryText)
+                .plobbyFont(.metadata)
+                .foregroundStyle(Color(.textPrimary))
         }
     }
 
@@ -222,11 +222,10 @@ private extension PhotosPickerView {
     @ViewBuilder
     func selectedDim(isSelected: Bool) -> some View {
         if isSelected {
-            Color.black.opacity(0.4)
+            Color(.neutralBlack).opacity(0.4)
         }
     }
 
-    /// 선택 전에는 빈 원, 선택하면 순서 번호를 보여줘요.
     func selectionBadge(order: Int?) -> some View {
         Group {
             if let order {
@@ -235,52 +234,27 @@ private extension PhotosPickerView {
                 emptyBadge
             }
         }
-        .frame(width: 24, height: 24)
-        .shadow(color: .black.opacity(0.12), radius: 6, x: 4, y: 4)
-        .padding(.top, 6)
-        .padding(.trailing, 9)
+        .frame(width: 24.scaled, height: 24.scaled)
+        .shadow(color: Color(.neutralBlack).opacity(0.12), radius: 6, x: 4, y: 4)
+        .padding(.top, 6.scaled)
+        .padding(.trailing, 9.scaled)
     }
 
     func selectedBadge(order: Int) -> some View {
         Text("\(order)")
-            .font(.system(size: 16, weight: .semibold))
-            .foregroundStyle(Color.formPrimaryText)
-            .frame(width: 24, height: 24)
-            .background(Color.white, in: Circle())
+            .plobbyFont(.actionLabel)
+            .foregroundStyle(Color(.textPrimary))
+            .frame(width: 24.scaled, height: 24.scaled)
+            .background(Color(.gray0), in: Circle())
     }
 
     var emptyBadge: some View {
         Circle()
-            .fill(Color.black.opacity(0.2))
+            .fill(Color(.neutralBlack).opacity(0.2))
             .overlay {
                 Circle()
-                    .strokeBorder(Color.white, lineWidth: 1)
+                    .strokeBorder(Color(.gray0), lineWidth: 1)
             }
-    }
-}
-
-// MARK: - 토스트
-
-private extension PhotosPickerView {
-
-    @ViewBuilder
-    var toast: some View {
-        if let message = store.toast.toastMessage {
-            Text(message)
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 16)
-                .background(
-                    Color.formPrimaryText.opacity(0.6),
-                    in: RoundedRectangle(cornerRadius: 8)
-                )
-                .padding(.horizontal, 20)
-                .padding(.bottom, 16)
-                .transition(.opacity)
-                .accessibilityAddTraits(.isStaticText)
-        }
     }
 }
 
@@ -289,36 +263,15 @@ private extension PhotosPickerView {
 private extension PhotosPickerView {
 
     var bottomButton: some View {
-        Button {
+        PlobbyButton(
+            text: store.isSkip ? "건너뛰기" : "다음",
+            style: store.isSkip ? .alternative : .default
+        ) {
             store.send(.bottomButtonTapped)
-        } label: {
-            bottomButtonLabel
         }
-        .buttonStyle(.plain)
-        .padding(.horizontal, 20)
-        .padding(.vertical, 24)
-        .background(Color.white)
-    }
-
-    var bottomButtonLabel: some View {
-        Text(store.isSkip ? "건너뛰기" : "다음")
-            .font(.system(size: store.isSkip ? 18 : 17, weight: .medium))
-            .foregroundStyle(store.isSkip ? Color.formPrimaryText : .white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 54)
-            .background(
-                store.isSkip ? Color.white : Color.formAccent,
-                in: RoundedRectangle(cornerRadius: 8)
-            )
-            .overlay { skipButtonBorder }
-    }
-
-    @ViewBuilder
-    var skipButtonBorder: some View {
-        if store.isSkip {
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.formBorder, lineWidth: 1)
-        }
+        .padding(.horizontal, 20.scaled)
+        .padding(.vertical, 24.scaled)
+        .background(Color(.gray0))
     }
 }
 
@@ -347,22 +300,22 @@ private extension PhotosPickerView {
 
     var albumDivider: some View {
         Rectangle()
-            .fill(Color.formBorder)
+            .fill(Color(.currentWarmBorder))
             .frame(height: 1)
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 20.scaled)
     }
 
     func albumRow(_ album: PhotoAlbum) -> some View {
         Button {
             store.send(.albumSelected(album.id))
         } label: {
-            HStack(spacing: 16) {
+            HStack(spacing: 16.scaled) {
                 albumThumbnail(album)
                 albumTitleAndCount(album)
                 Spacer(minLength: 0)
             }
-            .padding(.horizontal, 20)
-            .frame(height: 80)
+            .padding(.horizontal, 20.scaled)
+            .frame(height: 80.scaled)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -377,22 +330,22 @@ private extension PhotosPickerView {
                     size: CGSize(width: albumThumbnailLength, height: albumThumbnailLength)
                 )
             } else {
-                Color.formFieldBackground
+                Color(.gray50)
                     .frame(width: albumThumbnailLength, height: albumThumbnailLength)
             }
         }
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
     }
 
     func albumTitleAndCount(_ album: PhotoAlbum) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: 2.scaled) {
             Text(album.title)
-                .font(.system(size: 17))
-                .foregroundStyle(Color.formPrimaryText)
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
 
             Text(album.assetCount.formatted())
-                .font(.system(size: 14))
-                .foregroundStyle(Color.formSecondaryText)
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textSecondary))
         }
     }
 }
@@ -403,7 +356,7 @@ private extension PhotosPickerView {
 
     // TODO: 권한 거부 화면 디자인이 나오면 교체
     var deniedView: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 16.scaled) {
             Spacer()
             deniedMessage
             openSettingsButton
@@ -412,14 +365,14 @@ private extension PhotosPickerView {
     }
 
     var deniedMessage: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 16.scaled) {
             Text("사진 접근 권한이 필요해요")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(Color.formPrimaryText)
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
 
             Text("설정에서 사진 접근을 허용하면\n활동 사진을 기록에 추가할 수 있어요")
-                .font(.system(size: 14))
-                .foregroundStyle(Color.formSecondaryText)
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textSecondary))
                 .multilineTextAlignment(.center)
         }
     }
@@ -429,11 +382,11 @@ private extension PhotosPickerView {
             store.send(.openSettingsTapped)
         } label: {
             Text("설정으로 이동")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(.white)
-                .padding(.horizontal, 20)
-                .frame(height: 44)
-                .background(Color.formAccent, in: RoundedRectangle(cornerRadius: 8))
+                .plobbyFont(.notification)
+                .foregroundStyle(Color(.gray0))
+                .padding(.horizontal, 20.scaled)
+                .frame(height: 44.scaled)
+                .background(Color(.green500), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .buttonStyle(.plain)
     }
@@ -459,15 +412,8 @@ private extension PhotosPickerView {
             )
             .ignoresSafeArea()
         } else {
-            // 시뮬레이터처럼 카메라가 없는 기기에서는 바로 닫아요.
             Color.clear
                 .onAppear { store.send(.cameraDismissed) }
         }
     }
-}
-
-// MARK: - Color
-
-private extension Color {
-    static let photoPickerBanner = Color(red: 0xF0 / 255, green: 0xFC / 255, blue: 0xF3 / 255)
 }

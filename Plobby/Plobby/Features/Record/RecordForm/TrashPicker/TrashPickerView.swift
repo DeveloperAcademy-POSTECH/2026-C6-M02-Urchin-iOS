@@ -9,7 +9,6 @@ import SwiftUI
 
 import ComposableArchitecture
 
-// TODO: 추후 디자인 시스템에 맞게 색상과 폰트를 수정
 struct TrashPickerView: View {
     
     // MARK: - Properties
@@ -35,14 +34,14 @@ struct TrashPickerView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 20.scaled)
             }
             .scrollDismissesKeyboard(.interactively)
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             footer
         }
-        .background(Color.white)
+        .background(Color(.gray0))
         .contentShape(Rectangle())
         .onChange(of: store.editingCategory) { _, category in
             if let category {
@@ -80,9 +79,9 @@ private extension TrashPickerView {
                 store.send(.cancelTapped)
             } label: {
                 Text("취소")
-                    .font(.system(size: 14))
-                    .foregroundStyle(Color.formSecondaryText)
-                    .frame(width: 44, height: 44)
+                    .plobbyFont(.label)
+                    .foregroundStyle(Color(.textSecondary))
+                    .frame(width: 44.scaled, height: 44.scaled)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -90,23 +89,23 @@ private extension TrashPickerView {
             Spacer()
         }
         .overlay {
-            Text("주운 쓰레기")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(Color.formPrimaryText)
+            Text("수거한 쓰레기")
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
         }
-        .frame(height: 56)
-        .padding(.horizontal, 20)
-        .padding(.top, 24)
+        .frame(height: 56.scaled)
+        .padding(.horizontal, 20.scaled)
+        .padding(.top, 24.scaled)
     }
     
     var guideText: some View {
         Text(store.guideText)
-            .font(.system(size: 13))
-            .foregroundStyle(Color.formSecondaryText)
+            .plobbyFont(.helper)
+            .foregroundStyle(Color(.textSecondary))
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 20)
-            .padding(.top, 8)
-            .padding(.bottom, 8)
+            .padding(.horizontal, 20.scaled)
+            .padding(.top, 24.scaled)
+            .padding(.bottom, 12.scaled)
     }
 }
 
@@ -115,15 +114,15 @@ private extension TrashPickerView {
 private extension TrashPickerView {
     
     func categoryRow(_ category: TrashCategory) -> some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 2) {
+        HStack(spacing: 12.scaled) {
+            VStack(alignment: .leading, spacing: 4.scaled) {
                 Text(category.name)
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(Color.formPrimaryText)
+                    .plobbyFont(.cardTitle)
+                    .foregroundStyle(Color(.textPrimary))
                 
                 Text(category.examples)
-                    .font(.system(size: 12))
-                    .foregroundStyle(Color.formSecondaryText)
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.textSecondary))
             }
             
             Spacer()
@@ -134,10 +133,10 @@ private extension TrashPickerView {
                 addButton(category)
             }
         }
-        .frame(minHeight: 64)
+        .frame(minHeight: 72.scaled)
         .overlay(alignment: .bottom) {
             Rectangle()
-                .fill(Color.formBorder)
+                .fill(Color(.gray200))
                 .frame(height: 1)
         }
     }
@@ -146,15 +145,9 @@ private extension TrashPickerView {
         Button {
             store.send(.plusTapped(category))
         } label: {
-            Image(systemName: "plus")
-                .font(.system(size: 14, weight: .medium))
-                .foregroundStyle(Color.formPlaceholderText)
-                .frame(width: 32, height: 32)
-                .background(Color.formFieldBackground, in: Circle())
-                .overlay {
-                    Circle()
-                        .stroke(Color.formBorder, lineWidth: 1)
-                }
+            Image(.trashAdd)
+                .resizable()
+                .frame(width: 44.scaled, height: 44.scaled)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("\(category.name) 추가")
@@ -163,34 +156,38 @@ private extension TrashPickerView {
     func countStepper(_ category: TrashCategory) -> some View {
         let count = store.selection[category]
         
-        return HStack(spacing: 0) {
-            stepperButton(systemName: "minus", color: Color.formSecondaryText) {
+        return HStack(spacing: 4.scaled) {
+            stepperButton(.stepperMinus) {
                 store.send(.minusTapped(category))
             }
             .accessibilityLabel("\(category.name) 빼기")
             
             countLabel(category, count: count)
             
-            stepperButton(systemName: "plus", color: Color.formAccent) {
+            stepperButton(.stepperPlus) {
                 store.send(.plusTapped(category))
             }
             .disabled(count >= TrashSelection.maximumCount)
+            .opacity(count >= TrashSelection.maximumCount ? 0.3 : 1)
             .accessibilityLabel("\(category.name) 더하기")
         }
-        .frame(height: 36)
-        .background(Color.formFieldBackground, in: Capsule())
+        .frame(height: 44.scaled)
+        .background(Color(.gray0), in: Capsule())
+        .overlay {
+            Capsule()
+                .stroke(Color(.green500), lineWidth: 1)
+        }
     }
     
     func stepperButton(
-        systemName: String,
-        color: Color,
+        _ image: ImageResource,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
-            Image(systemName: systemName)
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(color)
-                .frame(width: 36, height: 36)
+            Image(image)
+                .resizable()
+                .frame(width: 20.scaled, height: 20.scaled)
+                .frame(width: 44.scaled, height: 44.scaled)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -203,17 +200,18 @@ private extension TrashPickerView {
                 .keyboardType(.numberPad)
                 .focused($focusedField, equals: .count(category))
                 .multilineTextAlignment(.center)
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(Color.formPrimaryText)
-                .frame(width: 48)
+                .plobbyFont(.actionLabel)
+                .foregroundStyle(Color(.textPrimary))
+                .tint(Color(.green500))
+                .frame(width: 52.scaled)
         } else {
             Button {
                 store.send(.countTapped(category))
             } label: {
                 Text("\(count)")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(Color.formPrimaryText)
-                    .frame(width: 48, height: 36)
+                    .plobbyFont(.actionLabel)
+                    .foregroundStyle(Color(.textPrimary))
+                    .frame(width: 52.scaled, height: 44.scaled)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -241,12 +239,12 @@ private extension TrashPickerView {
         let isFocused = focusedField == .etcMemo
         let isOverLimit = store.isEtcMemoOverLimit
         
-        return VStack(alignment: .leading, spacing: 8) {
-            Text("기타 메모 (선택)")
-                .font(.system(size: 13))
-                .foregroundStyle(Color.formSecondaryText)
+        return VStack(alignment: .leading, spacing: 8.scaled) {
+            Text("기타 메모")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textPrimary))
             
-            VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: .trailing, spacing: 4.scaled) {
                 TextField(
                     "",
                     text: Binding(
@@ -257,38 +255,40 @@ private extension TrashPickerView {
                             store.send(.etcMemoChanged(memo))
                         }
                     ),
-                    prompt: Text("어떤 쓰레기인지 적어주세요")
-                        .foregroundStyle(Color.formPlaceholderText)
+                    prompt: Text("어떤 쓰레기를 수거했는지 적어 주세요")
+                        .foregroundStyle(Color(.textTertiary))
                 )
                 .focused($focusedField, equals: .etcMemo)
-                .font(.system(size: 15))
-                .foregroundStyle(Color.formPrimaryText)
+                .plobbyFont(.body)
+                .foregroundStyle(Color(.textPrimary))
                 
                 Text("\(store.selection.etcMemo.count)/\(TrashSelection.etcMemoMaximumLength)")
-                    .font(.system(size: 12))
-                    .foregroundStyle(isOverLimit ? Color.formError : Color.formSecondaryText)
+                    .plobbyFont(.helper)
+                    .foregroundStyle(isOverLimit ? Color(.currentError) : Color(.textSecondary))
             }
-            .padding(12)
+            .padding(12.scaled)
+            .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 8.scaled))
             .overlay {
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 8.scaled)
                     .stroke(etcMemoBorderColor(isFocused: isFocused, isOverLimit: isOverLimit), lineWidth: 1)
             }
             
             if isOverLimit {
                 Text("메모를 \(TrashSelection.etcMemoMaximumLength)자 이내로 줄여주세요.")
-                    .font(.system(size: 13))
-                    .foregroundStyle(Color.formError)
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.currentError))
             }
         }
-        .padding(.vertical, 12)
+        .padding(.top, 12.scaled)
+        .padding(.bottom, 20.scaled)
     }
     
     func etcMemoBorderColor(isFocused: Bool, isOverLimit: Bool) -> Color {
         if isOverLimit {
-            return Color.formError
+            return Color(.currentError)
         }
         
-        return isFocused ? Color.formAccent : Color.formBorder
+        return isFocused ? Color(.green500) : Color(.gray300)
     }
 }
 
@@ -297,42 +297,32 @@ private extension TrashPickerView {
 private extension TrashPickerView {
     
     var footer: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 24.scaled) {
             HStack {
                 Text(store.selection.isEmpty ? "선택한 종류" : "\(store.selection.selectedCategories.count)종류 선택")
-                    .font(.system(size: 13))
-                    .foregroundStyle(Color.formSecondaryText)
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.textSecondary))
                 
                 Spacer()
                 
                 Text(store.selection.isEmpty ? "없음" : "총 \(store.selection.totalCount)개")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(Color.formPrimaryText)
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.textPrimary))
             }
+            .padding(.vertical, 16.scaled)
             
-            Button {
+            PlobbyButton(text: "완료") {
                 store.send(.completeTapped)
-            } label: {
-                Text("완료")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(store.isCompleteEnabled ? Color.white : Color.formDisabledText)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 54)
-                    .background(
-                        store.isCompleteEnabled ? Color.formAccent : Color.formFieldBackground,
-                        in: RoundedRectangle(cornerRadius: 8)
-                    )
             }
-            .buttonStyle(.plain)
             .disabled(!store.isCompleteEnabled)
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 12)
-        .padding(.bottom, 8)
-        .background(Color.white)
+        .padding(.horizontal, 20.scaled)
+        // 시안 하단 여백 48에서 홈 인디케이터 영역(34)을 뺀 값
+        .padding(.bottom, 14.scaled)
+        .background(Color(.gray0))
         .overlay(alignment: .top) {
             Rectangle()
-                .fill(Color.formBorder)
+                .fill(Color(.gray200))
                 .frame(height: 1)
         }
     }
