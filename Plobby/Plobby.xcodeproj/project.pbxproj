@@ -57,6 +57,10 @@
 		B59027053098E35B00AE351D /* DependencyValues+NotificationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */; };
 		B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */; };
 		B590270A3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */; };
+		B59342F130A0CF68005EAF07 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59342F030A0CF68005EAF07 /* Goal.swift */; };
+		B593430730A0D77F005EAF07 /* GoalProgressResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593430430A0D77F005EAF07 /* GoalProgressResponseDTO.swift */; };
+		B593430930A0D874005EAF07 /* GoalClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593430830A0D874005EAF07 /* GoalClient.swift */; };
+		B593430B30A0D9A1005EAF07 /* DependencyValues+GoalClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593430A30A0D9A1005EAF07 /* DependencyValues+GoalClient.swift */; };
 		B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5951FB2309BA4AB0089A019 /* MyView.swift */; };
 		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
 		B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */; };
@@ -281,6 +285,10 @@
 		B59027043098E35B00AE351D /* DependencyValues+NotificationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+NotificationClient.swift"; sourceTree = "<group>"; };
 		B59027083098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadAtUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDeviceTokenRequestDTO.swift; sourceTree = "<group>"; };
+		B59342F030A0CF68005EAF07 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
+		B593430430A0D77F005EAF07 /* GoalProgressResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalProgressResponseDTO.swift; sourceTree = "<group>"; };
+		B593430830A0D874005EAF07 /* GoalClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalClient.swift; sourceTree = "<group>"; };
+		B593430A30A0D9A1005EAF07 /* DependencyValues+GoalClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+GoalClient.swift"; sourceTree = "<group>"; };
 		B5951FB2309BA4AB0089A019 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
 		B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -617,6 +625,40 @@
 				B590270B3098E7AA00AE351D /* RegisterDeviceTokenRequestDTO.swift */,
 			);
 			path = Request;
+			sourceTree = "<group>";
+		};
+		B59342EF30A0CF4F005EAF07 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				B59342F030A0CF68005EAF07 /* Goal.swift */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		B59342F730A0D74F005EAF07 /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				B593430630A0D77F005EAF07 /* DTO */,
+				B593430A30A0D9A1005EAF07 /* DependencyValues+GoalClient.swift */,
+				B593430830A0D874005EAF07 /* GoalClient.swift */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		B593430530A0D77F005EAF07 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				B593430430A0D77F005EAF07 /* GoalProgressResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		B593430630A0D77F005EAF07 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				B593430530A0D77F005EAF07 /* Response */,
+			);
+			path = DTO;
 			sourceTree = "<group>";
 		};
 		C5EBA3F73C437547E4DE6366 /* Features */ = {
@@ -1029,6 +1071,7 @@
 		ECE6F28E3098338400C4916C /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				B59342F730A0D74F005EAF07 /* Goal */,
 				5A1C0E7B2F4D4E8A9B3C6E01 /* Location */,
 				DA0BB759309B1BAB003400FB /* Photo */,
 				EC0D4B823098E19A000E7BB7 /* Beach */,
@@ -1178,6 +1221,7 @@
 		ECE6F2B23098338400C4916C /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				B59342EF30A0CF4F005EAF07 /* Goal */,
 				ECE6F2A63098338400C4916C /* Common */,
 				ECE6F2A03098338400C4916C /* Auth */,
 				ECE6F2A33098338400C4916C /* Beach */,
@@ -1539,6 +1583,8 @@
 				45486DEE9BE0616C342F1DD7 /* SearchBeachView.swift in Sources */,
 				CDA93DA11F36AA86D9204B04 /* BeachHomeFeature.swift in Sources */,
 				68C5E3F70B1137E8CEB2DFEC /* BeachHomeView.swift in Sources */,
+				B593430930A0D874005EAF07 /* GoalClient.swift in Sources */,
+				B593430B30A0D9A1005EAF07 /* DependencyValues+GoalClient.swift in Sources */,
 				DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */,
 				5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */,
 				B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */,
@@ -1565,6 +1611,7 @@
 				99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */,
 				ECE6F2D73098338400C4916C /* DependencyValues+AuthClient.swift in Sources */,
 				ECE6F2D83098338400C4916C /* DependencyValues+SupabaseClient.swift in Sources */,
+				B593430730A0D77F005EAF07 /* GoalProgressResponseDTO.swift in Sources */,
 				B59027053098E35B00AE351D /* DependencyValues+NotificationClient.swift in Sources */,
 				33D77A682F5247E18DA0679F /* PushEvents.swift in Sources */,
 				6654B8A74949402D91998335 /* PushClient.swift in Sources */,
@@ -1666,6 +1713,7 @@
 				D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */,
 				DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */,
 				ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */,
+				B59342F130A0CF68005EAF07 /* Goal.swift in Sources */,
 				DA688DCF3099EFFF0064A2F4 /* RecordView.swift in Sources */,
 				DA5B0FDA3098E2FC003FEDF9 /* SupabaseClient+.swift in Sources */,
 				ECE6F2F13098338400C4916C /* HomeFeature.swift in Sources */,
