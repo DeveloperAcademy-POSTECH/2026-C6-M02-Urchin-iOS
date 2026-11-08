@@ -35,7 +35,7 @@ private extension CollectionCardView {
         VStack(spacing: 0) {
             header
             trashPile
-            collectedCount
+            collectedCountLabel
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.darkBG), in: RoundedRectangle(cornerRadius: 20.scaled))
@@ -85,7 +85,7 @@ private extension CollectionCardView {
         .padding(.bottom, 8.scaled)
     }
 
-    var collectedCount: some View {
+    var collectedCountLabel: some View {
         HStack(alignment: .lastTextBaseline) {
             Text("지금까지 모은 개수")
                 .plobbyFont(.metadata)
@@ -111,20 +111,20 @@ private extension CollectionCardView {
 
         return VStack(spacing: 0) {
             header
-            helpText(fact.title)
+            factTitle(fact.title)
             illustration
-            description(fact.description)
+            factDescription(fact.description)
 
             Spacer()
 
-            source(fact.source)
+            factSource(fact.source)
         }
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.darkBG), in: RoundedRectangle(cornerRadius: 20.scaled))
     }
 
-    func helpText(_ title: String) -> some View {
+    func factTitle(_ title: String) -> some View {
         var text = AttributedString(title)
         
         if let range = title.range(of: #"\d+(마리|L)"#, options: .regularExpression),
@@ -146,7 +146,7 @@ private extension CollectionCardView {
             .padding(.top, 30.scaled)
     }
 
-    func description(_ text: String) -> some View {
+    func factDescription(_ text: String) -> some View {
         Text(text)
             .plobbyFont(.body)
             .foregroundStyle(Color(.gray0))
@@ -154,7 +154,7 @@ private extension CollectionCardView {
             .padding(.horizontal, 16.scaled)
     }
 
-    func source(_ text: String) -> some View {
+    func factSource(_ text: String) -> some View {
         Text(text)
             .plobbyFont(.metadata)
             .foregroundStyle(Color(.gray0).opacity(0.72))
