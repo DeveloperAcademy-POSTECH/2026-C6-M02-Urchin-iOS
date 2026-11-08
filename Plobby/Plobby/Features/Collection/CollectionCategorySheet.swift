@@ -131,6 +131,7 @@ private extension CollectionCategorySheet {
             }
         }
         .buttonStyle(.plain)
+        .disabled(!CollectionFeature.selectableCategories.contains(category))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
