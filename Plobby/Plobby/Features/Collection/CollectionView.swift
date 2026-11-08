@@ -15,6 +15,9 @@ struct CollectionView: View {
 
     @Bindable var store: StoreOf<CollectionFeature>
 
+    /// 공유할 때 가운데 카드 영역을 잘라내려고 카드 스크롤 영역의 화면 위치를 기억해요
+    @State private var cardsFrame: CGRect = .zero
+
     // MARK: - Body
 
     var body: some View {
@@ -107,6 +110,11 @@ private extension CollectionView {
         .scrollTargetBehavior(.viewAligned)
         .scrollPosition(id: selectedCategory)
         .scrollIndicators(.hidden)
+        .onGeometryChange(for: CGRect.self) { proxy in
+            proxy.frame(in: .global)
+        } action: { frame in
+            cardsFrame = frame
+        }
         .padding(.vertical, 24.scaled)
     }
 
@@ -157,7 +165,7 @@ private extension CollectionView {
 
     var shareButton: some View {
         Button {
-            store.send(.shareTapped)
+            shareCurrentCard()
         } label: {
             Image(systemName: "square.and.arrow.up")
                 .font(.system(size: 18.scaled, weight: .medium))
@@ -167,5 +175,38 @@ private extension CollectionView {
                 .background(Color(.gray100), in: RoundedRectangle(cornerRadius: 10.scaled))
         }
         .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Share
+
+private extension CollectionView {
+
+    /// 화면에 보이는 가운데 카드를 이미지로 찍어서 공유 시트를 띄워요
+    func shareCurrentCard() {
+        guard let window = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
+            .first
+        else { return }
+
+        let cardFrame = cardsFrame.insetBy(dx: 32.scaled, dy: 0)
+        let format = UIGraphicsImageRendererFormat()
+        format.opaque = false
+
+        // ImageRenderer는 SpriteView(쓰레기 더미)를 그리지 못해서 화면을 그대로 찍어요
+        let image = UIGraphicsImageRenderer(bounds: cardFrame, format: format).image { _ in
+            UIBezierPath(roundedRect: cardFrame, cornerRadius: 20.scaled).addClip()
+            window.drawHierarchy(in: window.bounds, afterScreenUpdates: false)
+        }
+
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = window
+        activityViewController.popoverPresentationController?.sourceRect = cardFrame
+
+        var topViewController = window.rootViewController
+        while let presented = topViewController?.presentedViewController {
+            topViewController = presented
+        }
+        topViewController?.present(activityViewController, animated: true)
     }
 }

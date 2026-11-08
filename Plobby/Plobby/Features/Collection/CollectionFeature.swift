@@ -32,7 +32,6 @@ struct CollectionFeature {
         case categorySheetPresentationChanged(Bool)
         case categoryTapped(TrashCategory)
         case cardScrolled(TrashCategory)
-        case shareTapped
         case cards(IdentifiedActionOf<CollectionCardFeature>)
         case my(PresentationAction<MyFeature.Action>)
     }
@@ -85,10 +84,6 @@ struct CollectionFeature {
 
             case let .cardScrolled(category):
                 state.selectedCategory = category
-                return .none
-
-            // TODO: 카드 공유 연결
-            case .shareTapped:
                 return .none
 
             case .cards, .my:
