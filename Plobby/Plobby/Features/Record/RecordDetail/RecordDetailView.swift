@@ -43,6 +43,10 @@ struct RecordDetailView: View {
         .fullScreenCover(item: $store.scope(state: \.editForm, action: \.editForm)) { store in
             RecordFormView(store: store)
         }
+        .navigationDestination(item: $store.scope(state: \.userHome, action: \.userHome)) { store in
+            UserHomeView(store: store)
+                .toolbar(.hidden, for: .tabBar)
+        }
     }
 }
 
@@ -156,18 +160,25 @@ private extension RecordDetailView {
 
     func header(_ record: RecordDetail) -> some View {
         VStack(alignment: .leading, spacing: 12.scaled) {
-            HStack(spacing: 8.scaled) {
-                profileImage(record.profileImageURL)
+            Button {
+                store.send(.authorProfileTapped)
+            } label: {
+                HStack(spacing: 8.scaled) {
+                    profileImage(record.profileImageURL)
 
-                VStack(alignment: .leading, spacing: 2.scaled) {
-                    Text(record.nickname)
-                        .plobbyFont(.label)
+                    VStack(alignment: .leading, spacing: 2.scaled) {
+                        Text(record.nickname)
+                            .plobbyFont(.label)
 
-                    Text(Self.relativeTime(record.createdAt))
-                        .plobbyFont(.metadata)
+                        Text(Self.relativeTime(record.createdAt))
+                            .plobbyFont(.metadata)
+                    }
+                    .foregroundStyle(Color(.textSecondary))
                 }
-                .foregroundStyle(Color(.textSecondary))
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .allowsHitTesting(!record.isMine && store.opensAuthorHome)
 
             Text(record.title)
                 .plobbyFont(.heading)

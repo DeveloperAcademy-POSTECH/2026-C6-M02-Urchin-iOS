@@ -236,6 +236,9 @@
 		ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30B309833A900C4916C /* WaterDepthTests.swift */; };
 		ECE6F31B309833AE00C4916C /* PlobbyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F318309833AE00C4916C /* PlobbyUITests.swift */; };
 		ECE6F31C309833AE00C4916C /* PlobbyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */; };
+		A16C0DE00000000000000102 /* RecordListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000101 /* RecordListSection.swift */; };
+		A16C0DE00000000000000104 /* UserHomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000103 /* UserHomeFeature.swift */; };
+		A16C0DE00000000000000106 /* UserHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000105 /* UserHomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -487,6 +490,9 @@
 		F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSheetView.swift; sourceTree = "<group>"; };
 		F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserResponseDTO.swift; sourceTree = "<group>"; };
 		FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSummary.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000101 /* RecordListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordListSection.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000103 /* UserHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000105 /* UserHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -533,6 +539,15 @@
 				DA0BB75A309B1BB1003400FB /* PhotoAuthorization.swift */,
 			);
 			path = Photo;
+			sourceTree = "<group>";
+		};
+		A16C0DE00000000000000107 /* UserHome */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000103 /* UserHomeFeature.swift */,
+				A16C0DE00000000000000105 /* UserHomeView.swift */,
+			);
+			path = UserHome;
 			sourceTree = "<group>";
 		};
 		3AE34934580277078535F3C4 /* BlockedUsers */ = {
@@ -927,6 +942,8 @@
 				D1A0C0DE00000000000000FF /* Withdrawal */,
 				DA5B10E230998932003FEDF9 /* MyFeature.swift */,
 				B5951FB2309BA4AB0089A019 /* MyView.swift */,
+				A16C0DE00000000000000101 /* RecordListSection.swift */,
+				A16C0DE00000000000000107 /* UserHome */,
 			);
 			path = My;
 			sourceTree = "<group>";
@@ -1774,6 +1791,9 @@
 				D1A0C0DE0000000000000B12 /* PushAuthorization.swift in Sources */,
 				ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */,
 				B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */,
+				A16C0DE00000000000000102 /* RecordListSection.swift in Sources */,
+				A16C0DE00000000000000104 /* UserHomeFeature.swift in Sources */,
+				A16C0DE00000000000000106 /* UserHomeView.swift in Sources */,
 				D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */,
 				D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */,
 				D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */,
