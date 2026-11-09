@@ -21,6 +21,7 @@ struct CollectionFeature {
         var selectedCategory: TrashCategory = .plastic
         var isCategorySheetPresented = false
         var isTrashCountsLoaded = false
+        var shareRequestCount = 0
     }
 
     // MARK: - Action
@@ -35,7 +36,13 @@ struct CollectionFeature {
         case categoryTapped(TrashCategory)
         case cardScrolled(TrashCategory)
         case cards(IdentifiedActionOf<CollectionCardFeature>)
+        case shareButtonTapped
         case my(PresentationAction<MyFeature.Action>)
+        case delegate(Delegate)
+
+        enum Delegate {
+            case loginRequired
+        }
     }
 
     // MARK: - Dependency
@@ -47,6 +54,10 @@ struct CollectionFeature {
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
+            if case .guest = state.membershipStatus, action.isUserInteraction {
+                return .send(.delegate(.loginRequired))
+            }
+
             switch action {
             case .onAppear:
                 guard case let .member(user) = state.membershipStatus else {
@@ -109,7 +120,11 @@ struct CollectionFeature {
                 state.selectedCategory = category
                 return .none
 
-            case .cards, .my:
+            case .shareButtonTapped:
+                state.shareRequestCount += 1
+                return .none
+
+            case .cards, .my, .delegate:
                 return .none
             }
         }
@@ -138,5 +153,19 @@ extension CollectionFeature {
     private nonisolated enum CancelID {
         case profile
         case trashCounts
+    }
+}
+
+// MARK: - Action
+
+extension CollectionFeature.Action {
+
+    var isUserInteraction: Bool {
+        switch self {
+        case .allCategoryTapped, .shareButtonTapped:
+            true
+        default:
+            false
+        }
     }
 }

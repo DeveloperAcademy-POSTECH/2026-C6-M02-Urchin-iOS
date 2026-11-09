@@ -33,6 +33,9 @@ struct CollectionView: View {
         .onAppear {
             store.send(.onAppear)
         }
+        .onChange(of: store.shareRequestCount) {
+            shareCurrentCard()
+        }
         .sheet(isPresented: $store.isCategorySheetPresented.sending(\.categorySheetPresentationChanged)) {
             CollectionCategorySheet(store: store)
                 .presentationDetents([.height(684.scaled)])
@@ -172,7 +175,7 @@ private extension CollectionView {
 
     var shareButton: some View {
         Button {
-            shareCurrentCard()
+            store.send(.shareButtonTapped)
         } label: {
             Image(systemName: "square.and.arrow.up")
                 .font(.system(size: 18.scaled, weight: .medium))
