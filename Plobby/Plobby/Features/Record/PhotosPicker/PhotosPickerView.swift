@@ -264,7 +264,7 @@ private extension PhotosPickerView {
 
     var bottomButton: some View {
         PlobbyButton(
-            text: store.isSkip ? "건너뛰기" : "다음",
+            text: store.isSkip ? "나중에 추가" : "다음",
             style: store.isSkip ? .alternative : .default
         ) {
             store.send(.bottomButtonTapped)
