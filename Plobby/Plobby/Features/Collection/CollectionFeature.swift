@@ -20,7 +20,6 @@ struct CollectionFeature {
         var cards: IdentifiedArrayOf<CollectionCardFeature.State> = CollectionFeature.initialCards
         var selectedCategory: TrashCategory = .plastic
         var isCategorySheetPresented = false
-        /// 쓰레기 종류별 개수를 받아왔는지예요. 받기 전에는 쓰레기 쌓기 애니메이션을 시작하지 않아요
         var isTrashCountsLoaded = false
     }
 
@@ -50,7 +49,6 @@ struct CollectionFeature {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                // 비회원은 모은 쓰레기가 없어서 0개로 바로 보여줘요
                 guard case let .member(user) = state.membershipStatus else {
                     state.isTrashCountsLoaded = true
                     return .none
@@ -78,7 +76,6 @@ struct CollectionFeature {
                 PlobbyLogger.error(error)
                 return .none
 
-            // 안 주운 종류는 결과에 없어서 0개로 채워요
             case let .trashCountsResponse(.success(counts)):
                 for category in state.cards.ids {
                     state.cards[id: category]?.collectedCount = counts[category, default: 0]
@@ -104,8 +101,6 @@ struct CollectionFeature {
                 return .none
 
             case let .categoryTapped(category):
-                guard Self.selectableCategories.contains(category) else { return .none }
-
                 state.isCategorySheetPresented = false
                 state.selectedCategory = category
                 return .none
@@ -131,14 +126,11 @@ struct CollectionFeature {
 
 extension CollectionFeature {
 
-    static let selectableCategories: Set<TrashCategory> = [.plastic, .glass, .wood]
-
     static let categoryOrder: [TrashCategory] = [
         .plastic, .glass, .metal, .wood, .fishingGear, .clothing,
         .styrofoam, .can, .paper, .rubber, .etc
     ]
 
-    /// 서버에서 개수를 받아오기 전에는 0개로 시작해요
     static let initialCards = IdentifiedArray(uniqueElements: categoryOrder.map { category in
         CollectionCardFeature.State(category: category, collectedCount: 0)
     })
