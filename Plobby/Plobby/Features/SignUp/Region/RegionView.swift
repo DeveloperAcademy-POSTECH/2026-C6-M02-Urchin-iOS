@@ -19,6 +19,9 @@ struct RegionView: View {
     
     var body: some View {
         VStack {
+            SignUpProgressBar(currentStep: 2, totalSteps: 2)
+                .padding(.horizontal, 20.scaled)
+                .padding(.bottom, 24.scaled)
             title
             subTitle
             RegionPicker(store: store)

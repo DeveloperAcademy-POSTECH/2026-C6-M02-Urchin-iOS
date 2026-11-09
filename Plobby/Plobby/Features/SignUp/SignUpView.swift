@@ -54,41 +54,52 @@ struct SignUpView: View {
     }
 }
 
-// MARK: - Subviews
+// MARK: - 프로필 폼
 
-extension SignUpView {
+private extension SignUpView {
 
-    private var profileForm: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                title
-                profileImagePicker
-                nicknameSection
-            }
+    var profileForm: some View {
+        VStack(spacing: 0) {
+            progressBar
+            titleSection
+            Spacer()
+//            profileImagePicker
+//            nicknameSection
         }
-        .scrollBounceBehavior(.basedOnSize)
-        .scrollDismissesKeyboard(.interactively)
-        .contentShape(Rectangle())
-        .onTapGesture {
-            isNicknameFocused = false
-        }
-        .safeAreaInset(edge: .bottom) {
-            nextButton
-                .padding(.bottom, 8.scaled)
-        }
+    }
+}
+
+// MARK: - 상단 (진행 바, 제목)
+
+private extension SignUpView {
+    
+    var progressBar: some View {
+        SignUpProgressBar(currentStep: 1, totalSteps: 2)
+            .padding(.top, 23.scaled)
+            .padding(.bottom, 31.scaled)
+            .padding(.horizontal, 20.scaled)
     }
     
-    private var title: some View {
-        Text("프로필을 등록해주세요")
-            .plobbyFont(.headingLarge)
-            .foregroundStyle(Color(.textPrimary))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 24.scaled)
-            .padding(.horizontal, 20.scaled)
-            .padding(.bottom, 68.scaled)
-    }
+    var titleSection: some View {
+        VStack(alignment: .leading, spacing: 8.scaled) {
+            Text("프로필을 등록해주세요")
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.textPrimary))
 
-    private var profileImagePicker: some View {
+            Text("사진과 닉네임을 추가해 주세요")
+                .plobbyFont(.body)
+                .foregroundStyle(Color(.textSecondary))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 20.scaled)
+    }
+}
+
+// MARK: - 프로필 사진
+
+private extension SignUpView {
+
+    var profileImagePicker: some View {
         PhotosPicker(selection: $selectedPhoto, matching: .images) {
             profileImage
                 .frame(width: 132.scaled, height: 132.scaled)
@@ -98,13 +109,13 @@ extension SignUpView {
     }
 
     @ViewBuilder
-    private var profileImage: some View {
+    var profileImage: some View {
         if let previewImage {
             Image(uiImage: previewImage)
                 .resizable()
                 .scaledToFill()
         } else {
-            Self.profilePlaceholderColor
+            Color(.gray100)
                 .overlay {
                     Image(systemName: "photo.badge.plus")
                         .resizable()
@@ -115,7 +126,13 @@ extension SignUpView {
         }
     }
     
-    private var nicknameSection: some View {
+}
+
+// MARK: - 닉네임
+
+private extension SignUpView {
+
+    var nicknameSection: some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
             Text("닉네임")
                 .plobbyFont(.actionLabel)
@@ -171,19 +188,11 @@ extension SignUpView {
         .padding(.horizontal, 20.scaled)
     }
     
-    private var nextButton: some View {
+    var nextButton: some View {
         PlobbyButton(text: "다음") {
             store.send(.nextButtonTapped)
         }
         .disabled(!store.canGoNext)
         .padding(.horizontal, 20.scaled)
     }
-}
-
-// MARK: - Constants
-
-extension SignUpView {
-
-    // TODO: 컬러셋 확정 후 교체 (#F2F4F7)
-    private static let profilePlaceholderColor = Color(red: 0xF2 / 255, green: 0xF4 / 255, blue: 0xF7 / 255)
 }
