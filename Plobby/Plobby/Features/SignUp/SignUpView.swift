@@ -146,21 +146,19 @@ private extension SignUpView {
 private extension SignUpView {
 
     var nicknameSection: some View {
-        VStack(alignment: .leading, spacing: 12.scaled) {
+        VStack(alignment: .leading, spacing: 0) {
             nicknameTextLabel
+                .padding(.bottom, 12.scaled)
             nicknameTextField
+            nicknameGuideText
         }
         .padding(.horizontal, 20.scaled)
     }
     
     var nicknameTextLabel: some View {
-        HStack(spacing: 0) {
-            Text("닉네임")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
-            
-            Spacer()
-        }
+        Text("닉네임")
+            .plobbyFont(.cardTitle)
+            .foregroundStyle(Color(.textPrimary))
     }
     
     var nicknameTextField: some View {
@@ -186,13 +184,12 @@ private extension SignUpView {
 
             nicknameCheckButton
         }
-        .padding(.leading, 12.scaled)
-        .padding(.trailing, 12.scaled)
+        .padding(.horizontal, 12.scaled)
         .frame(height: 51.scaled)
         .background(Color(.backgroundDefault), in: RoundedRectangle(cornerRadius: 8.scaled))
         .overlay {
             RoundedRectangle(cornerRadius: 8.scaled)
-                .strokeBorder(Color(.borderDefault), lineWidth: 1)
+                .strokeBorder(store.hasNicknameError ? Color(.currentError) : Color(.borderDefault), lineWidth: 1)
         }
     }
 
@@ -206,18 +203,32 @@ private extension SignUpView {
                 .padding(.horizontal, 18.scaled)
                 .frame(height: 40.scaled)
                 .background(
-                    store.canCheckNickname ? Color(.brandPrimarySubtle) : Color(.gray300),
+                    store.canCheckNickname ? Color(.brandPrimarySubtle) : Color(.surfaceSubtle),
                     in: RoundedRectangle(cornerRadius: 8.scaled)
                 )
         }
         .buttonStyle(.plain)
         .disabled(!store.canCheckNickname)
     }
+    
+    @ViewBuilder
+    var nicknameGuideText: some View {
+        if store.isNicknameFormatInvalid {
+            Text("\(Nickname.minimumLength)~\(Nickname.maximumLength)자의 한글, 영문, 숫자만 입력할 수 있어요")
+                .plobbyFont(.helper)
+                .foregroundStyle(Color(.currentError))
+        } else if let isAvailable = store.isNicknameAvailable {
+            Text(isAvailable ? "사용 가능한 닉네임이에요" : "이미 사용 중인 닉네임이에요. 다른 닉네임을 입력해주세요.")
+                .plobbyFont(.helper)
+                .foregroundStyle(isAvailable ? Color(.textBrand) : Color(.currentError))
+        }
+    }
 }
 
 // MARK: - 다음
 
 private extension SignUpView {
+
     var nextButton: some View {
         PlobbyButton(text: "다음") {
             store.send(.nextButtonTapped)

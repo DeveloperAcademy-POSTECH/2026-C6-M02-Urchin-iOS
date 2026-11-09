@@ -41,6 +41,11 @@ struct SignUpFeature {
             !nickname.isEmpty && !Nickname.isValid(nickname)
         }
         
+        /// 형식이 안 맞거나 이미 사용 중인 닉네임이에요. 입력창 테두리를 빨갛게 보여줄 때 써요
+        var hasNicknameError: Bool {
+            isNicknameFormatInvalid || isNicknameAvailable == false
+        }
+
         var canCheckNickname: Bool {
             Nickname.isValid(nickname) && !isCheckingNickname
         }
