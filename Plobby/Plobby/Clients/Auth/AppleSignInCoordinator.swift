@@ -15,7 +15,6 @@ final class AppleSignInCoordinator: NSObject {
         let coordinator = AppleSignInCoordinator()
 
         let request = ASAuthorizationAppleIDProvider().createRequest()
-        request.requestedScopes = [.fullName]
         request.nonce = hashedNonce
 
         let controller = ASAuthorizationController(authorizationRequests: [request])

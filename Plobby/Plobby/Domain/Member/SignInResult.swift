@@ -7,5 +7,5 @@
 
 enum SignInResult {
     case member(AuthUser)
-    case newUser(AuthUser, fullName: String?)
+    case newUser(AuthUser)
 }

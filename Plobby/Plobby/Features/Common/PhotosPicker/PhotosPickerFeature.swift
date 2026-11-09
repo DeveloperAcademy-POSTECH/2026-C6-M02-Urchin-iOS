@@ -14,9 +14,14 @@ struct PhotosPickerFeature {
     
     // MARK: - State
     
+    enum Purpose: Equatable {
+        case record(RecordType)
+        case profile
+    }
+
     @ObservableState
     struct State: Equatable {
-        let recordType: RecordType
+        let purpose: Purpose
         var authorization: PhotoAuthorization = .notDetermined
         var albums: [PhotoAlbum] = []
         var selectedAlbumID: PhotoAlbum.ID?
@@ -27,8 +32,21 @@ struct PhotosPickerFeature {
         var toast = ToastFeature.State()
         
         init(recordType: RecordType, alreadySelectedCount: Int = 0) {
-            self.recordType = recordType
+            self.purpose = .record(recordType)
             self.selection = PhotoSelection(limit: PhotoSelection.maxCount - alreadySelectedCount)
+        }
+
+        static var profile: Self {
+            Self(purpose: .profile, selection: PhotoSelection(limit: 1))
+        }
+
+        private init(purpose: Purpose, selection: PhotoSelection) {
+            self.purpose = purpose
+            self.selection = selection
+        }
+
+        var isSingleSelection: Bool {
+            purpose == .profile
         }
         
         var selectedAlbum: PhotoAlbum? {
@@ -126,6 +144,11 @@ struct PhotosPickerFeature {
                 guard let asset = state.assets[id: assetID] else {
                     return .none
                 }
+
+                if state.isSingleSelection, !state.selection.contains(asset.id) {
+                    state.selection = PhotoSelection([asset], limit: 1)
+                    return .none
+                }
                 
                 guard state.selection.toggle(asset) != .limitExceeded else {
                     return .send(.toast(.show(Self.limitExceededMessage)))
@@ -138,7 +161,7 @@ struct PhotosPickerFeature {
                     return .none
                 }
                 
-                guard !state.selection.isFull else {
+                guard state.isSingleSelection || !state.selection.isFull else {
                     return .send(.toast(.show(Self.limitExceededMessage)))
                 }
                 
@@ -157,7 +180,11 @@ struct PhotosPickerFeature {
                 if state.selectedAlbumID == state.albums.first?.id {
                     state.assets.insert(asset, at: 0)
                 }
-                state.selection.append(asset)
+                if state.isSingleSelection {
+                    state.selection = PhotoSelection([asset], limit: 1)
+                } else {
+                    state.selection.append(asset)
+                }
                 return .none
                 
             case .cameraSaveFailed:
