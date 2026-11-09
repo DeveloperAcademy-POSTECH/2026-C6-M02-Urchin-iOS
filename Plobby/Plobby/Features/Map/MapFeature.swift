@@ -29,6 +29,9 @@ struct MapFeature {
         var recordCounts: [UUID: Int] = [:]
         var isLocating = false
         var hasRequestedLocation = false
+        var currentLocation: Coordinate?
+        /// 현위치 버튼으로 옮겨 와서 아직 현위치를 보고 있어요. 이때만 버튼이 초록색이에요.
+        var isShowingCurrentLocation = false
         @Shared(.beaches) var allBeaches
         @Shared(.favoriteBeaches) var favoriteBeaches
         @Shared(.membershipStatus) var membershipStatus
@@ -52,11 +55,12 @@ struct MapFeature {
         case task
         case recordCountsResponse(Result<[UUID: Int], any Error>)
         case favoriteBeachesResponse([Beach])
-        case locationResponse(Result<Coordinate, any Error>, opensSettingsIfDenied: Bool)
+        case locationResponse(Result<Coordinate, any Error>, isButtonRequest: Bool)
         case sceneBecameActive
         case currentLocationButtonTapped
         case locationSettingsTapped
         case markerTapped(BeachMarker)
+        case clusterTapped([BeachMarker])
         case searchButtonTapped
         case beachSheet(PresentationAction<BeachSheetFeature.Action>)
         case path(StackActionOf<Path>)
@@ -77,6 +81,10 @@ struct MapFeature {
 
     static let defaultSpanMeters: Double = 5_000
     static let beachSpanMeters: Double = 2_000
+    /// 위도 1도 거리(약 111km)
+    private static let metersPerDegree: Double = 111_000
+    /// 클러스터를 확대할 때 해변들이 화면 가장자리에 붙지 않도록 여유를 둬요.
+    private static let clusterZoomPadding: Double = 1.6
     private static let sheetDismissDelay: Duration = .milliseconds(350)
 
     private nonisolated enum CancelID {
@@ -165,6 +173,30 @@ struct MapFeature {
             case let .markerTapped(marker):
                 moveCamera(to: marker.beach.coordinate, meters: Self.beachSpanMeters, state: &state)
                 state.beachSheet = BeachSheetFeature.State(beach: marker.beach)
+                return .none
+
+            // 묶인 해변이 모두 보이도록 그 지역으로 확대해요.
+            case let .clusterTapped(markers):
+                guard !markers.isEmpty else { return .none }
+
+                let latitudes = markers.map(\.beach.latitude)
+                let longitudes = markers.map(\.beach.longitude)
+                let center = Coordinate(
+                    latitude: (latitudes.min()! + latitudes.max()!) / 2,
+                    longitude: (longitudes.min()! + longitudes.max()!) / 2
+                )
+                let spanDegrees = max(latitudes.max()! - latitudes.min()!, longitudes.max()! - longitudes.min()!)
+                let meters = max(spanDegrees * Self.metersPerDegree * Self.clusterZoomPadding, Self.beachSpanMeters)
+                moveCamera(to: center, meters: meters, state: &state)
+                return .none
+
+            case let .favoriteChipTapped(beach):
+                moveCamera(to: beach.coordinate, meters: Self.beachSpanMeters, state: &state)
+                state.beachSheet = BeachSheetFeature.State(beach: beach)
+                return .none
+
+            case .cameraMovedAwayFromCurrentLocation:
+                state.isShowingCurrentLocation = false
                 return .none
 
             case .searchButtonTapped:
@@ -260,12 +292,12 @@ extension MapFeature {
     }
 
     /// 권한이 정해지지 않았다면 현재 위치를 받는 순간 권한 팝업이 떠요.
-    private func fetchCurrentLocation(_ state: inout State, opensSettingsIfDenied: Bool) -> Effect<Action> {
+    private func fetchCurrentLocation(_ state: inout State, isButtonRequest: Bool) -> Effect<Action> {
         state.isLocating = true
         return .run { send in
             await send(.locationResponse(
                 Result { try await locationClient.currentLocation() },
-                opensSettingsIfDenied: opensSettingsIfDenied
+                isButtonRequest: isButtonRequest
             ))
         }
         .cancellable(id: CancelID.location, cancelInFlight: true)
