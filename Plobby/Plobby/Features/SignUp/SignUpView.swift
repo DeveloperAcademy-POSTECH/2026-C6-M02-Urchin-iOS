@@ -5,7 +5,6 @@
 //  Created by 이은지 on 10/30/26.
 //
 
-import PhotosUI
 import SwiftUI
 
 import ComposableArchitecture
@@ -15,7 +14,6 @@ struct SignUpView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<SignUpFeature>
-    @State private var selectedPhoto: PhotosPickerItem?
     @State private var previewImage: UIImage?
     @State private var nicknameText = ""
     @FocusState private var isNicknameFocused: Bool
@@ -39,13 +37,9 @@ struct SignUpView: View {
                 CompleteView(store: store)
             }
         }
-        .task(id: selectedPhoto) {
-            guard
-                let data = try? await selectedPhoto?.loadTransferable(type: Data.self)
-            else { return }
-            
-            selectedPhoto = nil
-            store.send(.profileImageSelected(data))
+        // 기록 화면과 같은 사진 고르기 화면을 아래에서 올려요
+        .fullScreenCover(item: $store.scope(state: \.photoPicker, action: \.photoPicker)) { store in
+            PhotosPickerView(store: store)
         }
         .task(id: store.profileImage) {
             previewImage = store.profileImage.flatMap(UIImage.init(data:))
@@ -104,7 +98,9 @@ private extension SignUpView {
 private extension SignUpView {
     
     var profilePhotoSection: some View {
-        PhotosPicker(selection: $selectedPhoto, matching: .images) {
+        Button {
+            store.send(.profilePhotoTapped)
+        } label: {
             VStack(spacing: 8.scaled) {
                 profilePhoto
                 addPhotoLabel

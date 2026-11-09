@@ -35,6 +35,7 @@ struct SignUpFeature {
         var isTermsAgreed = false
         var isPrivacyAgreed = false
         var path = StackState<Path.State>()
+        @Presents var photoPicker: PhotosPickerFeature.State?
         @Presents var alert: AlertState<Action.Alert>?
         
         var isNicknameFormatInvalid: Bool {
@@ -67,6 +68,8 @@ struct SignUpFeature {
         case termsAgreementTapped
         case privacyAgreementTapped
         case agreementNextButtonTapped
+        case profilePhotoTapped
+        case photoPicker(PresentationAction<PhotosPickerFeature.Action>)
         case profileImageSelected(Data)
         case profileImageCompressed(Data?)
         case alert(PresentationAction<Alert>)
@@ -91,6 +94,7 @@ struct SignUpFeature {
     
     @Dependency(\.authClient) var authClient
     @Dependency(\.userClient) var userClient
+    @Dependency(\.photoLibraryClient) var photoLibraryClient
 
     // MARK: - Body
     
@@ -120,6 +124,23 @@ struct SignUpFeature {
                 guard state.isAllAgreed else { return .none }
 
                 state.path.append(.profile(ProfileStepFeature.State()))
+                return .none
+
+            case .profilePhotoTapped:
+                state.photoPicker = .profile
+                return .none
+
+            case let .photoPicker(.presented(.delegate(.finished(assets)))):
+                state.photoPicker = nil
+                guard let asset = assets.first else { return .none }
+
+                return fetchProfileImageData(asset.id)
+
+            case .photoPicker(.presented(.delegate(.cancelled))):
+                state.photoPicker = nil
+                return .none
+
+            case .photoPicker:
                 return .none
 
             case let .profileImageSelected(data):
@@ -195,6 +216,9 @@ struct SignUpFeature {
             }
         }
         .forEach(\.path, action: \.path)
+        .ifLet(\.$photoPicker, action: \.photoPicker) {
+            PhotosPickerFeature()
+        }
         .ifLet(\.$alert, action: \.alert)
     }
 }
@@ -207,6 +231,15 @@ extension SignUpFeature {
         case nicknameCheck
     }
     
+    /// 고른 사진의 원본을 불러와서 기존 사진 압축 흐름(profileImageSelected)으로 넘겨요
+    private func fetchProfileImageData(_ assetID: PhotoAsset.ID) -> Effect<Action> {
+        .run { send in
+            guard let data = try? await photoLibraryClient.imageData(assetID) else { return }
+
+            await send(.profileImageSelected(data))
+        }
+    }
+
     private func compressProfileImage(_ data: Data) -> Effect<Action> {
         .run { send in
             await send(.profileImageCompressed(

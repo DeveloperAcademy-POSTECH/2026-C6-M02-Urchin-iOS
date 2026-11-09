@@ -43,7 +43,9 @@ struct PhotosPickerView: View {
             deniedView
             bottomButton
         } else {
-            guideBanner
+            if store.purpose != .profile {
+                guideBanner
+            }
             assetGrid
             bottomButton
         }
@@ -262,12 +264,23 @@ private extension PhotosPickerView {
 
 private extension PhotosPickerView {
 
+    @ViewBuilder
     var bottomButton: some View {
-        PlobbyButton(
-            text: store.isSkip ? "건너뛰기" : "다음",
-            style: store.isSkip ? .alternative : .default
-        ) {
-            store.send(.bottomButtonTapped)
+        Group {
+            if store.purpose == .profile {
+                // 프로필은 건너뛰기 없이, 사진을 골라야 누를 수 있어요
+                PlobbyButton(text: "사진 추가") {
+                    store.send(.bottomButtonTapped)
+                }
+                .disabled(store.isSkip)
+            } else {
+                PlobbyButton(
+                    text: store.isSkip ? "건너뛰기" : "다음",
+                    style: store.isSkip ? .alternative : .default
+                ) {
+                    store.send(.bottomButtonTapped)
+                }
+            }
         }
         .padding(.horizontal, 20.scaled)
         .padding(.vertical, 24.scaled)
