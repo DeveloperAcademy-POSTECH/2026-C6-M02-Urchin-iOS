@@ -20,6 +20,8 @@ struct CollectionFeature {
         var cards: IdentifiedArrayOf<CollectionCardFeature.State> = CollectionFeature.initialCards
         var selectedCategory: TrashCategory = .plastic
         var isCategorySheetPresented = false
+        /// 쓰레기 종류별 개수를 받아왔는지예요. 받기 전에는 쓰레기 쌓기 애니메이션을 시작하지 않아요
+        var isTrashCountsLoaded = false
     }
 
     // MARK: - Action
@@ -27,6 +29,7 @@ struct CollectionFeature {
     enum Action {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
+        case trashCountsResponse(Result<[TrashCategory: Int], any Error>)
         case profileTapped
         case allCategoryTapped
         case categorySheetPresentationChanged(Bool)
@@ -39,6 +42,7 @@ struct CollectionFeature {
     // MARK: - Dependency
 
     @Dependency(\.userClient) var userClient
+    @Dependency(\.recordClient) var recordClient
 
     // MARK: - Body
 
@@ -46,12 +50,22 @@ struct CollectionFeature {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                guard case .member = state.membershipStatus else { return .none }
-
-                return .run { send in
-                    await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
+                // 비회원은 모은 쓰레기가 없어서 0개로 바로 보여줘요
+                guard case let .member(user) = state.membershipStatus else {
+                    state.isTrashCountsLoaded = true
+                    return .none
                 }
-                .cancellable(id: CancelID.profile, cancelInFlight: true)
+
+                return .merge(
+                    .run { send in
+                        await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
+                    }
+                    .cancellable(id: CancelID.profile, cancelInFlight: true),
+                    .run { send in
+                        await send(.trashCountsResponse(Result { try await recordClient.fetchTrashCounts(user.id) }))
+                    }
+                    .cancellable(id: CancelID.trashCounts, cancelInFlight: true)
+                )
 
             case let .profileResponse(.success(profile)):
                 state.profile = profile
@@ -62,6 +76,19 @@ struct CollectionFeature {
 
             case let .profileResponse(.failure(error)):
                 PlobbyLogger.error(error)
+                return .none
+
+            // 안 주운 종류는 결과에 없어서 0개로 채워요
+            case let .trashCountsResponse(.success(counts)):
+                for category in state.cards.ids {
+                    state.cards[id: category]?.collectedCount = counts[category, default: 0]
+                }
+                state.isTrashCountsLoaded = true
+                return .none
+
+            case let .trashCountsResponse(.failure(error)):
+                PlobbyLogger.error(error)
+                state.isTrashCountsLoaded = true
                 return .none
 
             case .profileTapped:
@@ -111,17 +138,13 @@ extension CollectionFeature {
         .styrofoam, .can, .paper, .rubber, .etc
     ]
 
-    // TODO: 컬렉션 데이터 연동 후 실제 개수로 교체
+    /// 서버에서 개수를 받아오기 전에는 0개로 시작해요
     static let initialCards = IdentifiedArray(uniqueElements: categoryOrder.map { category in
-        CollectionCardFeature.State(category: category, collectedCount: sampleCounts[category, default: 0])
+        CollectionCardFeature.State(category: category, collectedCount: 0)
     })
 
     private nonisolated enum CancelID {
         case profile
+        case trashCounts
     }
-
-    private static let sampleCounts: [TrashCategory: Int] = [
-        .plastic: 128, .glass: 12, .metal: 4, .fishingGear: 19,
-        .styrofoam: 8, .can: 17, .rubber: 3, .etc: 3
-    ]
 }

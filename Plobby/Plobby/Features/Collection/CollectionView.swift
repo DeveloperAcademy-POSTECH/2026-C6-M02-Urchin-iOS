@@ -93,7 +93,11 @@ private extension CollectionView {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 7.scaled) {
                 ForEach(store.scope(state: \.cards, action: \.cards), id: \.state.id) { cardStore in
-                    CollectionCardView(store: cardStore, isActive: cardStore.category == scrolledCategory)
+                    CollectionCardView(
+                        store: cardStore,
+                        // 개수를 받아온 뒤 가운데 카드만 쌓기 애니메이션을 시작해요
+                        isActive: store.isTrashCountsLoaded && cardStore.category == scrolledCategory
+                    )
                         .containerRelativeFrame(.horizontal)
                         .scrollTransition(axis: .horizontal) { content, phase in
                             content.scaleEffect(
