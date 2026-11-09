@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B3C1A2E309D0000004C5301 /* ConfettiScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */; };
+		7B3C1A2C309D0000004C5301 /* ConfettiBurstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */; };
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */; };
@@ -51,6 +53,12 @@
 		7B3C1A17309D0000004C5301 /* TrashPileScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A18309D0000004C5301 /* TrashPileScene.swift */; };
 		7B3C1A19309D0000004C5301 /* TrashCategory+Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A1A309D0000004C5301 /* TrashCategory+Asset.swift */; };
 		7B3C1A1C309D0000004C5301 /* CollectionCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A1D309D0000004C5301 /* CollectionCategorySheet.swift */; };
+		7B3C1A1E309D0000004C5301 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A1F309D0000004C5301 /* View+.swift */; };
+		7B3C1A20309D0000004C5301 /* SignUpProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */; };
+		7B3C1A22309D0000004C5301 /* BeachPickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A23309D0000004C5301 /* BeachPickerFeature.swift */; };
+		7B3C1A24309D0000004C5301 /* ProfileSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A25309D0000004C5301 /* ProfileSetupView.swift */; };
+		7B3C1A27309D0000004C5301 /* ProfileSetupFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A28309D0000004C5301 /* ProfileSetupFeature.swift */; };
+		7B3C1A29309D0000004C5301 /* TermsAgreementFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2A309D0000004C5301 /* TermsAgreementFeature.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
@@ -196,7 +204,7 @@
 		EC19674E309CE78F00BC4C19 /* CollectionCardFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */; };
 		ECD3271130A064E800C1E655 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271030A064E800C1E655 /* CollectionView.swift */; };
 		ECD3271330A064F000C1E655 /* CollectionFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271230A064F000C1E655 /* CollectionFeature.swift */; };
-		ECDDDAB4309AC1F800FB04D5 /* RegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */; };
+		ECDDDAB4309AC1F800FB04D5 /* BeachPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* BeachPickerView.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -236,10 +244,10 @@
 		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
 		ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BA3098338400C4916C /* OnboardingPage.swift */; };
 		ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BB3098338400C4916C /* OnboardingView.swift */; };
-		ECE6F2F83098338400C4916C /* CompleteFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BD3098338400C4916C /* CompleteFeature.swift */; };
-		ECE6F2F93098338400C4916C /* CompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BE3098338400C4916C /* CompleteView.swift */; };
-		ECE6F2FA3098338400C4916C /* RegionFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C03098338400C4916C /* RegionFeature.swift */; };
-		ECE6F2FB3098338400C4916C /* RegionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C13098338400C4916C /* RegionView.swift */; };
+		ECE6F2F83098338400C4916C /* SignUpCompleteFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BD3098338400C4916C /* SignUpCompleteFeature.swift */; };
+		ECE6F2F93098338400C4916C /* SignUpCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BE3098338400C4916C /* SignUpCompleteView.swift */; };
+		ECE6F2FA3098338400C4916C /* FavoriteBeachSetupFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C03098338400C4916C /* FavoriteBeachSetupFeature.swift */; };
+		ECE6F2FB3098338400C4916C /* FavoriteBeachSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C13098338400C4916C /* FavoriteBeachSetupView.swift */; };
 		ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C33098338400C4916C /* SignUpFeature.swift */; };
 		ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C43098338400C4916C /* SignUpView.swift */; };
 		ECE6F2FE3098338400C4916C /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F29B3098338400C4916C /* Config.xcconfig */; };
@@ -274,6 +282,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiScene.swift; sourceTree = "<group>"; };
+		7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiBurstView.swift; sourceTree = "<group>"; };
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
 		0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachHomeFeature.swift; sourceTree = "<group>"; };
 		033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PhotoLibraryClient.swift"; sourceTree = "<group>"; };
@@ -308,6 +318,12 @@
 		7B3C1A18309D0000004C5301 /* TrashPileScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashPileScene.swift; sourceTree = "<group>"; };
 		7B3C1A1A309D0000004C5301 /* TrashCategory+Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TrashCategory+Asset.swift"; sourceTree = "<group>"; };
 		7B3C1A1D309D0000004C5301 /* CollectionCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCategorySheet.swift; sourceTree = "<group>"; };
+		7B3C1A1F309D0000004C5301 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
+		7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpProgressBar.swift; sourceTree = "<group>"; };
+		7B3C1A23309D0000004C5301 /* BeachPickerFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachPickerFeature.swift; sourceTree = "<group>"; };
+		7B3C1A25309D0000004C5301 /* ProfileSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupView.swift; sourceTree = "<group>"; };
+		7B3C1A28309D0000004C5301 /* ProfileSetupFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupFeature.swift; sourceTree = "<group>"; };
+		7B3C1A2A309D0000004C5301 /* TermsAgreementFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAgreementFeature.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -459,7 +475,7 @@
 		EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCardFeature.swift; sourceTree = "<group>"; };
 		ECD3271030A064E800C1E655 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		ECD3271230A064F000C1E655 /* CollectionFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionFeature.swift; sourceTree = "<group>"; };
-		ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPicker.swift; sourceTree = "<group>"; };
+		ECDDDAB2309AC1F800FB04D5 /* BeachPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachPickerView.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -500,10 +516,10 @@
 		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
 		ECE6F2BA3098338400C4916C /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
 		ECE6F2BB3098338400C4916C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		ECE6F2BD3098338400C4916C /* CompleteFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteFeature.swift; sourceTree = "<group>"; };
-		ECE6F2BE3098338400C4916C /* CompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteView.swift; sourceTree = "<group>"; };
-		ECE6F2C03098338400C4916C /* RegionFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionFeature.swift; sourceTree = "<group>"; };
-		ECE6F2C13098338400C4916C /* RegionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionView.swift; sourceTree = "<group>"; };
+		ECE6F2BD3098338400C4916C /* SignUpCompleteFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCompleteFeature.swift; sourceTree = "<group>"; };
+		ECE6F2BE3098338400C4916C /* SignUpCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCompleteView.swift; sourceTree = "<group>"; };
+		ECE6F2C03098338400C4916C /* FavoriteBeachSetupFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachSetupFeature.swift; sourceTree = "<group>"; };
+		ECE6F2C13098338400C4916C /* FavoriteBeachSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachSetupView.swift; sourceTree = "<group>"; };
 		ECE6F2C33098338400C4916C /* SignUpFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFeature.swift; sourceTree = "<group>"; };
 		ECE6F2C43098338400C4916C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		ECE6F2C73098338400C4916C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -553,6 +569,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B3C1A2B309D0000004C5301 /* Confetti */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */,
+				7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */,
+			);
+			path = Confetti;
+			sourceTree = "<group>";
+		};
 		0388DE9EE55A49C7010C48BD /* Response */ = {
 			isa = PBXGroup;
 			children = (
@@ -617,12 +642,13 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		7B3C1A0C309D0000004C5301 /* Terms */ = {
+		7B3C1A0C309D0000004C5301 /* TermsAgreement */ = {
 			isa = PBXGroup;
 			children = (
 				7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */,
+				7B3C1A2A309D0000004C5301 /* TermsAgreementFeature.swift */,
 			);
-			path = Terms;
+			path = TermsAgreement;
 			sourceTree = "<group>";
 		};
 		7B3C1A1B309D0000004C5301 /* TrashPile */ = {
@@ -632,6 +658,15 @@
 				7B3C1A18309D0000004C5301 /* TrashPileScene.swift */,
 			);
 			path = TrashPile;
+			sourceTree = "<group>";
+		};
+		7B3C1A26309D0000004C5301 /* ProfileSetup */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A25309D0000004C5301 /* ProfileSetupView.swift */,
+				7B3C1A28309D0000004C5301 /* ProfileSetupFeature.swift */,
+			);
+			path = ProfileSetup;
 			sourceTree = "<group>";
 		};
 		84C514248E87412C8FC65AA2 /* Push */ = {
@@ -1024,7 +1059,6 @@
 			children = (
 				DA688DCE3099EFFD0064A2F4 /* RecordView.swift */,
 				DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */,
-				DA688DC53099CF830064A2F4 /* PhotosPicker */,
 				DA688DC33099CF830064A2F4 /* RecordForm */,
 				DA688DC23099CF830064A2F4 /* RecordReward */,
 				DA688DC43099CF830064A2F4 /* RecordDetail */,
@@ -1086,7 +1120,6 @@
 		E117113459A087098044178D /* Record */ = {
 			isa = PBXGroup;
 			children = (
-				4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */,
 				6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */,
 				684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */,
 				1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */,
@@ -1127,6 +1160,15 @@
 			path = CollectionCard;
 			sourceTree = "<group>";
 		};
+		EC4E9E3430A1A4EB000E2C5F /* BeachPicker */ = {
+			isa = PBXGroup;
+			children = (
+				ECDDDAB2309AC1F800FB04D5 /* BeachPickerView.swift */,
+				7B3C1A23309D0000004C5301 /* BeachPickerFeature.swift */,
+			);
+			path = BeachPicker;
+			sourceTree = "<group>";
+		};
 		ECD3270F30A064DA00C1E655 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
@@ -1159,7 +1201,8 @@
 		ECDDDAB3309AC1F800FB04D5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */,
+				EC4E9E3430A1A4EB000E2C5F /* BeachPicker */,
+				DA688DC53099CF830064A2F4 /* PhotosPicker */,
 				0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */,
 				DAEC87A3309B7F2A0086965E /* ToastFeature.swift */,
 				EC17D65A309D82630031D2BD /* SignInFeature.swift */,
@@ -1275,6 +1318,7 @@
 				ECE6F2993098338400C4916C /* Character+.swift */,
 				EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */,
 				B5D20E7B309AC47100981996 /* SharedKey+.swift */,
+				7B3C1A1F309D0000004C5301 /* View+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1415,32 +1459,35 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		ECE6F2BF3098338400C4916C /* Complete */ = {
+		ECE6F2BF3098338400C4916C /* SignUpComplete */ = {
 			isa = PBXGroup;
 			children = (
-				ECE6F2BD3098338400C4916C /* CompleteFeature.swift */,
-				ECE6F2BE3098338400C4916C /* CompleteView.swift */,
+				ECE6F2BE3098338400C4916C /* SignUpCompleteView.swift */,
+				7B3C1A2B309D0000004C5301 /* Confetti */,
+				ECE6F2BD3098338400C4916C /* SignUpCompleteFeature.swift */,
 			);
-			path = Complete;
+			path = SignUpComplete;
 			sourceTree = "<group>";
 		};
-		ECE6F2C23098338400C4916C /* Region */ = {
+		ECE6F2C23098338400C4916C /* FavoriteBeachSetup */ = {
 			isa = PBXGroup;
 			children = (
-				ECE6F2C03098338400C4916C /* RegionFeature.swift */,
-				ECE6F2C13098338400C4916C /* RegionView.swift */,
+				ECE6F2C13098338400C4916C /* FavoriteBeachSetupView.swift */,
+				ECE6F2C03098338400C4916C /* FavoriteBeachSetupFeature.swift */,
 			);
-			path = Region;
+			path = FavoriteBeachSetup;
 			sourceTree = "<group>";
 		};
 		ECE6F2C53098338400C4916C /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
-				7B3C1A0C309D0000004C5301 /* Terms */,
-				ECE6F2BF3098338400C4916C /* Complete */,
-				ECE6F2C23098338400C4916C /* Region */,
-				ECE6F2C33098338400C4916C /* SignUpFeature.swift */,
+				7B3C1A0C309D0000004C5301 /* TermsAgreement */,
+				7B3C1A26309D0000004C5301 /* ProfileSetup */,
+				ECE6F2C23098338400C4916C /* FavoriteBeachSetup */,
+				ECE6F2BF3098338400C4916C /* SignUpComplete */,
 				ECE6F2C43098338400C4916C /* SignUpView.swift */,
+				ECE6F2C33098338400C4916C /* SignUpFeature.swift */,
+				7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -1547,6 +1594,7 @@
 		F6CC0869FBFC561A2BB5CAC8 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */,
 				CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */,
 			);
 			path = Common;
@@ -1754,6 +1802,7 @@
 				DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */,
 				5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */,
 				B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */,
+				7B3C1A1E309D0000004C5301 /* View+.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
@@ -1768,7 +1817,8 @@
 				ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */,
 				EC0D4B993098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift in Sources */,
 				EC0D4B953098E1D0000E7BB7 /* WithdrawalReason.swift in Sources */,
-				ECDDDAB4309AC1F800FB04D5 /* RegionPicker.swift in Sources */,
+				ECDDDAB4309AC1F800FB04D5 /* BeachPickerView.swift in Sources */,
+				7B3C1A22309D0000004C5301 /* BeachPickerFeature.swift in Sources */,
 				4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */,
 				DAEC87A8309C42CF0086965E /* LocationPickerView.swift in Sources */,
 				EC0D4B933098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift in Sources */,
@@ -1911,16 +1961,22 @@
 				ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */,
 				DA688DCB3099CFB70064A2F4 /* RecordRewardFeature.swift in Sources */,
 				ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */,
-				ECE6F2F83098338400C4916C /* CompleteFeature.swift in Sources */,
+				ECE6F2F83098338400C4916C /* SignUpCompleteFeature.swift in Sources */,
 				DA5B10E730998932003FEDF9 /* RecordFlowFeature.swift in Sources */,
-				ECE6F2F93098338400C4916C /* CompleteView.swift in Sources */,
-				ECE6F2FA3098338400C4916C /* RegionFeature.swift in Sources */,
-				ECE6F2FB3098338400C4916C /* RegionView.swift in Sources */,
+				ECE6F2F93098338400C4916C /* SignUpCompleteView.swift in Sources */,
+				7B3C1A2E309D0000004C5301 /* ConfettiScene.swift in Sources */,
+				7B3C1A2C309D0000004C5301 /* ConfettiBurstView.swift in Sources */,
+				ECE6F2FA3098338400C4916C /* FavoriteBeachSetupFeature.swift in Sources */,
+				ECE6F2FB3098338400C4916C /* FavoriteBeachSetupView.swift in Sources */,
 				DA0A9CFB309A140D006D2504 /* DatePickerFeature.swift in Sources */,
 				44553F7E8DF0475F4F9BF678 /* DatePickerView.swift in Sources */,
 				ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */,
 				EC17D65B309D82630031D2BD /* SignInFeature.swift in Sources */,
 				ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */,
+				7B3C1A29309D0000004C5301 /* TermsAgreementFeature.swift in Sources */,
+				7B3C1A27309D0000004C5301 /* ProfileSetupFeature.swift in Sources */,
+				7B3C1A24309D0000004C5301 /* ProfileSetupView.swift in Sources */,
+				7B3C1A20309D0000004C5301 /* SignUpProgressBar.swift in Sources */,
 				7B3C1A0B309D0000004C5301 /* TermsAgreementView.swift in Sources */,
 				7B3C1A09309D0000004C5301 /* ServiceLink.swift in Sources */,
 			);

@@ -11,7 +11,8 @@ import Dependencies
 import Supabase
 
 struct AuthClient {
-    var signInWithApple: @Sendable (_ idToken: String, _ nonce: String, _ fullName: String?) async throws -> AuthUser
+    
+    var signInWithApple: @Sendable (_ idToken: String, _ nonce: String) async throws -> AuthUser
     var fetchCredential: @Sendable (_ hashedNonce: String) async -> Result<AppleCredential, AppleSignInError>
     var fetchAppleAuthorizationCode: @Sendable () async throws -> String
     var fetchCurrentUser: @Sendable () async -> AuthUser?
@@ -27,36 +28,26 @@ struct AuthClient {
 }
 
 extension AuthClient: DependencyKey {
+    
     static let liveValue: AuthClient = {
         .init(
-            signInWithApple: { idToken, nonce, fullName in
+            signInWithApple: { idToken, nonce in
                 @Dependency(\.supabaseClient) var supabase
 
                 let session = try await supabase.auth.signInWithIdToken(
                     credentials: OpenIDConnectCredentials(provider: .apple, idToken: idToken, nonce: nonce)
                 )
 
-                if let fullName {
-                    _ = try? await supabase.auth.update(
-                        user: UserAttributes(data: ["full_name": .string(fullName)])
-                    )
-                }
-
                 return AuthUser(
                     id: session.user.id,
-                    email: session.user.email,
-                    fullName: fullName ?? session.user.userMetadata["full_name"]?.stringValue
+                    email: session.user.email
                 )
             },
             fetchCredential: { hashedNonce in
                 await AppleSignInCoordinator.fetchCredential(hashedNonce: hashedNonce)
             },
             fetchAppleAuthorizationCode: {
-                guard let anchor = AppleAuthorizationRequester.currentAnchor() else {
-                    throw AppleSignInError.failed
-                }
-
-                return try await AppleAuthorizationRequester(anchor: anchor).fetchAuthorizationCode()
+                try await AppleAuthorizationRequester.fetchAuthorizationCode()
             },
             fetchCurrentUser: {
                 @Dependency(\.supabaseClient) var supabase
@@ -65,8 +56,7 @@ extension AuthClient: DependencyKey {
 
                 return AuthUser(
                     id: session.user.id,
-                    email: session.user.email,
-                    fullName: session.user.userMetadata["full_name"]?.stringValue
+                    email: session.user.email
                 )
             },
             signedOutEvents: {

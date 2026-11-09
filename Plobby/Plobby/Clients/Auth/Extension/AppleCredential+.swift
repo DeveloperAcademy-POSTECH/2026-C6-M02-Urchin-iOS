@@ -8,6 +8,7 @@
 import AuthenticationServices
 
 extension AppleCredential {
+    
     init(authorization: ASAuthorization) throws(AppleSignInError) {
         guard
             let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
@@ -17,10 +18,6 @@ extension AppleCredential {
             throw .failed
         }
         
-        let fullName = credential.fullName
-            .map { PersonNameComponentsFormatter().string(from: $0) }
-            .flatMap { $0.isEmpty ? nil : $0 }
-        
-        self.init(idToken: idToken, fullName: fullName)
+        self.init(idToken: idToken)
     }
 }

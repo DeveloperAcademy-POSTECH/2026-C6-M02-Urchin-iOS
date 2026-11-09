@@ -10,7 +10,6 @@ import Foundation
 struct SignUpProfile: Equatable {
     let userID: UUID
     let profileImage: Data?
-    let name: String?
     let nickname: String
     let favoriteBeachIDs: [UUID]
 }

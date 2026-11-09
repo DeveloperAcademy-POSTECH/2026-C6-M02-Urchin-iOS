@@ -282,8 +282,6 @@ private extension HomeFeature.Action {
 
 extension HomeFeature {
 
-    static let maximumFavoriteBeachCount = 3
-
     static let transitionDuration: Duration = .milliseconds(700)
     static let autoAdvanceDelay: Duration = .milliseconds(160)
     static let transitionAnimation: Animation = .smooth(duration: 0.7)
