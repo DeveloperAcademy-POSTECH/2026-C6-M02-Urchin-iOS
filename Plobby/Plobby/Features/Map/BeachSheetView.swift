@@ -74,16 +74,10 @@ private extension BeachSheetView {
 
             Spacer(minLength: 0)
 
-            if store.isMember, store.content != .loading {
-                circleButton(
-                    systemName: store.isFavorite ? "star.fill" : "star",
-                    color: store.isFavorite ? Color(.green500) : Color(.textSecondary),
-                    size: 18,
-                    weight: .semibold,
-                    accessibilityLabel: store.isFavorite ? "관심 해변 해제" : "관심 해변 등록"
-                ) {
-                    store.send(.favoriteTapped)
-                }
+            // 지도 시트에서는 관심 해변을 바꿀 수 없어요. 관심 해변일 때만 선택된 별을 보여줘요.
+            if store.isMember, store.isFavorite, store.content != .loading {
+                circleIcon(systemName: "star.fill", color: Color(.green500), size: 18, weight: .semibold)
+                    .accessibilityLabel("관심 해변")
             }
 
             circleButton(
@@ -206,17 +200,21 @@ private extension BeachSheetView {
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
-            Image(systemName: systemName)
-                .font(.system(size: size.scaled, weight: weight))
-                .foregroundStyle(color)
-                .frame(width: 36.scaled, height: 36.scaled)
-                .background(Color(.gray50), in: Circle())
-                .overlay {
-                    Circle()
-                        .stroke(Color(.currentWarmBorder), lineWidth: 1)
-                }
+            circleIcon(systemName: systemName, color: color, size: size, weight: weight)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
+    }
+
+    func circleIcon(systemName: String, color: Color, size: CGFloat, weight: Font.Weight) -> some View {
+        Image(systemName: systemName)
+            .font(.system(size: size.scaled, weight: weight))
+            .foregroundStyle(color)
+            .frame(width: 36.scaled, height: 36.scaled)
+            .background(Color(.gray50), in: Circle())
+            .overlay {
+                Circle()
+                    .stroke(Color(.currentWarmBorder), lineWidth: 1)
+            }
     }
 }
