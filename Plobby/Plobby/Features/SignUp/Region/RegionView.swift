@@ -18,44 +18,44 @@ struct RegionView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack {
-            SignUpProgressBar(currentStep: 2, totalSteps: 2)
-                .padding(.horizontal, 20.scaled)
-                .padding(.bottom, 24.scaled)
-            title
-            subTitle
+        VStack(spacing: 0) {
+            progressBar
+            titleSection
             RegionPicker(store: store)
-            
-            Spacer()
-            
             nextButton
         }
+    }
+}
+
+// MARK: - 상단 (진행 바, 제목)
+
+private extension RegionView {
+    
+    var progressBar: some View {
+        SignUpProgressBar(currentStep: 2, totalSteps: 2)
+            .padding(.top, 23.scaled)
+            .padding(.bottom, 31.scaled)
+            .padding(.horizontal, 20.scaled)
+    }
+    
+    var titleSection: some View {
+        VStack(alignment: .leading, spacing: 8.scaled) {
+            Text("관심 해변을 골라 주세요")
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.textPrimary))
+
+            Text("최대 3개까지 고르고, 마이페이지에서 바꿀 수 있어요")
+                .plobbyFont(.body)
+                .foregroundStyle(Color(.textSecondary))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 20.scaled)
     }
 }
 
 // MARK: - Subviews
 
 extension RegionView {
-    
-
-    
-    private var title: some View {
-        Text("즐겨찾기에 넣을 해변을\n선택해주세요")
-            .font(.system(size: 26, weight: .semibold))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 21)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 8)
-    }
-    
-    private var subTitle: some View {
-        Text("즐겨찾기에 넣을 해변은 마이페이지에서\n언제든 다시 바꿀 수 있어요")
-            .font(.system(size: 14, weight: .regular))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 53)
-    }
-    
     private var nextButton: some View {
         PlobbyButton(text: "다음") {
             store.send(.nextButtonTapped)
