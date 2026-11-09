@@ -80,10 +80,38 @@ private extension CollectionCardView {
         cardFace(
             VStack(spacing: 0) {
                 header
-                trashPile
+
+                if store.collectedCount > 0 {
+                    trashPile
+                } else {
+                    emptyState
+                }
+
                 collectedCountLabel
             }
         )
+    }
+
+    var emptyState: some View {
+        VStack(spacing: 0) {
+            Image(store.category.thumbnailName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 80.scaled, height: 80.scaled)
+                .padding(.bottom, 20.scaled)
+
+            Text("아직 수거 기록이 없어요")
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.gray0))
+                .padding(.bottom, 8.scaled)
+
+            Text("\(store.category.name)\(store.category.name.objectParticle) 수거한 활동을 기록하면\n이 카드에 차곡차곡 쌓여요.")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textDisabled))
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, 16.scaled)
     }
 
     var trashPile: some View {
@@ -101,7 +129,7 @@ private extension CollectionCardView {
         HStack(alignment: .lastTextBaseline) {
             Text("지금까지 모은 개수")
                 .plobbyFont(.metadata)
-                .foregroundStyle(Color(.gray500))
+                .foregroundStyle(Color(.textDisabled))
 
             Spacer()
 
