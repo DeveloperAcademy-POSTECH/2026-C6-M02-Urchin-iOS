@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B3C1A20309D0000004C5301 /* SignUpProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */; };
 		7B3C1A1E309D0000004C5301 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A1F309D0000004C5301 /* View+.swift */; };
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
@@ -247,6 +248,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpProgressBar.swift; sourceTree = "<group>"; };
 		7B3C1A1F309D0000004C5301 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
 		0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachHomeFeature.swift; sourceTree = "<group>"; };
@@ -1288,6 +1290,7 @@
 				ECE6F2C23098338400C4916C /* Region */,
 				ECE6F2C33098338400C4916C /* SignUpFeature.swift */,
 				ECE6F2C43098338400C4916C /* SignUpView.swift */,
+				7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -1741,6 +1744,7 @@
 				ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */,
 				EC17D65B309D82630031D2BD /* SignInFeature.swift in Sources */,
 				ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */,
+				7B3C1A20309D0000004C5301 /* SignUpProgressBar.swift in Sources */,
 				7B3C1A0B309D0000004C5301 /* TermsAgreementView.swift in Sources */,
 				7B3C1A09309D0000004C5301 /* ServiceLink.swift in Sources */,
 			);
