@@ -19,7 +19,15 @@ struct BeachPickerFeature {
         @Shared(.beaches) var allBeaches
         var selectedRegion: Sea?
         var searchText = ""
-        var selectedBeachIDs: Set<UUID> = []
+        var selectedBeachIDs: [UUID] = []
+
+        var selectedBeaches: [Beach] {
+            selectedBeachIDs.compactMap { id in allBeaches.first { $0.id == id } }
+        }
+
+        var isSelectionFull: Bool {
+            selectedBeachIDs.count >= BeachPickerFeature.maximumCount
+        }
 
         var beaches: [Beach] {
             let beaches = selectedRegion.map { region in
@@ -54,15 +62,16 @@ struct BeachPickerFeature {
                 return .none
 
             case let .beachTapped(id):
-                if state.selectedBeachIDs.remove(id) != nil {
+                if let index = state.selectedBeachIDs.firstIndex(of: id) {
+                    state.selectedBeachIDs.remove(at: index)
                     return .none
                 }
 
-                guard state.selectedBeachIDs.count < Self.maximumCount else {
+                guard !state.isSelectionFull else {
                     return .none
                 }
 
-                state.selectedBeachIDs.insert(id)
+                state.selectedBeachIDs.append(id)
                 return .none
             }
         }
