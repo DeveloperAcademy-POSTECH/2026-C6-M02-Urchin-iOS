@@ -75,6 +75,7 @@
 		B593431730A0DA00005EAF07 /* GoalParticipantResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593431630A0DA00005EAF07 /* GoalParticipantResponseDTO.swift */; };
 		B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5951FB2309BA4AB0089A019 /* MyView.swift */; };
 		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
+		B5E34CC330A1A55E00AF3DA6 /* UserTrashSummaryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E34CC230A1A55E00AF3DA6 /* UserTrashSummaryResponseDTO.swift */; };
 		B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */; };
 		BDA985C8CDA5A070AC9A1B00 /* PhotosPickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */; };
 		BDB670B496D64EBBFC6DFA20 /* BeachSheetFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7000C176F646DD10B4458C46 /* BeachSheetFeature.swift */; };
@@ -317,6 +318,7 @@
 		B593431630A0DA00005EAF07 /* GoalParticipantResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalParticipantResponseDTO.swift; sourceTree = "<group>"; };
 		B5951FB2309BA4AB0089A019 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
+		B5E34CC230A1A55E00AF3DA6 /* UserTrashSummaryResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTrashSummaryResponseDTO.swift; sourceTree = "<group>"; };
 		B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
 		BB7F74240E9987DD91438B11 /* BlockedUsersFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersFeature.swift; sourceTree = "<group>"; };
@@ -878,6 +880,7 @@
 				DA5B105F30997215003FEDF9 /* RecordPhotoResponseDTO.swift */,
 				DA5B106030997215003FEDF9 /* RecordSummaryResponseDTO.swift */,
 				DA5B106130997215003FEDF9 /* RecordTrashResponseDTO.swift */,
+				B5E34CC230A1A55E00AF3DA6 /* UserTrashSummaryResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1759,6 +1762,7 @@
 				ECE6F2E93098338400C4916C /* Nickname.swift in Sources */,
 				21ECFACF111E9F703BA57978 /* BlockedUser.swift in Sources */,
 				31E66B8D80D430AAAC9A21D8 /* Profile.swift in Sources */,
+				B5E34CC330A1A55E00AF3DA6 /* UserTrashSummaryResponseDTO.swift in Sources */,
 				B59027093098E6CB00AE351D /* ReadAtUpdateRequestDTO.swift in Sources */,
 				662D32B75B344538B44995C7 /* NotificationResponseDTO.swift in Sources */,
 				6C922A2E679C44E28DA507F7 /* AppNotification.swift in Sources */,
