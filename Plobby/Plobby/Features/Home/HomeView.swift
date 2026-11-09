@@ -2,7 +2,7 @@
 //  HomeView.swift
 //  Plobby
 //
-//  Created by 이은지 on 10/30/26.
+//  Created by 더스틴 on 11/8/26.
 //
 
 import SwiftUI
@@ -15,50 +15,58 @@ struct HomeView: View {
 
     @Bindable var store: StoreOf<HomeFeature>
 
+    @Namespace private var tabUnderline
+
     // MARK: - Body
 
     var body: some View {
-        content
-            .onAppear {
-                store.send(.onAppear)
-            }
-            .onDisappear {
-                store.send(.onDisappear)
-            }
-    }
-}
+        VStack(spacing: 0) {
+            header
 
-// MARK: - Subviews
+            goalCard
+                .padding(.horizontal, 20.scaled)
 
-extension HomeView {
+            activityTabs
+                .padding(.top, 4.scaled)
 
-    private var content: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                header
-                recordBanner
-                recentRecordSection
-                recentRecordRowList
-                // TODO: 이용 가이드 콘텐츠가 준비되면 dailyTipBanner 다시 표시
-            }
-            .padding(.bottom, 36.scaled)
+            scene
         }
-        .scrollIndicators(.hidden)
-        .refreshable {
-            await store.send(.refreshPulled).finish()
+        .background(Color(.gray0))
+        .plobbyBottomSheet(item: sheetBinding, showsGrabber: true) { sheet in
+            sheetContent(sheet)
+        }
+        .fullScreenCover(isPresented: activityPickerBinding) {
+            HomeActivityPicker(
+                onSelect: { type in store.send(.activityPicked(type), transaction: Self.noAnimation) },
+                onDismiss: { store.send(.activityPickerDismissed, transaction: Self.noAnimation) }
+            )
+            .presentationBackground(.clear)
+        }
+        .fullScreenCover(isPresented: trashSummaryBinding) {
+            if let board = store.board {
+                HomeTrashSummaryPopup(board: board) {
+                    store.send(.trashSummaryDismissed, transaction: Self.noAnimation)
+                }
+                .presentationBackground(.clear)
+            }
+        }
+        .onAppear {
+            store.send(.onAppear)
         }
     }
 }
 
 // MARK: - 헤더
 
-extension HomeView {
-    
-    private var header: some View {
+private extension HomeView {
+
+    var header: some View {
         HStack {
-            Text("홈")
-                .plobbyFont(.heading)
-                .foregroundStyle(Color(.textPrimary))
+            Image(.homeLogo)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 73.scaled, height: 23.scaled)
+                .accessibilityLabel("plobby")
 
             Spacer()
 
@@ -69,344 +77,199 @@ extension HomeView {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 24.scaled, height: 24.scaled)
+                    .frame(width: 44.scaled, height: 44.scaled)
             }
+            .accessibilityLabel("알림")
         }
-        .frame(height: 56.scaled)
-        .padding(.horizontal, 20.scaled)
-    }
-}
-
-// MARK: - 기록하기 배너
-
-extension HomeView {
-    
-    private var recordBanner: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 0) {
-                ForEach(HomeFeature.banners, id: \.self) { banner in
-                    bannerPage(banner)
-                        .containerRelativeFrame(.horizontal)
-                }
-            }
-            .scrollTargetLayout()
-        }
-        .scrollTargetBehavior(.paging)
-        .scrollIndicators(.hidden)
-        .scrollPosition(id: bannerPosition)
-        .onBannerDrag(
-            started: { store.send(.bannerDragStarted) },
-            ended: { store.send(.bannerDragEnded) }
-        )
-        .overlay(alignment: .topTrailing) {
-            bannerIndicator
-                .padding(.top, 18.scaled)
-                .padding(.trailing, 10.scaled)
-        }
-        .aspectRatio(362 / 180, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 16.scaled))
-        .padding(.horizontal, 20.scaled)
-        .padding(.top, 16.scaled)
+        .padding(.leading, 20.scaled)
+        .padding(.trailing, 12.scaled)
+        .frame(height: 50.scaled)
     }
 
-    private var bannerPosition: Binding<RecordType?> {
-        Binding(
-            get: { store.currentBanner },
-            set: { banner in
-                guard let banner else { return }
-                store.send(.bannerChanged(banner))
-            }
-        )
-    }
+    var activityTabs: some View {
+        HStack(spacing: 0) {
+            ForEach(Self.tabs, id: \.self) { type in
+                let isSelected = store.selectedType == type
 
-    private func bannerPage(_ banner: RecordType) -> some View {
-        Image(banner.bannerImage)
-            .resizable()
-            .scaledToFill()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .clipped()
-            .overlay(alignment: .topLeading) {
-                Text(banner.bannerTitle)
-                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 18.scaled))
-                    .foregroundStyle(Color(.textPrimary))
-                    .padding(.top, 20.scaled)
-                    .padding(.leading, 24.scaled)
-            }
-            .overlay(alignment: .bottom) {
-                recordButton(banner)
-                    .padding(.horizontal, 20.scaled)
-                    .padding(.bottom, 16.scaled)
-            }
-    }
-
-    // TODO: 컬러셋 확정 후 교체 (#ACC9BE)
-    private static let inactiveIndicatorColor = Color(red: 0xAC / 255, green: 0xC9 / 255, blue: 0xBE / 255)
-
-    private var bannerIndicator: some View {
-        HStack(spacing: 8.scaled) {
-            ForEach(HomeFeature.banners, id: \.self) { banner in
-                Circle()
-                    .fill(banner == store.currentBanner ? Color(.green500) : Self.inactiveIndicatorColor)
-                    .frame(width: 8.scaled, height: 8.scaled)
-            }
-        }
-    }
-    
-    private func recordButton(_ banner: RecordType) -> some View {
-        PlobbyButton(text: banner.recordButtonTitle) {
-            store.send(.recordButtonTapped(banner))
-        }
-        .padding(.bottom, 4.scaled)
-    }
-}
-
-// MARK: - 새로 올라온 기록
-
-extension HomeView {
-
-    private var recentRecordSection: some View {
-        VStack(spacing: 0) {
-            recentRecordHeader
-            recentRecordList
-        }
-        .padding(.top, 40.scaled)
-    }
-
-    /// - 가로 배치 카드
-    private func recentRecordCard(_ record: RecordSummary) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            recentRecordCardImage(record)
-
-            recentRecordTitle(record)
-                .padding(.top, 8.scaled)
-
-            recentRecordMeta(record)
-                .padding(.top, 10.scaled)
-
-            recentRecordAuthor(record)
-                .padding(.top, 8.scaled)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    /// - 세로 배치 행
-    private func recentRecordRow(_ record: RecordSummary) -> some View {
-        HStack(spacing: 16.scaled) {
-            VStack(alignment: .leading, spacing: 0) {
-                recentRecordTitle(record)
-
-                recentRecordMeta(record)
-                    .padding(.top, 10.scaled)
-
-                recentRecordAuthor(record)
-                    .padding(.top, 8.scaled)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            recentRecordRowImage(record)
-        }
-        .padding(.vertical, 13.scaled)
-    }
-
-    private func recentRecordCardImage(_ record: RecordSummary) -> some View {
-        Color.clear
-            .aspectRatio(175 / 132, contentMode: .fit)
-            .overlay {
-                recordPhoto(record.coverPhotoURL)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
-    }
-
-    private func recentRecordRowImage(_ record: RecordSummary) -> some View {
-        recordPhoto(record.coverPhotoURL)
-            .frame(width: 76.scaled, height: 76.scaled)
-            .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
-    }
-
-    private func recordPhoto(_ url: URL?) -> some View {
-        AsyncImage(url: url) { image in
-            image
-                .resizable()
-                .scaledToFill()
-        } placeholder: {
-            Color(.gray50)
-        }
-    }
-
-    private func recentRecordTitle(_ record: RecordSummary) -> some View {
-        Text(record.title)
-            .plobbyFont(.actionLabel)
-            .foregroundStyle(Color(.textPrimary))
-            .lineLimit(1)
-    }
-
-    private func recentRecordMeta(_ record: RecordSummary) -> some View {
-        HStack(spacing: 8.scaled) {
-            Text(record.createdAt, format: .relative(presentation: .named))
-
-            HStack(spacing: 2.scaled) {
-                Image(systemName: "heart")
-                Text("\(record.likeCount)")
-            }
-        }
-        .plobbyFont(.metadata)
-        .foregroundStyle(Color(.gray600))
-    }
-
-    private func recentRecordAuthor(_ record: RecordSummary) -> some View {
-        HStack(spacing: 6.scaled) {
-            AsyncImage(url: record.profileImageURL) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-            } placeholder: {
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-            }
-            .frame(width: 16.scaled, height: 16.scaled)
-            .clipShape(Circle())
-
-            Text(record.nickname)
-                .plobbyFont(.metadata)
-                .padding(.leading, 4.scaled)
-        }
-        .foregroundStyle(Color(.gray600))
-    }
-}
-
-extension HomeView {
-    
-    // TODO: 컬러셋 확정 후 교체 (#E1E7E4)
-    private static let dividerColor = Color(red: 0xE1 / 255, green: 0xE7 / 255, blue: 0xE4 / 255)
-
-    private var recentRecordHeader: some View {
-        HStack {
-            Text("새로 올라온 기록")
-                .plobbyFont(.heading)
-                .foregroundStyle(Color(.textPrimary))
-
-            Spacer()
-        }
-        .padding(.horizontal, 20.scaled)
-        .padding(.bottom, 16.scaled)
-    }
-    
-    private var recentRecordList: some View {
-        HStack(alignment: .top, spacing: 12.scaled) {
-            ForEach(store.recentRecordCards) { record in
                 Button {
-                    store.send(.recentRecordTapped(record.id))
+                    store.send(.activityTabSelected(type), animation: .smooth(duration: 0.3))
                 } label: {
-                    recentRecordCard(record)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .padding(.horizontal, 20.scaled)
-    }
-
-    private var recentRecordRowList: some View {
-        VStack(spacing: 0) {
-            ForEach(store.recentRecordRows) { record in
-                Button {
-                    store.send(.recentRecordTapped(record.id))
-                } label: {
-                    recentRecordRow(record)
+                    Text(type.name)
+                        .plobbyFont(isSelected ? .actionLabel : .body)
+                        .foregroundStyle(isSelected ? Color(.textPrimary) : Color(.textSecondary))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 48.scaled)
+                        .overlay(alignment: .bottom) {
+                            if isSelected {
+                                Rectangle()
+                                    .fill(Color(.green500))
+                                    .frame(height: 4.scaled)
+                                    .matchedGeometryEffect(id: "underline", in: tabUnderline)
+                                    .offset(y: 4.scaled)
+                            }
+                        }
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-
-                if record.id != store.recentRecordRows.last?.id {
-                    Divider()
-                        .overlay(Self.dividerColor)
-                }
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
             }
         }
-        .padding(.horizontal, 20.scaled)
-        .padding(.top, 12.scaled)
+        .padding(.bottom, 4.scaled)
+        .background(Color(.gray0))
     }
 }
 
-// MARK: - 이용 가이드 배너
+// MARK: - 장면
 
-extension HomeView {
+private extension HomeView {
 
-    private var dailyTipBanner: some View {
+    var scene: some View {
+        let type = store.selectedType
+        let days = store.board?.days ?? []
+        let pulse = store.collectPulses[type, default: 0]
+
+        return ZStack {
+            // 장면 배경은 탭 바 아래까지 깔고, 버튼들은 탭 바 위에 둬요.
+            switch type {
+            case .plogging:
+                PloggingSceneView(days: days, stage: store.stage, collectPulse: pulse)
+                    .ignoresSafeArea(edges: .bottom)
+                    .transition(.opacity)
+            case .plobbing:
+                PlobbingSceneView(days: days, stage: store.stage, collectPulse: pulse)
+                    .ignoresSafeArea(edges: .bottom)
+                    .transition(.opacity)
+            }
+
+            if let status = store.status, status.isFinished {
+                HomeGoalCelebration(isAchieved: status == .achieved)
+                    .transition(.opacity)
+            }
+
+            HomeSceneOverlay(
+                recordType: type,
+                stage: store.stage,
+                day: store.currentDay,
+                totalTrashCount: store.board?.totalTrashCount ?? 0,
+                isGoalFinished: store.isGoalFinished,
+                onParticipantsTapped: { store.send(.participantsButtonTapped) },
+                onTrashSummaryTapped: { store.send(.trashSummaryButtonTapped, transaction: Self.noAnimation) }
+            )
+
+            if store.isScrollGuideVisible {
+                HomeScrollGuideToast()
+                    .transition(.opacity)
+            }
+
+            recordButton
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .padding(.trailing, 20.scaled)
+                .padding(.bottom, 8.scaled)
+        }
+        .frame(maxHeight: .infinity)
+        .contentShape(Rectangle())
+        .gesture(swipeGesture)
+        .animation(.easeInOut(duration: 0.2), value: store.isScrollGuideVisible)
+    }
+
+    /// 장면을 위로 밀면 다음 단계, 아래로 밀면 이전 단계로 넘어가요.
+    var swipeGesture: some Gesture {
+        DragGesture(minimumDistance: 20)
+            .onEnded { value in
+                let dy = value.translation.height
+                guard abs(dy) > 40, abs(dy) > abs(value.translation.width) else { return }
+
+                store.send(.sceneSwiped(forward: dy < 0), animation: HomeFeature.transitionAnimation)
+            }
+    }
+
+    /// 공동 목표 카드를 접어도 바로 기록할 수 있는 버튼이에요.
+    var recordButton: some View {
         Button {
-            store.send(.dailyTipBannerTapped)
+            store.send(.recordButtonTapped, transaction: Self.noAnimation)
         } label: {
-            Image(.homeDailyTipSeaUrchin)
-                .resizable()
-                .scaledToFit()
-                .overlay(alignment: .topLeading) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("하루 상식")
-                            .plobbyFont(.metadata)
-                            .foregroundStyle(Color(.textSecondary))
-                            .padding(.top, 22.scaled)
-                            .padding(.leading, 20.scaled)
-                            .padding(.bottom, 8.scaled)
-
-                        Text("바다도 사막화가\n된다고?")
-                            .plobbyFont(.heading)
-                            .foregroundStyle(Color(.textPrimary))
-                            .multilineTextAlignment(.leading)
-                            .padding(.leading, 20.scaled)
-                            .padding(.bottom, 22.scaled)
-                    }
-                }
+            Image(systemName: "plus")
+                .font(.system(size: 24.scaled, weight: .medium))
+                .foregroundStyle(Color(.currentBrandText))
+                .frame(width: 56.scaled, height: 56.scaled)
+                .background(Color(.gray0), in: Circle())
+                .shadow(color: .black.opacity(0.1), radius: 3, y: 2)
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 20.scaled)
-        .padding(.top, 24.scaled)
+        .accessibilityLabel("기록하기")
     }
 }
 
-// MARK: - View
+// MARK: - 공동 목표
 
-private extension View {
+private extension HomeView {
 
     @ViewBuilder
-    func onBannerDrag(started: @escaping () -> Void, ended: @escaping () -> Void) -> some View {
-        if #available(iOS 18.0, *) {
-            onScrollPhaseChange { oldPhase, newPhase in
-                if newPhase == .interacting {
-                    started()
-                } else if oldPhase == .interacting {
-                    ended()
-                }
-            }
-        } else {
-            simultaneousGesture(
-                DragGesture()
-                    .onChanged { _ in started() }
-                    .onEnded { _ in ended() }
+    var goalCard: some View {
+        if let goal = store.board?.goal, let status = store.status {
+            HomeGoalCard(
+                goal: goal,
+                status: status,
+                isExpanded: store.isGoalExpanded,
+                onToggle: { store.send(.goalCardToggleTapped, transaction: Self.noAnimation) },
+                onRecordTapped: { store.send(.recordButtonTapped, transaction: Self.noAnimation) },
+                onAllGoalsTapped: { store.send(.allGoalsButtonTapped) }
             )
         }
     }
 }
 
-// MARK: - RecordType
+// MARK: - 시트
 
-private extension RecordType {
+private extension HomeView {
 
-    var bannerImage: ImageResource {
-        switch self {
-        case .plobbing: .homeBannerPlobbing
-        case .plogging: .homeBannerPlogging
-        }
+    var sheetBinding: Binding<HomeFeature.Sheet?> {
+        Binding(
+            get: { store.sheet },
+            set: { if $0 == nil { store.send(.sheetDismissed) } }
+        )
     }
 
-    var bannerTitle: String {
-        switch self {
-        case .plobbing: "다이빙으로,\n바다를 깨끗하게"
-        case .plogging: "산책으로,\n해변을 깨끗하게"
-        }
+    var trashSummaryBinding: Binding<Bool> {
+        Binding(
+            get: { store.isTrashSummaryPresented },
+            set: { if !$0 { store.send(.trashSummaryDismissed, transaction: Self.noAnimation) } }
+        )
     }
 
-    var recordButtonTitle: String {
-        switch self {
-        case .plobbing: "플로빙 기록하기"
-        case .plogging: "플로깅 기록하기"
+    var activityPickerBinding: Binding<Bool> {
+        Binding(
+            get: { store.isActivityPickerPresented },
+            set: { if !$0 { store.send(.activityPickerDismissed, transaction: Self.noAnimation) } }
+        )
+    }
+
+    @ViewBuilder
+    func sheetContent(_ sheet: HomeFeature.Sheet) -> some View {
+        if let board = store.board {
+            switch sheet {
+            case .participants:
+                HomeParticipantsSheet(
+                    board: board,
+                    now: store.now,
+                    onParticipantTapped: { store.send(.participantTapped($0)) },
+                    onClose: { store.send(.sheetDismissed) }
+                )
+            }
         }
+    }
+}
+
+// MARK: - Constants
+
+private extension HomeView {
+
+    static let tabs: [RecordType] = [.plogging, .plobbing]
+
+    /// 팝업과 공동 목표 카드는 애니메이션 없이 바로 바뀌어요.
+    static var noAnimation: Transaction {
+        var transaction = Transaction()
+        transaction.disablesAnimations = true
+        return transaction
     }
 }

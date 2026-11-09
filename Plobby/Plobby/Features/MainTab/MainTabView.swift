@@ -36,6 +36,12 @@ struct MainTabView: View {
                             NotificationView(store: store)
                                 .toolbar(.hidden, for: .tabBar)
                         }
+                        .navigationDestination(
+                            item: $store.scope(state: \.home.goalList, action: \.home.goalList)
+                        ) { store in
+                            GoalListView(store: store)
+                                .toolbar(.hidden, for: .tabBar)
+                        }
                 }
             } label: {
                 tabLabel("홈", icon: "house", tab: .home)
@@ -62,17 +68,6 @@ struct MainTabView: View {
             }
         }
         .tint(.primary)
-        .overlay {
-            if store.isLoginSheetPresented {
-                Color.black.opacity(0.2)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        store.send(.loginSheetPresentationChanged(false))
-                    }
-                    .transition(.opacity)
-            }
-        }
-        .animation(.easeInOut(duration: 0.25), value: store.isLoginSheetPresented)
         .overlay(alignment: .bottomTrailing) {
             if store.isRecordMenuPresented {
                 recordMenu
@@ -82,7 +77,7 @@ struct MainTabView: View {
         .fullScreenCover(item: $store.scope(state: \.recordFlow, action: \.recordFlow)) { store in
             RecordView(store: store)
         }
-        .sheet(isPresented: $store.isLoginSheetPresented.sending(\.loginSheetPresentationChanged)) {
+        .plobbyBottomSheet(isPresented: $store.isLoginSheetPresented.sending(\.loginSheetPresentationChanged)) {
             LoginRequiredSheet(
                 isSigningIn: store.signIn.isSigningIn,
                 onAppleLogin: { store.send(.appleLoginButtonTapped) },
