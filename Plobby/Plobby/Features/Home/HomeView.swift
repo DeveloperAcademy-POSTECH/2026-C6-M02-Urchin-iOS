@@ -32,7 +32,7 @@ struct HomeView: View {
             scene
         }
         .background(Color(.gray0))
-        .plobbyBottomSheet(item: sheetBinding, showsGrabber: true) { sheet in
+        .sheet(item: sheetBinding) { sheet in
             sheetContent(sheet)
         }
         .fullScreenCover(isPresented: activityPickerBinding) {

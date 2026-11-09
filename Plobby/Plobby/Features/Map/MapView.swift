@@ -28,17 +28,19 @@ struct MapView: View {
     var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             mapContent
-                .overlay(alignment: .bottom) {
-                    beachSheet
-                }
-                .animation(.smooth(duration: 0.3), value: store.beachSheet != nil)
-                // 해변 시트가 탭 바 자리까지 덮어요.
-                .toolbar(store.beachSheet == nil ? .visible : .hidden, for: .tabBar)
                 .toolbar(.hidden, for: .navigationBar)
         } destination: { store in
             destination(store)
                 .toolbar(.hidden, for: .navigationBar)
                 .toolbar(.hidden, for: .tabBar)
+        }
+        .sheet(item: $store.scope(state: \.beachSheet, action: \.beachSheet)) { store in
+            BeachSheetView(store: store)
+                // 시안 높이(357)에 하단 안전 영역까지 포함돼 있어서 콘텐츠를 안전 영역까지 내려요
+                .ignoresSafeArea(.container, edges: .bottom)
+                .presentationDetents([.height(Self.sheetHeight)])
+                .presentationBackgroundInteraction(.enabled(upThrough: .height(Self.sheetHeight)))
+                .presentationCornerRadius(24.scaled)
         }
         .onAppear {
             cameraPosition = Self.cameraPosition(for: store.cameraCommand)
@@ -55,18 +57,6 @@ struct MapView: View {
         }
         .task {
             store.send(.task)
-        }
-    }
-
-    /// 해변 시트를 띄워도 지도를 계속 움직이고 다른 마커를 누를 수 있게 지도 위에 얹어요.
-    @ViewBuilder
-    private var beachSheet: some View {
-        if let sheetStore = store.scope(state: \.beachSheet, action: \.beachSheet.presented) {
-            PlobbyBottomSheetPanel(cornerRadius: 24.scaled) {
-                BeachSheetView(store: sheetStore)
-                    .frame(height: Self.sheetHeight)
-            }
-            .transition(.move(edge: .bottom))
         }
     }
 

@@ -33,12 +33,10 @@ struct CollectionView: View {
         .onAppear {
             store.send(.onAppear)
         }
-        .plobbyBottomSheet(
-            isPresented: $store.isCategorySheetPresented.sending(\.categorySheetPresentationChanged),
-            showsGrabber: true
-        ) {
+        .sheet(isPresented: $store.isCategorySheetPresented.sending(\.categorySheetPresentationChanged)) {
             CollectionCategorySheet(store: store)
-                .frame(height: 684.scaled)
+                .presentationDetents([.height(684.scaled)])
+                .presentationDragIndicator(.visible)
         }
     }
 }

@@ -16,7 +16,7 @@ struct HomeParticipantsSheet: View {
     let onParticipantTapped: (HomeGoalParticipant.ID) -> Void
     let onClose: () -> Void
 
-    @State private var isExpanded = false
+    @State private var detent: PresentationDetent = Self.collapsedDetent
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -28,16 +28,20 @@ struct HomeParticipantsSheet: View {
         .padding(.horizontal, 20.scaled)
         .padding(.top, 28.scaled)
         .padding(.bottom, 24.scaled)
-        // 목록은 바로 바뀌고 시트 높이만 부드럽게 바뀌어요.
-        .animation(nil, value: isExpanded)
-        .frame(height: isExpanded ? Self.expandedHeight : Self.collapsedHeight, alignment: .top)
-        .animation(.smooth(duration: 0.3), value: isExpanded)
+        .frame(maxHeight: .infinity, alignment: .top)
+        .presentationDetents([Self.collapsedDetent, Self.expandedDetent], selection: $detent)
+        .presentationCornerRadius(24.scaled)
+        .presentationBackground(Color(.gray0))
     }
 }
 
 // MARK: - Subviews
 
 private extension HomeParticipantsSheet {
+
+    var isExpanded: Bool {
+        detent == Self.expandedDetent
+    }
 
     var header: some View {
         HStack(spacing: 8.scaled) {
@@ -111,7 +115,7 @@ private extension HomeParticipantsSheet {
 
     var toggleButton: some View {
         Button {
-            isExpanded.toggle()
+            detent = isExpanded ? Self.collapsedDetent : Self.expandedDetent
         } label: {
             Text(isExpanded ? "간단히 보기" : "전체 보기")
                 .plobbyFont(.labelSelected)
@@ -142,8 +146,8 @@ private extension HomeParticipantsSheet {
     /// 접었을 때 보여줄 사람 수예요.
     static let collapsedCount = 4
     /// 피그마 시트 높이(458, 662)에서 홈 인디케이터 영역을 뺀 높이예요.
-    static let collapsedHeight: CGFloat = 424.scaled
-    static let expandedHeight: CGFloat = 628.scaled
+    static let collapsedDetent = PresentationDetent.height(424.scaled)
+    static let expandedDetent = PresentationDetent.height(628.scaled)
 }
 
 // MARK: - Row
