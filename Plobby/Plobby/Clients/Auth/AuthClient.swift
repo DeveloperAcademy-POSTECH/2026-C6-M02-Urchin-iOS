@@ -11,6 +11,7 @@ import Dependencies
 import Supabase
 
 struct AuthClient {
+    
     var signInWithApple: @Sendable (_ idToken: String, _ nonce: String) async throws -> AuthUser
     var fetchCredential: @Sendable (_ hashedNonce: String) async -> Result<AppleCredential, AppleSignInError>
     var fetchAppleAuthorizationCode: @Sendable () async throws -> String
@@ -27,6 +28,7 @@ struct AuthClient {
 }
 
 extension AuthClient: DependencyKey {
+    
     static let liveValue: AuthClient = {
         .init(
             signInWithApple: { idToken, nonce in
@@ -45,11 +47,7 @@ extension AuthClient: DependencyKey {
                 await AppleSignInCoordinator.fetchCredential(hashedNonce: hashedNonce)
             },
             fetchAppleAuthorizationCode: {
-                guard let anchor = AppleAuthorizationRequester.currentAnchor() else {
-                    throw AppleSignInError.failed
-                }
-
-                return try await AppleAuthorizationRequester(anchor: anchor).fetchAuthorizationCode()
+                try await AppleAuthorizationRequester.fetchAuthorizationCode()
             },
             fetchCurrentUser: {
                 @Dependency(\.supabaseClient) var supabase
