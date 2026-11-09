@@ -18,53 +18,105 @@ struct OnboardingView: View {
     // MARK: - Body
 
     var body: some View {
-        VStack(spacing: 0) {
-            pageNumber
-            titleSection
-
-            if store.currentPage.showsActivityTabs {
-                activityTabs
-            }
-
-            illustration
-                .padding(.top, store.currentPage.illustrationTopPadding.scaled)
-
-            Spacer(minLength: 0)
-
-            bottomButtons
+        // 1단계가 시작 화면이고, 2~4단계는 push돼요
+        NavigationStack(path: path) {
+            pageView(.goal)
+                .navigationDestination(for: OnboardingPage.self) { page in
+                    // push된 화면도 탭 선택·카드 뒤집기 같은 스토어 변화를 바로 반영하도록 자기 body에서 그려요
+                    ObservingView { pageView(page) }
+                }
         }
-        .background(Color(.backgroundDefault))
-        .animation(.easeInOut(duration: 0.25), value: store.currentPage)
         .plobbyAlert($store.scope(state: \.signIn.alert, action: \.signIn.alert))
     }
 }
 
-// MARK: - 상단 (단계 번호, 제목)
+// MARK: - 내비게이션
 
 private extension OnboardingView {
 
-    var pageNumber: some View {
-        Text("\(Text("\(store.currentPage.number)").foregroundStyle(Color(.textBrand))) / \(OnboardingPage.allCases.count)")
-            .plobbyFont(.labelSelected)
-            .foregroundStyle(Color(.textSecondary))
-            .frame(maxWidth: .infinity, alignment: .trailing)
-            .padding(.top, 4.scaled)
-            .padding(.horizontal, 20.scaled)
+    /// 지금 단계까지 쌓인 화면들 (시작 화면인 1단계 제외)
+    var path: Binding<[OnboardingPage]> {
+        Binding(
+            get: { OnboardingPage.allCases.filter { $0 != .goal && $0.rawValue <= store.currentPage.rawValue } },
+            set: { store.send(.pageChanged($0.last ?? .goal)) }
+        )
     }
 
-    var titleSection: some View {
-        VStack(alignment: .leading, spacing: 8.scaled) {
-            Text(store.currentPage.title)
-                .plobbyFont(.headingLarge)
-                .foregroundStyle(Color(.textPrimary))
+    func pageView(_ page: OnboardingPage) -> some View {
+        VStack(spacing: 0) {
+            header(page)
+            titleSection(page)
 
-            Text(store.currentPage.description)
+            if page.showsActivityTabs {
+                activityTabs
+            }
+
+            illustration(page)
+                .padding(.top, page.illustrationTopPadding.scaled)
+
+            Spacer(minLength: 0)
+
+            bottomButtons(page)
+        }
+        .background(Color(.backgroundDefault))
+        .toolbar(.hidden, for: .navigationBar)
+    }
+}
+
+// MARK: - 상단 (헤더, 제목)
+
+private extension OnboardingView {
+
+    /// 시안 헤더(높이 56). 첫 단계는 뒤로가기 없이 높이만 차지해요
+    func header(_ page: OnboardingPage) -> some View {
+        HStack(spacing: 0) {
+            if let previous = page.previous {
+                Button {
+                    store.send(.pageChanged(previous))
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 18.scaled, weight: .semibold))
+                        .foregroundStyle(Color(.textPrimary))
+                        .frame(width: 44.scaled, height: 44.scaled)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("이전 단계")
+            }
+
+            Spacer()
+        }
+        .frame(height: 56.scaled)
+        .padding(.leading, 12.scaled)
+        .padding(.trailing, 20.scaled)
+    }
+
+    func titleSection(_ page: OnboardingPage) -> some View {
+        VStack(alignment: .leading, spacing: 8.scaled) {
+            HStack(alignment: .top, spacing: 16.scaled) {
+                Text(page.title)
+                    .plobbyFont(.metric)
+                    .foregroundStyle(Color(.textPrimary))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                pageNumber(page)
+                    .padding(.top, 4.scaled)
+            }
+
+            Text(page.description)
                 .plobbyFont(.body)
                 .foregroundStyle(Color(.textSecondary))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 8.scaled)
+        .padding(.bottom, 12.scaled)
         .padding(.horizontal, 20.scaled)
+    }
+
+    func pageNumber(_ page: OnboardingPage) -> some View {
+        Text("\(Text("\(page.number)").foregroundStyle(Color(.textBrand))) / \(OnboardingPage.allCases.count)")
+            .plobbyFont(.labelSelected)
+            .foregroundStyle(Color(.textSecondary))
     }
 }
 
@@ -82,7 +134,7 @@ private extension OnboardingView {
                 .fill(Color(.borderDefault))
                 .frame(height: 1)
         }
-        .padding(.top, 32.scaled)
+        .padding(.top, 16.scaled)
         .padding(.horizontal, 20.scaled)
     }
 
@@ -116,14 +168,15 @@ private extension OnboardingView {
 private extension OnboardingView {
 
     @ViewBuilder
-    var illustration: some View {
-        switch store.currentPage {
-        case .record:
-            OnboardingRecordMock(activity: store.selectedActivity)
-        case .goal:
-            OnboardingGoalMock(activity: store.selectedActivity)
-        case .map:
-            OnboardingMapMock()
+    func illustration(_ page: OnboardingPage) -> some View {
+        switch page {
+        case .goal, .record, .map:
+            // 예시 화면은 그림자 여백까지 포함한 이미지예요
+            Image(page.illustration(for: store.selectedActivity))
+                .resizable()
+                .scaledToFit()
+                .frame(width: page.illustrationWidth.scaled)
+                .accessibilityLabel(page.illustrationLabel)
         case .collection:
             CollectionCardView(store: store.scope(state: \.collectionCard, action: \.collectionCard))
                 .frame(width: 280.scaled, height: 428.scaled)
@@ -136,9 +189,9 @@ private extension OnboardingView {
 private extension OnboardingView {
 
     /// 다음 버튼과 Apple 로그인 버튼은 같은 자리에 와요. 둘러보기는 Apple 로그인 바로 아래에 붙어요
-    var bottomButtons: some View {
+    func bottomButtons(_ page: OnboardingPage) -> some View {
         Group {
-            if store.currentPage.isLast {
+            if page.isLast {
                 appleLoginButton
                     .overlay(alignment: .bottom) {
                         browseButton
@@ -151,8 +204,8 @@ private extension OnboardingView {
             }
         }
         .padding(.horizontal, 20.scaled)
-        // 시안 하단 여백 56에서 홈 인디케이터 영역(34)을 뺀 값
-        .padding(.bottom, 22.scaled)
+        // 시안 하단 여백 68에서 홈 인디케이터 영역(34)을 뺀 값
+        .padding(.bottom, 34.scaled)
     }
 
     var appleLoginButton: some View {
@@ -165,16 +218,13 @@ private extension OnboardingView {
         .disabled(store.signIn.isSigningIn)
     }
 
-    // TODO: 컬러셋 확정 후 교체 (#555D6D)
-    static let browseTextColor = Color(red: 0x55 / 255, green: 0x5D / 255, blue: 0x6D / 255)
-
     var browseButton: some View {
         Button {
             store.send(.browseButtonTapped)
         } label: {
             Text("회원가입 없이 둘러보기")
                 .plobbyFont(.helper)
-                .foregroundStyle(Self.browseTextColor)
+                .foregroundStyle(Color(.gray700))
                 .frame(maxWidth: .infinity)
                 .frame(height: 48.scaled)
                 .contentShape(Rectangle())
@@ -183,16 +233,52 @@ private extension OnboardingView {
     }
 }
 
+// MARK: - ObservingView
+
+/// 내비게이션 destination 안의 내용이 스토어 변화를 놓치지 않도록, 내용을 자기 body에서 다시 그려요
+private struct ObservingView<Content: View>: View {
+
+    let content: () -> Content
+
+    var body: some View {
+        content()
+    }
+}
+
 // MARK: - OnboardingPage
 
 private extension OnboardingPage {
 
-    /// 예시 화면 위 여백. 탭이 있는 단계는 탭 아래 36, 없는 단계는 설명 아래 간격이에요
+    /// 예시 화면 위 여백. 시안 간격(탭 아래 24, 제목 영역 아래 16)에서 이미지에 포함된 그림자 여백(8)을 뺐어요
     var illustrationTopPadding: CGFloat {
         switch self {
-        case .record, .goal: 36
-        case .map: 40
-        case .collection: 48
+        case .goal, .record: 16
+        case .map: 8
+        case .collection: 16
+        }
+    }
+
+    /// 이미지 폭. 카드(320)에 좌우 그림자 여백이 더해져 있어요
+    var illustrationWidth: CGFloat {
+        self == .map ? 344 : 360
+    }
+
+    func illustration(for activity: RecordType) -> ImageResource {
+        switch (self, activity) {
+        case (.goal, .plogging): .onboardingGoalPlogging
+        case (.goal, .plobbing): .onboardingGoalPlobbing
+        case (.record, .plogging): .onboardingRecordPlogging
+        case (.record, .plobbing): .onboardingRecordPlobbing
+        default: .onboardingMap
+        }
+    }
+
+    var illustrationLabel: String {
+        switch self {
+        case .goal: "공동 목표 예시 화면"
+        case .record: "기록 상세 예시 화면"
+        case .map: "지도 예시 화면"
+        case .collection: "컬렉션 카드 예시"
         }
     }
 }

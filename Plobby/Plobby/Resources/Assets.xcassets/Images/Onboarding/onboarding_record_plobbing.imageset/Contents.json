@@ -1,8 +1,19 @@
 {
   "images" : [
     {
-      "filename" : "onboarding_record_plobbing.jpg",
-      "idiom" : "universal"
+      "filename" : "onboarding_record_plobbing.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "onboarding_record_plobbing@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "onboarding_record_plobbing@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {
