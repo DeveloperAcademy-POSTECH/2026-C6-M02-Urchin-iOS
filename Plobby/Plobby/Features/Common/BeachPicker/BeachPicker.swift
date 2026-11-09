@@ -1,5 +1,5 @@
 //
-//  RegionPicker.swift
+//  BeachPicker.swift
 //  Plobby
 //
 //  Created by 이은지 on 11/4/26.
@@ -9,11 +9,11 @@ import SwiftUI
 
 import ComposableArchitecture
 
-struct RegionPicker: View {
+struct BeachPicker: View {
 
     // MARK: - Properties
 
-    @Bindable var store: StoreOf<RegionFeature>
+    @Bindable var store: StoreOf<BeachPickerFeature>
 
     // MARK: - Body
 
@@ -27,7 +27,7 @@ struct RegionPicker: View {
 
 // MARK: - 검색창
 
-private extension RegionPicker {
+private extension BeachPicker {
     
     var searchBar: some View {
         SearchBar {
@@ -47,7 +47,7 @@ private extension RegionPicker {
 
 // MARK: - 지역·해변 영역
 
-private extension RegionPicker {
+private extension BeachPicker {
 
     var regionSection: some View {
         HStack(spacing: 0) {
@@ -69,7 +69,7 @@ private extension RegionPicker {
 
 // MARK: - 지역 목록
 
-private extension RegionPicker {
+private extension BeachPicker {
 
     var regionList: some View {
         VStack(spacing: 8.scaled) {
@@ -107,7 +107,7 @@ private extension RegionPicker {
 
 // MARK: - 해변 목록
 
-private extension RegionPicker {
+private extension BeachPicker {
 
     var beachList: some View {
         ScrollView {

@@ -22,7 +22,7 @@ enum FavoriteBeachToggle {
             return .toggled(isFavorite: false)
         }
 
-        guard favoriteBeaches.wrappedValue.count < HomeFeature.maximumFavoriteBeachCount else {
+        guard favoriteBeaches.wrappedValue.count < BeachPickerFeature.maximumCount else {
             return .limitReached
         }
 

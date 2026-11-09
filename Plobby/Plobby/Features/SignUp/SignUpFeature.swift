@@ -169,7 +169,7 @@ struct SignUpFeature {
                     userID: state.user.id,
                     profileImage: state.profileImage,
                     nickname: state.nickname,
-                    favoriteBeachIDs: Array(state.path[id: id]?.region?.selectedBeachIDs ?? [])
+                    favoriteBeachIDs: Array(state.path[id: id]?.region?.picker.selectedBeachIDs ?? [])
                 ))
                 
             case .signUpResponse(.success):

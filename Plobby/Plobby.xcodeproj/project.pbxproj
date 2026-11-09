@@ -53,6 +53,7 @@
 		7B3C1A1C309D0000004C5301 /* CollectionCategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A1D309D0000004C5301 /* CollectionCategorySheet.swift */; };
 		7B3C1A1E309D0000004C5301 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A1F309D0000004C5301 /* View+.swift */; };
 		7B3C1A20309D0000004C5301 /* SignUpProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */; };
+		7B3C1A22309D0000004C5301 /* BeachPickerFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A23309D0000004C5301 /* BeachPickerFeature.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
@@ -168,7 +169,7 @@
 		EC19674E309CE78F00BC4C19 /* CollectionCardFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */; };
 		ECD3271130A064E800C1E655 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271030A064E800C1E655 /* CollectionView.swift */; };
 		ECD3271330A064F000C1E655 /* CollectionFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271230A064F000C1E655 /* CollectionFeature.swift */; };
-		ECDDDAB4309AC1F800FB04D5 /* RegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */; };
+		ECDDDAB4309AC1F800FB04D5 /* BeachPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* BeachPicker.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -284,6 +285,7 @@
 		7B3C1A1D309D0000004C5301 /* CollectionCategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCategorySheet.swift; sourceTree = "<group>"; };
 		7B3C1A1F309D0000004C5301 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpProgressBar.swift; sourceTree = "<group>"; };
+		7B3C1A23309D0000004C5301 /* BeachPickerFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachPickerFeature.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -405,7 +407,7 @@
 		EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCardFeature.swift; sourceTree = "<group>"; };
 		ECD3271030A064E800C1E655 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		ECD3271230A064F000C1E655 /* CollectionFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionFeature.swift; sourceTree = "<group>"; };
-		ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPicker.swift; sourceTree = "<group>"; };
+		ECDDDAB2309AC1F800FB04D5 /* BeachPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachPicker.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -983,6 +985,15 @@
 			path = CollectionCard;
 			sourceTree = "<group>";
 		};
+		EC4E9E3430A1A4EB000E2C5F /* BeachPicker */ = {
+			isa = PBXGroup;
+			children = (
+				ECDDDAB2309AC1F800FB04D5 /* BeachPicker.swift */,
+				7B3C1A23309D0000004C5301 /* BeachPickerFeature.swift */,
+			);
+			path = BeachPicker;
+			sourceTree = "<group>";
+		};
 		ECD3270F30A064DA00C1E655 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
@@ -1015,7 +1026,7 @@
 		ECDDDAB3309AC1F800FB04D5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				ECDDDAB2309AC1F800FB04D5 /* RegionPicker.swift */,
+				EC4E9E3430A1A4EB000E2C5F /* BeachPicker */,
 				0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */,
 				DAEC87A3309B7F2A0086965E /* ToastFeature.swift */,
 				EC17D65A309D82630031D2BD /* SignInFeature.swift */,
@@ -1610,7 +1621,8 @@
 				ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */,
 				EC0D4B993098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift in Sources */,
 				EC0D4B953098E1D0000E7BB7 /* WithdrawalReason.swift in Sources */,
-				ECDDDAB4309AC1F800FB04D5 /* RegionPicker.swift in Sources */,
+				ECDDDAB4309AC1F800FB04D5 /* BeachPicker.swift in Sources */,
+				7B3C1A22309D0000004C5301 /* BeachPickerFeature.swift in Sources */,
 				4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */,
 				DAEC87A8309C42CF0086965E /* LocationPickerView.swift in Sources */,
 				EC0D4B933098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift in Sources */,

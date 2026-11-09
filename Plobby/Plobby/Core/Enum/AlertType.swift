@@ -68,7 +68,7 @@ extension AlertType {
         case .userBlockConfirm: "차단하면 이 사용자의 기록이 더 이상 보이지 않아요."
         case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요."
         case .withdrawalConfirm: "탈퇴하면 게시글, 좋아요 등 모든 활동 기록들이 삭제되어 복구되지 않습니다."
-        case .favoriteBeachLimit: "관심 해변은 최대 \(HomeFeature.maximumFavoriteBeachCount)개까지 등록할 수 있어요."
+        case .favoriteBeachLimit: "관심 해변은 최대 \(BeachPickerFeature.maximumCount)개까지 등록할 수 있어요."
         case .recordReported: "신고한 기록은 더 이상 보이지 않아요."
         case .userBlocked: "차단한 사용자의 기록은 더 이상 보이지 않아요."
         }
