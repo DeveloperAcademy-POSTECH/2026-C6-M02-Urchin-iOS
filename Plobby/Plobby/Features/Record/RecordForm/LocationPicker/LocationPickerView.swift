@@ -414,11 +414,3 @@ private extension LocationPickerView {
         ))
     }
 }
-
-#Preview {
-    LocationPickerView(
-        store: .init(initialState: LocationPickerFeature.State(), reducer: {
-            LocationPickerFeature()
-        })
-    )
-}
