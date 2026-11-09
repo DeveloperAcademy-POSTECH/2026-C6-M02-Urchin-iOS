@@ -18,7 +18,6 @@ struct RecordFormFeature {
     struct State: Equatable {
         let recordType: RecordType
         let mode: Mode
-        /// 처음 채워 둔 입력값. 사용자가 바꿨는지 비교할 때 써요.
         private(set) var initialInputs: Inputs
         var photos: IdentifiedArrayOf<RecordPhoto>
         var beach: Beach?
@@ -401,7 +400,6 @@ extension RecordFormFeature {
         return canComplete(state)
     }
 
-    /// 최대 수심만 선택이고 나머지는 모두 입력해야 해요
     private func canComplete(_ state: State) -> Bool {
         guard !state.isSubmitting,
               !state.photos.isEmpty,
@@ -409,7 +407,6 @@ extension RecordFormFeature {
               periodError(for: state.period) == nil,
               maxDepthError(for: state.maxDepthText) == nil,
               !state.trash.isEmpty,
-              !InputText.isBlank(state.totalWeightText),
               totalWeightError(for: state.totalWeightText) == nil,
               !InputText.isBlank(state.memo),
               !state.isMemoOverLimit
@@ -499,7 +496,6 @@ extension RecordFormFeature {
         )
     }
 
-    /// 새 사진은 JPEG로 압축하고, 기존 사진은 그대로 두고 기록과 함께 저장해요.
     private func submit(_ record: NewRecord, photos: [RecordPhoto], mode: Mode) -> Effect<Action> {
         .run { [recordClient, photoLibraryClient] send in
             do {
