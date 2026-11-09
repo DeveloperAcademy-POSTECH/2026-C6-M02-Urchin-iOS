@@ -26,9 +26,9 @@ struct BeachPickerFeature {
                 allBeaches.filter { $0.region == region }
             } ?? allBeaches
 
-            guard !searchText.isEmpty else { return beaches }
+            guard !searchText.allSatisfy(\.isWhitespace) else { return beaches }
 
-            return beaches.filter { $0.name.contains(searchText) }
+            return beaches.matching(searchText)
         }
     }
 
@@ -73,6 +73,5 @@ struct BeachPickerFeature {
 
 extension BeachPickerFeature {
 
-    /// 관심 해변으로 고를 수 있는 최대 개수. 홈·지도·알림 문구도 이 값을 같이 써요
     nonisolated static let maximumCount = 3
 }
