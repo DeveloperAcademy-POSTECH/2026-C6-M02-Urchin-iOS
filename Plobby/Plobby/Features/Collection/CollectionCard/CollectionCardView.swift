@@ -183,12 +183,15 @@ private extension CollectionCardView {
             .padding(.horizontal, 20.scaled)
     }
 
-    // TODO: 종류별 일러스트 에셋 나오면 교체
+    /// 종류별로 지켜낸 바다 생물 일러스트예요. 작은 화면에서 글이 넘치지 않게, 공간이 모자라면 일러스트가 먼저 줄어들어요
     var illustration: some View {
-        Color.clear
-            .frame(width: 167.scaled)
-            .frame(minHeight: 0, maxHeight: 141.scaled)
+        Image(store.category.collectionIllustrationName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 242.scaled)
+            .frame(minHeight: 0, maxHeight: 176.scaled)
             .padding(.top, 30.scaled)
+            .accessibilityHidden(true)
     }
 
     func factDescription(_ text: String) -> some View {

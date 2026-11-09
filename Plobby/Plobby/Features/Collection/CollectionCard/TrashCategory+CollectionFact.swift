@@ -13,6 +13,22 @@ struct CollectionFact: Equatable {
 
 extension TrashCategory {
 
+    var collectionIllustrationName: String {
+        switch self {
+        case .glass: "collection_card_glass"
+        case .plastic: "collection_card_plastic"
+        case .metal: "collection_card_metal"
+        case .wood: "collection_card_wood"
+        case .fishingGear: "collection_card_fishing_gear"
+        case .clothing: "collection_card_clothing"
+        case .styrofoam: "collection_card_styrofoam"
+        case .can: "collection_card_can"
+        case .paper: "collection_card_paper"
+        case .rubber: "collection_card_rubber"
+        case .etc: "collection_card_etc"
+        }
+    }
+
     func collectionFact(count: Int, nickname: String?) -> CollectionFact {
         // TODO: 빈 상태 문구 디자인 확정 후 교체
         guard count > 0 else {
