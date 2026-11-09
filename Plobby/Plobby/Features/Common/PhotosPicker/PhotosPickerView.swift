@@ -264,11 +264,9 @@ private extension PhotosPickerView {
 
 private extension PhotosPickerView {
 
-    @ViewBuilder
     var bottomButton: some View {
         Group {
             if store.purpose == .profile {
-                // 프로필은 건너뛰기 없이, 사진을 골라야 누를 수 있어요
                 PlobbyButton(text: "사진 추가") {
                     store.send(.bottomButtonTapped)
                 }
