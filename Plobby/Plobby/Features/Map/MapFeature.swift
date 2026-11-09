@@ -61,6 +61,8 @@ struct MapFeature {
         case locationSettingsTapped
         case markerTapped(BeachMarker)
         case clusterTapped([BeachMarker])
+        case favoriteChipTapped(Beach)
+        case cameraMovedAwayFromCurrentLocation
         case searchButtonTapped
         case beachSheet(PresentationAction<BeachSheetFeature.Action>)
         case path(StackActionOf<Path>)
@@ -110,10 +112,9 @@ struct MapFeature {
                     effects.append(fetchFavoriteBeaches())
                 }
 
-                // 지도 탭을 처음 열 때만 위치 권한을 물어봐요.
                 if !state.hasRequestedLocation {
                     state.hasRequestedLocation = true
-                    effects.append(fetchCurrentLocation(&state, opensSettingsIfDenied: false))
+                    effects.append(fetchCurrentLocation(&state, isButtonRequest: false))
                 }
                 return .merge(effects)
 
@@ -129,13 +130,15 @@ struct MapFeature {
                 state.$favoriteBeaches.withLock { $0 = beaches }
                 return .none
 
-            case let .locationResponse(.success(coordinate), _):
+            case let .locationResponse(.success(coordinate), isButtonRequest):
                 state.isLocating = false
                 state.authorization = .authorized
+                state.currentLocation = coordinate
                 moveCamera(to: coordinate, meters: Self.defaultSpanMeters, state: &state)
+                state.isShowingCurrentLocation = isButtonRequest
                 return .none
 
-            case let .locationResponse(.failure(error), opensSettingsIfDenied):
+            case let .locationResponse(.failure(error), isButtonRequest):
                 state.isLocating = false
 
                 guard error as? LocationClientError == .denied else {
@@ -144,9 +147,8 @@ struct MapFeature {
                 }
 
                 state.authorization = .denied
-                return opensSettingsIfDenied ? .send(.locationSettingsTapped) : .none
+                return isButtonRequest ? .send(.locationSettingsTapped) : .none
 
-            // 설정에서 돌아오면 실제 권한을 다시 확인해요. 껐으면 안내를 띄우고, 켰으면 현재 위치로 옮겨요.
             case .sceneBecameActive:
                 switch locationClient.authorization() {
                 case .denied:
@@ -154,15 +156,14 @@ struct MapFeature {
                     return .none
 
                 case .authorized where state.authorization == .denied:
-                    return fetchCurrentLocation(&state, opensSettingsIfDenied: false)
+                    return fetchCurrentLocation(&state, isButtonRequest: false)
 
                 case .authorized, .notDetermined:
                     return .none
                 }
 
-            // 거부 상태를 기억해 두지 않고 매번 실제 권한으로 시도해요. 그래도 거부면 설정으로 보내요.
             case .currentLocationButtonTapped:
-                return fetchCurrentLocation(&state, opensSettingsIfDenied: true)
+                return fetchCurrentLocation(&state, isButtonRequest: true)
 
             case .locationSettingsTapped:
                 return .run { _ in
@@ -175,7 +176,6 @@ struct MapFeature {
                 state.beachSheet = BeachSheetFeature.State(beach: marker.beach)
                 return .none
 
-            // 묶인 해변이 모두 보이도록 그 지역으로 확대해요.
             case let .clusterTapped(markers):
                 guard !markers.isEmpty else { return .none }
 
@@ -239,7 +239,6 @@ struct MapFeature {
                 state.path.pop(from: id)
                 return .none
 
-            // 신고한 기록과 차단한 사용자의 기록은 나에게만 안 보여요. 상세를 닫고, 아래에 쌓인 해변 홈과 지도 배지에서도 빼요.
             case let .path(.element(id, .recordDetail(.delegate(.reported(recordID))))):
                 state.path.pop(from: id)
                 return hideInBeachHomes(.recordHidden(recordID), state: state)
@@ -263,7 +262,9 @@ struct MapFeature {
 
 extension MapFeature {
 
+    /// 다른 곳으로 옮기면 현위치 버튼은 원래 색으로 돌아가요.
     private func moveCamera(to center: Coordinate, meters: Double, state: inout State) {
+        state.isShowingCurrentLocation = false
         state.cameraCommand = .region(center: center, meters: meters)
         state.cameraRevision += 1
     }
