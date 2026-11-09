@@ -9,8 +9,6 @@ import Foundation
 
 import ComposableArchitecture
 
-/// 회원가입 흐름: 약관 동의 → 프로필 설정 → 관심 해변 설정 → 회원가입 완료.
-/// 각 단계의 화면 로직은 단계 Feature가 맡고, 여기서는 단계 이동과 가입 요청만 해요
 @Reducer
 struct SignUpFeature {
 
@@ -28,7 +26,6 @@ struct SignUpFeature {
     @ObservableState
     struct State: Equatable {
         let user: AuthUser
-        /// 첫 단계라 NavigationStack의 시작 화면이에요
         var termsAgreement = TermsAgreementFeature.State()
         var path = StackState<Path.State>()
         var isSigningUp = false
