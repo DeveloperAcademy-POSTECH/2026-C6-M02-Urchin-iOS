@@ -83,12 +83,14 @@ nonisolated extension RecordClient: DependencyKey {
                 @Dependency(\.supabaseClient) var supabaseClient
 
                 let currentUserID = try await supabaseClient.currentUserIDIfSignedIn()
+                let hiddenRecords = try await supabaseClient.hiddenRecords()
 
                 var query = supabaseClient
                     .from("records")
                     .select(RecordSummaryResponseDTO.selectQuery)
                     .eq("user_id", value: userID)
                     .is("deleted_at", value: nil)
+                    .excluding(hiddenRecords)
 
                 if let currentUserID {
                     query = query.eq("my_like.user_id", value: currentUserID)
