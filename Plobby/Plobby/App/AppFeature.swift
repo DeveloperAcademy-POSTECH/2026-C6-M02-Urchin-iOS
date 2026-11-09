@@ -66,8 +66,8 @@ struct AppFeature {
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()
 
-            case let .sessionRestored(.success(.newUser(user, fullName))):
-                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
+            case let .sessionRestored(.success(.newUser(user))):
+                state = .signUp(SignUpFeature.State(user: user))
                 return .none
 
             case let .sessionRestored(.failure(error)):
@@ -113,8 +113,8 @@ struct AppFeature {
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()
 
-            case let .onboarding(.signIn(.delegate(.needsSignUp(user, fullName)))):
-                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
+            case let .onboarding(.signIn(.delegate(.needsSignUp(user)))):
+                state = .signUp(SignUpFeature.State(user: user))
                 return .none
 
             case .onboarding(.delegate(.browseWithoutSignUp)):
@@ -140,8 +140,8 @@ struct AppFeature {
                     .send(.mainTab(.home(.onAppear)))
                 )
 
-            case let .mainTab(.signIn(.delegate(.needsSignUp(user, fullName)))):
-                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
+            case let .mainTab(.signIn(.delegate(.needsSignUp(user)))):
+                state = .signUp(SignUpFeature.State(user: user))
                 return .none
 
             case .onboarding, .signUp, .mainTab:
@@ -179,7 +179,7 @@ extension AppFeature {
                 guard let user = await authClient.fetchCurrentUser() else { return nil }
 
                 let profile = try await userClient.fetchMyProfile()
-                return profile != nil ? .member(user) : .newUser(user, fullName: user.fullName)
+                return profile != nil ? .member(user) : .newUser(user)
             }))
         }
         .cancellable(id: CancelID.restoreSession)
@@ -216,9 +216,7 @@ extension AppFeature {
             PlobbyLogger.error(error)
         }
     }
-
-    /// 회원이 된 직후에 불러요. 알림 권한을 요청하고, 허용되면 기기 토큰을 등록해요.
-    /// 설정에서 알림을 끈 기기는 건너뛰어요.
+    
     private func submitCurrentDeviceToken() -> Effect<Action> {
         @Shared(.isPushEnabled) var isPushEnabled
         guard isPushEnabled else { return .none }

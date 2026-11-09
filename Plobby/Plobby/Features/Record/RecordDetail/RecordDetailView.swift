@@ -328,33 +328,23 @@ private extension RecordDetailView {
 
     @ViewBuilder
     var trashSection: some View {
-        switch store.trashLayout {
-        case .hidden:
-            EmptyView()
+        if let summary = store.trashSummary, !summary.items.isEmpty {
+            trashCard(items: summary.items) {
+                if let weight = summary.weight {
+                    HStack(spacing: 24.scaled) {
+                        metric("총개수", value: "\(summary.totalCount)개")
 
-        case let .countAndWeight(totalCount, weight, items):
-            trashCard(items: items) {
-                HStack(spacing: 24.scaled) {
-                    metric("총개수", value: "\(totalCount)개")
+                        Rectangle()
+                            .fill(Color(.gray200))
+                            .frame(width: 1, height: 44.scaled)
 
-                    Rectangle()
-                        .fill(Color(.gray200))
-                        .frame(width: 1, height: 44.scaled)
-
-                    metric("총무게", value: "\(Self.decimalText(weight))kg")
+                        metric("총무게", value: "\(Self.decimalText(weight))kg")
+                    }
+                    .padding(16.scaled)
+                    .frame(height: 86.scaled)
+                } else {
+                    metricRow("총개수", value: "\(summary.totalCount)개")
                 }
-                .padding(16.scaled)
-                .frame(height: 86.scaled)
-            }
-
-        case let .countOnly(totalCount, items):
-            trashCard(items: items) {
-                metricRow("총개수", value: "\(totalCount)개")
-            }
-
-        case let .weightOnly(weight):
-            trashCard(items: []) {
-                metricRow("총무게", value: "\(Self.decimalText(weight))kg")
             }
         }
     }
