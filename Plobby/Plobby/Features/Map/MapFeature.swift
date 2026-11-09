@@ -29,6 +29,9 @@ struct MapFeature {
         var recordCounts: [UUID: Int] = [:]
         var isLocating = false
         var hasRequestedLocation = false
+        var currentLocation: Coordinate?
+        /// 현위치 버튼으로 옮겨 와서 아직 현위치를 보고 있어요. 이때만 버튼이 초록색이에요.
+        var isShowingCurrentLocation = false
         @Shared(.beaches) var allBeaches
         @Shared(.favoriteBeaches) var favoriteBeaches
         @Shared(.membershipStatus) var membershipStatus
@@ -52,11 +55,14 @@ struct MapFeature {
         case task
         case recordCountsResponse(Result<[UUID: Int], any Error>)
         case favoriteBeachesResponse([Beach])
-        case locationResponse(Result<Coordinate, any Error>, opensSettingsIfDenied: Bool)
+        case locationResponse(Result<Coordinate, any Error>, isButtonRequest: Bool)
         case sceneBecameActive
         case currentLocationButtonTapped
         case locationSettingsTapped
         case markerTapped(BeachMarker)
+        case clusterTapped([BeachMarker])
+        case favoriteChipTapped(Beach)
+        case cameraMovedAwayFromCurrentLocation
         case searchButtonTapped
         case beachSheet(PresentationAction<BeachSheetFeature.Action>)
         case path(StackActionOf<Path>)
@@ -77,6 +83,10 @@ struct MapFeature {
 
     static let defaultSpanMeters: Double = 5_000
     static let beachSpanMeters: Double = 2_000
+    /// 위도 1도 거리(약 111km)
+    private static let metersPerDegree: Double = 111_000
+    /// 클러스터를 확대할 때 해변들이 화면 가장자리에 붙지 않도록 여유를 둬요.
+    private static let clusterZoomPadding: Double = 1.6
     private static let sheetDismissDelay: Duration = .milliseconds(350)
 
     private nonisolated enum CancelID {
@@ -102,10 +112,9 @@ struct MapFeature {
                     effects.append(fetchFavoriteBeaches())
                 }
 
-                // 지도 탭을 처음 열 때만 위치 권한을 물어봐요.
                 if !state.hasRequestedLocation {
                     state.hasRequestedLocation = true
-                    effects.append(fetchCurrentLocation(&state, opensSettingsIfDenied: false))
+                    effects.append(fetchCurrentLocation(&state, isButtonRequest: false))
                 }
                 return .merge(effects)
 
@@ -121,13 +130,15 @@ struct MapFeature {
                 state.$favoriteBeaches.withLock { $0 = beaches }
                 return .none
 
-            case let .locationResponse(.success(coordinate), _):
+            case let .locationResponse(.success(coordinate), isButtonRequest):
                 state.isLocating = false
                 state.authorization = .authorized
+                state.currentLocation = coordinate
                 moveCamera(to: coordinate, meters: Self.defaultSpanMeters, state: &state)
+                state.isShowingCurrentLocation = isButtonRequest
                 return .none
 
-            case let .locationResponse(.failure(error), opensSettingsIfDenied):
+            case let .locationResponse(.failure(error), isButtonRequest):
                 state.isLocating = false
 
                 guard error as? LocationClientError == .denied else {
@@ -136,9 +147,8 @@ struct MapFeature {
                 }
 
                 state.authorization = .denied
-                return opensSettingsIfDenied ? .send(.locationSettingsTapped) : .none
+                return isButtonRequest ? .send(.locationSettingsTapped) : .none
 
-            // 설정에서 돌아오면 실제 권한을 다시 확인해요. 껐으면 안내를 띄우고, 켰으면 현재 위치로 옮겨요.
             case .sceneBecameActive:
                 switch locationClient.authorization() {
                 case .denied:
@@ -146,15 +156,14 @@ struct MapFeature {
                     return .none
 
                 case .authorized where state.authorization == .denied:
-                    return fetchCurrentLocation(&state, opensSettingsIfDenied: false)
+                    return fetchCurrentLocation(&state, isButtonRequest: false)
 
                 case .authorized, .notDetermined:
                     return .none
                 }
 
-            // 거부 상태를 기억해 두지 않고 매번 실제 권한으로 시도해요. 그래도 거부면 설정으로 보내요.
             case .currentLocationButtonTapped:
-                return fetchCurrentLocation(&state, opensSettingsIfDenied: true)
+                return fetchCurrentLocation(&state, isButtonRequest: true)
 
             case .locationSettingsTapped:
                 return .run { _ in
@@ -165,6 +174,29 @@ struct MapFeature {
             case let .markerTapped(marker):
                 moveCamera(to: marker.beach.coordinate, meters: Self.beachSpanMeters, state: &state)
                 state.beachSheet = BeachSheetFeature.State(beach: marker.beach)
+                return .none
+
+            case let .clusterTapped(markers):
+                guard !markers.isEmpty else { return .none }
+
+                let latitudes = markers.map(\.beach.latitude)
+                let longitudes = markers.map(\.beach.longitude)
+                let center = Coordinate(
+                    latitude: (latitudes.min()! + latitudes.max()!) / 2,
+                    longitude: (longitudes.min()! + longitudes.max()!) / 2
+                )
+                let spanDegrees = max(latitudes.max()! - latitudes.min()!, longitudes.max()! - longitudes.min()!)
+                let meters = max(spanDegrees * Self.metersPerDegree * Self.clusterZoomPadding, Self.beachSpanMeters)
+                moveCamera(to: center, meters: meters, state: &state)
+                return .none
+
+            case let .favoriteChipTapped(beach):
+                moveCamera(to: beach.coordinate, meters: Self.beachSpanMeters, state: &state)
+                state.beachSheet = BeachSheetFeature.State(beach: beach)
+                return .none
+
+            case .cameraMovedAwayFromCurrentLocation:
+                state.isShowingCurrentLocation = false
                 return .none
 
             case .searchButtonTapped:
@@ -207,7 +239,6 @@ struct MapFeature {
                 state.path.pop(from: id)
                 return .none
 
-            // 신고한 기록과 차단한 사용자의 기록은 나에게만 안 보여요. 상세를 닫고, 아래에 쌓인 해변 홈과 지도 배지에서도 빼요.
             case let .path(.element(id, .recordDetail(.delegate(.reported(recordID))))):
                 state.path.pop(from: id)
                 return hideInBeachHomes(.recordHidden(recordID), state: state)
@@ -231,7 +262,9 @@ struct MapFeature {
 
 extension MapFeature {
 
+    /// 다른 곳으로 옮기면 현위치 버튼은 원래 색으로 돌아가요.
     private func moveCamera(to center: Coordinate, meters: Double, state: inout State) {
+        state.isShowingCurrentLocation = false
         state.cameraCommand = .region(center: center, meters: meters)
         state.cameraRevision += 1
     }
@@ -260,12 +293,12 @@ extension MapFeature {
     }
 
     /// 권한이 정해지지 않았다면 현재 위치를 받는 순간 권한 팝업이 떠요.
-    private func fetchCurrentLocation(_ state: inout State, opensSettingsIfDenied: Bool) -> Effect<Action> {
+    private func fetchCurrentLocation(_ state: inout State, isButtonRequest: Bool) -> Effect<Action> {
         state.isLocating = true
         return .run { send in
             await send(.locationResponse(
                 Result { try await locationClient.currentLocation() },
-                opensSettingsIfDenied: opensSettingsIfDenied
+                isButtonRequest: isButtonRequest
             ))
         }
         .cancellable(id: CancelID.location, cancelInFlight: true)
