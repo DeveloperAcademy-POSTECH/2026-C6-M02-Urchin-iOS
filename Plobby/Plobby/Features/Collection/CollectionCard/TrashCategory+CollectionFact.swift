@@ -30,11 +30,10 @@ extension TrashCategory {
     }
 
     func collectionFact(count: Int, nickname: String?) -> CollectionFact {
-        // TODO: 빈 상태 문구 디자인 확정 후 교체
         guard count > 0 else {
             return CollectionFact(
                 title: "아직 모은\n\(name) 쓰레기가 없어요",
-                description: "바다에서 \(name) 쓰레기를 주우면 지켜낸 바다 생물 이야기를 볼 수 있어요.",
+                description: "바다에서 \(name) 쓰레기를 주우면\n지켜낸 바다 생물 이야기를 볼 수 있어요.",
                 source: ""
             )
         }
