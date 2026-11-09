@@ -29,7 +29,7 @@ struct HomeFeature {
         /// 오늘(오늘 기록이 없으면 가장 최근 기록일)에 해당하는 날짜 순서예요. 장면은 이 날짜에서 시작해요.
         var todayDays: [RecordType: Int] = [:]
         /// 공동 목표 카드는 화면 위에 하나라 플로깅·플로빙 탭이 펼침 상태를 같이 써요.
-        var isGoalExpanded = true
+        var isGoalExpanded = false
         /// 수거가 끝날 때마다 올라가요. 봉투(수거망)가 출렁이는 애니메이션 트리거예요.
         var collectPulses: [RecordType: Int] = [:]
         var transitioningTypes: Set<RecordType> = []
