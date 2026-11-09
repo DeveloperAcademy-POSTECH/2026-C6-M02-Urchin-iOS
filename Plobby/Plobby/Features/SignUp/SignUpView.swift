@@ -64,6 +64,10 @@ private extension SignUpView {
             titleSection
             profilePhotoSection
             nicknameSection
+            
+            Spacer()
+            
+            nextButton
         }
     }
 }
@@ -142,61 +146,78 @@ private extension SignUpView {
 private extension SignUpView {
 
     var nicknameSection: some View {
-        VStack(alignment: .leading, spacing: 8.scaled) {
-            Text("닉네임")
-                .plobbyFont(.actionLabel)
-                .foregroundStyle(Color(.gray700))
-
-            HStack(spacing: 8.scaled) {
-                TextField(
-                    "닉네임을 입력해주세요",
-                    text: $nicknameText
-                )
-                .onChange(of: nicknameText) { _, text in
-                    let nickname = String(text.prefix(Nickname.maximumLength))
-                    
-                    nicknameText = nickname
-                    store.send(.nicknameChanged(nickname))
-                }
-                .plobbyFont(.body)
-                .foregroundStyle(Color(.textPrimary))
-
-                Button {
-                    store.send(.nicknameCheckButtonTapped)
-                } label: {
-                    Text("중복확인")
-                        .plobbyFont(.body)
-                        .foregroundStyle(store.canCheckNickname ? Color(.neutralBlack) : Color.gray)
-                        .padding(.horizontal, 10.scaled)
-                        .frame(height: 34.scaled)
-                        .background(
-                            store.canCheckNickname ? Color.gray.opacity(0.1) : Color(.gray50),
-                            in: RoundedRectangle(cornerRadius: 8.scaled)
-                        )
-                }
-                .disabled(!store.canCheckNickname)
-            }
-            .padding(.leading, 20.scaled)
-            .padding(.trailing, 8.scaled)
-            .frame(height: 50.scaled)
-            .overlay {
-                RoundedRectangle(cornerRadius: 16.scaled)
-                    .stroke(Color.gray.opacity(0.3))
-            }
-
-            if store.isNicknameFormatInvalid {
-                Text("\(Nickname.minimumLength)~\(Nickname.maximumLength)자의 한글, 영문, 숫자만 입력할 수 있어요")
-                    .plobbyFont(.metadata)
-                    .foregroundStyle(Color(.currentError))
-            } else if let isAvailable = store.isNicknameAvailable {
-                Text(isAvailable ? "사용 가능한 닉네임이에요" : "이미 사용 중인 닉네임이에요")
-                    .plobbyFont(.metadata)
-                    .foregroundStyle(isAvailable ? Color.green : Color(.currentError))
-            }
+        VStack(alignment: .leading, spacing: 12.scaled) {
+            nicknameTextLabel
+            nicknameTextField
         }
         .padding(.horizontal, 20.scaled)
     }
     
+    var nicknameTextLabel: some View {
+        HStack(spacing: 0) {
+            Text("닉네임")
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
+            
+            Spacer()
+        }
+    }
+    
+    var nicknameTextField: some View {
+        HStack(spacing: 8.scaled) {
+            TextField(
+                "",
+                text: $nicknameText,
+                prompt: Text("닉네임 입력")
+                    .foregroundStyle(Color(.textSecondary))
+            )
+            .onChange(of: nicknameText) { _, text in
+                let nickname = String(text.prefix(Nickname.maximumLength))
+
+                nicknameText = nickname
+                store.send(.nicknameChanged(nickname))
+            }
+            .focused($isNicknameFocused)
+            .plobbyFont(.body)
+            .foregroundStyle(Color(.textPrimary))
+            .autocorrectionDisabled()
+            .textInputAutocapitalization(.never)
+            .submitLabel(.done)
+
+            nicknameCheckButton
+        }
+        .padding(.leading, 12.scaled)
+        .padding(.trailing, 12.scaled)
+        .frame(height: 51.scaled)
+        .background(Color(.backgroundDefault), in: RoundedRectangle(cornerRadius: 8.scaled))
+        .overlay {
+            RoundedRectangle(cornerRadius: 8.scaled)
+                .strokeBorder(Color(.borderDefault), lineWidth: 1)
+        }
+    }
+
+    var nicknameCheckButton: some View {
+        Button {
+            store.send(.nicknameCheckButtonTapped)
+        } label: {
+            Text("중복 확인")
+                .plobbyFont(.label)
+                .foregroundStyle(store.canCheckNickname ? Color(.textBrand) : Color(.textDisabled))
+                .padding(.horizontal, 18.scaled)
+                .frame(height: 40.scaled)
+                .background(
+                    store.canCheckNickname ? Color(.brandPrimarySubtle) : Color(.gray300),
+                    in: RoundedRectangle(cornerRadius: 8.scaled)
+                )
+        }
+        .buttonStyle(.plain)
+        .disabled(!store.canCheckNickname)
+    }
+}
+
+// MARK: - 다음
+
+private extension SignUpView {
     var nextButton: some View {
         PlobbyButton(text: "다음") {
             store.send(.nextButtonTapped)
