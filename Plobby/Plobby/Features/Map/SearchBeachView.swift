@@ -56,10 +56,6 @@ private extension SearchBeachView {
         } content: {
             searchTextField
         }
-        .overlay {
-            RoundedRectangle(cornerRadius: 12.scaled)
-                .stroke(Color(.currentWarmBorder), lineWidth: 1)
-        }
         .padding(.horizontal, 20.scaled)
         .padding(.vertical, 8.scaled)
         .padding(.bottom, 8.scaled)
@@ -81,12 +77,12 @@ private extension SearchBeachView {
         TextField(
             "",
             text: $store.query,
-            prompt: Text(SearchBarText.placeholder)
-                .foregroundStyle(Color(.gray600))
+            prompt: Text(SearchBarPlaceholder.beachOrResort)
+                .foregroundStyle(Color(.textSecondary))
         )
         .focused($isSearchFocused)
         .plobbyFont(.body)
-        .foregroundStyle(Color(.gray900))
+        .foregroundStyle(Color(.textPrimary))
         .submitLabel(.search)
     }
 }
