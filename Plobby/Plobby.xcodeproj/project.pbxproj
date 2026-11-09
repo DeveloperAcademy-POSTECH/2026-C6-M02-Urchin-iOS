@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B3C1A34309D0000004C5301 /* OnboardingMapMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A35309D0000004C5301 /* OnboardingMapMock.swift */; };
+		7B3C1A32309D0000004C5301 /* OnboardingGoalMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A33309D0000004C5301 /* OnboardingGoalMock.swift */; };
 		7B3C1A2E309D0000004C5301 /* ConfettiScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */; };
 		7B3C1A2C309D0000004C5301 /* ConfettiBurstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */; };
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
@@ -240,7 +242,7 @@
 		ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AE3098338400C4916C /* TrashTypeName.swift */; };
 		ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AF3098338400C4916C /* WaterDepth.swift */; };
 		ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */; };
-		ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */; };
+		ECE6F2F43098338400C4916C /* OnboardingRecordMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B73098338400C4916C /* OnboardingRecordMock.swift */; };
 		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
 		ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BA3098338400C4916C /* OnboardingPage.swift */; };
 		ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BB3098338400C4916C /* OnboardingView.swift */; };
@@ -282,6 +284,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B3C1A35309D0000004C5301 /* OnboardingMapMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingMapMock.swift; sourceTree = "<group>"; };
+		7B3C1A33309D0000004C5301 /* OnboardingGoalMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGoalMock.swift; sourceTree = "<group>"; };
 		7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiScene.swift; sourceTree = "<group>"; };
 		7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiBurstView.swift; sourceTree = "<group>"; };
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
@@ -512,7 +516,7 @@
 		ECE6F2AE3098338400C4916C /* TrashTypeName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTypeName.swift; sourceTree = "<group>"; };
 		ECE6F2AF3098338400C4916C /* WaterDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepth.swift; sourceTree = "<group>"; };
 		ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginLabel.swift; sourceTree = "<group>"; };
-		ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageIndicator.swift; sourceTree = "<group>"; };
+		ECE6F2B73098338400C4916C /* OnboardingRecordMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRecordMock.swift; sourceTree = "<group>"; };
 		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
 		ECE6F2BA3098338400C4916C /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
 		ECE6F2BB3098338400C4916C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -1443,7 +1447,9 @@
 			isa = PBXGroup;
 			children = (
 				ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */,
-				ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */,
+				ECE6F2B73098338400C4916C /* OnboardingRecordMock.swift */,
+				7B3C1A35309D0000004C5301 /* OnboardingMapMock.swift */,
+				7B3C1A33309D0000004C5301 /* OnboardingGoalMock.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1955,7 +1961,9 @@
 				D1A0C0DE0000000000000A02 /* NotificationFeature.swift in Sources */,
 				D1A0C0DE0000000000000A04 /* NotificationView.swift in Sources */,
 				ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */,
-				ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */,
+				ECE6F2F43098338400C4916C /* OnboardingRecordMock.swift in Sources */,
+				7B3C1A34309D0000004C5301 /* OnboardingMapMock.swift in Sources */,
+				7B3C1A32309D0000004C5301 /* OnboardingGoalMock.swift in Sources */,
 				DA5B0FBB3098DCCD003FEDF9 /* UpdatedRecord.swift in Sources */,
 				ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */,
 				ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */,
