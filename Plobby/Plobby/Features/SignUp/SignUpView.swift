@@ -196,3 +196,27 @@ private extension SignUpView {
         .padding(.horizontal, 20.scaled)
     }
 }
+
+// MARK: - Preview
+
+#Preview("약관 동의") {
+    SignUpView(
+        store: Store(initialState: SignUpFeature.State(user: AuthUser(id: UUID(), email: nil))) {
+            SignUpFeature()
+        }
+    )
+}
+
+#Preview("프로필 등록") {
+    let state = {
+        var state = SignUpFeature.State(user: AuthUser(id: UUID(), email: nil))
+        state.path.append(.profile(ProfileStepFeature.State()))
+        return state
+    }()
+
+    SignUpView(
+        store: Store(initialState: state) {
+            SignUpFeature()
+        }
+    )
+}

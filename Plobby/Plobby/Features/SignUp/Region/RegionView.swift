@@ -37,6 +37,8 @@ struct RegionView: View {
 
 extension RegionView {
     
+
+    
     private var title: some View {
         Text("즐겨찾기에 넣을 해변을\n선택해주세요")
             .font(.system(size: 26, weight: .semibold))
@@ -59,5 +61,31 @@ extension RegionView {
             store.send(.nextButtonTapped)
         }
         .padding(.horizontal, 20)
+    }
+}
+
+// MARK: - Preview
+
+#Preview {
+    // 미리보기용 해변 목록을 넣어요 (미리보기에서는 파일이 아니라 메모리에 저장돼요)
+    let _ = {
+        @Shared(.beaches) var beaches
+        $beaches.withLock {
+            $0 = [
+                Beach(id: UUID(), region: .east, name: "영일대 해수욕장", address: "경북 포항시", latitude: 0, longitude: 0),
+                Beach(id: UUID(), region: .south, name: "해운대 해수욕장", address: "부산 해운대구", latitude: 0, longitude: 0),
+                Beach(id: UUID(), region: .west, name: "대천 해수욕장", address: "충남 보령시", latitude: 0, longitude: 0),
+                Beach(id: UUID(), region: .jeju, name: "협재 해수욕장", address: "제주 제주시", latitude: 0, longitude: 0)
+            ]
+        }
+    }()
+
+    NavigationStack {
+        RegionView(
+            store: Store(initialState: RegionFeature.State()) {
+                RegionFeature()
+            }
+        )
+        .plobbyNavigationTitle("회원가입")
     }
 }

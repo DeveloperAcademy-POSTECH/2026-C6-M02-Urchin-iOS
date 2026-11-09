@@ -36,3 +36,13 @@ struct CompleteView: View {
         .navigationBarBackButtonHidden()
     }
 }
+
+// MARK: - Preview
+
+#Preview {
+    CompleteView(
+        store: Store(initialState: CompleteFeature.State()) {
+            CompleteFeature()
+        }
+    )
+}

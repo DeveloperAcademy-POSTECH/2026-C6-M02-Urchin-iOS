@@ -138,3 +138,13 @@ private extension TermsAgreementView {
             .transaction { $0.animation = nil }
     }
 }
+
+// MARK: - Preview
+
+#Preview {
+    TermsAgreementView(
+        store: Store(initialState: SignUpFeature.State(user: AuthUser(id: UUID(), email: nil))) {
+            SignUpFeature()
+        }
+    )
+}
