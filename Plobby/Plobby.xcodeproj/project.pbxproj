@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B3C1A1E309D0000004C5301 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A1F309D0000004C5301 /* View+.swift */; };
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */; };
@@ -246,6 +247,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B3C1A1F309D0000004C5301 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
 		0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachHomeFeature.swift; sourceTree = "<group>"; };
 		033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PhotoLibraryClient.swift"; sourceTree = "<group>"; };
@@ -1125,6 +1127,7 @@
 				ECE6F2993098338400C4916C /* Character+.swift */,
 				EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */,
 				B5D20E7B309AC47100981996 /* SharedKey+.swift */,
+				7B3C1A1F309D0000004C5301 /* View+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1589,6 +1592,7 @@
 				DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */,
 				5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */,
 				B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */,
+				7B3C1A1E309D0000004C5301 /* View+.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
