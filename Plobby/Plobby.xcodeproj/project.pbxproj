@@ -882,7 +882,6 @@
 			children = (
 				DA688DCE3099EFFD0064A2F4 /* RecordView.swift */,
 				DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */,
-				DA688DC53099CF830064A2F4 /* PhotosPicker */,
 				DA688DC33099CF830064A2F4 /* RecordForm */,
 				DA688DC23099CF830064A2F4 /* RecordReward */,
 				DA688DC43099CF830064A2F4 /* RecordDetail */,
@@ -944,7 +943,6 @@
 		E117113459A087098044178D /* Record */ = {
 			isa = PBXGroup;
 			children = (
-				4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */,
 				6FE6EF26A5CFDB84E934AFA8 /* RecordFormFeatureTests.swift */,
 				684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */,
 				1CFE3284C9B7A8A64F22E0A8 /* RecordFlowFeatureTests.swift */,
@@ -1027,6 +1025,7 @@
 			isa = PBXGroup;
 			children = (
 				EC4E9E3430A1A4EB000E2C5F /* BeachPicker */,
+				DA688DC53099CF830064A2F4 /* PhotosPicker */,
 				0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */,
 				DAEC87A3309B7F2A0086965E /* ToastFeature.swift */,
 				EC17D65A309D82630031D2BD /* SignInFeature.swift */,
@@ -1408,6 +1407,7 @@
 		F6CC0869FBFC561A2BB5CAC8 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */,
 				CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */,
 			);
 			path = Common;
