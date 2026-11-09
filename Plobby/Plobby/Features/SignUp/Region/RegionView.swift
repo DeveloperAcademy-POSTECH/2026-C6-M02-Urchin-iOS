@@ -21,13 +21,17 @@ struct RegionView: View {
         VStack(spacing: 0) {
             progressBar
             titleSection
-            BeachPickerView(store: store.scope(state: \.picker, action: \.picker))
+            beachPicker
+
+            Spacer()
+
+            infoLabel
             nextButton
         }
     }
 }
 
-// MARK: - 상단 (진행 바, 제목)
+// MARK: - Subviews
 
 private extension RegionView {
     
@@ -51,16 +55,25 @@ private extension RegionView {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20.scaled)
     }
-}
-
-// MARK: - Subviews
-
-extension RegionView {
-    private var nextButton: some View {
-        PlobbyButton(text: "다음") {
+    
+    var beachPicker: some View {
+        BeachPickerView(store: store.scope(state: \.picker, action: \.picker))
+            .padding(.top, 24.scaled)
+            .padding(.horizontal, 20.scaled)
+    }
+    
+    var infoLabel: some View {
+        Text("해변을 선택하면 가입할 수 있어요")
+            .plobbyFont(.helper)
+            .foregroundStyle(Color(.textSecondary))
+            .padding(.vertical, 8.scaled)
+    }
+    
+    var nextButton: some View {
+        PlobbyButton(text: "가입하기") {
             store.send(.nextButtonTapped)
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 20.scaled)
     }
 }
 
@@ -74,6 +87,9 @@ extension RegionView {
             $0 = [
                 Beach(id: UUID(), region: .east, name: "영일대 해수욕장", address: "경북 포항시", latitude: 0, longitude: 0),
                 Beach(id: UUID(), region: .south, name: "해운대 해수욕장", address: "부산 해운대구", latitude: 0, longitude: 0),
+                Beach(id: UUID(), region: .west, name: "대천 해수욕장", address: "충남 보령시", latitude: 0, longitude: 0),
+                Beach(id: UUID(), region: .west, name: "대천 해수욕장", address: "충남 보령시", latitude: 0, longitude: 0),
+                Beach(id: UUID(), region: .west, name: "대천 해수욕장", address: "충남 보령시", latitude: 0, longitude: 0),
                 Beach(id: UUID(), region: .west, name: "대천 해수욕장", address: "충남 보령시", latitude: 0, longitude: 0),
                 Beach(id: UUID(), region: .jeju, name: "협재 해수욕장", address: "제주 제주시", latitude: 0, longitude: 0)
             ]

@@ -49,12 +49,14 @@ private extension BeachPickerView {
 
 private extension BeachPickerView {
 
+    /// 지역 5개(높이 48 × 5 + 간격 8 × 4)가 딱 들어가는 높이로 고정해요. 해변이 많으면 오른쪽 목록만 스크롤돼요
     var regionSection: some View {
         HStack(spacing: 0) {
             regionList
             divider
             beachList
         }
+        .frame(height: 272.scaled)
     }
 
     var divider: some View {
