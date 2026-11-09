@@ -1313,8 +1313,8 @@
 			children = (
 				7B3C1A0C309D0000004C5301 /* TermsAgreement */,
 				7B3C1A26309D0000004C5301 /* ProfileSetup */,
-				ECE6F2BF3098338400C4916C /* SignUpComplete */,
 				ECE6F2C23098338400C4916C /* FavoriteBeachSetup */,
+				ECE6F2BF3098338400C4916C /* SignUpComplete */,
 				ECE6F2C43098338400C4916C /* SignUpView.swift */,
 				ECE6F2C33098338400C4916C /* SignUpFeature.swift */,
 				7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */,
