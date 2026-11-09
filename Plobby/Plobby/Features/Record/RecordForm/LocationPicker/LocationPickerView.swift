@@ -262,19 +262,13 @@ private extension LocationPickerView {
             }
     }
 
-    /// 핀 끝이 지도 가운데를 가리키도록 핀 높이만큼 위로 올려요.
+    /// 핀 끝이 지도 가운데를 가리키도록 핀 높이의 절반만큼 위로 올려요.
     var centerPin: some View {
-        ZStack {
-            Circle()
-                .fill(Color(.gray0))
-                .frame(width: 36.scaled, height: 36.scaled)
-                .shadow(color: Color(.neutralBlack).opacity(0.17), radius: 8, y: 3)
-
-            Image(systemName: "mappin")
-                .font(.system(size: 20.scaled, weight: .semibold))
-                .foregroundStyle(Color(.green500))
-        }
-        .offset(y: -20.scaled)
+        Image(.searchResultPin)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 36.scaled, height: 42.scaled)
+            .offset(y: -21.scaled)
         .allowsHitTesting(false)
         .accessibilityHidden(true)
     }
@@ -419,4 +413,12 @@ private extension LocationPickerView {
             longitudinalMeters: mapSpanMeters
         ))
     }
+}
+
+#Preview {
+    LocationPickerView(
+        store: .init(initialState: LocationPickerFeature.State(), reducer: {
+            LocationPickerFeature()
+        })
+    )
 }
