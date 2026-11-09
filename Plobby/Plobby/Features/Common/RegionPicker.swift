@@ -26,13 +26,6 @@ struct RegionPicker: View {
                 beachList
             }
         }
-        .frame(height: 432)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay {
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.gray.opacity(0.1))
-        }
-        .padding(.horizontal, 20)
     }
 }
 
@@ -51,8 +44,8 @@ private extension RegionPicker {
                     .foregroundStyle(Color(.textSecondary))
             )
             .foregroundStyle(Color(.textPrimary))
-            .submitLabel(.search)
         }
+        .padding(.bottom, 16)
     }
 }
 
