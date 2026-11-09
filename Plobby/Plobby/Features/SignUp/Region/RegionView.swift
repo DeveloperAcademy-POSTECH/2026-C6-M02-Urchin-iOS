@@ -25,8 +25,7 @@ struct RegionView: View {
 
             Spacer()
 
-            infoLabel
-            nextButton
+            bottomSection
         }
     }
 }
@@ -61,47 +60,93 @@ private extension RegionView {
             .padding(.top, 24.scaled)
             .padding(.horizontal, 20.scaled)
     }
-    
+}
+
+// MARK: - 하단 (고른 해변, 가입하기)
+
+private extension RegionView {
+
+    var bottomSection: some View {
+        VStack(alignment: .leading, spacing: 8.scaled) {
+            selectionSection
+            nextButton
+        }
+        .padding(.top, 16.scaled)
+        .padding(.horizontal, 20.scaled)
+        .padding(.bottom, 14.scaled)
+        .background(Color(.backgroundDefault))
+    }
+
+    @ViewBuilder
+    var selectionSection: some View {
+        if store.picker.selectedBeaches.isEmpty {
+            infoLabel
+        } else {
+            VStack(alignment: .leading, spacing: 0) {
+                if store.picker.isSelectionFull {
+                    selectionLimitLabel
+                }
+
+                selectedBeachChips
+            }
+        }
+    }
+
     var infoLabel: some View {
         Text("해변을 선택하면 가입할 수 있어요")
             .plobbyFont(.helper)
             .foregroundStyle(Color(.textSecondary))
+            .frame(maxWidth: .infinity)
             .padding(.vertical, 8.scaled)
+    }
+
+    var selectionLimitLabel: some View {
+        Text("관심 해변은 \(BeachPickerFeature.maximumCount)개까지만 고를 수 있어요")
+            .plobbyFont(.helper)
+            .foregroundStyle(Color(.textSecondary))
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    var selectedBeachChips: some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 4.scaled) {
+                ForEach(store.picker.selectedBeaches) { beach in
+                    selectedBeachChip(beach)
+                }
+            }
+        }
+        .scrollIndicators(.hidden)
+        .frame(height: 44.scaled)
+    }
+
+    func selectedBeachChip(_ beach: Beach) -> some View {
+        Button {
+            store.send(.picker(.beachTapped(beach.id)))
+        } label: {
+            HStack(spacing: 0) {
+                Text(beach.name)
+                    .plobbyFont(.label)
+                    .lineLimit(1)
+
+                Image(systemName: "xmark")
+                    .font(.system(size: 12.scaled))
+                    .frame(width: 28.scaled, height: 32.scaled)
+            }
+            .foregroundStyle(Color(.textBrand))
+            .padding(.leading, 12.scaled)
+            .frame(height: 32.scaled)
+            .background(Color(.surfaceBrandSubtle), in: Capsule())
+            .frame(height: 44.scaled)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(beach.name) 선택 해제")
     }
     
     var nextButton: some View {
         PlobbyButton(text: "가입하기") {
             store.send(.nextButtonTapped)
         }
-        .padding(.horizontal, 20.scaled)
-    }
-}
-
-// MARK: - Preview
-
-#Preview {
-    // 미리보기용 해변 목록을 넣어요 (미리보기에서는 파일이 아니라 메모리에 저장돼요)
-    let _ = {
-        @Shared(.beaches) var beaches
-        $beaches.withLock {
-            $0 = [
-                Beach(id: UUID(), region: .east, name: "영일대 해수욕장", address: "경북 포항시", latitude: 0, longitude: 0),
-                Beach(id: UUID(), region: .south, name: "해운대 해수욕장", address: "부산 해운대구", latitude: 0, longitude: 0),
-                Beach(id: UUID(), region: .west, name: "대천 해수욕장", address: "충남 보령시", latitude: 0, longitude: 0),
-                Beach(id: UUID(), region: .west, name: "대천 해수욕장", address: "충남 보령시", latitude: 0, longitude: 0),
-                Beach(id: UUID(), region: .west, name: "대천 해수욕장", address: "충남 보령시", latitude: 0, longitude: 0),
-                Beach(id: UUID(), region: .west, name: "대천 해수욕장", address: "충남 보령시", latitude: 0, longitude: 0),
-                Beach(id: UUID(), region: .jeju, name: "협재 해수욕장", address: "제주 제주시", latitude: 0, longitude: 0)
-            ]
-        }
-    }()
-
-    NavigationStack {
-        RegionView(
-            store: Store(initialState: RegionFeature.State()) {
-                RegionFeature()
-            }
-        )
-        .plobbyNavigationTitle("회원가입")
+        .disabled(store.picker.selectedBeachIDs.isEmpty)
     }
 }
