@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B3C1A2E309D0000004C5301 /* ConfettiScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */; };
+		7B3C1A2C309D0000004C5301 /* ConfettiBurstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */; };
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */; };
@@ -263,6 +265,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiScene.swift; sourceTree = "<group>"; };
+		7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiBurstView.swift; sourceTree = "<group>"; };
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
 		0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachHomeFeature.swift; sourceTree = "<group>"; };
 		033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PhotoLibraryClient.swift"; sourceTree = "<group>"; };
@@ -531,6 +535,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B3C1A2B309D0000004C5301 /* Confetti */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */,
+				7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */,
+			);
+			path = Confetti;
+			sourceTree = "<group>";
+		};
 		0388DE9EE55A49C7010C48BD /* Response */ = {
 			isa = PBXGroup;
 			children = (
@@ -1359,6 +1372,7 @@
 			isa = PBXGroup;
 			children = (
 				ECE6F2BE3098338400C4916C /* SignUpCompleteView.swift */,
+				7B3C1A2B309D0000004C5301 /* Confetti */,
 				ECE6F2BD3098338400C4916C /* SignUpCompleteFeature.swift */,
 			);
 			path = SignUpComplete;
@@ -1842,6 +1856,8 @@
 				ECE6F2F83098338400C4916C /* SignUpCompleteFeature.swift in Sources */,
 				DA5B10E730998932003FEDF9 /* RecordFlowFeature.swift in Sources */,
 				ECE6F2F93098338400C4916C /* SignUpCompleteView.swift in Sources */,
+				7B3C1A2E309D0000004C5301 /* ConfettiScene.swift in Sources */,
+				7B3C1A2C309D0000004C5301 /* ConfettiBurstView.swift in Sources */,
 				ECE6F2FA3098338400C4916C /* FavoriteBeachSetupFeature.swift in Sources */,
 				ECE6F2FB3098338400C4916C /* FavoriteBeachSetupView.swift in Sources */,
 				DA0A9CFB309A140D006D2504 /* DatePickerFeature.swift in Sources */,
