@@ -31,13 +31,14 @@ struct RecordFormView: View {
             ) { store in
                 LocationPickerView(store: store)
             }
-            .sheet(
-                item: $store.scope(state: \.destination?.trashPicker, action: \.destination.trashPicker)
+            .plobbyBottomSheet(
+                item: $store.scope(state: \.destination?.trashPicker, action: \.destination.trashPicker),
+                cornerRadius: 20.scaled,
+                showsGrabber: true
             ) { store in
+                // 키보드가 올라오면 남은 공간만큼 줄어들어요.
                 TrashPickerView(store: store)
-                    .presentationDetents(belowNavigationBarDetents)
-                    .presentationDragIndicator(.visible)
-                    .presentationCornerRadius(20)
+                    .frame(maxHeight: trashPickerHeight)
             }
             .plobbyAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
@@ -98,19 +99,19 @@ private extension RecordFormView {
             ) { store in
                 PhotosPickerView(store: store)
             }
-            .sheet(
-                item: $store.scope(state: \.destination?.datePicker, action: \.destination.datePicker)
+            .plobbyBottomSheet(
+                item: $store.scope(state: \.destination?.datePicker, action: \.destination.datePicker),
+                cornerRadius: 20.scaled
             ) { store in
                 DatePickerView(store: store)
-                    .presentationDetents([.height(DatePickerView.sheetHeight(weekCount: store.weekCount))])
-                    .presentationCornerRadius(20)
+                    .frame(height: DatePickerView.sheetHeight(weekCount: store.weekCount))
             }
-            .sheet(
-                item: $store.scope(state: \.destination?.timePicker, action: \.destination.timePicker)
+            .plobbyBottomSheet(
+                item: $store.scope(state: \.destination?.timePicker, action: \.destination.timePicker),
+                cornerRadius: 20.scaled
             ) { store in
                 TimePickerView(store: store)
-                    .presentationDetents([.height(TimePickerView.sheetHeight)])
-                    .presentationCornerRadius(20)
+                    .frame(height: TimePickerView.sheetHeight)
             }
     }
 }
@@ -176,11 +177,10 @@ private extension RecordFormView {
         .frame(height: Self.navigationBarHeight)
     }
     
-    var belowNavigationBarDetents: Set<PresentationDetent> {
+    /// 내비게이션 바 아래부터 화면 끝까지 덮는 높이예요.
+    var trashPickerHeight: CGFloat? {
         let height = contentHeight - Self.navigationBarHeight
-        guard height > 0 else { return [.large] }
-        
-        return [.height(height), .large]
+        return height > 0 ? height : nil
     }
 }
 

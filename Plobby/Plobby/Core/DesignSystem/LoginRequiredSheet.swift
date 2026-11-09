@@ -21,8 +21,7 @@ struct LoginRequiredSheet: View {
     
     var body: some View {
         content
-            .presentationDetents([.height(Self.designHeight.scaled)])
-            .presentationBackgroundInteraction(.enabled)
+            .frame(height: Self.designHeight.scaled)
     }
 }
 
