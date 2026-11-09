@@ -32,8 +32,8 @@ struct RecordDetailFeature {
             return record
         }
         
-        var trashLayout: TrashLayout {
-            record.map(TrashLayout.init) ?? .hidden
+        var trashSummary: TrashSummary? {
+            record.map(TrashSummary.init)
         }
     }
     
@@ -45,27 +45,17 @@ struct RecordDetailFeature {
         case failed
     }
     
-    // MARK: - TrashLayout
+    // MARK: - TrashSummary
     
-    nonisolated enum TrashLayout: Equatable {
-        case hidden
-        case countAndWeight(totalCount: Int, weight: Double, items: [RecordDetail.Trash])
-        case countOnly(totalCount: Int, items: [RecordDetail.Trash])
-        case weightOnly(Double)
-        
+    nonisolated struct TrashSummary: Equatable {
+        let totalCount: Int
+        let weight: Double?
+        let items: [RecordDetail.Trash]
+
         init(_ record: RecordDetail) {
-            let items = record.trash.sorted { $0.quantity > $1.quantity }
-            
-            switch (items.isEmpty, record.weightKg) {
-            case let (false, weight?):
-                self = .countAndWeight(totalCount: record.trashCount, weight: weight, items: items)
-            case (false, nil):
-                self = .countOnly(totalCount: record.trashCount, items: items)
-            case let (true, weight?):
-                self = .weightOnly(weight)
-            case (true, nil):
-                self = .hidden
-            }
+            totalCount = record.trashCount
+            weight = record.weightKg
+            items = record.trash.sorted { $0.quantity > $1.quantity }
         }
     }
     
