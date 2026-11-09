@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 import ComposableArchitecture
 
@@ -42,7 +43,6 @@ struct SignUpFeature {
             !nickname.isEmpty && !Nickname.isValid(nickname)
         }
         
-        /// 형식이 안 맞거나 이미 사용 중인 닉네임이에요. 입력창 테두리를 빨갛게 보여줄 때 써요
         var hasNicknameError: Bool {
             isNicknameFormatInvalid || isNicknameAvailable == false
         }
@@ -71,6 +71,7 @@ struct SignUpFeature {
         case profilePhotoTapped
         case photoPicker(PresentationAction<PhotosPickerFeature.Action>)
         case profileImageSelected(Data)
+        case profileImageLoadFailed
         case profileImageCompressed(Data?)
         case alert(PresentationAction<Alert>)
         case nicknameChanged(String)
@@ -145,6 +146,10 @@ struct SignUpFeature {
 
             case let .profileImageSelected(data):
                 return compressProfileImage(data)
+
+            case .profileImageLoadFailed:
+                state.alert = .make(.profileImageLoadFailed)
+                return .none
                 
             case let .profileImageCompressed(data):
                 guard let data else {
@@ -185,7 +190,6 @@ struct SignUpFeature {
                 state.path.append(.region(RegionFeature.State()))
                 return .none
 
-            // 관심 해변을 고르고 다음을 누르면 가입하고 완료 화면으로 가요
             case let .path(.element(id: id, action: .region(.nextButtonTapped))):
                 guard !state.isSigningUp else { return .none }
 
@@ -231,10 +235,21 @@ extension SignUpFeature {
         case nicknameCheck
     }
     
-    /// 고른 사진의 원본을 불러와서 기존 사진 압축 흐름(profileImageSelected)으로 넘겨요
     private func fetchProfileImageData(_ assetID: PhotoAsset.ID) -> Effect<Action> {
         .run { send in
-            guard let data = try? await photoLibraryClient.imageData(assetID) else { return }
+            if let data = try? await photoLibraryClient.imageData(assetID) {
+                await send(.profileImageSelected(data))
+                return
+            }
+
+            let fallbackSize = CGSize(width: 1024, height: 1024)
+            guard
+                let image = await photoLibraryClient.thumbnail(assetID, fallbackSize),
+                let data = image.jpegData(compressionQuality: 0.9)
+            else {
+                await send(.profileImageLoadFailed)
+                return
+            }
 
             await send(.profileImageSelected(data))
         }
@@ -268,8 +283,6 @@ extension SignUpFeature {
 
 // MARK: - ProfileStepFeature
 
-/// 프로필 등록 화면은 SignUpFeature의 상태(닉네임, 사진)를 그대로 써서,
-/// 내비게이션 스택에 자리만 차지하는 빈 Feature예요
 @Reducer
 struct ProfileStepFeature {
 

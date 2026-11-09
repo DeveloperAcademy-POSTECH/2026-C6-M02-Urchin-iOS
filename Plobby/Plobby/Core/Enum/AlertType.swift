@@ -12,6 +12,7 @@ enum AlertType {
     case signInFailed
     case signUpFailed
     case profileImageTooLarge
+    case profileImageLoadFailed
     case recordSubmitFailed
     case recordDeleteConfirm
     case recordDeleted
@@ -39,6 +40,7 @@ extension AlertType {
         case .signInFailed: "로그인하지 못했어요"
         case .signUpFailed: "회원가입을 완료하지 못했어요"
         case .profileImageTooLarge: "사진을 사용할 수 없어요"
+        case .profileImageLoadFailed: "사진을 불러오지 못했어요"
         case .recordSubmitFailed: "기록을 저장하지 못했어요"
         case .recordDeleteConfirm: "기록을 삭제할까요?"
         case .recordDeleted: "삭제가 완료되었습니다"
@@ -63,6 +65,7 @@ extension AlertType {
         switch self {
         case .signInFailed, .signUpFailed, .recordSubmitFailed, .recordDeleteFailed, .profileUpdateFailed, .recordReportFailed, .userBlockFailed, .logoutFailed, .withdrawalFailed: "잠시 후 다시 시도해 주세요."
         case .profileImageTooLarge: "2MB 미만의 사진을 선택해 주세요."
+        case .profileImageLoadFailed: "다른 사진을 선택하거나 잠시 후 다시 시도해 주세요."
         case .recordDeleteConfirm: "삭제한 기록은 복구할 수 없어요."
         case .recordDeleted, .logoutConfirm, .withdrawalCompleted: nil
         case .userBlockConfirm: "차단하면 이 사용자의 기록이 더 이상 보이지 않아요."
@@ -78,14 +81,14 @@ extension AlertType {
         switch self {
         case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm, .recordExitConfirm,
              .logoutConfirm, .withdrawalConfirm: .cancelConfirm
-        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed,
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .profileImageLoadFailed, .recordDeleted, .recordDeleteFailed,
              .profileUpdateFailed, .logoutFailed, .withdrawalCompleted, .withdrawalFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed: .confirm
         }
     }
     
     var confirmTitle: String {
         switch self {
-        case .signInFailed, .signUpFailed, .profileImageTooLarge, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .logoutFailed, .withdrawalFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed: "확인"
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .profileImageLoadFailed, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .logoutFailed, .withdrawalFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed: "확인"
         case .recordSubmitFailed: "다시 시도"
         case .recordDeleteConfirm: "삭제"
         case .userBlockConfirm: "차단"
