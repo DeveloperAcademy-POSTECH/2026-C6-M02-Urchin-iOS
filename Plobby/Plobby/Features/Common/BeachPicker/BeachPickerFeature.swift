@@ -26,7 +26,7 @@ struct BeachPickerFeature {
         }
 
         var isSelectionFull: Bool {
-            selectedBeachIDs.count >= BeachPickerFeature.maximumCount
+            selectedBeachIDs.count >= Beach.maximumFavoriteCount
         }
 
         var beaches: [Beach] {
@@ -76,11 +76,4 @@ struct BeachPickerFeature {
             }
         }
     }
-}
-
-// MARK: - Constants
-
-extension BeachPickerFeature {
-
-    nonisolated static let maximumCount = 3
 }

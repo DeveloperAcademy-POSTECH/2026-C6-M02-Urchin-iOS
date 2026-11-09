@@ -18,6 +18,7 @@ struct ProfileSetupFeature {
     @ObservableState
     struct State: Equatable {
         var profileImage: Data?
+        var isLoadingProfileImage = false
         var nickname = ""
         var isCheckingNickname = false
         var isNicknameAvailable: Bool?
@@ -37,7 +38,7 @@ struct ProfileSetupFeature {
         }
 
         var canGoNext: Bool {
-            isNicknameAvailable == true
+            isNicknameAvailable == true && !isLoadingProfileImage
         }
     }
 
@@ -46,7 +47,6 @@ struct ProfileSetupFeature {
     enum Action {
         case profilePhotoTapped
         case photoPicker(PresentationAction<PhotosPickerFeature.Action>)
-        case profileImageSelected(Data)
         case profileImageLoadFailed
         case profileImageCompressed(Data?)
         case nicknameChanged(String)
@@ -78,7 +78,8 @@ struct ProfileSetupFeature {
                 state.photoPicker = nil
                 guard let asset = assets.first else { return .none }
 
-                return fetchProfileImageData(asset.id)
+                state.isLoadingProfileImage = true
+                return loadProfileImage(asset.id)
 
             case .photoPicker(.presented(.delegate(.cancelled))):
                 state.photoPicker = nil
@@ -87,14 +88,13 @@ struct ProfileSetupFeature {
             case .photoPicker:
                 return .none
 
-            case let .profileImageSelected(data):
-                return compressProfileImage(data)
-
             case .profileImageLoadFailed:
+                state.isLoadingProfileImage = false
                 state.alert = .make(.profileImageLoadFailed)
                 return .none
 
             case let .profileImageCompressed(data):
+                state.isLoadingProfileImage = false
                 guard let data else {
                     state.alert = .make(.profileImageTooLarge)
                     return .none
@@ -124,6 +124,7 @@ struct ProfileSetupFeature {
 
             case .nicknameCheckResponse(.failure):
                 state.isCheckingNickname = false
+                state.alert = .make(.nicknameCheckFailed)
                 return .none
 
             case .nextButtonTapped, .alert:
@@ -143,34 +144,26 @@ private extension ProfileSetupFeature {
 
     nonisolated enum CancelID {
         case nicknameCheck
+        case profileImage
     }
-    
-    func fetchProfileImageData(_ assetID: PhotoAsset.ID) -> Effect<Action> {
+
+    func loadProfileImage(_ assetID: PhotoAsset.ID) -> Effect<Action> {
         .run { send in
-            if let data = try? await photoLibraryClient.imageData(assetID) {
-                await send(.profileImageSelected(data))
-                return
+            var data = try? await photoLibraryClient.imageData(assetID)
+
+            if data == nil {
+                let fallbackSize = CGSize(width: 1024, height: 1024)
+                data = await photoLibraryClient.thumbnail(assetID, fallbackSize)?.jpegData(compressionQuality: 0.9)
             }
 
-            let fallbackSize = CGSize(width: 1024, height: 1024)
-            guard
-                let image = await photoLibraryClient.thumbnail(assetID, fallbackSize),
-                let data = image.jpegData(compressionQuality: 0.9)
-            else {
+            guard let data else {
                 await send(.profileImageLoadFailed)
                 return
             }
 
-            await send(.profileImageSelected(data))
+            await send(.profileImageCompressed(ProfileImageCompressor.compressedJPEG(from: data)))
         }
-    }
-
-    func compressProfileImage(_ data: Data) -> Effect<Action> {
-        .run { send in
-            await send(.profileImageCompressed(
-                ProfileImageCompressor.compressedJPEG(from: data)
-            ))
-        }
+        .cancellable(id: CancelID.profileImage, cancelInFlight: true)
     }
 
     func checkNickname(_ nickname: String) -> Effect<Action> {

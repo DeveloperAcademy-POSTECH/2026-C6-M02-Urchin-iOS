@@ -104,7 +104,7 @@ private extension SearchBeachView {
                         .buttonStyle(.plain)
                     }
 
-                    if store.favoriteBeaches.count < BeachPickerFeature.maximumCount {
+                    if store.favoriteBeaches.count < Beach.maximumFavoriteCount {
                         Button {
                             // TODO: 관심 해변 추가 흐름 연결
                         } label: {

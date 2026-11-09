@@ -14,7 +14,6 @@ struct PhotosPickerFeature {
     
     // MARK: - State
     
-    /// 어디서 사진을 고르는지예요. 기록은 여러 장, 프로필은 한 장만 골라요
     enum Purpose: Equatable {
         case record(RecordType)
         case profile
@@ -37,7 +36,6 @@ struct PhotosPickerFeature {
             self.selection = PhotoSelection(limit: PhotoSelection.maxCount - alreadySelectedCount)
         }
 
-        /// 프로필 사진 고르기. 한 장만 고르고, 다른 사진을 누르면 바꿔 끼워요
         static var profile: Self {
             Self(purpose: .profile, selection: PhotoSelection(limit: 1))
         }
@@ -47,9 +45,8 @@ struct PhotosPickerFeature {
             self.selection = selection
         }
 
-        /// 한 장만 고르는 모드예요. 이미 고른 상태에서 다른 사진을 누르면 바꿔 끼워요
         var isSingleSelection: Bool {
-            selection.limit == 1
+            purpose == .profile
         }
         
         var selectedAlbum: PhotoAlbum? {

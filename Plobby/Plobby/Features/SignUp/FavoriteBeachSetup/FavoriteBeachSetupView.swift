@@ -101,7 +101,7 @@ private extension FavoriteBeachSetupView {
     }
 
     var selectionLimitLabel: some View {
-        Text("관심 해변은 \(BeachPickerFeature.maximumCount)개까지만 고를 수 있어요")
+        Text("관심 해변은 \(Beach.maximumFavoriteCount)개까지만 고를 수 있어요")
             .plobbyFont(.helper)
             .foregroundStyle(Color(.textSecondary))
             .frame(maxWidth: .infinity, alignment: .leading)
