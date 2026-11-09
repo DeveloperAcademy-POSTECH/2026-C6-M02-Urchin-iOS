@@ -15,7 +15,7 @@ import ComposableArchitecture
 @Suite(.serialized)
 struct AppFeatureTests {
 
-    private let user = AuthUser(id: UUID(0), email: "plobby@example.com", fullName: "플로비")
+    private let user = AuthUser(id: UUID(0), email: "plobby@example.com")
     private let profile = Profile(userID: UUID(0), nickname: "플로비", profileImageKey: nil, profileImageURL: nil)
 
     // MARK: - 세션 복원
@@ -45,7 +45,7 @@ struct AppFeatureTests {
 
         await store.send(.task)
         await store.receive(\.sessionRestored.success) {
-            $0 = .signUp(SignUpFeature.State(user: self.user, fullName: "플로비"))
+            $0 = .signUp(SignUpFeature.State(user: self.user))
         }
         await store.finish()
     }
@@ -178,7 +178,7 @@ private extension AuthClient {
 
     static func mock(currentUser: AuthUser?, signedOutEvents: AsyncStream<Void>) -> Self {
         AuthClient(
-            signInWithApple: { _, _, _ in throw MockError() },
+            signInWithApple: { _, _ in throw MockError() },
             fetchCredential: { _ in .failure(.failed) },
             fetchAppleAuthorizationCode: { throw MockError() },
             fetchCurrentUser: { currentUser },

@@ -16,6 +16,7 @@ struct SignUpFeature {
     
     @Reducer
     enum Path {
+        case profile(ProfileStepFeature)
         case region(RegionFeature)
         case complete(CompleteFeature)
     }
@@ -25,7 +26,6 @@ struct SignUpFeature {
     @ObservableState
     struct State: Equatable {
         let user: AuthUser
-        var fullName: String?
         var profileImage: Data?
         var nickname = ""
         var isCheckingNickname = false
@@ -34,8 +34,6 @@ struct SignUpFeature {
         var isAgeConfirmed = false
         var isTermsAgreed = false
         var isPrivacyAgreed = false
-        /// 약관 동의를 마치면 프로필 등록 화면으로 넘어가요
-        var isAgreementCompleted = false
         var path = StackState<Path.State>()
         @Presents var alert: AlertState<Action.Alert>?
         
@@ -116,7 +114,7 @@ struct SignUpFeature {
             case .agreementNextButtonTapped:
                 guard state.isAllAgreed else { return .none }
 
-                state.isAgreementCompleted = true
+                state.path.append(.profile(ProfileStepFeature.State()))
                 return .none
 
             case let .profileImageSelected(data):
@@ -170,7 +168,6 @@ struct SignUpFeature {
                 return signUp(SignUpProfile(
                     userID: state.user.id,
                     profileImage: state.profileImage,
-                    name: state.fullName,
                     nickname: state.nickname,
                     favoriteBeachIDs: Array(state.path[id: id]?.region?.selectedBeachIDs ?? [])
                 ))
@@ -228,6 +225,23 @@ extension SignUpFeature {
                 try await authClient.signUp(profile)
             }))
         }
+    }
+}
+
+// MARK: - ProfileStepFeature
+
+/// 프로필 등록 화면은 SignUpFeature의 상태(닉네임, 사진)를 그대로 써서,
+/// 내비게이션 스택에 자리만 차지하는 빈 Feature예요
+@Reducer
+struct ProfileStepFeature {
+
+    @ObservableState
+    struct State: Equatable {}
+
+    enum Action {}
+
+    var body: some Reducer<State, Action> {
+        EmptyReducer()
     }
 }
 
