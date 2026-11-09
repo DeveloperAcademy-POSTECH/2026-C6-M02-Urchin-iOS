@@ -62,9 +62,8 @@ private extension SignUpView {
         VStack(spacing: 0) {
             progressBar
             titleSection
-            Spacer()
-//            profileImagePicker
-//            nicknameSection
+            profilePhotoSection
+            nicknameSection
         }
     }
 }
@@ -92,40 +91,50 @@ private extension SignUpView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 20.scaled)
+        .padding(.bottom, 24.scaled)
     }
 }
 
 // MARK: - 프로필 사진
 
 private extension SignUpView {
-
-    var profileImagePicker: some View {
-        PhotosPicker(selection: $selectedPhoto, matching: .images) {
-            profileImage
-                .frame(width: 132.scaled, height: 132.scaled)
-                .clipShape(RoundedRectangle(cornerRadius: 16.scaled))
-                .padding(.bottom, 32.scaled)
-        }
-    }
-
-    @ViewBuilder
-    var profileImage: some View {
-        if let previewImage {
-            Image(uiImage: previewImage)
-                .resizable()
-                .scaledToFill()
-        } else {
-            Color(.gray100)
-                .overlay {
-                    Image(systemName: "photo.badge.plus")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 48.scaled, height: 48.scaled)
-                        .foregroundStyle(Color(.gray600))
-                }
-        }
-    }
     
+    var profilePhotoSection: some View {
+        PhotosPicker(selection: $selectedPhoto, matching: .images) {
+            VStack(spacing: 8.scaled) {
+                profilePhoto
+                addPhotoLabel
+            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("프로필 사진 추가")
+        .padding(.bottom, 32.scaled)
+    }
+
+    var profilePhoto: some View {
+        Group {
+            if let previewImage {
+                Image(uiImage: previewImage)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                Color(.surfaceSubtle)
+                    .overlay {
+                        Image(systemName: "camera.fill")
+                            .font(.system(size: 28.scaled, weight: .medium))
+                            .foregroundStyle(Color(.buttonPrimaryDisabled))
+                    }
+            }
+        }
+        .frame(width: 96.scaled, height: 96.scaled)
+        .clipShape(Circle())
+    }
+
+    var addPhotoLabel: some View {
+        Text("사진 추가")
+            .plobbyFont(.labelSelected)
+            .foregroundStyle(Color(.textBrand))
+    }
 }
 
 // MARK: - 닉네임
@@ -199,24 +208,19 @@ private extension SignUpView {
 
 // MARK: - Preview
 
-#Preview("약관 동의") {
-    SignUpView(
-        store: Store(initialState: SignUpFeature.State(user: AuthUser(id: UUID(), email: nil))) {
-            SignUpFeature()
-        }
-    )
-}
-
 #Preview("프로필 등록") {
-    let state = {
-        var state = SignUpFeature.State(user: AuthUser(id: UUID(), email: nil))
-        state.path.append(.profile(ProfileStepFeature.State()))
-        return state
-    }()
+    let store = Store(
+        initialState: {
+            var state = SignUpFeature.State(user: AuthUser(id: UUID(), email: nil))
+            state.isAgeConfirmed = true
+            state.isTermsAgreed = true
+            state.isPrivacyAgreed = true
+            return state
+        }()
+    ) {
+        SignUpFeature()
+    }
+    let _ = store.send(.agreementNextButtonTapped)
 
-    SignUpView(
-        store: Store(initialState: state) {
-            SignUpFeature()
-        }
-    )
+    SignUpView(store: store)
 }
