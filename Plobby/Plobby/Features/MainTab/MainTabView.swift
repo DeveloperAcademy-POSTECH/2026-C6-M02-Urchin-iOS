@@ -120,6 +120,24 @@ extension MainTabView {
             ) { store in
                 SettingsView(store: store)
             }
+            .navigationDestination(
+                item: $store.scope(state: \.recordDetail, action: \.recordDetail)
+            ) { store in
+                RecordDetailView(store: store)
+                    .toolbar(.hidden, for: .navigationBar)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.beachHome, action: \.beachHome)
+            ) { beachHomeStore in
+                BeachHomeView(store: beachHomeStore)
+                    .toolbar(.hidden, for: .navigationBar)
+                    .navigationDestination(
+                        item: $store.scope(state: \.beachRecordDetail, action: \.beachRecordDetail)
+                    ) { store in
+                        RecordDetailView(store: store)
+                            .toolbar(.hidden, for: .navigationBar)
+                    }
+            }
     }
     
     private var recordMenu: some View {
