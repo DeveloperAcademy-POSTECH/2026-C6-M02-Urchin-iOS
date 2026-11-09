@@ -13,6 +13,7 @@ import Supabase
 nonisolated struct RecordClient {
     var fetchRecord: @Sendable (_ recordID: UUID) async throws -> RecordDetail
     var fetchRecords: @Sendable (_ offset: Int, _ limit: Int) async throws -> [RecordSummary]
+    var fetchUserRecords: @Sendable (_ userID: UUID) async throws -> [RecordSummary]
     var submitRecord: @Sendable (_ record: NewRecord) async throws -> Void
     var updateRecord: @Sendable (_ record: UpdatedRecord) async throws -> Void
     var like: @Sendable (_ recordID: UUID) async throws -> Void
@@ -74,6 +75,33 @@ nonisolated extension RecordClient: DependencyKey {
                 return responseDTOs.compactMap {
                     $0.toDomain(
                         currentUserID: userID,
+                        photoURL: supabaseClient.recordPhotoURL,
+                        profileImageURL: supabaseClient.profileImageURL
+                    )
+                }
+            }, fetchUserRecords: { userID in
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                let currentUserID = try await supabaseClient.currentUserIDIfSignedIn()
+
+                var query = supabaseClient
+                    .from("records")
+                    .select(RecordSummaryResponseDTO.selectQuery)
+                    .eq("user_id", value: userID)
+                    .is("deleted_at", value: nil)
+
+                if let currentUserID {
+                    query = query.eq("my_like.user_id", value: currentUserID)
+                }
+
+                let responseDTOs: [RecordSummaryResponseDTO] = try await query
+                    .order("created_at", ascending: false)
+                    .execute()
+                    .value
+
+                return responseDTOs.compactMap {
+                    $0.toDomain(
+                        currentUserID: currentUserID,
                         photoURL: supabaseClient.recordPhotoURL,
                         profileImageURL: supabaseClient.profileImageURL
                     )
