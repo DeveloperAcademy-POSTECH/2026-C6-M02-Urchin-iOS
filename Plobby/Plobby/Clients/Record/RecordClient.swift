@@ -19,6 +19,7 @@ nonisolated struct RecordClient {
     var unlike: @Sendable (_ recordID: UUID) async throws -> Void
     var removeRecord: @Sendable (_ recordID: UUID) async throws -> Void
     var reportRecord: @Sendable (_ recordID: UUID) async throws -> Void
+    var fetchTrashCounts: @Sendable (_ userID: UUID) async throws -> [TrashCategory: Int]
 }
 
 nonisolated extension RecordClient: DependencyKey {
@@ -136,6 +137,21 @@ nonisolated extension RecordClient: DependencyKey {
                     .from("record_reports")
                     .insert(RecordReportInsertRequestDTO(recordID: recordID, reporterID: uid))
                     .execute()
+            }, fetchTrashCounts: { userID in
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                let responseDTOs: [UserTrashSummaryResponseDTO] = try await supabaseClient
+                    .from("user_trash_summary")
+                    .select("trash_code, collected_count")
+                    .eq("user_id", value: userID)
+                    .execute()
+                    .value
+
+                return responseDTOs.reduce(into: [:]) { counts, responseDTO in
+                    guard let category = TrashCategory(code: responseDTO.trashCode) else { return }
+
+                    counts[category] = responseDTO.collectedCount
+                }
             }
         )
     }()
