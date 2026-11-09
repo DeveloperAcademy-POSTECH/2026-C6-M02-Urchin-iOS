@@ -7,5 +7,4 @@
 
 struct AppleCredential: Equatable {
     let idToken: String
-    let fullName: String?                             
 }

@@ -1,5 +1,5 @@
 //
-//  CompleteFeature.swift
+//  SignUpCompleteFeature.swift
 //  Plobby
 //
 //  Created by 이은지 on 10/31/26.
@@ -8,7 +8,8 @@
 import ComposableArchitecture
 
 @Reducer
-struct CompleteFeature {
+
+struct SignUpCompleteFeature {
     
     // MARK: - State
     

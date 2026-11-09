@@ -9,12 +9,11 @@ import SwiftUI
 
 import ComposableArchitecture
 
-/// 회원가입 첫 단계의 약관 동의 화면. 처음 가입할 때만 보여요.
 struct TermsAgreementView: View {
 
     // MARK: - Properties
 
-    let store: StoreOf<SignUpFeature>
+    let store: StoreOf<TermsAgreementFeature>
     @Environment(\.openURL) private var openURL
 
     // MARK: - Body
@@ -22,11 +21,11 @@ struct TermsAgreementView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             title
-
             allAgreementRow
 
             Divider()
-                .padding(.vertical, 8.scaled)
+                .foregroundStyle(Color(.borderSubtle))
+                .padding(.bottom, 12.scaled)
 
             agreementRow(
                 "만 14세 이상입니다",
@@ -51,7 +50,7 @@ struct TermsAgreementView: View {
             Spacer()
 
             PlobbyButton(text: "다음") {
-                store.send(.agreementNextButtonTapped)
+                store.send(.nextButtonTapped)
             }
             .disabled(!store.isAllAgreed)
         }
@@ -65,11 +64,11 @@ private extension TermsAgreementView {
 
     var title: some View {
         Text("서비스 이용을 위해\n약관에 동의해주세요")
-            .plobbyFont(.headingLarge)
+            .plobbyFont(.heading)
             .foregroundStyle(Color(.textPrimary))
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 68.scaled)
-            .padding(.bottom, 40.scaled)
+            .padding(.top, 72.scaled)
+            .padding(.bottom, 32.scaled)
     }
 
     var allAgreementRow: some View {
@@ -80,21 +79,22 @@ private extension TermsAgreementView {
                 checkmark(isChecked: store.isAllAgreed)
 
                 Text("전체 동의")
-                    .plobbyFont(.actionLabel)
+                    .plobbyFont(.cardTitle)
                     .foregroundStyle(Color(.textPrimary))
 
                 Spacer()
             }
-            .frame(height: 52.scaled)
+            .frame(height: 56.scaled)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .padding(.bottom, 12.scaled)
     }
 
     func agreementRow(
         _ title: String,
         isChecked: Bool,
-        action: SignUpFeature.Action,
+        action: TermsAgreementFeature.Action,
         detailLink: ServiceLink? = nil
     ) -> some View {
         HStack(spacing: 12.scaled) {
@@ -119,7 +119,7 @@ private extension TermsAgreementView {
                     openURL(url)
                 } label: {
                     Text("보기")
-                        .plobbyFont(.helper)
+                        .plobbyFont(.label)
                         .foregroundStyle(Color(.textSecondary))
                         .underline()
                 }
@@ -134,5 +134,7 @@ private extension TermsAgreementView {
             .resizable()
             .frame(width: 24.scaled, height: 24.scaled)
             .foregroundStyle(isChecked ? Color(.green500) : Color(.gray300))
+            .contentTransition(.identity)
+            .transaction { $0.animation = nil }
     }
 }

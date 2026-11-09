@@ -1,8 +1,8 @@
 //
-//  RegionFeature.swift
+//  BeachPickerFeature.swift
 //  Plobby
 //
-//  Created by 이은지 on 10/31/26.
+//  Created by 이은지 on 11/9/26.
 //
 
 import Foundation
@@ -10,72 +10,70 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct RegionFeature {
-    
+struct BeachPickerFeature {
+
     // MARK: - State
-    
+
     @ObservableState
     struct State: Equatable {
         @Shared(.beaches) var allBeaches
         var selectedRegion: Sea?
         var searchText = ""
-        var selectedBeachIDs: Set<UUID> = []
-        
+        var selectedBeachIDs: [UUID] = []
+
+        var selectedBeaches: [Beach] {
+            selectedBeachIDs.compactMap { id in allBeaches.first { $0.id == id } }
+        }
+
+        var isSelectionFull: Bool {
+            selectedBeachIDs.count >= Beach.maximumFavoriteCount
+        }
+
         var beaches: [Beach] {
             let beaches = selectedRegion.map { region in
                 allBeaches.filter { $0.region == region }
             } ?? allBeaches
-            
-            guard !searchText.isEmpty else { return beaches }
-            
-            return beaches.filter { $0.name.contains(searchText) }
+
+            guard !searchText.allSatisfy(\.isWhitespace) else { return beaches }
+
+            return beaches.matching(searchText)
         }
     }
 
     // MARK: - Action
-    
+
     enum Action {
         case regionTapped(Sea?)
         case searchTextChanged(String)
         case beachTapped(UUID)
-        case nextButtonTapped
     }
 
     // MARK: - Body
-    
+
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case let .regionTapped(region):
                 state.selectedRegion = region
                 return .none
-                
+
             case let .searchTextChanged(text):
                 state.searchText = text
                 return .none
-                
+
             case let .beachTapped(id):
-                if state.selectedBeachIDs.remove(id) != nil {
+                if let index = state.selectedBeachIDs.firstIndex(of: id) {
+                    state.selectedBeachIDs.remove(at: index)
                     return .none
                 }
-                
-                guard state.selectedBeachIDs.count < RegionFeature.maximumBeachCount else {
+
+                guard !state.isSelectionFull else {
                     return .none
                 }
-                
-                state.selectedBeachIDs.insert(id)
-                return .none
-                
-            case .nextButtonTapped:
+
+                state.selectedBeachIDs.append(id)
                 return .none
             }
         }
     }
-}
-
-// MARK: - Functions
-
-extension RegionFeature {
-
-    private static let maximumBeachCount = 3
 }

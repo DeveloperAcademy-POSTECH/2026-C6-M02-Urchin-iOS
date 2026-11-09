@@ -170,7 +170,6 @@ private extension HomeFeature.Action {
 extension HomeFeature {
 
     static let banners: [RecordType] = [.plobbing, .plogging]
-    static let maximumFavoriteBeachCount = 3
     static let recentRecordCardCount = 2
     private static let recentRecordLimit = 5
 

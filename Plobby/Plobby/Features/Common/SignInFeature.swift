@@ -18,7 +18,6 @@ struct SignInFeature {
     struct State: Equatable {
         var nonce: String?
         var isSigningIn = false
-        var pendingFullName: String?
         @Presents var alert: AlertState<Action.Alert>?
     }
 
@@ -37,7 +36,7 @@ struct SignInFeature {
 
         enum Delegate {
             case signedIn(AuthUser)
-            case needsSignUp(AuthUser, fullName: String?)
+            case needsSignUp(AuthUser)
         }
     }
 
@@ -68,27 +67,23 @@ struct SignInFeature {
                 return .none
 
             case let .appleCredentialResponse(.success(credential)):
-                state.pendingFullName = credential.fullName ?? state.pendingFullName
-
                 guard let nonce = state.nonce else {
                     state.alert = .make(.signInFailed)
                     return .none
                 }
 
                 state.isSigningIn = true
-                return signIn(idToken: credential.idToken, nonce: nonce, fullName: state.pendingFullName)
+                return signIn(idToken: credential.idToken, nonce: nonce)
 
             case let .signInResponse(.success(.member(user))):
                 state.isSigningIn = false
                 state.nonce = nil
-                state.pendingFullName = nil
                 return .send(.delegate(.signedIn(user)))
 
-            case let .signInResponse(.success(.newUser(user, fullName))):
+            case let .signInResponse(.success(.newUser(user))):
                 state.isSigningIn = false
                 state.nonce = nil
-                state.pendingFullName = nil
-                return .send(.delegate(.needsSignUp(user, fullName: fullName)))
+                return .send(.delegate(.needsSignUp(user)))
 
             case .signInResponse(.failure):
                 state.isSigningIn = false
@@ -114,17 +109,15 @@ extension SignInFeature {
         }
     }
 
-    private func signIn(idToken: String, nonce: String, fullName: String?) -> Effect<Action> {
+    private func signIn(idToken: String, nonce: String) -> Effect<Action> {
         .run { send in
             await send(.signInResponse(Result {
-                let user = try await authClient.signInWithApple(idToken, nonce, fullName)
+                let user = try await authClient.signInWithApple(idToken, nonce)
 
                 do {
                     let profile = try await userClient.fetchMyProfile()
 
-                    return profile != nil ?
-                        .member(user) :
-                        .newUser(user, fullName: user.fullName)
+                    return profile != nil ? .member(user) : .newUser(user)
                 } catch {
                     try? await authClient.signOut(nil)
                     throw error

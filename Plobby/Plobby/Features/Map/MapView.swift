@@ -169,9 +169,7 @@ private extension MapView {
                     .font(.system(size: 17.scaled, weight: .medium))
                     .foregroundStyle(Color(.textSecondary))
             } content: {
-                Text(SearchBarText.placeholder)
-                    .plobbyFont(.body)
-                    .foregroundStyle(Color(.gray600))
+                Text(SearchBarPlaceholder.beachOrResort)
             }
             .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
         }
