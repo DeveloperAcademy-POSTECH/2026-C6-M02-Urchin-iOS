@@ -1,5 +1,5 @@
 //
-//  BeachPicker.swift
+//  BeachPickerView.swift
 //  Plobby
 //
 //  Created by 이은지 on 11/4/26.
@@ -9,7 +9,7 @@ import SwiftUI
 
 import ComposableArchitecture
 
-struct BeachPicker: View {
+struct BeachPickerView: View {
 
     // MARK: - Properties
 
@@ -27,7 +27,7 @@ struct BeachPicker: View {
 
 // MARK: - 검색창
 
-private extension BeachPicker {
+private extension BeachPickerView {
     
     var searchBar: some View {
         SearchBar {
@@ -47,7 +47,7 @@ private extension BeachPicker {
 
 // MARK: - 지역·해변 영역
 
-private extension BeachPicker {
+private extension BeachPickerView {
 
     var regionSection: some View {
         HStack(spacing: 0) {
@@ -69,7 +69,7 @@ private extension BeachPicker {
 
 // MARK: - 지역 목록
 
-private extension BeachPicker {
+private extension BeachPickerView {
 
     var regionList: some View {
         VStack(spacing: 8.scaled) {
@@ -107,7 +107,7 @@ private extension BeachPicker {
 
 // MARK: - 해변 목록
 
-private extension BeachPicker {
+private extension BeachPickerView {
 
     var beachList: some View {
         ScrollView {

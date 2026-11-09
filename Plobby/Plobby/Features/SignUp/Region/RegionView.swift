@@ -21,7 +21,7 @@ struct RegionView: View {
         VStack(spacing: 0) {
             progressBar
             titleSection
-            BeachPicker(store: store.scope(state: \.picker, action: \.picker))
+            BeachPickerView(store: store.scope(state: \.picker, action: \.picker))
             nextButton
         }
     }

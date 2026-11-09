@@ -169,7 +169,7 @@
 		EC19674E309CE78F00BC4C19 /* CollectionCardFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */; };
 		ECD3271130A064E800C1E655 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271030A064E800C1E655 /* CollectionView.swift */; };
 		ECD3271330A064F000C1E655 /* CollectionFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271230A064F000C1E655 /* CollectionFeature.swift */; };
-		ECDDDAB4309AC1F800FB04D5 /* BeachPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* BeachPicker.swift */; };
+		ECDDDAB4309AC1F800FB04D5 /* BeachPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* BeachPickerView.swift */; };
 		ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27D3098338400C4916C /* AppDelegate.swift */; };
 		ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27E3098338400C4916C /* AppFeature.swift */; };
 		ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F27F3098338400C4916C /* ContentView.swift */; };
@@ -407,7 +407,7 @@
 		EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCardFeature.swift; sourceTree = "<group>"; };
 		ECD3271030A064E800C1E655 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		ECD3271230A064F000C1E655 /* CollectionFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionFeature.swift; sourceTree = "<group>"; };
-		ECDDDAB2309AC1F800FB04D5 /* BeachPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachPicker.swift; sourceTree = "<group>"; };
+		ECDDDAB2309AC1F800FB04D5 /* BeachPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachPickerView.swift; sourceTree = "<group>"; };
 		ECE6F27D3098338400C4916C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECE6F27E3098338400C4916C /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		ECE6F27F3098338400C4916C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -988,7 +988,7 @@
 		EC4E9E3430A1A4EB000E2C5F /* BeachPicker */ = {
 			isa = PBXGroup;
 			children = (
-				ECDDDAB2309AC1F800FB04D5 /* BeachPicker.swift */,
+				ECDDDAB2309AC1F800FB04D5 /* BeachPickerView.swift */,
 				7B3C1A23309D0000004C5301 /* BeachPickerFeature.swift */,
 			);
 			path = BeachPicker;
@@ -1621,7 +1621,7 @@
 				ECE6F2D63098338400C4916C /* AuthClient.swift in Sources */,
 				EC0D4B993098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift in Sources */,
 				EC0D4B953098E1D0000E7BB7 /* WithdrawalReason.swift in Sources */,
-				ECDDDAB4309AC1F800FB04D5 /* BeachPicker.swift in Sources */,
+				ECDDDAB4309AC1F800FB04D5 /* BeachPickerView.swift in Sources */,
 				7B3C1A22309D0000004C5301 /* BeachPickerFeature.swift in Sources */,
 				4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */,
 				DAEC87A8309C42CF0086965E /* LocationPickerView.swift in Sources */,
