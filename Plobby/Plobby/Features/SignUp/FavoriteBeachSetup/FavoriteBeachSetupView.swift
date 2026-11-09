@@ -1,5 +1,5 @@
 //
-//  RegionView.swift
+//  FavoriteBeachSetupView.swift
 //  Plobby
 //
 //  Created by 이은지 on 10/31/26.
@@ -9,11 +9,11 @@ import SwiftUI
 
 import ComposableArchitecture
 
-struct RegionView: View {
+struct FavoriteBeachSetupView: View {
     
     // MARK: - Properties
     
-    let store: StoreOf<RegionFeature>
+    let store: StoreOf<FavoriteBeachSetupFeature>
     
     // MARK: - Body
     
@@ -32,7 +32,7 @@ struct RegionView: View {
 
 // MARK: - Subviews
 
-private extension RegionView {
+private extension FavoriteBeachSetupView {
     
     var progressBar: some View {
         SignUpProgressBar(currentStep: 2, totalSteps: 2)
@@ -64,12 +64,12 @@ private extension RegionView {
 
 // MARK: - 하단 (고른 해변, 가입하기)
 
-private extension RegionView {
+private extension FavoriteBeachSetupView {
 
     var bottomSection: some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
             selectionSection
-            nextButton
+            signUpButton
         }
         .padding(.top, 16.scaled)
         .padding(.horizontal, 20.scaled)
@@ -143,9 +143,9 @@ private extension RegionView {
         .accessibilityLabel("\(beach.name) 선택 해제")
     }
     
-    var nextButton: some View {
+    var signUpButton: some View {
         PlobbyButton(text: "가입하기") {
-            store.send(.nextButtonTapped)
+            store.send(.signUpButtonTapped)
         }
         .disabled(store.picker.selectedBeachIDs.isEmpty)
     }

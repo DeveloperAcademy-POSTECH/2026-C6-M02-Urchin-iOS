@@ -13,7 +13,7 @@ struct TermsAgreementView: View {
 
     // MARK: - Properties
 
-    let store: StoreOf<SignUpFeature>
+    let store: StoreOf<TermsAgreementFeature>
     @Environment(\.openURL) private var openURL
 
     // MARK: - Body
@@ -50,7 +50,7 @@ struct TermsAgreementView: View {
             Spacer()
 
             PlobbyButton(text: "다음") {
-                store.send(.agreementNextButtonTapped)
+                store.send(.nextButtonTapped)
             }
             .disabled(!store.isAllAgreed)
         }
@@ -94,7 +94,7 @@ private extension TermsAgreementView {
     func agreementRow(
         _ title: String,
         isChecked: Bool,
-        action: SignUpFeature.Action,
+        action: TermsAgreementFeature.Action,
         detailLink: ServiceLink? = nil
     ) -> some View {
         HStack(spacing: 12.scaled) {
@@ -137,14 +137,4 @@ private extension TermsAgreementView {
             .contentTransition(.identity)
             .transaction { $0.animation = nil }
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    TermsAgreementView(
-        store: Store(initialState: SignUpFeature.State(user: AuthUser(id: UUID(), email: nil))) {
-            SignUpFeature()
-        }
-    )
 }

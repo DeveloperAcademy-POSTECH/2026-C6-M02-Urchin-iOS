@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B3C1A24309D0000004C5301 /* SignUpProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A25309D0000004C5301 /* SignUpProfileView.swift */; };
+		7B3C1A29309D0000004C5301 /* TermsAgreementFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2A309D0000004C5301 /* TermsAgreementFeature.swift */; };
+		7B3C1A27309D0000004C5301 /* ProfileSetupFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A28309D0000004C5301 /* ProfileSetupFeature.swift */; };
+		7B3C1A24309D0000004C5301 /* ProfileSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A25309D0000004C5301 /* ProfileSetupView.swift */; };
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */; };
@@ -212,10 +214,10 @@
 		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
 		ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BA3098338400C4916C /* OnboardingPage.swift */; };
 		ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BB3098338400C4916C /* OnboardingView.swift */; };
-		ECE6F2F83098338400C4916C /* CompleteFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BD3098338400C4916C /* CompleteFeature.swift */; };
-		ECE6F2F93098338400C4916C /* CompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BE3098338400C4916C /* CompleteView.swift */; };
-		ECE6F2FA3098338400C4916C /* RegionFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C03098338400C4916C /* RegionFeature.swift */; };
-		ECE6F2FB3098338400C4916C /* RegionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C13098338400C4916C /* RegionView.swift */; };
+		ECE6F2F83098338400C4916C /* SignUpCompleteFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BD3098338400C4916C /* SignUpCompleteFeature.swift */; };
+		ECE6F2F93098338400C4916C /* SignUpCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BE3098338400C4916C /* SignUpCompleteView.swift */; };
+		ECE6F2FA3098338400C4916C /* FavoriteBeachSetupFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C03098338400C4916C /* FavoriteBeachSetupFeature.swift */; };
+		ECE6F2FB3098338400C4916C /* FavoriteBeachSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C13098338400C4916C /* FavoriteBeachSetupView.swift */; };
 		ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C33098338400C4916C /* SignUpFeature.swift */; };
 		ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2C43098338400C4916C /* SignUpView.swift */; };
 		ECE6F2FE3098338400C4916C /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = ECE6F29B3098338400C4916C /* Config.xcconfig */; };
@@ -250,7 +252,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7B3C1A25309D0000004C5301 /* SignUpProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpProfileView.swift; sourceTree = "<group>"; };
+		7B3C1A2A309D0000004C5301 /* TermsAgreementFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAgreementFeature.swift; sourceTree = "<group>"; };
+		7B3C1A28309D0000004C5301 /* ProfileSetupFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupFeature.swift; sourceTree = "<group>"; };
+		7B3C1A25309D0000004C5301 /* ProfileSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupView.swift; sourceTree = "<group>"; };
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
 		0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachHomeFeature.swift; sourceTree = "<group>"; };
 		033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PhotoLibraryClient.swift"; sourceTree = "<group>"; };
@@ -452,10 +456,10 @@
 		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
 		ECE6F2BA3098338400C4916C /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
 		ECE6F2BB3098338400C4916C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		ECE6F2BD3098338400C4916C /* CompleteFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteFeature.swift; sourceTree = "<group>"; };
-		ECE6F2BE3098338400C4916C /* CompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteView.swift; sourceTree = "<group>"; };
-		ECE6F2C03098338400C4916C /* RegionFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionFeature.swift; sourceTree = "<group>"; };
-		ECE6F2C13098338400C4916C /* RegionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionView.swift; sourceTree = "<group>"; };
+		ECE6F2BD3098338400C4916C /* SignUpCompleteFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCompleteFeature.swift; sourceTree = "<group>"; };
+		ECE6F2BE3098338400C4916C /* SignUpCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCompleteView.swift; sourceTree = "<group>"; };
+		ECE6F2C03098338400C4916C /* FavoriteBeachSetupFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachSetupFeature.swift; sourceTree = "<group>"; };
+		ECE6F2C13098338400C4916C /* FavoriteBeachSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachSetupView.swift; sourceTree = "<group>"; };
 		ECE6F2C33098338400C4916C /* SignUpFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFeature.swift; sourceTree = "<group>"; };
 		ECE6F2C43098338400C4916C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		ECE6F2C73098338400C4916C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -505,6 +509,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B3C1A26309D0000004C5301 /* ProfileSetup */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A28309D0000004C5301 /* ProfileSetupFeature.swift */,
+				7B3C1A25309D0000004C5301 /* ProfileSetupView.swift */,
+			);
+			path = ProfileSetup;
+			sourceTree = "<group>";
+		};
 		0388DE9EE55A49C7010C48BD /* Response */ = {
 			isa = PBXGroup;
 			children = (
@@ -569,12 +582,13 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		7B3C1A0C309D0000004C5301 /* Terms */ = {
+		7B3C1A0C309D0000004C5301 /* TermsAgreement */ = {
 			isa = PBXGroup;
 			children = (
+				7B3C1A2A309D0000004C5301 /* TermsAgreementFeature.swift */,
 				7B3C1A0A309D0000004C5301 /* TermsAgreementView.swift */,
 			);
-			path = Terms;
+			path = TermsAgreement;
 			sourceTree = "<group>";
 		};
 		7B3C1A1B309D0000004C5301 /* TrashPile */ = {
@@ -1276,33 +1290,33 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		ECE6F2BF3098338400C4916C /* Complete */ = {
+		ECE6F2BF3098338400C4916C /* SignUpComplete */ = {
 			isa = PBXGroup;
 			children = (
-				ECE6F2BD3098338400C4916C /* CompleteFeature.swift */,
-				ECE6F2BE3098338400C4916C /* CompleteView.swift */,
+				ECE6F2BD3098338400C4916C /* SignUpCompleteFeature.swift */,
+				ECE6F2BE3098338400C4916C /* SignUpCompleteView.swift */,
 			);
-			path = Complete;
+			path = SignUpComplete;
 			sourceTree = "<group>";
 		};
-		ECE6F2C23098338400C4916C /* Region */ = {
+		ECE6F2C23098338400C4916C /* FavoriteBeachSetup */ = {
 			isa = PBXGroup;
 			children = (
-				ECE6F2C13098338400C4916C /* RegionView.swift */,
-				ECE6F2C03098338400C4916C /* RegionFeature.swift */,
+				ECE6F2C13098338400C4916C /* FavoriteBeachSetupView.swift */,
+				ECE6F2C03098338400C4916C /* FavoriteBeachSetupFeature.swift */,
 			);
-			path = Region;
+			path = FavoriteBeachSetup;
 			sourceTree = "<group>";
 		};
 		ECE6F2C53098338400C4916C /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
-				7B3C1A0C309D0000004C5301 /* Terms */,
-				ECE6F2BF3098338400C4916C /* Complete */,
-				ECE6F2C23098338400C4916C /* Region */,
+				7B3C1A0C309D0000004C5301 /* TermsAgreement */,
+				7B3C1A26309D0000004C5301 /* ProfileSetup */,
+				ECE6F2BF3098338400C4916C /* SignUpComplete */,
+				ECE6F2C23098338400C4916C /* FavoriteBeachSetup */,
 				ECE6F2C33098338400C4916C /* SignUpFeature.swift */,
 				ECE6F2C43098338400C4916C /* SignUpView.swift */,
-				7B3C1A25309D0000004C5301 /* SignUpProfileView.swift */,
 				7B3C1A21309D0000004C5301 /* SignUpProgressBar.swift */,
 			);
 			path = SignUp;
@@ -1749,17 +1763,19 @@
 				ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */,
 				DA688DCB3099CFB70064A2F4 /* RecordRewardFeature.swift in Sources */,
 				ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */,
-				ECE6F2F83098338400C4916C /* CompleteFeature.swift in Sources */,
+				ECE6F2F83098338400C4916C /* SignUpCompleteFeature.swift in Sources */,
 				DA5B10E730998932003FEDF9 /* RecordFlowFeature.swift in Sources */,
-				ECE6F2F93098338400C4916C /* CompleteView.swift in Sources */,
-				ECE6F2FA3098338400C4916C /* RegionFeature.swift in Sources */,
-				ECE6F2FB3098338400C4916C /* RegionView.swift in Sources */,
+				ECE6F2F93098338400C4916C /* SignUpCompleteView.swift in Sources */,
+				ECE6F2FA3098338400C4916C /* FavoriteBeachSetupFeature.swift in Sources */,
+				ECE6F2FB3098338400C4916C /* FavoriteBeachSetupView.swift in Sources */,
 				DA0A9CFB309A140D006D2504 /* DatePickerFeature.swift in Sources */,
 				44553F7E8DF0475F4F9BF678 /* DatePickerView.swift in Sources */,
 				ECE6F2FC3098338400C4916C /* SignUpFeature.swift in Sources */,
 				EC17D65B309D82630031D2BD /* SignInFeature.swift in Sources */,
 				ECE6F2FD3098338400C4916C /* SignUpView.swift in Sources */,
-				7B3C1A24309D0000004C5301 /* SignUpProfileView.swift in Sources */,
+				7B3C1A29309D0000004C5301 /* TermsAgreementFeature.swift in Sources */,
+				7B3C1A27309D0000004C5301 /* ProfileSetupFeature.swift in Sources */,
+				7B3C1A24309D0000004C5301 /* ProfileSetupView.swift in Sources */,
 				7B3C1A20309D0000004C5301 /* SignUpProgressBar.swift in Sources */,
 				7B3C1A0B309D0000004C5301 /* TermsAgreementView.swift in Sources */,
 				7B3C1A09309D0000004C5301 /* ServiceLink.swift in Sources */,

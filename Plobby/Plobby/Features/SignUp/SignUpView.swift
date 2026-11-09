@@ -19,23 +19,24 @@ struct SignUpView: View {
 
     var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-            TermsAgreementView(store: store)
+            // 1. 약관 동의 (시작 화면)
+            TermsAgreementView(store: store.scope(state: \.termsAgreement, action: \.termsAgreement))
         } destination: { pathStore in
             switch pathStore.case {
-            case .profile:
-                SignUpProfileView(store: store)
+            // 2. 프로필 설정
+            case let .profileSetup(store):
+                ProfileSetupView(store: store)
                     .plobbyNavigationTitle("회원가입")
 
-            case let .region(store):
-                RegionView(store: store)
+            // 3. 관심 해변 설정
+            case let .favoriteBeachSetup(store):
+                FavoriteBeachSetupView(store: store)
                     .plobbyNavigationTitle("회원가입")
 
+            // 4. 회원가입 완료
             case let .complete(store):
-                CompleteView(store: store)
+                SignUpCompleteView(store: store)
             }
-        }
-        .fullScreenCover(item: $store.scope(state: \.photoPicker, action: \.photoPicker)) { store in
-            PhotosPickerView(store: store)
         }
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
     }
@@ -43,19 +44,10 @@ struct SignUpView: View {
 
 // MARK: - Preview
 
-#Preview("프로필 등록") {
-    let store = Store(
-        initialState: {
-            var state = SignUpFeature.State(user: AuthUser(id: UUID(), email: nil))
-            state.isAgeConfirmed = true
-            state.isTermsAgreed = true
-            state.isPrivacyAgreed = true
-            return state
-        }()
-    ) {
-        SignUpFeature()
-    }
-    let _ = store.send(.agreementNextButtonTapped)
-
-    SignUpView(store: store)
+#Preview {
+    SignUpView(
+        store: Store(initialState: SignUpFeature.State(user: AuthUser(id: UUID(), email: nil))) {
+            SignUpFeature()
+        }
+    )
 }

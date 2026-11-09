@@ -1,5 +1,5 @@
 //
-//  CompleteView.swift
+//  SignUpCompleteView.swift
 //  Plobby
 //
 //  Created by 이은지 on 10/31/26.
@@ -9,11 +9,11 @@ import SwiftUI
 
 import ComposableArchitecture
 
-struct CompleteView: View {
+struct SignUpCompleteView: View {
     
     // MARK: - Properties
     
-    let store: StoreOf<CompleteFeature>
+    let store: StoreOf<SignUpCompleteFeature>
     
     // MARK: - Body
     
@@ -35,14 +35,4 @@ struct CompleteView: View {
         }
         .navigationBarBackButtonHidden()
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    CompleteView(
-        store: Store(initialState: CompleteFeature.State()) {
-            CompleteFeature()
-        }
-    )
 }

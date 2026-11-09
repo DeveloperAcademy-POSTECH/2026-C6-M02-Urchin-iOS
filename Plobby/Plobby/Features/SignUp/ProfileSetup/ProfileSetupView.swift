@@ -1,5 +1,5 @@
 //
-//  SignUpProfileView.swift
+//  ProfileSetupView.swift
 //  Plobby
 //
 //  Created by 이은지 on 11/9/26.
@@ -9,11 +9,11 @@ import SwiftUI
 
 import ComposableArchitecture
 
-struct SignUpProfileView: View {
+struct ProfileSetupView: View {
 
     // MARK: - Properties
 
-    @Bindable var store: StoreOf<SignUpFeature>
+    @Bindable var store: StoreOf<ProfileSetupFeature>
     @State private var nicknameText = ""
     @FocusState private var isNicknameFocused: Bool
 
@@ -30,12 +30,16 @@ struct SignUpProfileView: View {
             
             nextButton
         }
+        .fullScreenCover(item: $store.scope(state: \.photoPicker, action: \.photoPicker)) { store in
+            PhotosPickerView(store: store)
+        }
+        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
     }
 }
 
 // MARK: - 상단 (진행 바, 제목)
 
-private extension SignUpProfileView {
+private extension ProfileSetupView {
     
     var progressBar: some View {
         SignUpProgressBar(currentStep: 1, totalSteps: 2)
@@ -62,7 +66,7 @@ private extension SignUpProfileView {
 
 // MARK: - 프로필 사진
 
-private extension SignUpProfileView {
+private extension ProfileSetupView {
     
     var profilePhotoSection: some View {
         Button {
@@ -106,7 +110,7 @@ private extension SignUpProfileView {
 
 // MARK: - 닉네임
 
-private extension SignUpProfileView {
+private extension ProfileSetupView {
 
     var nicknameSection: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -190,7 +194,7 @@ private extension SignUpProfileView {
 
 // MARK: - 다음
 
-private extension SignUpProfileView {
+private extension ProfileSetupView {
 
     var nextButton: some View {
         PlobbyButton(text: "다음") {
