@@ -120,6 +120,7 @@ private extension CollectionCardView {
             count: store.collectedCount,
             isActive: isActive
         )
+        .id(store.collectedCount)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 16.scaled)
         .padding(.bottom, 8.scaled)
@@ -183,7 +184,6 @@ private extension CollectionCardView {
             .padding(.horizontal, 20.scaled)
     }
 
-    /// 종류별로 지켜낸 바다 생물 일러스트예요. 작은 화면에서 글이 넘치지 않게, 공간이 모자라면 일러스트가 먼저 줄어들어요
     var illustration: some View {
         Image(store.category.collectionIllustrationName)
             .resizable()
