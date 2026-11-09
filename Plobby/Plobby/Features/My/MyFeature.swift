@@ -22,6 +22,8 @@ struct MyFeature {
         var savedProfileImage: Data?
         var records: [RecordSummary] = []
         var recordFilter: RecordFilter = .all
+        var removedFavoriteBeach: RemovedFavoriteBeach?
+        var toast = ToastFeature.State()
         @Presents var profileEdit: ProfileEditFeature.State?
         @Presents var settings: SettingsFeature.State?
         @Presents var recordDetail: RecordDetailFeature.State?
@@ -34,6 +36,24 @@ struct MyFeature {
 
             return records.filter { $0.recordType == recordType }
         }
+
+        var collectedTrashCount: Int {
+            records.reduce(0) { $0 + $1.trashCount }
+        }
+
+        var collectedWeightKg: Double {
+            records.reduce(0) { $0 + ($1.weightKg ?? 0) }
+        }
+
+        var isFavoriteBeachLimitReached: Bool {
+            favoriteBeaches.count >= HomeFeature.maximumFavoriteBeachCount
+        }
+    }
+
+    /// 되돌리기를 누르면 원래 자리로 돌려놓기 위해 해제한 위치를 함께 둬요.
+    struct RemovedFavoriteBeach: Equatable {
+        let beach: Beach
+        let index: Int
     }
 
     // MARK: - Action
@@ -45,8 +65,11 @@ struct MyFeature {
         case recordsResponse(Result<[RecordSummary], any Error>)
         case profileEditButtonTapped
         case settingsButtonTapped
-        case favoriteBeachManageButtonTapped
+        case favoriteBeachAddButtonTapped
         case favoriteBeachTapped(Beach)
+        case favoriteBeachUnfavoriteButtonTapped(Beach)
+        case favoriteBeachUndoButtonTapped
+        case favoriteBeachRequestFailed(Beach, isFavorite: Bool)
         case recordFilterChanged(RecordFilter)
         case recordTapped(RecordSummary.ID)
         case appleLoginButtonTapped
@@ -55,6 +78,7 @@ struct MyFeature {
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
         case beachHome(PresentationAction<BeachHomeFeature.Action>)
         case beachRecordDetail(PresentationAction<RecordDetailFeature.Action>)
+        case toast(ToastFeature.Action)
         case delegate(Delegate)
 
         enum Delegate {
@@ -73,6 +97,10 @@ struct MyFeature {
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
+        Scope(state: \.toast, action: \.toast) {
+            ToastFeature()
+        }
+
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -102,11 +130,41 @@ struct MyFeature {
                 PlobbyLogger.error(error)
                 return .none
 
-            case .favoriteBeachManageButtonTapped:
+            // TODO: 관심 해변 추가 화면 연결 (별도 이슈에서 구현)
+            case .favoriteBeachAddButtonTapped:
                 return .none
 
             case let .favoriteBeachTapped(beach):
                 state.beachHome = BeachHomeFeature.State(beach: beach)
+                return .none
+
+            case let .favoriteBeachUnfavoriteButtonTapped(beach):
+                guard let index = state.favoriteBeaches.firstIndex(where: { $0.id == beach.id }) else { return .none }
+
+                state.$favoriteBeaches.withLock { _ = $0.remove(at: index) }
+                state.removedFavoriteBeach = RemovedFavoriteBeach(beach: beach, index: index)
+                return .merge(
+                    requestFavoriteBeach(beach, isFavorite: false),
+                    .send(.toast(.show("관심 해변을 해제했어요")))
+                )
+
+            case .favoriteBeachUndoButtonTapped:
+                guard let removedFavoriteBeach = state.removedFavoriteBeach else { return .none }
+
+                state.removedFavoriteBeach = nil
+                restoreFavoriteBeach(removedFavoriteBeach, in: state.$favoriteBeaches)
+                return .merge(
+                    requestFavoriteBeach(removedFavoriteBeach.beach, isFavorite: true),
+                    .send(.toast(.toastDismissed))
+                )
+
+            case let .favoriteBeachRequestFailed(beach, isFavorite):
+                state.removedFavoriteBeach = nil
+                FavoriteBeachToggle.revert(beach, isFavorite: isFavorite, in: state.$favoriteBeaches)
+                return .send(.toast(.show(isFavorite ? "관심 해변을 되돌리지 못했어요" : "관심 해변을 해제하지 못했어요")))
+
+            case .toast(.toastDismissed):
+                state.removedFavoriteBeach = nil
                 return .none
 
             case let .recordFilterChanged(filter):
@@ -179,7 +237,7 @@ struct MyFeature {
                 state.beachRecordDetail = nil
                 return .send(.beachHome(.presented(.userBlocked(userID))))
 
-            case .profileEdit, .settings, .recordDetail, .beachHome, .beachRecordDetail, .delegate:
+            case .profileEdit, .settings, .recordDetail, .beachHome, .beachRecordDetail, .toast, .delegate:
                 return .none
             }
         }
@@ -220,6 +278,25 @@ extension MyFeature {
     private func fetchRecords(userID: UUID) -> Effect<Action> {
         .run { send in
             await send(.recordsResponse(Result { try await recordClient.fetchUserRecords(userID) }))
+        }
+    }
+
+    private func requestFavoriteBeach(_ beach: Beach, isFavorite: Bool) -> Effect<Action> {
+        .run { send in
+            do {
+                try await FavoriteBeachToggle.request(beach, isFavorite: isFavorite, beachClient: beachClient)
+            } catch {
+                PlobbyLogger.error(error)
+                await send(.favoriteBeachRequestFailed(beach, isFavorite: isFavorite))
+            }
+        }
+    }
+
+    private func restoreFavoriteBeach(_ removed: RemovedFavoriteBeach, in favoriteBeaches: Shared<[Beach]>) {
+        favoriteBeaches.withLock {
+            guard !$0.contains(where: { $0.id == removed.beach.id }) else { return }
+
+            $0.insert(removed.beach, at: min(removed.index, $0.count))
         }
     }
 }

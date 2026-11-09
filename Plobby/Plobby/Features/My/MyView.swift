@@ -21,7 +21,7 @@ struct MyView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            header
+            navigationBar
                 .padding(.horizontal, 20.scaled)
 
             if case .member = store.membershipStatus {
@@ -32,6 +32,11 @@ struct MyView: View {
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .plobbyToast(
+            store.toast.toastMessage,
+            actionTitle: store.removedFavoriteBeach == nil ? nil : "되돌리기",
+            action: { store.send(.favoriteBeachUndoButtonTapped, animation: Self.favoriteBeachAnimation) }
+        )
         .onAppear {
             store.send(.onAppear)
         }
@@ -41,36 +46,31 @@ struct MyView: View {
     }
 }
 
-// MARK: - Subviews
+// MARK: - Navigation Bar
 
 extension MyView {
 
-    /// 회원은 함께 보이는 설정 목록이 내비게이션 바를 숨겨서, 직접 뒤로가기 버튼을 둬요
-    private var backButton: some View {
-        Button {
-            dismiss()
-        } label: {
-            Image(.chevronLeft)
-                .resizable()
-                .frame(width: 24.scaled, height: 24.scaled)
-                .frame(width: 44.scaled, height: 44.scaled)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .padding(.leading, -10.scaled)
-        .accessibilityLabel("뒤로")
-    }
-
-    private var header: some View {
-        HStack(alignment: .center, spacing: 4.scaled) {
-            backButton
-
-            Text("마이")
-                .plobbyFont(.heading)
-                .foregroundStyle(Color(.textPrimary))
-                .frame(maxWidth: .infinity, alignment: .leading)
+    private var navigationBar: some View {
+        HStack(alignment: .center, spacing: 0) {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 17.scaled, weight: .medium))
+                    .foregroundStyle(Color(.textPrimary))
+                    .frame(width: 32.scaled, height: 44.scaled, alignment: .leading)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("뒤로")
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             settingsButton
+        }
+        .overlay {
+            Text("마이")
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
         }
         .frame(height: 56.scaled)
     }
@@ -88,6 +88,51 @@ extension MyView {
         .buttonStyle(.plain)
         .accessibilityLabel("설정")
     }
+}
+
+// MARK: - Content
+
+extension MyView {
+
+    private var memberContent: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 16.scaled) {
+                    profile
+
+                    activitySummary
+                }
+                .padding(.horizontal, 20.scaled)
+                .padding(.bottom, 16.scaled)
+
+                favoriteBeachSection
+                    .padding(.top, 16.scaled)
+                    .padding(.bottom, 24.scaled)
+
+                RecordListSection(
+                    records: store.filteredRecords,
+                    selectedFilter: store.recordFilter,
+                    onFilterChanged: { store.send(.recordFilterChanged($0)) },
+                    onRecordTapped: { store.send(.recordTapped($0)) }
+                )
+                .padding(.horizontal, 20.scaled)
+                .padding(.top, 16.scaled)
+            }
+            .padding(.bottom, 24.scaled)
+        }
+    }
+
+    private func sectionTitle(_ title: String) -> some View {
+        Text(title)
+            .plobbyFont(.cardTitle)
+            .foregroundStyle(Color(.textPrimary))
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+// MARK: - 프로필
+
+extension MyView {
 
     private var profile: some View {
         HStack(alignment: .center, spacing: 16.scaled) {
@@ -99,28 +144,6 @@ extension MyView {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             profileEditButton
-        }
-        .padding(.top, 16.scaled)
-    }
-
-    /// 비회원에게 로그인을 안내하고 바로 Apple 로그인을 할 수 있게 해요
-    private var guestLoginPrompt: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("로그인하고 내 활동을 기록해보세요")
-                .plobbyFont(.heading)
-                .foregroundStyle(Color(.textPrimary))
-
-            Text("로그인 후 내 기록과 프로필을 관리할 수 있어요.")
-                .plobbyFont(.label)
-                .foregroundStyle(Color(.textSecondary))
-                .padding(.top, 8.scaled)
-
-            Button {
-                store.send(.appleLoginButtonTapped)
-            } label: {
-                AppleLoginLabel()
-            }
-            .padding(.top, 24.scaled)
         }
         .padding(.top, 16.scaled)
     }
@@ -162,27 +185,65 @@ extension MyView {
                 }
         }
     }
+}
 
-    private var memberContent: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 40.scaled) {
-                profile
-                    .padding(.horizontal, 20.scaled)
+// MARK: - 활동 요약
 
-                favoriteBeachSection
+extension MyView {
 
-                recordSection
-                    .padding(.horizontal, 20.scaled)
-            }
-            .padding(.bottom, 24.scaled)
+    private var activitySummary: some View {
+        HStack(alignment: .center, spacing: 8.scaled) {
+            activitySummaryCard(title: "활동 기록", value: "\(store.records.count)개")
+            activitySummaryCard(title: "수거 개수", value: "\(store.collectedTrashCount)개")
+            activitySummaryCard(
+                title: "수거 무게",
+                value: "\(store.collectedWeightKg.formatted(.number.precision(.fractionLength(0...1))))kg"
+            )
         }
     }
 
-    private func sectionTitle(_ title: String) -> some View {
-        Text(title)
-            .plobbyFont(.cardTitle)
-            .foregroundStyle(Color(.textPrimary))
-            .frame(maxWidth: .infinity, alignment: .leading)
+    private func activitySummaryCard(title: String, value: String) -> some View {
+        VStack(alignment: .center, spacing: 4.scaled) {
+            Text(title)
+                .plobbyFont(.metadata)
+                .foregroundStyle(Color(.textTertiary))
+
+            Text(value)
+                .plobbyFont(.metric)
+                .foregroundStyle(Color(.currentBrandText))
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12.scaled)
+        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12.scaled))
+    }
+}
+
+// MARK: - 비회원
+
+extension MyView {
+
+    /// 비회원에게 로그인을 안내하고 바로 Apple 로그인을 할 수 있게 해요
+    private var guestLoginPrompt: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("로그인하고 내 활동을 기록해보세요")
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.textPrimary))
+
+            Text("로그인 후 내 기록과 프로필을 관리할 수 있어요.")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textSecondary))
+                .padding(.top, 8.scaled)
+
+            Button {
+                store.send(.appleLoginButtonTapped)
+            } label: {
+                AppleLoginLabel()
+            }
+            .padding(.top, 24.scaled)
+        }
+        .padding(.top, 16.scaled)
     }
 }
 
@@ -190,36 +251,26 @@ extension MyView {
 
 extension MyView {
 
-    /// 누르는 영역은 44pt로 넓히되, 제목 줄 높이는 디자인대로 유지해요.
-    private static let manageButtonTouchInset: CGFloat = 11
+    /// 관심 해변을 해제하거나 되돌릴 때 카드가 천천히 빠지고 돌아오게 해요.
+    private static let favoriteBeachAnimation: Animation = .easeInOut(duration: 0.3)
 
     private var favoriteBeachSection: some View {
         VStack(alignment: .leading, spacing: 16.scaled) {
             HStack(alignment: .center, spacing: 0) {
                 sectionTitle("관심 해변")
 
-                Button {
-                    store.send(.favoriteBeachManageButtonTapped)
-                } label: {
-                    Text("관리")
-                        .plobbyFont(.label)
-                        .foregroundStyle(Color(.textSecondary))
-                        .padding(.vertical, Self.manageButtonTouchInset.scaled)
-                        .contentShape(Rectangle())
-                        .padding(.vertical, -Self.manageButtonTouchInset.scaled)
-                }
-                .buttonStyle(.plain)
+                favoriteBeachAddButton
             }
             .padding(.horizontal, 20.scaled)
 
             if store.favoriteBeaches.isEmpty {
-                Text("관리에서 자주 가는 해변을 추가해 보세요")
+                Text("+를 눌러 자주 가는 해변을 추가해 보세요")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.textTertiary))
                     .padding(.horizontal, 20.scaled)
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(alignment: .center, spacing: 8.scaled) {
+                    HStack(alignment: .center, spacing: 12.scaled) {
                         ForEach(store.favoriteBeaches) { beach in
                             Button {
                                 store.send(.favoriteBeachTapped(beach))
@@ -227,6 +278,7 @@ extension MyView {
                                 favoriteBeachCard(beach)
                             }
                             .buttonStyle(.plain)
+                            .transition(.opacity.combined(with: .scale(scale: 0.9)))
                         }
                     }
                     .padding(.horizontal, 20.scaled)
@@ -235,11 +287,27 @@ extension MyView {
         }
     }
 
+    /// 관심 해변이 최대 개수만큼 있으면 더 추가할 수 없어서 흐리게 보여줘요.
+    private var favoriteBeachAddButton: some View {
+        Button {
+            store.send(.favoriteBeachAddButtonTapped)
+        } label: {
+            Image(systemName: "plus.circle")
+                .font(.system(size: 20.scaled, weight: .regular))
+                .foregroundStyle(store.isFavoriteBeachLimitReached ? Color(.textTertiary) : Color(.textPrimary))
+                .frame(width: 24.scaled, height: 24.scaled)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(store.isFavoriteBeachLimitReached)
+        .accessibilityLabel("관심 해변 추가")
+    }
+
     private func favoriteBeachCard(_ beach: Beach) -> some View {
         HStack(alignment: .center, spacing: 12.scaled) {
             VStack(alignment: .leading, spacing: 2.scaled) {
                 Text(beach.name)
-                    .plobbyFont(.labelSelected)
+                    .plobbyFont(.actionLabel)
                     .foregroundStyle(Color(.textPrimary))
 
                 Text(beach.address)
@@ -249,203 +317,26 @@ extension MyView {
             .lineLimit(1)
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Image(systemName: "chevron.right")
-                .font(.system(size: 14.scaled, weight: .medium))
-                .foregroundStyle(Color(.textTertiary))
+            Button {
+                store.send(.favoriteBeachUnfavoriteButtonTapped(beach), animation: Self.favoriteBeachAnimation)
+            } label: {
+                Image(systemName: "star.fill")
+                    .font(.system(size: 12.scaled, weight: .regular))
+                    .foregroundStyle(Color(.green500))
+                    .frame(width: 15.scaled, height: 14.scaled)
+                    .frame(width: 32.scaled, height: 32.scaled)
+                    .background(Color(.gray50), in: Circle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("관심 해변 해제")
         }
         .padding(.horizontal, 16.scaled)
-        .padding(.vertical, 12.scaled)
-        .frame(width: 172.scaled)
-        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12.scaled))
-    }
-}
-
-// MARK: - 활동 기록
-
-extension MyView {
-
-    private static let recentDayCount = 7
-
-    private var recordSection: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            sectionTitle("활동 기록")
-
-            recordFilterChips
-                .padding(.top, 16.scaled)
-
-            Text("\(store.filteredRecords.count)개")
-                .plobbyFont(.metadata)
-                .foregroundStyle(Color(.gray600))
-                .padding(.top, 16.scaled)
-
-            if store.filteredRecords.isEmpty {
-                Text("아직 활동 기록이 없어요")
-                    .plobbyFont(.label)
-                    .foregroundStyle(Color(.textTertiary))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 40.scaled)
-            } else {
-                recordList
-            }
+        .padding(.vertical, 14.scaled)
+        .frame(width: 210.scaled)
+        .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 16.scaled))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16.scaled)
+                .stroke(Color(.currentWarmBorder), lineWidth: 1)
         }
-    }
-
-    private var recordFilterChips: some View {
-        HStack(alignment: .center, spacing: 8.scaled) {
-            ForEach(RecordFilter.allCases, id: \.self) { filter in
-                let isSelected = store.recordFilter == filter
-
-                Button {
-                    store.send(.recordFilterChanged(filter))
-                } label: {
-                    Text(filter.title)
-                        .plobbyFont(.labelSelected)
-                        .foregroundStyle(isSelected ? Color(.gray0) : Color(.textPrimary))
-                        .padding(.horizontal, 16.scaled)
-                        .frame(height: 36.scaled)
-                        .background(isSelected ? Color(.gray800) : Color(.gray50), in: Capsule())
-                        .overlay {
-                            if !isSelected {
-                                Capsule()
-                                    .stroke(Color(.currentWarmBorder), lineWidth: 1)
-                            }
-                        }
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
-
-    private var recordList: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ForEach(store.filteredRecords) { record in
-                Button {
-                    store.send(.recordTapped(record.id))
-                } label: {
-                    recordRow(record)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-
-                if record.id != store.filteredRecords.last?.id {
-                    Divider()
-                }
-            }
-        }
-    }
-
-    private func recordRow(_ record: RecordSummary) -> some View {
-        HStack(alignment: .top, spacing: 32.scaled) {
-            VStack(alignment: .leading, spacing: 0) {
-                Text(record.title)
-                    .plobbyFont(.actionLabel)
-                    .foregroundStyle(Color(.textPrimary))
-                    .lineLimit(1)
-
-                recordDate(record.createdAt)
-                    .plobbyFont(.metadata)
-                    .foregroundStyle(Color(.gray600))
-                    .padding(.top, 6.scaled)
-
-                if record.likeCount > 0 {
-                    HStack(alignment: .center, spacing: 2.scaled) {
-                        Image(systemName: "heart")
-                        Text("\(record.likeCount)")
-                    }
-                    .plobbyFont(.metadata)
-                    .foregroundStyle(Color(.gray600))
-                    .frame(maxHeight: .infinity, alignment: .bottomLeading)
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-
-            AsyncImage(url: record.coverPhotoURL) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-            } placeholder: {
-                Color(.gray50)
-            }
-            .frame(width: 108.scaled, height: 108.scaled)
-            .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
-        }
-        .frame(height: 108.scaled)
-        .padding(.vertical, 16.scaled)
-    }
-
-    /// 최근 7일 안의 기록은 "1일 전"처럼, 그보다 오래된 기록은 "2026.10.08"처럼 보여줘요.
-    private func recordDate(_ date: Date) -> Text {
-        let recentLimit = Calendar.current.date(byAdding: .day, value: -Self.recentDayCount, to: .now) ?? .now
-        let dateFormat = Date.VerbatimFormatStyle(
-            format: "\(year: .defaultDigits).\(month: .twoDigits).\(day: .twoDigits)",
-            timeZone: .current,
-            calendar: .current
-        )
-
-        return date > recentLimit
-            ? Text(date, format: .relative(presentation: .numeric))
-            : Text(date, format: dateFormat)
-    }
-}
-
-// TODO: 구현 끝나면 삭제
-
-#Preview {
-    NavigationStack {
-        MyView(store: Store(initialState: .preview) {
-            EmptyReducer()
-        })
-    }
-}
-
-private extension MyFeature.State {
-
-    static var preview: Self {
-        @Shared(.membershipStatus) var membershipStatus
-        $membershipStatus.withLock { $0 = .member(AuthUser(id: UUID(), email: nil, fullName: nil)) }
-
-        var state = Self()
-        state.profile = Profile(userID: UUID(), nickname: "포항물회", profileImageKey: nil, profileImageURL: nil)
-        state.$favoriteBeaches.withLock {
-            $0 = [
-                Beach(id: UUID(), region: .east, name: "송도 해수욕장", address: "경북 포항시 남구", latitude: 0, longitude: 0),
-                Beach(id: UUID(), region: .east, name: "안목 해변", address: "강원 강릉시", latitude: 0, longitude: 0),
-                Beach(id: UUID(), region: .south, name: "부산 송도 해수욕장", address: "부산 서구", latitude: 0, longitude: 0)
-            ]
-        }
-        state.records = [
-            .preview(title: "영일대 해수욕장 플로깅", recordType: .plogging, daysAgo: 1, likeCount: 12),
-            .preview(title: "송도 해수욕장 플로깅", recordType: .plogging, daysAgo: 32, likeCount: 12),
-            .preview(title: "칠포 해수욕장 플로빙", recordType: .plobbing, daysAgo: 18, likeCount: 0)
-        ]
-        return state
-    }
-}
-
-private extension RecordSummary {
-
-    static func preview(title: String, recordType: RecordType, daysAgo: Int, likeCount: Int) -> Self {
-        let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: .now) ?? .now
-
-        return RecordSummary(
-            id: UUID(),
-            userID: UUID(),
-            beachID: UUID(),
-            beachName: "송도 해수욕장",
-            recordType: recordType,
-            title: title,
-            startedAt: date,
-            endedAt: date,
-            weightKg: nil,
-            depthM: nil,
-            trashCount: 5,
-            nickname: "포항물회",
-            profileImageURL: nil,
-            coverPhotoURL: nil,
-            trashNames: nil,
-            likeCount: likeCount,
-            likedByMe: false,
-            createdAt: date
-        )
     }
 }
