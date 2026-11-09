@@ -24,13 +24,3 @@ struct SignUpProgressBar: View {
         .accessibilityLabel("회원가입 \(totalSteps)단계 중 \(currentStep)단계")
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    VStack(spacing: 24) {
-        SignUpProgressBar(currentStep: 1, totalSteps: 2)
-        SignUpProgressBar(currentStep: 2, totalSteps: 2)
-    }
-    .padding(.horizontal, 20)
-}
