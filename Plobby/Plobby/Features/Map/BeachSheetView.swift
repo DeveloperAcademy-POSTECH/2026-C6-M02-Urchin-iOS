@@ -53,6 +53,7 @@ struct BeachSheetView: View {
         .padding(.bottom, 16.scaled)
         .animation(.easeInOut(duration: 0.2), value: store.content)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .background(Color(.gray0))
         .task(id: store.beach.id) {
             await store.send(.task).finish()
         }
