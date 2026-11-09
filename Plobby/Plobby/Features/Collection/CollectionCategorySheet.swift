@@ -38,7 +38,6 @@ private extension CollectionCategorySheet {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 0) {
                 title
-                subTitle
             }
             
             Spacer()
@@ -53,14 +52,6 @@ private extension CollectionCategorySheet {
         Text("전체 분류")
             .plobbyFont(.headingLarge)
             .foregroundStyle(Color(.textPrimary))
-            .padding(.leading, 20.scaled)
-    }
-    
-    var subTitle: some View {
-        Text("이번 시범에서는 플라스틱, 유리, 나무를 선택할 수 있어요.")
-            .plobbyFont(.helper)
-            .foregroundStyle(Color(.textSecondary))
-            .padding(.top, 3.scaled)
             .padding(.leading, 20.scaled)
     }
 
@@ -131,7 +122,6 @@ private extension CollectionCategorySheet {
             }
         }
         .buttonStyle(.plain)
-        .disabled(!CollectionFeature.selectableCategories.contains(category))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 

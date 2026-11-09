@@ -80,10 +80,38 @@ private extension CollectionCardView {
         cardFace(
             VStack(spacing: 0) {
                 header
-                trashPile
+
+                if store.collectedCount > 0 {
+                    trashPile
+                } else {
+                    emptyState
+                }
+
                 collectedCountLabel
             }
         )
+    }
+
+    var emptyState: some View {
+        VStack(spacing: 0) {
+            Image(store.category.thumbnailName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 80.scaled, height: 80.scaled)
+                .padding(.bottom, 20.scaled)
+
+            Text("아직 수거 기록이 없어요")
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.gray0))
+                .padding(.bottom, 8.scaled)
+
+            Text("\(store.category.name)\(store.category.name.objectParticle) 수거한 활동을 기록하면\n이 카드에 차곡차곡 쌓여요.")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textDisabled))
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, 16.scaled)
     }
 
     var trashPile: some View {
@@ -92,6 +120,7 @@ private extension CollectionCardView {
             count: store.collectedCount,
             isActive: isActive
         )
+        .id(store.collectedCount)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 16.scaled)
         .padding(.bottom, 8.scaled)
@@ -101,7 +130,7 @@ private extension CollectionCardView {
         HStack(alignment: .lastTextBaseline) {
             Text("지금까지 모은 개수")
                 .plobbyFont(.metadata)
-                .foregroundStyle(Color(.gray500))
+                .foregroundStyle(Color(.textDisabled))
 
             Spacer()
 
@@ -155,12 +184,14 @@ private extension CollectionCardView {
             .padding(.horizontal, 20.scaled)
     }
 
-    // TODO: 종류별 일러스트 에셋 나오면 교체
     var illustration: some View {
-        Color.clear
-            .frame(width: 167.scaled)
-            .frame(minHeight: 0, maxHeight: 141.scaled)
+        Image(store.category.collectionIllustrationName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 242.scaled)
+            .frame(minHeight: 0, maxHeight: 176.scaled)
             .padding(.top, 30.scaled)
+            .accessibilityHidden(true)
     }
 
     func factDescription(_ text: String) -> some View {
