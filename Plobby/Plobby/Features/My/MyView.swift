@@ -15,6 +15,7 @@ struct MyView: View {
 
     let store: StoreOf<MyFeature>
     @State private var savedProfileImage: UIImage?
+    @Environment(\.dismiss) private var dismiss
 
     // MARK: - Body
 
@@ -43,8 +44,26 @@ struct MyView: View {
 
 extension MyView {
 
+    /// 회원은 함께 보이는 설정 목록이 내비게이션 바를 숨겨서, 직접 뒤로가기 버튼을 둬요
+    private var backButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(.chevronLeft)
+                .resizable()
+                .frame(width: 24, height: 24)
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .padding(.leading, -10)
+        .accessibilityLabel("뒤로")
+    }
+
     private var header: some View {
-        HStack(alignment: .center, spacing: 0) {
+        HStack(alignment: .center, spacing: 4) {
+            backButton
+
             Text("마이")
                 .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 20))
                 .foregroundStyle(Color(.textPrimary))

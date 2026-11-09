@@ -17,7 +17,9 @@ struct CollectionFeature {
         @Shared(.membershipStatus) var membershipStatus
         @Presents var my: MyFeature.State?
         var profile: Profile?
-        var card = CollectionCardFeature.State()
+        var cards: IdentifiedArrayOf<CollectionCardFeature.State> = CollectionFeature.initialCards
+        var selectedCategory: TrashCategory = .plastic
+        var isCategorySheetPresented = false
     }
 
     // MARK: - Action
@@ -26,7 +28,11 @@ struct CollectionFeature {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
         case profileTapped
-        case card(CollectionCardFeature.Action)
+        case allCategoryTapped
+        case categorySheetPresentationChanged(Bool)
+        case categoryTapped(TrashCategory)
+        case cardScrolled(TrashCategory)
+        case cards(IdentifiedActionOf<CollectionCardFeature>)
         case my(PresentationAction<MyFeature.Action>)
     }
 
@@ -37,10 +43,6 @@ struct CollectionFeature {
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
-        Scope(state: \.card, action: \.card) {
-            CollectionCardFeature()
-        }
-
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -49,10 +51,13 @@ struct CollectionFeature {
                 return .run { send in
                     await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
                 }
+                .cancellable(id: CancelID.profile, cancelInFlight: true)
 
             case let .profileResponse(.success(profile)):
                 state.profile = profile
-                state.card.nickname = profile?.nickname
+                for id in state.cards.ids {
+                    state.cards[id: id]?.nickname = profile?.nickname
+                }
                 return .none
 
             case let .profileResponse(.failure(error)):
@@ -63,12 +68,60 @@ struct CollectionFeature {
                 state.my = MyFeature.State()
                 return .none
 
-            case .card, .my:
+            case .allCategoryTapped:
+                state.isCategorySheetPresented = true
+                return .none
+
+            case let .categorySheetPresentationChanged(isPresented):
+                state.isCategorySheetPresented = isPresented
+                return .none
+
+            case let .categoryTapped(category):
+                guard Self.selectableCategories.contains(category) else { return .none }
+
+                state.isCategorySheetPresented = false
+                state.selectedCategory = category
+                return .none
+
+            case let .cardScrolled(category):
+                state.selectedCategory = category
+                return .none
+
+            case .cards, .my:
                 return .none
             }
+        }
+        .forEach(\.cards, action: \.cards) {
+            CollectionCardFeature()
         }
         .ifLet(\.$my, action: \.my) {
             MyFeature()
         }
     }
+}
+
+// MARK: - Constants
+
+extension CollectionFeature {
+
+    static let selectableCategories: Set<TrashCategory> = [.plastic, .glass, .wood]
+
+    static let categoryOrder: [TrashCategory] = [
+        .plastic, .glass, .metal, .wood, .fishingGear, .clothing,
+        .styrofoam, .can, .paper, .rubber, .etc
+    ]
+
+    // TODO: 컬렉션 데이터 연동 후 실제 개수로 교체
+    static let initialCards = IdentifiedArray(uniqueElements: categoryOrder.map { category in
+        CollectionCardFeature.State(category: category, collectedCount: sampleCounts[category, default: 0])
+    })
+
+    private nonisolated enum CancelID {
+        case profile
+    }
+
+    private static let sampleCounts: [TrashCategory: Int] = [
+        .plastic: 128, .glass: 12, .metal: 4, .fishingGear: 19,
+        .styrofoam: 8, .can: 17, .rubber: 3, .etc: 3
+    ]
 }
