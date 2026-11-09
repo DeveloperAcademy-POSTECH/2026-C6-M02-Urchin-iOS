@@ -46,7 +46,7 @@ struct MyFeature {
         }
 
         var isFavoriteBeachLimitReached: Bool {
-            favoriteBeaches.count >= HomeFeature.maximumFavoriteBeachCount
+            favoriteBeaches.count >= Beach.maximumFavoriteCount
         }
     }
 
