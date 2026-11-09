@@ -75,15 +75,6 @@ enum HomeSceneTrashPhase {
     }
 }
 
-extension View {
-
-    /// 부모 좌표계의 사각형 위치에 맞춰 배치해요.
-    func homeScenePlace(_ rect: CGRect) -> some View {
-        frame(width: rect.width, height: rect.height)
-            .position(x: rect.midX, y: rect.midY)
-    }
-}
-
 extension CGRect {
 
     /// 중심점을 기준으로 크기를 줄인 사각형이에요.

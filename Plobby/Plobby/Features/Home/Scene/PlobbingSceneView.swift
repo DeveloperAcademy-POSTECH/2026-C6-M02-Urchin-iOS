@@ -31,19 +31,19 @@ private extension PlobbingSceneView {
         ZStack(alignment: .topLeading) {
             Image(.homeSceneSky)
                 .resizable()
-                .homeScenePlace(Metrics.sky)
+                .floatingButtonShadow(Metrics.sky)
 
             Image(.homeSceneSea)
                 .resizable()
-                .homeScenePlace(Metrics.seabed)
+                .floatingButtonShadow(Metrics.seabed)
 
             Rectangle()
                 .fill(Metrics.surfaceLine)
-                .homeScenePlace(Metrics.surface)
+                .floatingButtonShadow(Metrics.surface)
 
             Image(.homeSceneBoat)
                 .resizable()
-                .homeScenePlace(Metrics.boat)
+                .floatingButtonShadow(Metrics.boat)
 
             cargo
 
@@ -95,7 +95,7 @@ private extension PlobbingSceneView {
                     SpringKeyframe(1.0, duration: 0.35, spring: .bouncy)
                 }
                 .rotationEffect(.degrees(8))
-                .homeScenePlace(Metrics.netRect(for: index))
+                .floatingButtonShadow(Metrics.netRect(for: index))
         }
         .opacity(isVisible(index) ? 1 : 0)
     }
@@ -113,7 +113,7 @@ private extension PlobbingSceneView {
             .resizable()
             .scaledToFit()
             .rotationEffect(.degrees(item.rotation))
-            .homeScenePlace(rect.offsetBy(dx: 0, dy: arrival))
+            .floatingButtonShadow(rect.offsetBy(dx: 0, dy: arrival))
             .opacity(phase.opacity)
     }
 
@@ -124,7 +124,7 @@ private extension PlobbingSceneView {
             Image(item.image)
                 .resizable()
                 .scaledToFit()
-                .homeScenePlace(item.rect.offsetBy(dx: 0, dy: isLoaded ? 0 : 60))
+                .floatingButtonShadow(item.rect.offsetBy(dx: 0, dy: isLoaded ? 0 : 60))
                 .opacity(isLoaded ? 1 : 0)
                 .animation(.spring(duration: 0.6, bounce: 0.35).delay(Double(index) * 0.04), value: isLoaded)
         }

@@ -72,7 +72,6 @@
 		A11400000000000000000123 /* GoalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000122 /* GoalListView.swift */; };
 		A11400000000000000000126 /* GoalRecordsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000125 /* GoalRecordsFeature.swift */; };
 		A11400000000000000000128 /* GoalRecordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000127 /* GoalRecordsView.swift */; };
-		A12200000000000000000202 /* PlobbyBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12200000000000000000201 /* PlobbyBottomSheet.swift */; };
 		A29D1CFD3712AA87F7389274 /* DependencyValues+UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */; };
 		A6BFBCB3BD04AAB29D26FEE2 /* UserBlockInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */; };
 		AC79ACD85403DD13EBC9ACCD /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95366258A2DD2CD25A307CDD /* CameraPicker.swift */; };
@@ -176,6 +175,7 @@
 		DAEC87AE309C4B1A0086965E /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87AD309C4B160086965E /* Coordinate.swift */; };
 		DAEC9A02309C5A0000AA0001 /* PlobbyAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */; };
 		DAEC9A04309C5A0000AA0001 /* RecordPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC9A03309C5A0000AA0001 /* RecordPhoto.swift */; };
+		DAFFB32230A21026009FC4E4 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFB32130A21024009FC4E4 /* View+.swift */; };
 		DD2B516972B03604A13831A7 /* BeachRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C8851DAF47D66B8A45DF88 /* BeachRecord.swift */; };
 		E86CC8B62B313EB83983CBD5 /* ProfileUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */; };
 		EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */; };
@@ -332,7 +332,6 @@
 		A11400000000000000000122 /* GoalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalListView.swift; sourceTree = "<group>"; };
 		A11400000000000000000125 /* GoalRecordsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalRecordsFeature.swift; sourceTree = "<group>"; };
 		A11400000000000000000127 /* GoalRecordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalRecordsView.swift; sourceTree = "<group>"; };
-		A12200000000000000000201 /* PlobbyBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyBottomSheet.swift; sourceTree = "<group>"; };
 		A683DF52E8FC8F413240B638 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
 		AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+UserClient.swift"; sourceTree = "<group>"; };
 		B1CA15540443FE5BE6EF51E8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -439,6 +438,7 @@
 		DAEC87AD309C4B160086965E /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyAlert.swift; sourceTree = "<group>"; };
 		DAEC9A03309C5A0000AA0001 /* RecordPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPhoto.swift; sourceTree = "<group>"; };
+		DAFFB32130A21024009FC4E4 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeOfDay.swift; sourceTree = "<group>"; };
 		E8B11A53BEC65644616587EA /* RecordMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMenuView.swift; sourceTree = "<group>"; };
 		EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignScale.swift; sourceTree = "<group>"; };
@@ -1247,7 +1247,6 @@
 				7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */,
 				ECE6F2923098338400C4916C /* PlobbyButton.swift */,
 				EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */,
-				A12200000000000000000201 /* PlobbyBottomSheet.swift */,
 				7B3C1A0E309D0000004C5301 /* SearchBar.swift */,
 				7B3C1A10309D0000004C5301 /* PlobbyToast.swift */,
 				EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */,
@@ -1269,6 +1268,7 @@
 		ECE6F29A3098338400C4916C /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				DAFFB32130A21024009FC4E4 /* View+.swift */,
 				ECE6F2973098338400C4916C /* AlertState+.swift */,
 				ECE6F2983098338400C4916C /* ButtonState+.swift */,
 				A683DF52E8FC8F413240B638 /* Calendar+.swift */,
@@ -1730,6 +1730,7 @@
 				ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */,
 				DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */,
 				ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */,
+				DAFFB32230A21026009FC4E4 /* View+.swift in Sources */,
 				ECD3271330A064F000C1E655 /* CollectionFeature.swift in Sources */,
 				DAEC87A4309B7F2A0086965E /* ToastFeature.swift in Sources */,
 				ECE6F2D13098338400C4916C /* AppleCredential+.swift in Sources */,
@@ -1802,7 +1803,6 @@
 				7B3C1A02309D0000004C5301 /* LoginRequiredSheet.swift in Sources */,
 				DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */,
 				EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */,
-				A12200000000000000000202 /* PlobbyBottomSheet.swift in Sources */,
 				7B3C1A0D309D0000004C5301 /* SearchBar.swift in Sources */,
 				7B3C1A0F309D0000004C5301 /* PlobbyToast.swift in Sources */,
 				DA5B106430997215003FEDF9 /* CreateRecordRequestDTO.swift in Sources */,

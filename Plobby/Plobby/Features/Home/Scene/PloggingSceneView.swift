@@ -35,7 +35,7 @@ private extension PloggingSceneView {
         ZStack(alignment: .topLeading) {
             Image(.homeSceneBeach)
                 .resizable()
-                .homeScenePlace(Metrics.background)
+                .floatingButtonShadow(Metrics.background)
 
             ForEach(days.indices, id: \.self) { day in
                 ForEach(Metrics.trash[day % Metrics.trash.count]) { item in
@@ -51,7 +51,7 @@ private extension PloggingSceneView {
         ForEach(Metrics.humans.indices, id: \.self) { index in
             Ellipse()
                 .fill(Metrics.sandShadow)
-                .homeScenePlace(Metrics.shadowRect(for: index).offsetBy(dx: walkOffset.width, dy: walkOffset.height))
+                .floatingButtonShadow(Metrics.shadowRect(for: index).offsetBy(dx: walkOffset.width, dy: walkOffset.height))
                 .opacity(isVisible(index) ? 1 : 0)
         }
     }
@@ -67,7 +67,7 @@ private extension PloggingSceneView {
                     SpringKeyframe(-6, duration: 0.15)
                     SpringKeyframe(0, duration: 0.35, spring: .bouncy)
                 }
-                .homeScenePlace(Metrics.humans[index].rect.offsetBy(dx: walkOffset.width, dy: walkOffset.height))
+                .floatingButtonShadow(Metrics.humans[index].rect.offsetBy(dx: walkOffset.width, dy: walkOffset.height))
                 .opacity(isVisible(index) ? 1 : 0)
         }
     }
@@ -77,7 +77,7 @@ private extension PloggingSceneView {
         ForEach(Metrics.humans.indices, id: \.self) { index in
             Image(.homeSceneBag)
                 .resizable()
-                .homeScenePlace(bagRect(for: index))
+                .floatingButtonShadow(bagRect(for: index))
                 .opacity(isAtStand || (Metrics.collectors.contains(index) && isVisible(index)) ? 1 : 0)
         }
     }
@@ -87,16 +87,16 @@ private extension PloggingSceneView {
         ZStack(alignment: .topLeading) {
             Ellipse()
                 .fill(Color(red: 0x88 / 255, green: 0x67 / 255, blue: 0x46 / 255).opacity(0.14))
-                .homeScenePlace(CGRect(x: 169, y: 299, width: 84, height: 7))
+                .floatingButtonShadow(CGRect(x: 169, y: 299, width: 84, height: 7))
             RoundedRectangle(cornerRadius: 2)
                 .fill(Color(red: 0x82 / 255, green: 0x98 / 255, blue: 0x87 / 255))
-                .homeScenePlace(CGRect(x: 179, y: 283, width: 64, height: 15))
+                .floatingButtonShadow(CGRect(x: 179, y: 283, width: 64, height: 15))
             RoundedRectangle(cornerRadius: 2)
                 .fill(Metrics.standDark)
-                .homeScenePlace(CGRect(x: 171, y: 272, width: 8, height: 30))
+                .floatingButtonShadow(CGRect(x: 171, y: 272, width: 8, height: 30))
             RoundedRectangle(cornerRadius: 2)
                 .fill(Metrics.standDark)
-                .homeScenePlace(CGRect(x: 243, y: 272, width: 8, height: 30))
+                .floatingButtonShadow(CGRect(x: 243, y: 272, width: 8, height: 30))
         }
         .frame(width: HomeSceneCanvas<EmptyView>.designWidth, alignment: .topLeading)
         .opacity(isAtStand ? 1 : 0)
@@ -107,10 +107,10 @@ private extension PloggingSceneView {
         ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 2)
                 .fill(Color(red: 0x47 / 255, green: 0x64 / 255, blue: 0x59 / 255))
-                .homeScenePlace(CGRect(x: 171, y: 292, width: 80, height: 10))
+                .floatingButtonShadow(CGRect(x: 171, y: 292, width: 80, height: 10))
             RoundedRectangle(cornerRadius: 1)
                 .fill(Color(red: 0x97 / 255, green: 0xAC / 255, blue: 0x97 / 255))
-                .homeScenePlace(CGRect(x: 179, y: 292, width: 64, height: 2))
+                .floatingButtonShadow(CGRect(x: 179, y: 292, width: 64, height: 2))
         }
         .frame(width: HomeSceneCanvas<EmptyView>.designWidth, alignment: .topLeading)
         .opacity(isAtStand ? 1 : 0)
@@ -127,7 +127,7 @@ private extension PloggingSceneView {
             .resizable()
             .scaledToFit()
             .rotationEffect(.degrees(item.rotation))
-            .homeScenePlace(rect.offsetBy(dx: 0, dy: Metrics.dayOffset(day)))
+            .floatingButtonShadow(rect.offsetBy(dx: 0, dy: Metrics.dayOffset(day)))
             .opacity(phase.opacity)
     }
 }
