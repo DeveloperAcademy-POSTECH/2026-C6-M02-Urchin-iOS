@@ -141,7 +141,7 @@ private extension MapView {
         .overlay(alignment: .top) {
             VStack(spacing: 14.scaled) {
                 searchBar
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 20.scaled)
 
                 if store.isMember, !store.favoriteBeaches.isEmpty {
                     favoriteChips
@@ -151,12 +151,12 @@ private extension MapView {
                     locationOffBadge
                 }
             }
-            .padding(.top, 8)
+            .padding(.top, 8.scaled)
         }
         .overlay(alignment: .bottomTrailing) {
             currentLocationButton
-                .padding(.trailing, 20)
-                .padding(.bottom, 16)
+                .padding(.trailing, 20.scaled)
+                .padding(.bottom, 16.scaled)
         }
     }
 
@@ -213,8 +213,8 @@ private extension MapView {
                     .font(.system(size: 10, weight: .semibold))
             }
             .foregroundStyle(Color(.textTertiary))
-            .padding(.horizontal, 16)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 16.scaled)
+            .padding(.vertical, 4.scaled)
             .background(Color(.gray0), in: Capsule())
         }
         .buttonStyle(.plain)
@@ -277,9 +277,9 @@ private extension MapView {
 private struct MarkerLayout {
 
     /// 핀(배지 포함)이 차지하는 크기. 핀은 좌표 위쪽으로 그려져요.
-    static let pinSize = CGSize(width: 68, height: 76)
+    static let pinSize = CGSize(width: 68.scaled, height: 76.scaled)
     /// 클러스터 원의 지름
-    static let clusterSize: CGFloat = 52
+    static let clusterSize: CGFloat = 52.scaled
 
     /// 여러 해변을 묶은 클러스터예요. 가장 먼저 자리를 차지한 해변 위치에 그려요.
     struct Cluster: Identifiable {
@@ -377,7 +377,7 @@ private struct BeachPinView: View {
     let isSelected: Bool
 
     /// 원(52) + 꼬리(9) - 겹치는 부분(3)
-    static let height: CGFloat = 58
+    static let height: CGFloat = 58.scaled
 
     private var background: Color { isSelected ? Color(.green500) : Color(.gray0) }
     private var iconColor: Color { isSelected ? Color(.gray0) : Color(.green500) }
@@ -385,7 +385,7 @@ private struct BeachPinView: View {
     var body: some View {
         VStack(spacing: -3) {
             icon
-                .frame(width: 52, height: 52)
+                .frame(width: 52.scaled, height: 52.scaled)
                 .background(background, in: Circle())
 
             Image(systemName: "triangle.fill")
@@ -416,7 +416,7 @@ private struct BeachPinView: View {
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(iconColor)
-                .frame(width: 26, height: 28)
+                .frame(width: 26.scaled, height: 28.scaled)
         } else {
             Image(systemName: "water.waves")
                 .font(.system(size: 20, weight: .semibold))

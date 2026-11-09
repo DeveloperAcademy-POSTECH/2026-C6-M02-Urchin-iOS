@@ -127,15 +127,15 @@ private extension BeachSheetView {
                         .plobbyFont(.actionLabel)
                 }
                 .foregroundStyle(Color(.green600))
-                .padding(.horizontal, 32)
-                .frame(height: 38)
+                .padding(.horizontal, 32.scaled)
+                .frame(height: 38.scaled)
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color(.green500), lineWidth: 1)
                 }
             }
             .buttonStyle(.plain)
-            .padding(.top, 8)
+            .padding(.top, 8.scaled)
         }
     }
 
