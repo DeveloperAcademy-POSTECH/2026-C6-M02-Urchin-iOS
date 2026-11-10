@@ -48,6 +48,12 @@ struct MyFeature {
         var isFavoriteBeachLimitReached: Bool {
             favoriteBeaches.count >= Beach.maximumFavoriteCount
         }
+
+        var isMember: Bool {
+            guard case .member = membershipStatus else { return false }
+
+            return true
+        }
     }
 
     /// 되돌리기를 누르면 원래 자리로 돌려놓기 위해 해제한 위치를 함께 둬요.
@@ -72,7 +78,7 @@ struct MyFeature {
         case favoriteBeachRequestFailed(Beach, isFavorite: Bool)
         case recordFilterChanged(RecordFilter)
         case recordTapped(RecordSummary.ID)
-        case appleLoginButtonTapped
+        case recordStartButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
         case settings(PresentationAction<SettingsFeature.Action>)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
@@ -83,7 +89,6 @@ struct MyFeature {
 
         enum Delegate {
             case loginRequired
-            case signInRequested
             case signedOut
         }
     }
@@ -132,6 +137,8 @@ struct MyFeature {
 
             // TODO: 관심 해변 추가 화면 연결 (별도 이슈에서 구현)
             case .favoriteBeachAddButtonTapped:
+                guard state.isMember else { return .send(.delegate(.loginRequired)) }
+
                 return .none
 
             case let .favoriteBeachTapped(beach):
@@ -192,9 +199,9 @@ struct MyFeature {
                 state.settings = SettingsFeature.State()
                 return .none
 
-            // 로그인은 MainTab의 SignInFeature가 처리해요
-            case .appleLoginButtonTapped:
-                return .send(.delegate(.signInRequested))
+            // 비회원에게만 보이는 버튼이라 로그인 시트를 띄워요
+            case .recordStartButtonTapped:
+                return .send(.delegate(.loginRequired))
 
             case let .profileEdit(.presented(.delegate(.saved(profile, profileImage)))):
                 state.profile = profile

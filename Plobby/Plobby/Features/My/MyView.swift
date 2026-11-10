@@ -24,18 +24,16 @@ struct MyView: View {
             navigationBar
                 .padding(.horizontal, 20.scaled)
 
-            if case .member = store.membershipStatus {
-                memberContent
-            } else {
-                guestLoginPrompt
-                    .padding(.horizontal, 20.scaled)
-            }
+            content
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .plobbyToast(store.toast.toastType) {
             store.send(.favoriteBeachUndoButtonTapped, animation: Self.favoriteBeachAnimation)
         }
         .onAppear {
+            store.send(.onAppear)
+        }
+        .onChange(of: store.isMember) {
             store.send(.onAppear)
         }
         .task(id: store.savedProfileImage) {
@@ -92,7 +90,8 @@ extension MyView {
 
 extension MyView {
 
-    private var memberContent: some View {
+    /// 비회원도 회원과 같은 구성으로 보여주고, 값만 비워둬요.
+    private var content: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 16.scaled) {
@@ -112,7 +111,13 @@ extension MyView {
                     selectedFilter: store.recordFilter,
                     onFilterChanged: { store.send(.recordFilterChanged($0)) },
                     onRecordTapped: { store.send(.recordTapped($0)) }
-                )
+                ) {
+                    if store.isMember {
+                        RecordListEmptyMessage()
+                    } else {
+                        guestRecordPrompt
+                    }
+                }
                 .padding(.horizontal, 20.scaled)
                 .padding(.top, 16.scaled)
             }
@@ -136,8 +141,8 @@ extension MyView {
         HStack(alignment: .center, spacing: 16.scaled) {
             profileImage
 
-            Text(store.profile?.nickname ?? "")
-                .plobbyFont(.metric)
+            Text(store.isMember ? store.profile?.nickname ?? "" : "로그인이 필요해요")
+                .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -158,8 +163,9 @@ extension MyView {
                         .resizable()
                         .scaledToFill()
                 } placeholder: {
-                    Circle()
-                        .fill(Color(.gray100))
+                    Image(systemName: "person.crop.circle.fill")
+                        .resizable()
+                        .foregroundStyle(Color(.gray600))
                 }
             }
         }
@@ -191,13 +197,18 @@ extension MyView {
 
     private var activitySummary: some View {
         HStack(alignment: .center, spacing: 8.scaled) {
-            activitySummaryCard(title: "활동 기록", value: "\(store.records.count)개")
-            activitySummaryCard(title: "수거 개수", value: "\(store.collectedTrashCount)개")
+            activitySummaryCard(title: "활동 기록", value: memberValue("\(store.records.count)개"))
+            activitySummaryCard(title: "수거 개수", value: memberValue("\(store.collectedTrashCount)개"))
             activitySummaryCard(
                 title: "수거 무게",
-                value: "\(store.collectedWeightKg.formatted(.number.precision(.fractionLength(0...1))))kg"
+                value: memberValue("\(store.collectedWeightKg.formatted(.number.precision(.fractionLength(0...1))))kg")
             )
         }
+    }
+
+    /// 비회원은 숫자 대신 "-"를 보여줘요.
+    private func memberValue(_ value: String) -> String {
+        store.isMember ? value : "-"
     }
 
     private func activitySummaryCard(title: String, value: String) -> some View {
@@ -222,26 +233,40 @@ extension MyView {
 
 extension MyView {
 
-    /// 비회원에게 로그인을 안내하고 바로 Apple 로그인을 할 수 있게 해요
-    private var guestLoginPrompt: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("로그인하고 내 활동을 기록해보세요")
-                .plobbyFont(.heading)
+    private var guestRecordPrompt: some View {
+        VStack(alignment: .center, spacing: 0) {
+            Text("로그인 후 활동을 기록해보세요")
+                .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
 
-            Text("로그인 후 내 기록과 프로필을 관리할 수 있어요.")
-                .plobbyFont(.label)
-                .foregroundStyle(Color(.textSecondary))
+            Text("새 기록으로\n지도에 활동 흔적을 남겨보아요")
+                .plobbyFont(.helper)
+                .foregroundStyle(Color(.textTertiary))
+                .multilineTextAlignment(.center)
                 .padding(.top, 8.scaled)
 
             Button {
-                store.send(.appleLoginButtonTapped)
+                store.send(.recordStartButtonTapped)
             } label: {
-                AppleLoginLabel()
+                HStack(alignment: .center, spacing: 6.scaled) {
+                    Image(systemName: "doc.text.fill")
+                        .font(.system(size: 14.scaled, weight: .regular))
+
+                    Text("활동 기록하기")
+                        .plobbyFont(.labelSelected)
+                }
+                .foregroundStyle(Color(.green600))
+                .padding(.horizontal, 20.scaled)
+                .frame(height: 36.scaled)
+                .overlay {
+                    Capsule()
+                        .stroke(Color(.green500), lineWidth: 1)
+                }
+                .contentShape(Capsule())
             }
-            .padding(.top, 24.scaled)
+            .buttonStyle(.plain)
+            .padding(.top, 16.scaled)
         }
-        .padding(.top, 16.scaled)
     }
 }
 
@@ -261,7 +286,9 @@ extension MyView {
             }
             .padding(.horizontal, 20.scaled)
 
-            if store.favoriteBeaches.isEmpty {
+            if !store.isMember {
+                EmptyView()
+            } else if store.favoriteBeaches.isEmpty {
                 Text("+를 눌러 자주 가는 해변을 추가해 보세요")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.textTertiary))

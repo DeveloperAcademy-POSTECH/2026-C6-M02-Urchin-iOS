@@ -97,7 +97,7 @@ extension UserHomeView {
             .clipShape(Circle())
 
             Text(store.nickname)
-                .plobbyFont(.metric)
+                .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
