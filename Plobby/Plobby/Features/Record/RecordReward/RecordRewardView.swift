@@ -54,7 +54,7 @@ struct RecordRewardView: View {
             .onAppear {
                 store.send(.onAppear)
 
-                withAnimation(.easeInOut(duration: 0.5).delay(0.5)) {
+                withAnimation(.easeInOut(duration: 0.5).delay(0.3)) {
                     isSummaryVisible = true
                 }
 

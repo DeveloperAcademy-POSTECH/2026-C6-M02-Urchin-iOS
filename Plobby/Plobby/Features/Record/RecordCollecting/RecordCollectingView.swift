@@ -9,7 +9,6 @@ import SwiftUI
 
 import ComposableArchitecture
 
-/// 피그마 "수거 시작" 모션을 옮긴 화면이에요. 좌표와 시간은 시안 값이에요
 struct RecordCollectingView: View {
 
     // MARK: - Properties
@@ -41,7 +40,8 @@ struct RecordCollectingView: View {
                     LinearKeyframe(0, duration: 10)
                 }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.bottom, 342.scaled)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         .background(Color(isCovered ? .neutralBlack : .backgroundDefault).ignoresSafeArea())
         .task {
             withAnimation(.easeInOut(duration: Self.ringDuration)) {
@@ -178,6 +178,7 @@ private struct ThrownTrashView: View {
 
     var body: some View {
         let t = trash
+        let ratio = CGFloat(1).scaled
 
         Image(t.image)
             .resizable()
@@ -187,7 +188,7 @@ private struct ThrownTrashView: View {
                 content
                     .rotationEffect(.radians(value.spin))
                     .scaleEffect(value.scale)
-                    .offset(x: value.x.scaled, y: value.y.scaled)
+                    .offset(x: value.x * ratio, y: value.y * ratio)
                     .opacity(value.opacity)
             } keyframes: { _ in
                 KeyframeTrack(\.opacity) {

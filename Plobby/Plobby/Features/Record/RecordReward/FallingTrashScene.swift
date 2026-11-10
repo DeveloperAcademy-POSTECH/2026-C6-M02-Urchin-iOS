@@ -36,6 +36,7 @@ final class FallingTrashScene: SKScene {
 
     override func didMove(to view: SKView) {
         backgroundColor = UIColor(resource: .neutralBlack)
+        physicsWorld.gravity = CGVector(dx: 0, dy: -gravityStrength)
         addChild(floorNode)
         updateBoundary()
         startDropping()
