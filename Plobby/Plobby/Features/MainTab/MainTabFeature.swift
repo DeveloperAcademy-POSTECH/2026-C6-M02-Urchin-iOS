@@ -97,6 +97,9 @@ struct MainTabFeature {
             case let .pushTapped(recordID):
                 guard state.recordFlow == nil else { return .none }
 
+                state.map.path.removeAll()
+                state.collection.my = nil
+
                 state.selectedTab = .home
                 state.home.notification = NotificationFeature.State(
                     recordDetail: RecordDetailFeature.State(recordID: recordID)
