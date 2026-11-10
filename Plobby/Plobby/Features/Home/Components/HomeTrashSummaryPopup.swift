@@ -40,7 +40,7 @@ struct HomeTrashSummaryPopup: View {
                 }
 
                 LazyVGrid(columns: columns, spacing: 8.scaled) {
-                    ForEach(board.trashCounts) { item in
+                    ForEach(board.orderedTrashCounts) { item in
                         cell(item)
                     }
                 }
