@@ -25,6 +25,13 @@ nonisolated extension RecordType {
     var title: String {
         self.name + " 기록하기"
     }
+    
+    var resultTitle: String {
+        switch self {
+        case .plogging: "수거대에 모은 쓰레기"
+        case .plobbing: "배에 실은 쓰레기"
+        }
+    }
 }
 
 @MainActor extension RecordType {

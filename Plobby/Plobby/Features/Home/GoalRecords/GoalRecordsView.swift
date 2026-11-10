@@ -19,7 +19,7 @@ struct GoalRecordsView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HomeNavigationBar(title: "수거 기록") {
+            PlobbyNavigationBar(title: "수거 기록") {
                 store.send(.backButtonTapped)
             }
 

@@ -84,7 +84,7 @@ struct HomeScrollGuideToast: View {
             Image(systemName: "arrow.down")
                 .font(.system(size: 14.scaled, weight: .medium))
             Text("아래로 스크롤해 주세요")
-                .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 14.scaled))
+                .plobbyFont(.label)
         }
         .foregroundStyle(Color(.gray0))
         .padding(.horizontal, 16.scaled)
