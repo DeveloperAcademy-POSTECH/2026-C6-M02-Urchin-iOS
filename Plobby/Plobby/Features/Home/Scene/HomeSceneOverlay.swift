@@ -125,27 +125,6 @@ private extension HomeSceneOverlay {
     }
 }
 
-// MARK: - Helpers
-
-extension RecordType {
-
-    /// 마무리 장면의 결과 버튼 제목이에요.
-    var resultTitle: String {
-        switch self {
-        case .plogging: "수거대에 모은 쓰레기"
-        case .plobbing: "배에 실은 쓰레기"
-        }
-    }
-}
-
-extension Date {
-
-    /// "11월 1일"처럼 월·일만 보여줘요.
-    var homeMonthDayText: String {
-        formatted(.dateTime.month(.wide).day().locale(Locale(identifier: "ko_KR")))
-    }
-}
-
 extension View {
 
     /// 장면 위 버튼에 쓰는 그림자예요.
