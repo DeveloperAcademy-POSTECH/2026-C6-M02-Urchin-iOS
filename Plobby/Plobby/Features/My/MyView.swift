@@ -13,7 +13,7 @@ struct MyView: View {
 
     // MARK: - Properties
 
-    let store: StoreOf<MyFeature>
+    @Bindable var store: StoreOf<MyFeature>
     @State private var savedProfileImage: UIImage?
     @Environment(\.dismiss) private var dismiss
 
@@ -35,6 +35,12 @@ struct MyView: View {
         }
         .onChange(of: store.isMember) {
             store.send(.onAppear)
+        }
+        .sheet(item: $store.scope(state: \.favoriteBeachAdd, action: \.favoriteBeachAdd)) { store in
+            FavoriteBeachAddView(store: store)
+                .presentationDetents([.height(FavoriteBeachAddView.sheetHeight)])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(Color(.gray0))
         }
         .task(id: store.savedProfileImage) {
             savedProfileImage = store.savedProfileImage.flatMap(UIImage.init(data:))
@@ -275,7 +281,7 @@ extension MyView {
 extension MyView {
 
     /// 관심 해변을 해제하거나 되돌릴 때 카드가 천천히 빠지고 돌아오게 해요.
-    private static let favoriteBeachAnimation: Animation = .easeInOut(duration: 0.3)
+    private static let favoriteBeachAnimation: Animation = .easeInOut(duration: 0.5)
 
     private var favoriteBeachSection: some View {
         VStack(alignment: .leading, spacing: 16.scaled) {
@@ -307,6 +313,7 @@ extension MyView {
                         }
                     }
                     .padding(.horizontal, 20.scaled)
+                    .animation(Self.favoriteBeachAnimation, value: store.favoriteBeaches)
                 }
             }
         }

@@ -30,6 +30,7 @@ struct MyFeature {
         @Presents var beachHome: BeachHomeFeature.State?
         /// 해변 홈에서 연 기록 상세예요. 마이 목록에서 연 상세와 화면 단계가 달라서 따로 둬요.
         @Presents var beachRecordDetail: RecordDetailFeature.State?
+        @Presents var favoriteBeachAdd: FavoriteBeachAddFeature.State?
 
         var filteredRecords: [RecordSummary] {
             guard let recordType = recordFilter.recordType else { return records }
@@ -84,6 +85,7 @@ struct MyFeature {
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
         case beachHome(PresentationAction<BeachHomeFeature.Action>)
         case beachRecordDetail(PresentationAction<RecordDetailFeature.Action>)
+        case favoriteBeachAdd(PresentationAction<FavoriteBeachAddFeature.Action>)
         case toast(ToastFeature.Action)
         case delegate(Delegate)
 
@@ -135,10 +137,10 @@ struct MyFeature {
                 PlobbyLogger.error(error)
                 return .none
 
-            // TODO: 관심 해변 추가 화면 연결 (별도 이슈에서 구현)
             case .favoriteBeachAddButtonTapped:
                 guard state.isMember else { return .send(.delegate(.loginRequired)) }
 
+                state.favoriteBeachAdd = FavoriteBeachAddFeature.State()
                 return .none
 
             case let .favoriteBeachTapped(beach):
@@ -244,7 +246,8 @@ struct MyFeature {
                 state.beachRecordDetail = nil
                 return .send(.beachHome(.presented(.userBlocked(userID))))
 
-            case .profileEdit, .settings, .recordDetail, .beachHome, .beachRecordDetail, .toast, .delegate:
+            case .profileEdit, .settings, .recordDetail, .beachHome, .beachRecordDetail, .favoriteBeachAdd, .toast,
+                 .delegate:
                 return .none
             }
         }
@@ -262,6 +265,9 @@ struct MyFeature {
         }
         .ifLet(\.$beachRecordDetail, action: \.beachRecordDetail) {
             RecordDetailFeature()
+        }
+        .ifLet(\.$favoriteBeachAdd, action: \.favoriteBeachAdd) {
+            FavoriteBeachAddFeature()
         }
     }
 }

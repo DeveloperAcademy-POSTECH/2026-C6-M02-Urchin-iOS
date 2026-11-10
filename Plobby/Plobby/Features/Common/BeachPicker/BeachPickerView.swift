@@ -14,6 +14,8 @@ struct BeachPickerView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<BeachPickerFeature>
+    /// 지역·해변 영역 높이예요. nil이면 남은 공간을 모두 채우고, 해변 목록은 그 안에서 스크롤돼요.
+    var regionSectionHeight: CGFloat? = 272.scaled
 
     // MARK: - Body
 
@@ -49,14 +51,15 @@ private extension BeachPickerView {
 
 private extension BeachPickerView {
 
-    /// 지역 5개(높이 48 × 5 + 간격 8 × 4)가 딱 들어가는 높이로 고정해요. 해변이 많으면 오른쪽 목록만 스크롤돼요
+    /// 기본 높이는 지역 5개(높이 48 × 5 + 간격 8 × 4)가 딱 들어가는 높이예요. 해변이 많으면 오른쪽 목록만 스크롤돼요
     var regionSection: some View {
         HStack(spacing: 0) {
             regionList
             divider
             beachList
         }
-        .frame(height: 272.scaled)
+        .frame(height: regionSectionHeight)
+        .frame(maxHeight: regionSectionHeight == nil ? .infinity : nil)
     }
 
     var divider: some View {
