@@ -36,7 +36,8 @@ struct ProfileEditView: View {
 
             NicknameCheckView(
                 store: store.scope(state: \.nicknameCheck, action: \.nicknameCheck),
-                isFocused: $isNicknameFocused
+                isFocused: $isNicknameFocused,
+                showsAvailableMessage: true
             )
             .padding(.top, 36.scaled)
             .padding(.horizontal, 20.scaled)
