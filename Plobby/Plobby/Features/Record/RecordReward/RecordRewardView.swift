@@ -97,9 +97,49 @@ extension RecordRewardView {
                 }
             }
             .padding(.top, 24.scaled)
+
+            if let goal = store.goal {
+                goalProgress(goal)
+            }
         }
         .padding(.horizontal, 28.scaled)
         .padding(.top, 36.scaled)
+    }
+
+    private func goalProgress(_ goal: Goal) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Rectangle()
+                .fill(Color(.gray0).opacity(0.22))
+                .frame(width: 290.scaled, height: 1)
+                .padding(.top, 12.scaled)
+
+            Text("공통 목표")
+                .plobbyFont(.helper)
+                .foregroundStyle(Color(.gray0))
+                .opacity(0.72)
+                .padding(.top, 12.scaled)
+
+            HStack(alignment: .firstTextBaseline) {
+                Text(goal.title)
+                    .plobbyFont(.actionLabel)
+                    .foregroundStyle(Color(.gray0))
+
+                Spacer(minLength: 8.scaled)
+
+                HStack(alignment: .firstTextBaseline, spacing: 4.scaled) {
+                    Text("\(goal.collectedCount)")
+                        .plobbyFont(.cardTitle)
+                        .foregroundStyle(Color(.brandPrimary))
+
+                    Text("/ \(goal.targetCount)개")
+                        .plobbyFont(.helper)
+                        .foregroundStyle(Color(.gray0))
+                        .opacity(0.72)
+                }
+            }
+            .frame(width: 290.scaled)
+            .padding(.top, 4.scaled)
+        }
     }
 
     private func metric(
