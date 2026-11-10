@@ -40,6 +40,12 @@ extension SharedKey where Self == AppStorageKey<Bool>.Default {
     static var isPushEnabled: Self { Self[.appStorage("isPushEnabled"), default: true] }
 }
 
+extension SharedKey where Self == AppStorageKey<Bool>.Default {
+
+    /// 이 기기에서 온보딩을 끝까지 본 적 있는지 여부. 본 적 있으면 다음 실행부터 로그인 화면을 보여줘요.
+    static var hasSeenOnboarding: Self { Self[.appStorage("hasSeenOnboarding"), default: false] }
+}
+
 extension SharedKey where Self == InMemoryKey<[Beach]>.Default {
 
     /// 로그인한 사용자의 관심 해변. 홈과 지도 탭이 함께 써요.

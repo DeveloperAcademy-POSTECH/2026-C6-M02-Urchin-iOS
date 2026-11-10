@@ -43,6 +43,14 @@ struct ContentView: View {
                 OnboardingView(store: store)
             }
 
+        case .login:
+            if let store = store.scope(
+                state: \.login,
+                action: \.login)
+            {
+                LoginView(store: store)
+            }
+
         case .signUp:
             if let store = store.scope(
                 state: \.signUp,
