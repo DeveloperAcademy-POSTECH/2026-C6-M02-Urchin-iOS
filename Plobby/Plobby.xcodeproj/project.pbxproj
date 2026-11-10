@@ -61,6 +61,8 @@
 		7B3C1A2E309D0000004C5301 /* ConfettiScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */; };
 		7B3C1A30309D0000004C5301 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A31309D0000004C5301 /* String+.swift */; };
 		7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */; };
+		7B3C1A61309D0000004C5301 /* RecordCollectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */; };
+		7B3C1A63309D0000004C5301 /* RecordCollectingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
@@ -355,6 +357,8 @@
 		7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiScene.swift; sourceTree = "<group>"; };
 		7B3C1A31309D0000004C5301 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashScene.swift; sourceTree = "<group>"; };
+		7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectingView.swift; sourceTree = "<group>"; };
+		7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectingFeature.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -727,6 +731,15 @@
 			path = Confetti;
 			sourceTree = "<group>";
 		};
+		7B3C1A64309D0000004C5301 /* RecordCollecting */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */,
+				7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */,
+			);
+			path = RecordCollecting;
+			sourceTree = "<group>";
+		};
 		84C514248E87412C8FC65AA2 /* Push */ = {
 			isa = PBXGroup;
 			children = (
@@ -820,6 +833,15 @@
 				A16C0DE00000000000000403 /* LoginView.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		A16C0DE00000000000000205 /* FavoriteBeachAdd */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */,
+				A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */,
+			);
+			path = FavoriteBeachAdd;
 			sourceTree = "<group>";
 		};
 		AE634BCD9D00428DBE65DAEB /* Response */ = {
@@ -1157,6 +1179,7 @@
 				DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */,
 				DA688DC33099CF830064A2F4 /* RecordForm */,
 				DA688DC23099CF830064A2F4 /* RecordReward */,
+				7B3C1A64309D0000004C5301 /* RecordCollecting */,
 				DA688DC43099CF830064A2F4 /* RecordDetail */,
 			);
 			path = Record;
@@ -1176,8 +1199,8 @@
 			isa = PBXGroup;
 			children = (
 				DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */,
-				7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */,
 				DA688DCA3099CFB70064A2F4 /* RecordRewardFeature.swift */,
+				7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */,
 			);
 			path = RecordReward;
 			sourceTree = "<group>";
@@ -1901,6 +1924,8 @@
 				7B3C1A11309D0000004C5301 /* FlipCard.swift in Sources */,
 				DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */,
 				DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */,
+				7B3C1A61309D0000004C5301 /* RecordCollectingView.swift in Sources */,
+				7B3C1A63309D0000004C5301 /* RecordCollectingFeature.swift in Sources */,
 				7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */,
 				B532EAC630A2A91900029E08 /* ToastType.swift in Sources */,
 				DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */,

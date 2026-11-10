@@ -24,18 +24,13 @@ struct RecordView: View {
                 PhotosPickerView(store: store)
             case let .form(store):
                 RecordFormView(store: store)
-                    .transition(.asymmetric(
-                        insertion: .identity,
-                        removal: .opacity.animation(.linear(duration: 0.01).delay(RecordRewardView.curtainDuration))
-                    ))
+            case let .collecting(store):
+                RecordCollectingView(store: store)
             case let .reward(store):
                 RecordRewardView(store: store)
-                    .transition(.asymmetric(insertion: .move(edge: .top), removal: .identity))
-                    .zIndex(1)
             case let .detail(store):
                 RecordDetailView(store: store)
             }
         }
-        .animation(.easeInOut(duration: RecordRewardView.curtainDuration), value: store.step.is(\.reward))
     }
 }

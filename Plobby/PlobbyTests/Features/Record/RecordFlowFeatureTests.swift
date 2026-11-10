@@ -60,6 +60,16 @@ struct RecordFlowFeatureTests {
             }
         }
         await store.receive(\.step.form.delegate.recordCreated) {
+            $0.step = .collecting(RecordCollectingFeature.State(recordID: UUID(0), beachName: "영일대 해수욕장", trash: trash, weightKg: 2))
+        }
+    }
+
+    @Test
+    func 쓰레기_모으기가_끝나면_리워드로_이동한다() async {
+        let trash = TrashSelection()
+        let store = makeStore(step: .collecting(RecordCollectingFeature.State(recordID: UUID(0), beachName: "영일대 해수욕장", trash: trash, weightKg: 2)))
+
+        await store.send(\.step.collecting.delegate.finished) {
             $0.step = .reward(RecordRewardFeature.State(recordID: UUID(0), beachName: "영일대 해수욕장", trash: trash, weightKg: 2))
         }
     }
