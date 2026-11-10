@@ -55,7 +55,8 @@ struct HomeTrashSummaryPopup: View {
 
     private func cell(_ item: HomeGoalTrashCount) -> some View {
         HStack(spacing: 8.scaled) {
-            Image(item.category.homeIcon)
+            // 컬렉션 전체 분류와 같은 종류별 대표 이미지예요
+            Image(item.category.thumbnailName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24.scaled, height: 24.scaled)
@@ -81,25 +82,5 @@ struct HomeTrashSummaryPopup: View {
             return board.goal.periodText
         }
         return "\(first.homeMonthDayText) ~ \(last.homeMonthDayText)"
-    }
-}
-
-extension TrashCategory {
-
-    /// 홈 쓰레기 팝업에 쓰는 아이콘이에요.
-    var homeIcon: ImageResource {
-        switch self {
-        case .glass: .glassBottleBrownS
-        case .plastic: .bottleWhiteS
-        case .metal: .forkGrayS
-        case .wood: .woodPieceBrownS
-        case .fishingGear: .fishingNetGreenM
-        case .clothing: .tshirtPinkS
-        case .styrofoam: .styrofoamVer1S
-        case .can: .sodaCanMintS
-        case .paper: .crumpledPaperWhiteS
-        case .rubber: .tireGrayM
-        case .etc: .cigaretteButtS
-        }
     }
 }
