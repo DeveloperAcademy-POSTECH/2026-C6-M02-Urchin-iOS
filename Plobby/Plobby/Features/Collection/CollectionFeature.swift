@@ -18,7 +18,7 @@ struct CollectionFeature {
         @Presents var my: MyFeature.State?
         var profile: Profile?
         var cards: IdentifiedArrayOf<CollectionCardFeature.State> = CollectionFeature.initialCards
-        var selectedCategory: TrashCategory = .plastic
+        var selectedCategory: TrashCategory = CollectionFeature.categoryOrder[0]
         var isCategorySheetPresented = false
         var isTrashCountsLoaded = false
         var shareRequestCount = 0
@@ -142,7 +142,7 @@ struct CollectionFeature {
 extension CollectionFeature {
 
     static let categoryOrder: [TrashCategory] = [
-        .plastic, .glass, .metal, .wood, .fishingGear, .clothing,
+        .glass, .plastic, .metal, .wood, .fishingGear, .clothing,
         .styrofoam, .can, .paper, .rubber, .etc
     ]
 
