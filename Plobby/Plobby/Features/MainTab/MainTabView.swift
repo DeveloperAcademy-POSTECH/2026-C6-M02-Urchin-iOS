@@ -85,12 +85,6 @@ struct MainTabView: View {
             }
         }
         .animation(.easeInOut(duration: 0.25), value: store.isLoginSheetPresented)
-        .overlay(alignment: .bottomTrailing) {
-            if store.isRecordMenuPresented {
-                recordMenu
-            }
-        }
-        .animation(.spring(duration: 0.25), value: store.isRecordMenuPresented)
         .fullScreenCover(item: $store.scope(state: \.recordFlow, action: \.recordFlow)) { store in
             RecordView(store: store)
         }
@@ -107,16 +101,14 @@ struct MainTabView: View {
 
 // MARK: - Subviews
 
-extension MainTabView {
+private extension MainTabView {
 
-    /// 선택된 탭만 채워진 아이콘을 보여줘요
-    private func tabLabel(_ title: String, icon: String, tab: MainTab) -> some View {
+    func tabLabel(_ title: String, icon: String, tab: MainTab) -> some View {
         Label(title, systemImage: store.selectedTab == tab ? "\(icon).fill" : icon)
-            // 탭바가 아이콘을 자동으로 채우지 않게 해요
             .environment(\.symbolVariants, .none)
     }
 
-    private func myView(store: StoreOf<MyFeature>) -> some View {
+    func myView(store: StoreOf<MyFeature>) -> some View {
         @Bindable var store = store
 
         return MyView(store: store)
@@ -150,23 +142,5 @@ extension MainTabView {
                             .toolbar(.hidden, for: .navigationBar)
                     }
             }
-    }
-    
-    private var recordMenu: some View {
-        ZStack(alignment: .bottomTrailing) {
-            Color.black.opacity(0.4)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    store.send(.recordMenuDismissed)
-                }
-                .transition(.opacity)
-            
-            RecordMenuView { recordType in
-                store.send(.recordTypeSelected(recordType))
-            }
-            .padding(.trailing, 16)
-            .padding(.bottom, 64)
-            .transition(.scale(scale: 0.8, anchor: .bottomTrailing).combined(with: .opacity))
-        }
     }
 }

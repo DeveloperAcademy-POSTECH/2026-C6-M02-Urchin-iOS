@@ -5,7 +5,6 @@
 //  Created by 더스틴 on 11/3/26.
 //
 
-import Foundation
 import UIKit
 
 import ComposableArchitecture
@@ -30,7 +29,6 @@ struct MapFeature {
         var isLocating = false
         var hasRequestedLocation = false
         var currentLocation: Coordinate?
-        /// 현위치 버튼으로 옮겨 와서 아직 현위치를 보고 있어요. 이때만 버튼이 초록색이에요.
         var isShowingCurrentLocation = false
         @Shared(.beaches) var allBeaches
         @Shared(.favoriteBeaches) var favoriteBeaches
@@ -69,7 +67,7 @@ struct MapFeature {
         case delegate(Delegate)
 
         enum Delegate: Equatable {
-            case recordStartRequested(Beach)
+            case recordStartRequested(Beach, RecordType)
             case loginRequired
         }
     }
@@ -220,9 +218,9 @@ struct MapFeature {
                 state.beachSheet = nil
                 return .none
 
-            case let .beachSheet(.presented(.delegate(.recordStartTapped(beach)))):
+            case let .beachSheet(.presented(.delegate(.recordStartTapped(beach, type)))):
                 state.beachSheet = nil
-                return .send(.delegate(.recordStartRequested(beach)))
+                return .send(.delegate(.recordStartRequested(beach, type)))
 
             case let .path(.element(id, .searchBeach(.delegate(.beachSelected(beach))))):
                 state.path.pop(from: id)
@@ -262,7 +260,6 @@ struct MapFeature {
 
 extension MapFeature {
 
-    /// 다른 곳으로 옮기면 현위치 버튼은 원래 색으로 돌아가요.
     private func moveCamera(to center: Coordinate, meters: Double, state: inout State) {
         state.isShowingCurrentLocation = false
         state.cameraCommand = .region(center: center, meters: meters)
@@ -292,7 +289,6 @@ extension MapFeature {
         }
     }
 
-    /// 권한이 정해지지 않았다면 현재 위치를 받는 순간 권한 팝업이 떠요.
     private func fetchCurrentLocation(_ state: inout State, isButtonRequest: Bool) -> Effect<Action> {
         state.isLocating = true
         return .run { send in
@@ -307,7 +303,6 @@ extension MapFeature {
 
 // MARK: - CameraCommand
 
-/// 지도를 어디로 옮길지. MapCameraPosition은 MapKit 뷰 타입이라 State에는 이 값만 둬요.
 enum CameraCommand: Equatable {
     case region(center: Coordinate, meters: Double)
 }

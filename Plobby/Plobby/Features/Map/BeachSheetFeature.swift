@@ -21,6 +21,7 @@ struct BeachSheetFeature {
         @Shared(.favoriteBeaches) var favoriteBeaches
         @Shared(.membershipStatus) var membershipStatus
         @Presents var alert: AlertState<Action.Alert>?
+        var isActivityPickerPresented = false
 
         var isFavorite: Bool {
             favoriteBeaches.contains { $0.id == beach.id }
@@ -45,6 +46,8 @@ struct BeachSheetFeature {
         case closeTapped
         case homeTapped
         case recordStartTapped
+        case activityPicked(RecordType)
+        case activityPickerDismissed
         case alert(PresentationAction<Alert>)
         case delegate(Delegate)
 
@@ -53,7 +56,7 @@ struct BeachSheetFeature {
         enum Delegate: Equatable {
             case closed
             case homeTapped(Beach)
-            case recordStartTapped(Beach)
+            case recordStartTapped(Beach, RecordType)
             case favoriteChanged(isFavorite: Bool)
         }
     }
@@ -124,7 +127,16 @@ struct BeachSheetFeature {
                 return .send(.delegate(.homeTapped(state.beach)))
 
             case .recordStartTapped:
-                return .send(.delegate(.recordStartTapped(state.beach)))
+                state.isActivityPickerPresented = true
+                return .none
+
+            case let .activityPicked(type):
+                state.isActivityPickerPresented = false
+                return .send(.delegate(.recordStartTapped(state.beach, type)))
+
+            case .activityPickerDismissed:
+                state.isActivityPickerPresented = false
+                return .none
 
             case .alert, .delegate:
                 return .none
