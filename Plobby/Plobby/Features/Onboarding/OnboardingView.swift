@@ -241,9 +241,8 @@ private extension OnboardingPage {
 
     var illustrationTopPadding: CGFloat {
         switch self {
-        case .goal, .record: 16
+        case .goal, .record, .collection: 16
         case .map: 8
-        case .collection: 16
         }
     }
 
