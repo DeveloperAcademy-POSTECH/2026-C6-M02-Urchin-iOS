@@ -19,7 +19,7 @@ struct GoalListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HomeNavigationBar(title: "공동 목표") {
+            PlobbyNavigationBar(title: "공동 목표") {
                 store.send(.backButtonTapped)
             }
 
@@ -180,35 +180,5 @@ private extension GoalListView {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-    }
-}
-
-// MARK: - Navigation Bar
-
-/// 가운데 제목과 뒤로 버튼이 있는 내비게이션 바예요.
-struct HomeNavigationBar: View {
-
-    let title: String
-    let onBack: () -> Void
-
-    var body: some View {
-        ZStack {
-            Text(title)
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
-
-            Button(action: onBack) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 18.scaled, weight: .semibold))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 44.scaled, height: 44.scaled)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.leading, 12.scaled)
-        }
-        .frame(height: 56.scaled)
     }
 }

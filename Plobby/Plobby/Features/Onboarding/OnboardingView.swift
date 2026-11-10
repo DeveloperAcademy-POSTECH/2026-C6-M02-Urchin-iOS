@@ -77,28 +77,17 @@ private extension OnboardingView {
 
 private extension OnboardingView {
 
-    /// 시안 헤더(높이 56). 첫 단계는 뒤로가기 없이 높이만 차지해요
+    /// 공통 네비게이션 바(높이 56). 첫 단계는 뒤로가기 없이 높이만 차지해요
+    @ViewBuilder
     func header(_ page: OnboardingPage) -> some View {
-        HStack(spacing: 0) {
-            if let previous = page.previous {
-                Button {
-                    store.send(.pageChanged(previous))
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 18.scaled, weight: .semibold))
-                        .foregroundStyle(Color(.textPrimary))
-                        .frame(width: 44.scaled, height: 44.scaled)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel("이전 단계")
+        if let previous = page.previous {
+            PlobbyNavigationBar {
+                store.send(.pageChanged(previous))
             }
-
-            Spacer()
+        } else {
+            Color.clear
+                .frame(height: 56.scaled)
         }
-        .frame(height: 56.scaled)
-        .padding(.leading, 12.scaled)
-        .padding(.trailing, 20.scaled)
     }
 
     func titleSection(_ page: OnboardingPage) -> some View {
@@ -186,6 +175,8 @@ private extension OnboardingView {
                 .resizable()
                 .scaledToFit()
                 .frame(width: page.illustrationWidth.scaled)
+                // 플로깅/플로빙 이미지 높이가 달라도(기록 396 / 424) 같은 영역을 차지해 탭을 바꿔도 화면이 흔들리지 않아요
+                .frame(height: page.illustrationHeight.scaled, alignment: .top)
                 .accessibilityLabel(page.illustrationLabel)
         case .collection:
             CollectionCardView(store: store.scope(state: \.collectionCard, action: \.collectionCard), style: .onboarding)
@@ -271,6 +262,11 @@ private extension OnboardingPage {
     /// 이미지 폭. 카드(320)에 좌우 그림자 여백이 더해져 있어요
     var illustrationWidth: CGFloat {
         self == .map ? 344 : 360
+    }
+
+    /// 이미지 영역 높이. 플로깅/플로빙 중 더 큰 이미지 기준이에요
+    var illustrationHeight: CGFloat {
+        self == .map ? 456 : 424
     }
 
     func illustration(for activity: RecordType) -> ImageResource {

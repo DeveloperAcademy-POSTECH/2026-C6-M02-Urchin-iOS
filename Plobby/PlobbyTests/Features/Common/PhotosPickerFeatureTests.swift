@@ -100,11 +100,11 @@ struct PhotosPickerFeatureTests {
 
         await store.send(.assetTapped("f"))
         await store.receive(\.toast.show) {
-            $0.toast.toastMessage = PhotosPickerFeature.limitExceededMessage
+            $0.toast.toastType = .photoLimitExceeded
         }
         await clock.advance(by: ToastFeature.toastDuration)
         await store.receive(\.toast.toastDismissed) {
-            $0.toast.toastMessage = nil
+            $0.toast.toastType = nil
         }
     }
 
@@ -123,11 +123,11 @@ struct PhotosPickerFeatureTests {
         }
         await store.send(.assetTapped("c"))
         await store.receive(\.toast.show) {
-            $0.toast.toastMessage = PhotosPickerFeature.limitExceededMessage
+            $0.toast.toastType = .photoLimitExceeded
         }
         await clock.advance(by: ToastFeature.toastDuration)
         await store.receive(\.toast.toastDismissed) {
-            $0.toast.toastMessage = nil
+            $0.toast.toastType = nil
         }
     }
 
