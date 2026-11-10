@@ -182,6 +182,7 @@
 		DA688DD13099F0490064A2F4 /* PhotosPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD03099F0480064A2F4 /* PhotosPickerView.swift */; };
 		DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD23099F0A30064A2F4 /* RecordFormView.swift */; };
 		DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */; };
+		7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */; };
 		DA688DD73099F0F50064A2F4 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */; };
 		DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */; };
 		DA71D23030A2AF1900E00CD1 /* PlobbyNavigationBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */; };
@@ -467,6 +468,7 @@
 		DA688DD03099F0480064A2F4 /* PhotosPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerView.swift; sourceTree = "<group>"; };
 		DA688DD23099F0A30064A2F4 /* RecordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormView.swift; sourceTree = "<group>"; };
 		DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRewardView.swift; sourceTree = "<group>"; };
+		7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashScene.swift; sourceTree = "<group>"; };
 		DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
 		DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyNavigationBarStyle.swift; sourceTree = "<group>"; };
 		DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyNavigationBarConfiguration.swift; sourceTree = "<group>"; };
@@ -1129,6 +1131,7 @@
 			isa = PBXGroup;
 			children = (
 				DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */,
+				7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */,
 				DA688DCA3099CFB70064A2F4 /* RecordRewardFeature.swift */,
 			);
 			path = RecordReward;
@@ -1831,6 +1834,7 @@
 				7B3C1A11309D0000004C5301 /* FlipCard.swift in Sources */,
 				DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */,
 				DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */,
+				7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */,
 				B532EAC630A2A91900029E08 /* ToastType.swift in Sources */,
 				DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */,
 				73CD656240EA8E75250648CC /* BeachRecordResponseDTO.swift in Sources */,
