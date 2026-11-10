@@ -20,8 +20,13 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
-                .padding(.horizontal, 20)
+            PlobbyNavigationBar(
+                title: "설정",
+                style: .leading,
+                isBackEnabled: !store.isSigningOut
+            ) {
+                store.send(.backButtonTapped)
+            }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
@@ -56,29 +61,6 @@ struct SettingsView: View {
 // MARK: - Subviews
 
 extension SettingsView {
-
-    private var navigationBar: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Button {
-                store.send(.backButtonTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 32, height: 44, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .disabled(store.isSigningOut)
-            .accessibilityLabel("뒤로")
-
-            Text("설정")
-                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 18))
-                .foregroundStyle(Color.currentNeutralGray)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .frame(height: 56)
-    }
 
     private var notificationSection: some View {
         section("알림과 권한") {

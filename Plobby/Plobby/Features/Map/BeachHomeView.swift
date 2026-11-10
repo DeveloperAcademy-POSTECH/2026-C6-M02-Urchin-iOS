@@ -19,7 +19,9 @@ struct BeachHomeView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            navigationBar
+            PlobbyNavigationBar {
+                store.send(.backTapped)
+            }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
@@ -48,31 +50,6 @@ struct BeachHomeView: View {
             await store.send(.task).finish()
         }
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
-    }
-}
-
-// MARK: - Navigation Bar
-
-private extension BeachHomeView {
-
-    var navigationBar: some View {
-        HStack {
-            Button {
-                store.send(.backTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 44, height: 44, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-
-            Spacer()
-        }
-        .padding(.horizontal, 20)
-        .frame(height: 56)
     }
 }
 

@@ -20,7 +20,7 @@ struct ProfileEditView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            PlobbyNavigationBar(title: "프로필 수정", style: .leading) {
+            PlobbyNavigationBar(title: "프로필 수정", style: .leading, isTrailingEnabled: store.canSave) {
                 store.send(.backButtonTapped)
             } trailingAction: {
                 store.send(.saveButtonTapped)

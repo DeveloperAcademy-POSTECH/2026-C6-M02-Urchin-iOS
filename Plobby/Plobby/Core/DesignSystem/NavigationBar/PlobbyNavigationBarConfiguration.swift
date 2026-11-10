@@ -28,6 +28,7 @@ struct PlobbyNavigationBarConfiguration {
     struct BackButton: View {
 
         let action: () -> Void
+        var isEnabled = true
 
         var body: some View {
             Button(action: action) {
@@ -38,6 +39,7 @@ struct PlobbyNavigationBarConfiguration {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .disabled(!isEnabled)
             .accessibilityLabel("뒤로")
         }
     }
@@ -46,6 +48,7 @@ struct PlobbyNavigationBarConfiguration {
 
         let action: () -> Void
         let label: AnyView
+        var isEnabled = true
 
         var body: some View {
             Button(action: action) {
@@ -54,6 +57,7 @@ struct PlobbyNavigationBarConfiguration {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .disabled(!isEnabled)
         }
     }
 }

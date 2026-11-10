@@ -19,8 +19,9 @@ struct NotificationView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
-                .padding(.horizontal, 20)
+            PlobbyNavigationBar(title: "알림", style: .leading) {
+                store.send(.backButtonTapped)
+            }
 
             content
         }
@@ -41,28 +42,6 @@ struct NotificationView: View {
 // MARK: - Subviews
 
 extension NotificationView {
-
-    private var navigationBar: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Button {
-                store.send(.backButtonTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 32, height: 44, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-
-            Text("알림")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color.textPrimary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .frame(height: 56)
-    }
 
     @ViewBuilder
     private var content: some View {
