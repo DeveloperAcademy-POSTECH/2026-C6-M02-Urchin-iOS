@@ -80,10 +80,38 @@ private extension CollectionCardView {
         cardFace(
             VStack(spacing: 0) {
                 header
-                trashPile
+
+                if store.collectedCount > 0 {
+                    trashPile
+                } else {
+                    emptyState
+                }
+
                 collectedCountLabel
             }
         )
+    }
+
+    var emptyState: some View {
+        VStack(spacing: 0) {
+            Image(store.category.thumbnailName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 80.scaled, height: 80.scaled)
+                .padding(.bottom, 20.scaled)
+
+            Text("아직 수거 기록이 없어요")
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.gray0))
+                .padding(.bottom, 8.scaled)
+
+            Text("\(store.category.name)\(store.category.name.objectParticle) 수거한 활동을 기록하면\n이 카드에 차곡차곡 쌓여요.")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.textDisabled))
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, 16.scaled)
     }
 
     var trashPile: some View {
@@ -92,6 +120,7 @@ private extension CollectionCardView {
             count: store.collectedCount,
             isActive: isActive
         )
+        .id(store.collectedCount)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 16.scaled)
         .padding(.bottom, 8.scaled)
@@ -101,7 +130,7 @@ private extension CollectionCardView {
         HStack(alignment: .lastTextBaseline) {
             Text("지금까지 모은 개수")
                 .plobbyFont(.metadata)
-                .foregroundStyle(Color(.gray500))
+                .foregroundStyle(Color(.textDisabled))
 
             Spacer()
 
@@ -131,9 +160,15 @@ private extension CollectionCardView {
 
                 factDescription(fact.description)
 
-                Spacer()
+                if store.collectedCount > 0 {
+                    Spacer()
 
-                factSource(fact.source)
+                    factSource(fact.source)
+                } else {
+                    recordButton
+                        .padding(.top, 24.scaled)
+                        .padding(.bottom, 60.scaled)
+                }
             }
             .multilineTextAlignment(.center)
         )
@@ -155,12 +190,14 @@ private extension CollectionCardView {
             .padding(.horizontal, 20.scaled)
     }
 
-    // TODO: 종류별 일러스트 에셋 나오면 교체
     var illustration: some View {
-        Color.clear
-            .frame(width: 167.scaled)
-            .frame(minHeight: 0, maxHeight: 141.scaled)
+        Image(store.category.collectionIllustrationName(isEmpty: store.collectedCount == 0))
+            .resizable()
+            .scaledToFit()
+            .frame(width: 242.scaled)
+            .frame(minHeight: 0, maxHeight: 176.scaled)
             .padding(.top, 30.scaled)
+            .accessibilityHidden(true)
     }
 
     func factDescription(_ text: String) -> some View {
@@ -170,6 +207,22 @@ private extension CollectionCardView {
             .fixedSize(horizontal: false, vertical: true)
             .padding(.top, 22.scaled)
             .padding(.horizontal, 16.scaled)
+    }
+
+    var recordButton: some View {
+        Button {
+            // 홈 기록하기처럼 시트 애니메이션 없이 팝업으로 띄워요
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            store.send(.recordButtonTapped, transaction: transaction)
+        } label: {
+            Label("활동 기록하기", systemImage: "plus")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.gray0))
+                .frame(width: 128.scaled, height: 36.scaled)
+                .background(Color(.darkBGGreen), in: RoundedRectangle(cornerRadius: 8.scaled))
+        }
+        .buttonStyle(.plain)
     }
 
     func factSource(_ text: String) -> some View {
