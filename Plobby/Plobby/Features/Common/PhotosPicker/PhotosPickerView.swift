@@ -157,7 +157,7 @@ private extension PhotosPickerView {
             }
         }
         .background(Color(.gray0))
-        .plobbyToast(store.toast.toastMessage)
+        .plobbyToast(store.toast.toastType)
     }
 
     func cellLength(in width: CGFloat) -> CGFloat {

@@ -19,12 +19,12 @@ struct ToastFeatureTests {
         let clock = TestClock()
         let store = makeStore(clock: clock)
 
-        await store.send(.show("안내")) {
-            $0.toastMessage = "안내"
+        await store.send(.show(.photoSaveFailed)) {
+            $0.toastType = .photoSaveFailed
         }
         await clock.advance(by: ToastFeature.toastDuration)
         await store.receive(\.toastDismissed) {
-            $0.toastMessage = nil
+            $0.toastType = nil
         }
     }
 
@@ -33,19 +33,19 @@ struct ToastFeatureTests {
         let clock = TestClock()
         let store = makeStore(clock: clock)
 
-        await store.send(.show("첫 번째")) {
-            $0.toastMessage = "첫 번째"
+        await store.send(.show(.photoLimitExceeded)) {
+            $0.toastType = .photoLimitExceeded
         }
         await clock.advance(by: .seconds(1))
-        await store.send(.show("두 번째")) {
-            $0.toastMessage = "두 번째"
+        await store.send(.show(.photoSaveFailed)) {
+            $0.toastType = .photoSaveFailed
         }
 
         // 첫 번째 타이머가 끝날 시점에는 사라지지 않아요.
         await clock.advance(by: .seconds(1))
         await clock.advance(by: .seconds(1))
         await store.receive(\.toastDismissed) {
-            $0.toastMessage = nil
+            $0.toastType = nil
         }
     }
 

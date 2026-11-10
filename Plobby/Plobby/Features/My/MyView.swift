@@ -32,11 +32,9 @@ struct MyView: View {
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
-        .plobbyToast(
-            store.toast.toastMessage,
-            actionTitle: store.removedFavoriteBeach == nil ? nil : "되돌리기",
-            action: { store.send(.favoriteBeachUndoButtonTapped, animation: Self.favoriteBeachAnimation) }
-        )
+        .plobbyToast(store.toast.toastType) {
+            store.send(.favoriteBeachUndoButtonTapped, animation: Self.favoriteBeachAnimation)
+        }
         .onAppear {
             store.send(.onAppear)
         }

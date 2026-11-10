@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 토스트 메시지 UI
-/// - 보통은 `.plobbyToast(_:)`로 화면에 붙여 사용합니다.
+/// - 보통은 `.plobbyToast(_:action:)`로 화면에 붙여 사용합니다.
 ///
 struct PlobbyToast: View {
 
@@ -51,14 +51,14 @@ struct PlobbyToast: View {
 
 extension View {
 
-    /// `actionTitle`과 `action`을 넘기면 오른쪽에 "되돌리기" 같은 버튼을 보여줘요.
-    func plobbyToast(_ message: String?, actionTitle: String? = nil, action: (() -> Void)? = nil) -> some View {
+    /// 토스트 종류에 버튼 문구가 있으면 오른쪽에 버튼을 보여주고, 누르면 'action'을 실행
+    func plobbyToast(_ toastType: ToastType?, action: (() -> Void)? = nil) -> some View {
         overlay(alignment: .bottom) {
-            if let message {
-                PlobbyToast(message: message, actionTitle: actionTitle, action: action)
+            if let toastType {
+                PlobbyToast(message: toastType.message, actionTitle: toastType.actionTitle, action: action)
                     .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.2), value: message)
+        .animation(.easeInOut(duration: 0.2), value: toastType)
     }
 }

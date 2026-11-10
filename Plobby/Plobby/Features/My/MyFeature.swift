@@ -145,7 +145,7 @@ struct MyFeature {
                 state.removedFavoriteBeach = RemovedFavoriteBeach(beach: beach, index: index)
                 return .merge(
                     requestFavoriteBeach(beach, isFavorite: false),
-                    .send(.toast(.show("관심 해변을 해제했어요")))
+                    .send(.toast(.show(.favoriteBeachRemoved)))
                 )
 
             case .favoriteBeachUndoButtonTapped:
@@ -161,7 +161,7 @@ struct MyFeature {
             case let .favoriteBeachRequestFailed(beach, isFavorite):
                 state.removedFavoriteBeach = nil
                 FavoriteBeachToggle.revert(beach, isFavorite: isFavorite, in: state.$favoriteBeaches)
-                return .send(.toast(.show(isFavorite ? "관심 해변을 되돌리지 못했어요" : "관심 해변을 해제하지 못했어요")))
+                return .send(.toast(.show(isFavorite ? .favoriteBeachRestoreFailed : .favoriteBeachRemoveFailed)))
 
             case .toast(.toastDismissed):
                 state.removedFavoriteBeach = nil

@@ -113,15 +113,15 @@ struct BlockedUsersFeature {
                 case .success:
                     if isBlocked {
                         state.unblockedUserIDs.remove(userID)
-                        return .send(.toast(.show("\(nickname)님을 차단했어요")))
+                        return .send(.toast(.show(.userBlocked(nickname: nickname))))
                     } else {
                         state.unblockedUserIDs.insert(userID)
-                        return .send(.toast(.show("\(nickname)님 차단을 해제했어요")))
+                        return .send(.toast(.show(.userUnblocked(nickname: nickname))))
                     }
                     
                 case let .failure(error):
                     PlobbyLogger.error(error)
-                    return .send(.toast(.show(isBlocked ? "차단하지 못했어요" : "차단을 해제하지 못했어요")))
+                    return .send(.toast(.show(isBlocked ? .userBlockFailed : .userUnblockFailed)))
                 }
                 
             case .toast:
