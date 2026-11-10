@@ -58,6 +58,7 @@ struct RecordFormFeature {
             self.memo = memo
             self.initialInputs = Inputs()
             self.initialInputs = inputs
+            self.isCompleteEnabled = mode != .create
         }
         
         var title: String {
