@@ -51,10 +51,18 @@ private extension OnboardingView {
                 activityTabs
             }
 
-            illustration(page)
-                .padding(.top, page.illustrationTopPadding.scaled)
+            if page == .collection {
+                // 컬렉션 카드(280x428, 시안 기준 좌우 60)는 하단 버튼 위 40에 놓여요
+                Spacer(minLength: 0)
 
-            Spacer(minLength: 0)
+                illustration(page)
+                    .padding(.bottom, 40.scaled)
+            } else {
+                illustration(page)
+                    .padding(.top, page.illustrationTopPadding.scaled)
+
+                Spacer(minLength: 0)
+            }
 
             bottomButtons(page)
         }
@@ -178,7 +186,7 @@ private extension OnboardingView {
                 .frame(width: page.illustrationWidth.scaled)
                 .accessibilityLabel(page.illustrationLabel)
         case .collection:
-            CollectionCardView(store: store.scope(state: \.collectionCard, action: \.collectionCard))
+            CollectionCardView(store: store.scope(state: \.collectionCard, action: \.collectionCard), style: .onboarding)
                 .frame(width: 280.scaled, height: 428.scaled)
         }
     }
