@@ -14,13 +14,13 @@ struct ToastFeature {
 
     @ObservableState
     struct State: Equatable {
-        var toastMessage: String?
+        var toastType: ToastType?
     }
 
     // MARK: - Action
 
     enum Action {
-        case show(String)
+        case show(ToastType)
         case toastDismissed
     }
 
@@ -33,12 +33,12 @@ struct ToastFeature {
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case let .show(message):
-                state.toastMessage = message
+            case let .show(toastType):
+                state.toastType = toastType
                 return dismissAfterDelay()
 
             case .toastDismissed:
-                state.toastMessage = nil
+                state.toastType = nil
                 return .none
             }
         }

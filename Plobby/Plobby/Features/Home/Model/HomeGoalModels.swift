@@ -132,6 +132,13 @@ struct HomeGoalBoard: Equatable, Sendable {
         trashCounts.reduce(0) { $0 + $1.count }
     }
 
+    /// 쓰레기 종류 순서(유리 → 플라스틱 → … → 기타)로 정렬한 합계예요. 받아온 순서와 상관없이 항상 같은 순서로 보여줘요
+    var orderedTrashCounts: [HomeGoalTrashCount] {
+        trashCounts.sorted {
+            (TrashCategory.allCases.firstIndex(of: $0.category) ?? 0) < (TrashCategory.allCases.firstIndex(of: $1.category) ?? 0)
+        }
+    }
+
     /// 이 활동에 참여한 사람 수예요.
     var participantCount: Int {
         participants.count

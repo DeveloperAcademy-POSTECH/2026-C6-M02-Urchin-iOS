@@ -26,6 +26,12 @@ struct CollectionCardFeature {
 
     enum Action {
         case flipButtonTapped
+        case recordButtonTapped
+        case delegate(Delegate)
+
+        enum Delegate {
+            case recordStartRequested
+        }
     }
 
     // MARK: - Body
@@ -35,6 +41,12 @@ struct CollectionCardFeature {
             switch action {
             case .flipButtonTapped:
                 state.isFlipped.toggle()
+                return .none
+
+            case .recordButtonTapped:
+                return .send(.delegate(.recordStartRequested))
+
+            case .delegate:
                 return .none
             }
         }

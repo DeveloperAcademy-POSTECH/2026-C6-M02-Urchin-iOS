@@ -20,7 +20,10 @@ struct RecordDetailFeature {
         var loadState: LoadState = .loading
         var currentPhotoIndex = 0
         var isLikeUpdating = false
+        /// 타인 홈에서 연 상세는 작성자 홈을 또 열지 않아요.
+        var opensAuthorHome = true
         @Presents var editForm: RecordFormFeature.State?
+        @Presents var userHome: UserHomeFeature.State?
         @Presents var alert: AlertState<Action.Alert>?
         
         init(recordID: UUID) {
@@ -68,8 +71,10 @@ struct RecordDetailFeature {
         case likeTapped
         case likeResponse(Result<Void, any Error>)
         case backTapped
+        case authorProfileTapped
         case moreMenuSelected(MoreMenu)
         case editForm(PresentationAction<RecordFormFeature.Action>)
+        case userHome(PresentationAction<UserHomeFeature.Action>)
         case alert(PresentationAction<Alert>)
         case deleteResponse(Result<Void, any Error>)
         case reportResponse(Result<Void, any Error>)
@@ -172,6 +177,24 @@ struct RecordDetailFeature {
                 
             case .backTapped:
                 return .send(.delegate(.closed))
+
+            case .authorProfileTapped:
+                guard state.opensAuthorHome, let record = state.record, !record.isMine else { return .none }
+
+                state.userHome = UserHomeFeature.State(
+                    userID: record.userID,
+                    nickname: record.nickname,
+                    profileImageURL: record.profileImageURL
+                )
+                return .none
+
+            case .userHome(.presented(.delegate(.closed))):
+                state.userHome = nil
+                return .none
+
+            case let .userHome(.presented(.delegate(.blocked(userID)))):
+                state.userHome = nil
+                return .send(.delegate(.blocked(userID: userID)))
                 
             case .moreMenuSelected(.editTapped):
                 guard let record = state.record else { return .none }
@@ -251,6 +274,7 @@ struct RecordDetailFeature {
                 return .none
                 
             case .editForm,
+                    .userHome,
                     .alert,
                     .delegate:
                 return .none
@@ -258,6 +282,9 @@ struct RecordDetailFeature {
         }
         .ifLet(\.$editForm, action: \.editForm) {
             RecordFormFeature()
+        }
+        .ifLet(\.$userHome, action: \.userHome) {
+            UserHomeFeature()
         }
         .ifLet(\.$alert, action: \.alert)
     }

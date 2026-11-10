@@ -25,7 +25,7 @@ struct BlockedUsersView: View {
         }
         .background(Color(.gray0))
         .toolbar(.hidden, for: .navigationBar)
-        .plobbyToast(store.toast.toastMessage)
+        .plobbyToast(store.toast.toastType)
         .task {
             await store.send(.task).finish()
         }
