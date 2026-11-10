@@ -49,12 +49,12 @@ struct HomeTrashSummaryPopup: View {
             .padding(.top, 20.scaled)
             .padding(.bottom, 24.scaled)
             .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 16.scaled))
-            .padding(.horizontal, 24.scaled)
+            .padding(.horizontal, 16.scaled)
         }
     }
 
     private func cell(_ item: GoalTrashSummary) -> some View {
-        HStack(spacing: 8.scaled) {
+        HStack(spacing: 0) {
             // 컬렉션 전체 분류와 같은 종류별 대표 이미지예요
             Image(item.category.thumbnailName)
                 .resizable()
@@ -66,10 +66,13 @@ struct HomeTrashSummaryPopup: View {
                 .foregroundStyle(Color(.textPrimary))
                 .lineLimit(1)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 8.scaled)
 
+            // 이름과 개수 사이는 이름이 길 때만 드러나서, "낚시·어업용품"처럼 긴 이름이 들어가도록 좁게 둬요
             Text("\(item.collectedCount)개")
                 .plobbyFont(.labelSelected)
                 .foregroundStyle(Color(.textPrimary))
+                .padding(.leading, 4.scaled)
         }
         .padding(8.scaled)
         .frame(height: 40.scaled)
