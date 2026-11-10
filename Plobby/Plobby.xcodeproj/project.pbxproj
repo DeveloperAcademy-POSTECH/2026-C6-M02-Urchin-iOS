@@ -281,6 +281,10 @@
 		ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30B309833A900C4916C /* WaterDepthTests.swift */; };
 		ECE6F31B309833AE00C4916C /* PlobbyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F318309833AE00C4916C /* PlobbyUITests.swift */; };
 		ECE6F31C309833AE00C4916C /* PlobbyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */; };
+		A16C0DE00000000000000302 /* ProfilePhotoFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000301 /* ProfilePhotoFeature.swift */; };
+		A16C0DE00000000000000304 /* ProfilePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000303 /* ProfilePhotoView.swift */; };
+		A16C0DE00000000000000306 /* NicknameCheckFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000305 /* NicknameCheckFeature.swift */; };
+		A16C0DE00000000000000308 /* NicknameCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000307 /* NicknameCheckView.swift */; };
 		A16C0DE00000000000000202 /* FavoriteBeachAddFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */; };
 		A16C0DE00000000000000204 /* FavoriteBeachAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */; };
 /* End PBXBuildFile section */
@@ -579,6 +583,10 @@
 		F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSheetView.swift; sourceTree = "<group>"; };
 		F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserResponseDTO.swift; sourceTree = "<group>"; };
 		FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSummary.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000301 /* ProfilePhotoFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000303 /* ProfilePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoView.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000305 /* NicknameCheckFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000307 /* NicknameCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckView.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddFeature.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1252,6 +1260,24 @@
 			path = CollectionCard;
 			sourceTree = "<group>";
 		};
+		A16C0DE00000000000000309 /* ProfilePhoto */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000301 /* ProfilePhotoFeature.swift */,
+				A16C0DE00000000000000303 /* ProfilePhotoView.swift */,
+			);
+			path = ProfilePhoto;
+			sourceTree = "<group>";
+		};
+		A16C0DE0000000000000030A /* NicknameCheck */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000305 /* NicknameCheckFeature.swift */,
+				A16C0DE00000000000000307 /* NicknameCheckView.swift */,
+			);
+			path = NicknameCheck;
+			sourceTree = "<group>";
+		};
 		EC4E9E3430A1A4EB000E2C5F /* BeachPicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1294,6 +1320,8 @@
 			isa = PBXGroup;
 			children = (
 				EC4E9E3430A1A4EB000E2C5F /* BeachPicker */,
+				A16C0DE00000000000000309 /* ProfilePhoto */,
+				A16C0DE0000000000000030A /* NicknameCheck */,
 				DA688DC53099CF830064A2F4 /* PhotosPicker */,
 				0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */,
 				DAEC87A3309B7F2A0086965E /* ToastFeature.swift */,
@@ -1919,6 +1947,10 @@
 				EC0D4B993098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift in Sources */,
 				EC0D4B953098E1D0000E7BB7 /* WithdrawalReason.swift in Sources */,
 				ECDDDAB4309AC1F800FB04D5 /* BeachPickerView.swift in Sources */,
+				A16C0DE00000000000000302 /* ProfilePhotoFeature.swift in Sources */,
+				A16C0DE00000000000000304 /* ProfilePhotoView.swift in Sources */,
+				A16C0DE00000000000000306 /* NicknameCheckFeature.swift in Sources */,
+				A16C0DE00000000000000308 /* NicknameCheckView.swift in Sources */,
 				7B3C1A22309D0000004C5301 /* BeachPickerFeature.swift in Sources */,
 				4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */,
 				DAEC87A8309C42CF0086965E /* LocationPickerView.swift in Sources */,
