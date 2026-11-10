@@ -269,13 +269,3 @@ private extension OnboardingPage {
         }
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    OnboardingView(
-        store: Store(initialState: OnboardingFeature.State()) {
-            OnboardingFeature()
-        }
-    )
-}
