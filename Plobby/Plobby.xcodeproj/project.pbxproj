@@ -96,6 +96,8 @@
 		A16C0DE00000000000000106 /* UserHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000105 /* UserHomeView.swift */; };
 		A16C0DE00000000000000202 /* FavoriteBeachAddFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */; };
 		A16C0DE00000000000000204 /* FavoriteBeachAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */; };
+		A16C0DE00000000000000402 /* LoginFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000401 /* LoginFeature.swift */; };
+		A16C0DE00000000000000404 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000403 /* LoginView.swift */; };
 		A29D1CFD3712AA87F7389274 /* DependencyValues+UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */; };
 		A6BFBCB3BD04AAB29D26FEE2 /* UserBlockInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */; };
 		AC79ACD85403DD13EBC9ACCD /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95366258A2DD2CD25A307CDD /* CameraPicker.swift */; };
@@ -285,6 +287,12 @@
 		ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30B309833A900C4916C /* WaterDepthTests.swift */; };
 		ECE6F31B309833AE00C4916C /* PlobbyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F318309833AE00C4916C /* PlobbyUITests.swift */; };
 		ECE6F31C309833AE00C4916C /* PlobbyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */; };
+		A16C0DE00000000000000302 /* ProfilePhotoFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000301 /* ProfilePhotoFeature.swift */; };
+		A16C0DE00000000000000304 /* ProfilePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000303 /* ProfilePhotoView.swift */; };
+		A16C0DE00000000000000306 /* NicknameCheckFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000305 /* NicknameCheckFeature.swift */; };
+		A16C0DE00000000000000308 /* NicknameCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000307 /* NicknameCheckView.swift */; };
+		A16C0DE00000000000000202 /* FavoriteBeachAddFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */; };
+		A16C0DE00000000000000204 /* FavoriteBeachAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -387,6 +395,8 @@
 		A16C0DE00000000000000105 /* UserHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeView.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddFeature.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddView.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000401 /* LoginFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000403 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A683DF52E8FC8F413240B638 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
 		AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+UserClient.swift"; sourceTree = "<group>"; };
 		B1CA15540443FE5BE6EF51E8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -585,6 +595,12 @@
 		F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSheetView.swift; sourceTree = "<group>"; };
 		F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserResponseDTO.swift; sourceTree = "<group>"; };
 		FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSummary.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000301 /* ProfilePhotoFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000303 /* ProfilePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoView.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000305 /* NicknameCheckFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000307 /* NicknameCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckView.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -799,6 +815,24 @@
 				A16C0DE00000000000000105 /* UserHomeView.swift */,
 			);
 			path = UserHome;
+			sourceTree = "<group>";
+		};
+		A16C0DE00000000000000205 /* FavoriteBeachAdd */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */,
+				A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */,
+			);
+			path = FavoriteBeachAdd;
+			sourceTree = "<group>";
+		};
+		A16C0DE00000000000000405 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000401 /* LoginFeature.swift */,
+				A16C0DE00000000000000403 /* LoginView.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		A16C0DE00000000000000205 /* FavoriteBeachAdd */ = {
@@ -1266,6 +1300,24 @@
 			path = CollectionCard;
 			sourceTree = "<group>";
 		};
+		A16C0DE00000000000000309 /* ProfilePhoto */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000301 /* ProfilePhotoFeature.swift */,
+				A16C0DE00000000000000303 /* ProfilePhotoView.swift */,
+			);
+			path = ProfilePhoto;
+			sourceTree = "<group>";
+		};
+		A16C0DE0000000000000030A /* NicknameCheck */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000305 /* NicknameCheckFeature.swift */,
+				A16C0DE00000000000000307 /* NicknameCheckView.swift */,
+			);
+			path = NicknameCheck;
+			sourceTree = "<group>";
+		};
 		EC4E9E3430A1A4EB000E2C5F /* BeachPicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1308,6 +1360,8 @@
 			isa = PBXGroup;
 			children = (
 				EC4E9E3430A1A4EB000E2C5F /* BeachPicker */,
+				A16C0DE00000000000000309 /* ProfilePhoto */,
+				A16C0DE0000000000000030A /* NicknameCheck */,
 				DA688DC53099CF830064A2F4 /* PhotosPicker */,
 				0B0B1E08A392ACD09A40A31A /* PhotoThumbnailView.swift */,
 				DAEC87A3309B7F2A0086965E /* ToastFeature.swift */,
@@ -1613,6 +1667,7 @@
 				DA5B107630997758003FEDF9 /* MainTab */,
 				ECE6F2B53098338400C4916C /* Home */,
 				ECE6F2BC3098338400C4916C /* Onboarding */,
+				A16C0DE00000000000000405 /* Login */,
 				ECE6F2C53098338400C4916C /* SignUp */,
 			);
 			path = Features;
@@ -1935,6 +1990,10 @@
 				EC0D4B993098E1D0000E7BB7 /* DeleteAccountRequestDTO.swift in Sources */,
 				EC0D4B953098E1D0000E7BB7 /* WithdrawalReason.swift in Sources */,
 				ECDDDAB4309AC1F800FB04D5 /* BeachPickerView.swift in Sources */,
+				A16C0DE00000000000000302 /* ProfilePhotoFeature.swift in Sources */,
+				A16C0DE00000000000000304 /* ProfilePhotoView.swift in Sources */,
+				A16C0DE00000000000000306 /* NicknameCheckFeature.swift in Sources */,
+				A16C0DE00000000000000308 /* NicknameCheckView.swift in Sources */,
 				7B3C1A22309D0000004C5301 /* BeachPickerFeature.swift in Sources */,
 				4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */,
 				DAEC87A8309C42CF0086965E /* LocationPickerView.swift in Sources */,
@@ -2093,6 +2152,8 @@
 				ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */,
 				DA688DCB3099CFB70064A2F4 /* RecordRewardFeature.swift in Sources */,
 				ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */,
+				A16C0DE00000000000000402 /* LoginFeature.swift in Sources */,
+				A16C0DE00000000000000404 /* LoginView.swift in Sources */,
 				ECE6F2F83098338400C4916C /* SignUpCompleteFeature.swift in Sources */,
 				DA5B10E730998932003FEDF9 /* RecordFlowFeature.swift in Sources */,
 				ECE6F2F93098338400C4916C /* SignUpCompleteView.swift in Sources */,
@@ -2426,13 +2487,15 @@
 		DA1A4DCF3089FEB100AEAB52 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Z5J43V9D9J;
+				DEVELOPMENT_TEAM = RD7558P2U8;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.PlobbyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -2446,13 +2509,15 @@
 		DA1A4DD03089FEB100AEAB52 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Z5J43V9D9J;
+				DEVELOPMENT_TEAM = RD7558P2U8;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.PlobbyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
