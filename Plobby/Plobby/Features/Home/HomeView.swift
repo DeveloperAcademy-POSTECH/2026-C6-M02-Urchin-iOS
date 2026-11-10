@@ -10,25 +10,25 @@ import SwiftUI
 import ComposableArchitecture
 
 struct HomeView: View {
-
+    
     // MARK: - Properties
-
+    
     @Bindable var store: StoreOf<HomeFeature>
-
+    
     @Namespace private var tabUnderline
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         VStack(spacing: 0) {
             header
-
+            
             goalCard
                 .padding(.horizontal, 20.scaled)
-
+            
             activityTabs
                 .padding(.top, 4.scaled)
-
+            
             scene
         }
         .background(Color(.gray0))
@@ -37,8 +37,12 @@ struct HomeView: View {
         }
         .fullScreenCover(isPresented: activityPickerBinding) {
             HomeActivityPicker(
-                onSelect: { type in store.send(.activityPicked(type), transaction: Self.noAnimation) },
-                onDismiss: { store.send(.activityPickerDismissed, transaction: Self.noAnimation) }
+                onSelect: { type in
+                    store.send(.activityPicked(type), transaction: Self.noAnimation)
+                },
+                onDismiss: {
+                    store.send(.activityPickerDismissed, transaction: Self.noAnimation)
+                }
             )
             .presentationBackground(.clear)
         }
@@ -59,7 +63,7 @@ struct HomeView: View {
 // MARK: - 헤더
 
 private extension HomeView {
-
+    
     var header: some View {
         HStack {
             Image(.homeLogo)
@@ -67,9 +71,9 @@ private extension HomeView {
                 .scaledToFit()
                 .frame(width: 73.scaled, height: 23.scaled)
                 .accessibilityLabel("plobby")
-
+            
             Spacer()
-
+            
             Button {
                 store.send(.notificationButtonTapped)
             } label: {
@@ -85,12 +89,12 @@ private extension HomeView {
         .padding(.trailing, 12.scaled)
         .frame(height: 50.scaled)
     }
-
+    
     var activityTabs: some View {
         HStack(spacing: 0) {
             ForEach(Self.tabs, id: \.self) { type in
                 let isSelected = store.selectedType == type
-
+                
                 Button {
                     store.send(.activityTabSelected(type), animation: .smooth(duration: 0.3))
                 } label: {
@@ -122,14 +126,13 @@ private extension HomeView {
 // MARK: - 장면
 
 private extension HomeView {
-
+    
     var scene: some View {
         let type = store.selectedType
         let days = store.board?.days ?? []
         let pulse = store.collectPulses[type, default: 0]
-
+        
         return ZStack {
-            // 장면 배경은 탭 바 아래까지 깔고, 버튼들은 탭 바 위에 둬요.
             switch type {
             case .plogging:
                 PloggingSceneView(days: days, stage: store.stage, collectPulse: pulse)
@@ -140,12 +143,12 @@ private extension HomeView {
                     .ignoresSafeArea(edges: .bottom)
                     .transition(.opacity)
             }
-
+            
             if let status = store.status, status.isFinished {
                 HomeGoalCelebration(isAchieved: status == .achieved)
                     .transition(.opacity)
             }
-
+            
             HomeSceneOverlay(
                 recordType: type,
                 stage: store.stage,
@@ -155,12 +158,12 @@ private extension HomeView {
                 onParticipantsTapped: { store.send(.participantsButtonTapped) },
                 onTrashSummaryTapped: { store.send(.trashSummaryButtonTapped, transaction: Self.noAnimation) }
             )
-
+            
             if store.isScrollGuideVisible {
                 HomeScrollGuideToast()
                     .transition(.opacity)
             }
-
+            
             recordButton
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                 .padding(.trailing, 20.scaled)
@@ -171,19 +174,17 @@ private extension HomeView {
         .gesture(swipeGesture)
         .animation(.easeInOut(duration: 0.2), value: store.isScrollGuideVisible)
     }
-
-    /// 장면을 위로 밀면 다음 단계, 아래로 밀면 이전 단계로 넘어가요.
+    
     var swipeGesture: some Gesture {
         DragGesture(minimumDistance: 20)
             .onEnded { value in
                 let dy = value.translation.height
                 guard abs(dy) > 40, abs(dy) > abs(value.translation.width) else { return }
-
+                
                 store.send(.sceneSwiped(forward: dy < 0), animation: HomeFeature.transitionAnimation)
             }
     }
-
-    /// 공동 목표 카드를 접어도 바로 기록할 수 있는 버튼이에요.
+    
     var recordButton: some View {
         Button {
             store.send(.recordButtonTapped, transaction: Self.noAnimation)
@@ -203,7 +204,7 @@ private extension HomeView {
 // MARK: - 공동 목표
 
 private extension HomeView {
-
+    
     @ViewBuilder
     var goalCard: some View {
         if let goal = store.board?.goal, let status = store.status {
@@ -222,28 +223,28 @@ private extension HomeView {
 // MARK: - 시트
 
 private extension HomeView {
-
+    
     var sheetBinding: Binding<HomeFeature.Sheet?> {
         Binding(
             get: { store.sheet },
             set: { if $0 == nil { store.send(.sheetDismissed) } }
         )
     }
-
+    
     var trashSummaryBinding: Binding<Bool> {
         Binding(
             get: { store.isTrashSummaryPresented },
             set: { if !$0 { store.send(.trashSummaryDismissed, transaction: Self.noAnimation) } }
         )
     }
-
+    
     var activityPickerBinding: Binding<Bool> {
         Binding(
             get: { store.isActivityPickerPresented },
             set: { if !$0 { store.send(.activityPickerDismissed, transaction: Self.noAnimation) } }
         )
     }
-
+    
     @ViewBuilder
     func sheetContent(_ sheet: HomeFeature.Sheet) -> some View {
         if let board = store.board {
@@ -263,10 +264,9 @@ private extension HomeView {
 // MARK: - Constants
 
 private extension HomeView {
-
+    
     static let tabs: [RecordType] = [.plogging, .plobbing]
-
-    /// 팝업과 공동 목표 카드는 애니메이션 없이 바로 바뀌어요.
+    
     static var noAnimation: Transaction {
         var transaction = Transaction()
         transaction.disablesAnimations = true

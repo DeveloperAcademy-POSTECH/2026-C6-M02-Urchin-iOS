@@ -26,10 +26,19 @@ struct GoalListView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24.scaled) {
                     infoBanner
-                    currentGoalSection
 
-                    if !store.pastGoals.isEmpty {
-                        pastGoalsSection
+                    if store.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 48.scaled)
+                    } else {
+                        if let currentGoal = store.currentGoal {
+                            currentGoalSection(currentGoal)
+                        }
+
+                        if !store.pastGoals.isEmpty {
+                            pastGoalsSection
+                        }
                     }
                 }
                 .padding(.horizontal, 20.scaled)
@@ -40,6 +49,9 @@ struct GoalListView: View {
         }
         .background(Color(.gray0))
         .toolbar(.hidden, for: .navigationBar)
+        .task {
+            await store.send(.task).finish()
+        }
         .navigationDestination(
             item: $store.scope(state: \.goalRecords, action: \.goalRecords)
         ) { store in
@@ -66,17 +78,17 @@ private extension GoalListView {
         .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12.scaled))
     }
 
-    var currentGoalSection: some View {
+    func currentGoalSection(_ goal: Goal) -> some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
             Text("진행 중인 목표")
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
 
-            currentGoalCard(store.currentGoal)
+            currentGoalCard(goal)
         }
     }
 
-    func currentGoalCard(_ goal: HomeGoal) -> some View {
+    func currentGoalCard(_ goal: Goal) -> some View {
         VStack(alignment: .leading, spacing: 12.scaled) {
             HStack(spacing: 12.scaled) {
                 Text(goal.title)
@@ -85,7 +97,7 @@ private extension GoalListView {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 HomeGoalChip(
-                    text: goal.status(now: store.now, calendar: Calendar(identifier: .gregorian)).chipText,
+                    text: goal.homeStatus(at: store.now).chipText,
                     style: .neutral
                 )
             }
@@ -145,8 +157,8 @@ private extension GoalListView {
         }
     }
 
-    func pastGoalRow(_ goal: HomeGoal) -> some View {
-        let isAchieved = goal.collectedCount >= goal.targetCount
+    func pastGoalRow(_ goal: Goal) -> some View {
+        let isAchieved = goal.status(at: store.now) == .achieved
 
         return Button {
             store.send(.pastGoalTapped(goal.id))

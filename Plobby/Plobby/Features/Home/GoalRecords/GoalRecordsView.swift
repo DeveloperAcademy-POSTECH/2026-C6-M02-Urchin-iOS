@@ -36,6 +36,9 @@ struct GoalRecordsView: View {
         }
         .background(Color(.gray0))
         .toolbar(.hidden, for: .navigationBar)
+        .task {
+            await store.send(.task).finish()
+        }
         .navigationDestination(
             item: $store.scope(state: \.recordDetail, action: \.recordDetail)
         ) { store in
@@ -54,7 +57,7 @@ private extension GoalRecordsView {
 
         return VStack(alignment: .leading, spacing: 8.scaled) {
             HomeGoalChip(
-                text: goal.status(now: store.now, calendar: Calendar(identifier: .gregorian)).chipText,
+                text: goal.homeStatus(at: store.now).chipText,
                 style: .neutral
             )
 
@@ -87,7 +90,11 @@ private extension GoalRecordsView {
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
 
-            if store.records.isEmpty {
+            if store.isLoading {
+                ProgressView()
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 48.scaled)
+            } else if store.records.isEmpty {
                 Text("아직 올라온 기록이 없어요")
                     .plobbyFont(.body)
                     .foregroundStyle(Color(.textTertiary))
@@ -101,7 +108,7 @@ private extension GoalRecordsView {
         }
     }
 
-    func recordRow(_ record: HomeGoalRecord, showsDivider: Bool) -> some View {
+    func recordRow(_ record: RecordSummary, showsDivider: Bool) -> some View {
         Button {
             store.send(.recordTapped(record.id))
         } label: {
@@ -115,7 +122,7 @@ private extension GoalRecordsView {
                     HStack(spacing: 0) {
                         Text("\(record.nickname) · \(record.createdAt.homeMonthDayText) · ")
                             .foregroundStyle(Color(.textSecondary))
-                        Text("+\(record.collectedCount)개")
+                        Text("+\(record.trashCount)개")
                             .foregroundStyle(Color(.currentBrandText))
                     }
                     .plobbyFont(.label)
@@ -123,7 +130,7 @@ private extension GoalRecordsView {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                AsyncImage(url: record.thumbnailURL) { image in
+                AsyncImage(url: record.coverPhotoURL) { image in
                     image
                         .resizable()
                         .scaledToFill()

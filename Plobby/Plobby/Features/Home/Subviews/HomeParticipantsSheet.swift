@@ -13,7 +13,7 @@ struct HomeParticipantsSheet: View {
 
     let board: HomeGoalBoard
     let now: Date
-    let onParticipantTapped: (HomeGoalParticipant.ID) -> Void
+    let onParticipantTapped: (GoalParticipant.ID) -> Void
     let onClose: () -> Void
 
     @State private var detent: PresentationDetent = Self.collapsedDetent
@@ -45,7 +45,7 @@ private extension HomeParticipantsSheet {
 
     var header: some View {
         HStack(spacing: 8.scaled) {
-            Text("\(board.goal.recordType.name)에 함께한 사람")
+            Text("\(board.recordType.name)에 함께한 사람")
                 .plobbyFont(.heading)
                 .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -131,7 +131,7 @@ private extension HomeParticipantsSheet {
     /// "11월 1일~10일"처럼 목표 시작일부터 오늘(또는 종료일)까지예요.
     var periodText: String {
         let goal = board.goal
-        let end = min(now, goal.endsAt)
+        let end = min(now, goal.lastDay)
         let calendar = Calendar(identifier: .gregorian)
         let sameMonth = calendar.component(.month, from: goal.startsAt) == calendar.component(.month, from: end)
         let endText = sameMonth ? "\(calendar.component(.day, from: end))일" : end.homeMonthDayText
@@ -158,7 +158,7 @@ struct HomeParticipantRow: View {
     let ranked: HomeRankedParticipant
     let onTap: () -> Void
 
-    private var participant: HomeGoalParticipant { ranked.participant }
+    private var participant: GoalParticipant { ranked.participant }
 
     var body: some View {
         Button(action: onTap) {
@@ -243,25 +243,5 @@ struct HomeParticipantRow: View {
     private var accessibilityText: String {
         let name = participant.isBlocked ? "차단한 회원" : participant.nickname
         return "\(ranked.rank)위 \(name), \(participant.collectedCount)개"
-    }
-}
-
-// MARK: - Close Button
-
-/// 시트·팝업 오른쪽 위 닫기 버튼이에요.
-struct HomeSheetCloseButton: View {
-
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Image(systemName: "xmark")
-                .font(.system(size: 16.scaled, weight: .semibold))
-                .foregroundStyle(Color(.textPrimary))
-                .frame(width: 44.scaled, height: 44.scaled)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("닫기")
     }
 }
