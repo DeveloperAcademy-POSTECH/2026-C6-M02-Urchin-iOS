@@ -74,9 +74,9 @@ struct NicknameCheckFeature {
 
         Reduce { state, action in
             switch action {
-            // 입력한 그대로 두고 이전 확인 결과만 지워요. 10자를 넘으면 형식 오류로 보여주고 중복 확인을 막아요
-            // (store에서 잘라도 입력창에는 잘리기 전 글자가 남아서, 화면과 값이 달라지는 문제가 있었어요)
+            // 입력창이 nickname을 바꾸면 최대 글자 수로 자르고, 이전 확인 결과는 지워요
             case .binding(\.nickname):
+                state.nickname = String(state.nickname.prefix(Nickname.maximumLength))
                 state.isChecking = false
                 state.isAvailable = nil
                 return .cancel(id: CancelID.check)

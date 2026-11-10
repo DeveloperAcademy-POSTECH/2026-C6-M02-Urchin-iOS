@@ -24,6 +24,7 @@ struct LoginView: View {
 
             buttons
         }
+        .ignoresSafeArea(edges: .bottom)
         .background {
             Image(.loginBackground)
                 .resizable()
@@ -76,12 +77,12 @@ extension LoginView {
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.gray700))
                     .frame(maxWidth: .infinity)
-                    .frame(height: 48.scaled)
+                    .padding(.vertical, 12.scaled)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
         }
         .padding(.horizontal, 20.scaled)
-        .padding(.bottom, 34.scaled)
+        .padding(.bottom, 23.scaled)
     }
 }
