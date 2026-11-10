@@ -121,14 +121,3 @@ extension View {
         .animation(.easeOut(duration: 0.15), value: isPresented.wrappedValue)
     }
 }
-
-// MARK: - Preview
-
-#Preview {
-    VStack(spacing: 24) {
-        PlobbyDropdownMenu(items: [.edit {}, .delete {}]) { _ in }
-        PlobbyDropdownMenu(items: [.report {}, .block {}]) { _ in }
-    }
-    .padding()
-    .background(Color(.gray100))
-}
