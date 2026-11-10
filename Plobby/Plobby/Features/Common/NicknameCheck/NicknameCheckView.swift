@@ -19,7 +19,6 @@ struct NicknameCheckView: View {
     var isFocused: FocusState<Bool>.Binding
     /// 확인을 마쳤을 때 "사용 가능한 닉네임이에요"를 보여줄지예요.
     var showsAvailableMessage = false
-    @State private var nicknameText = ""
 
     // MARK: - Body
 
@@ -39,9 +38,6 @@ struct NicknameCheckView: View {
                     .padding(.top, 6.scaled)
             }
         }
-        .onAppear {
-            nicknameText = store.nickname
-        }
     }
 }
 
@@ -53,16 +49,10 @@ extension NicknameCheckView {
         HStack(alignment: .center, spacing: 8.scaled) {
             TextField(
                 "",
-                text: $nicknameText,
+                text: $store.nickname,
                 prompt: Text("닉네임 입력")
                     .foregroundStyle(Color(.textSecondary))
             )
-            .onChange(of: nicknameText) { _, text in
-                let nickname = String(text.prefix(Nickname.maximumLength))
-
-                nicknameText = nickname
-                store.send(.nicknameChanged(nickname))
-            }
             .focused(isFocused)
             .plobbyFont(.body)
             .foregroundStyle(Color(.textPrimary))

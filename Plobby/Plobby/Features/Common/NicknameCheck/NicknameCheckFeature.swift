@@ -52,8 +52,8 @@ struct NicknameCheckFeature {
 
     // MARK: - Action
 
-    enum Action {
-        case nicknameChanged(String)
+    enum Action: BindableAction {
+        case binding(BindingAction<State>)
         case checkButtonTapped
         case checkResponse(Result<Bool, any Error>)
         case alert(PresentationAction<Alert>)
@@ -70,13 +70,13 @@ struct NicknameCheckFeature {
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
+        BindingReducer()
+
         Reduce { state, action in
             switch action {
-            case let .nicknameChanged(nickname):
-                let nickname = String(nickname.prefix(Nickname.maximumLength))
-                guard nickname != state.nickname else { return .none }
-
-                state.nickname = nickname
+            // 입력창이 nickname을 바꾸면 최대 글자 수로 자르고, 이전 확인 결과는 지워요
+            case .binding(\.nickname):
+                state.nickname = String(state.nickname.prefix(Nickname.maximumLength))
                 state.isChecking = false
                 state.isAvailable = nil
                 return .cancel(id: CancelID.check)
@@ -98,7 +98,7 @@ struct NicknameCheckFeature {
                 state.alert = .make(.nicknameCheckFailed)
                 return .none
 
-            case .alert:
+            case .binding, .alert:
                 return .none
             }
         }
