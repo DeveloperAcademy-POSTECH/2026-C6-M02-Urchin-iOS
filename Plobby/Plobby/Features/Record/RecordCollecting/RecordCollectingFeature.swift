@@ -25,7 +25,7 @@ struct RecordCollectingFeature {
     // MARK: - Action
 
     enum Action {
-        case onAppear
+        case coverFinished
         case delegate(Delegate)
 
         @CasePathable
@@ -34,20 +34,13 @@ struct RecordCollectingFeature {
         }
     }
 
-    // MARK: - Dependency
-
-    @Dependency(\.continuousClock) var clock
-
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .onAppear:
-                return .run { send in
-                    try await clock.sleep(for: .seconds(3.5))
-                    await send(.delegate(.finished))
-                }
+            case .coverFinished:
+                return .send(.delegate(.finished))
 
             case .delegate:
                 return .none
