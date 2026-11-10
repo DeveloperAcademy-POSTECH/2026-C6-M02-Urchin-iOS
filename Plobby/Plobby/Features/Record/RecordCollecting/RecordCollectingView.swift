@@ -66,9 +66,13 @@ private extension RecordCollectingView {
             beam
             hole
 
-            ForEach(ThrownTrash.all, id: \.image) { trash in
-                ThrownTrashView(trash: trash, isPlaying: isPlaying)
+            ZStack(alignment: .topLeading) {
+                ForEach(ThrownTrash.all, id: \.image) { trash in
+                    ThrownTrashView(trash: trash, isPlaying: isPlaying)
+                }
             }
+            .frame(width: 270.scaled, height: 229.scaled, alignment: .topLeading)
+            .mask(HoleOpeningMask())
         }
         .frame(width: 270.scaled, height: 229.scaled, alignment: .topLeading)
     }
@@ -91,15 +95,11 @@ private extension RecordCollectingView {
 
     var hole: some View {
         ZStack {
+            // 타원을 다 그리면 안을 검정으로 채워 구멍이 생겨요
             Ellipse()
                 .fill(Color(.neutralBlack))
-                .keyframeAnimator(initialValue: 0.0, trigger: isPlaying) { content, opacity in
-                    content.opacity(opacity)
-                } keyframes: { _ in
-                    LinearKeyframe(0, duration: 1.38)
-                    LinearKeyframe(1, duration: 0.15, timingCurve: .easeInOut)
-                    LinearKeyframe(1, duration: 10)
-                }
+                .opacity(isPlaying ? 1 : 0)
+                .animation(.easeOut(duration: 0.25), value: isPlaying)
 
             TopStartEllipse()
                 .trim(from: 0, to: ringProgress)
@@ -140,20 +140,20 @@ private struct ThrownTrash {
         ThrownTrash(
             image: .recordCollectingBottle, size: CGSize(width: 26.52, height: 51.43), center: CGPoint(x: 72, y: 80),
             restingRotation: -20.44,
-            fadeInStart: 0.035, fadeInEnd: 0.225, throwStart: 0.295, shrinkMid: 0.5126, throwEnd: 0.635, end: 0.685,
-            dx: 63, dy: 84, dyEnd: 93, spin: 0.890118
+            fadeInStart: 0.035, fadeInEnd: 0.225, throwStart: 0.295, shrinkMid: 0.5126, throwEnd: 0.635, end: 0.755,
+            dx: 63, dy: 84, dyEnd: 138, spin: 0.890118
         ),
         ThrownTrash(
             image: .recordCollectingCan, size: CGSize(width: 20.83, height: 29.82), center: CGPoint(x: 141, y: 52),
             restingRotation: 27.68,
-            fadeInStart: 0.065, fadeInEnd: 0.246, throwStart: 0.695, shrinkMid: 0.8934, throwEnd: 1.005, end: 1.055,
-            dx: -6, dy: 112, dyEnd: 121, spin: -0.872665
+            fadeInStart: 0.065, fadeInEnd: 0.246, throwStart: 0.695, shrinkMid: 0.8934, throwEnd: 1.005, end: 1.125,
+            dx: -6, dy: 112, dyEnd: 166, spin: -0.872665
         ),
         ThrownTrash(
             image: .recordCollectingBag, size: CGSize(width: 22.11, height: 23.1), center: CGPoint(x: 201, y: 88),
             restingRotation: 44,
-            fadeInStart: 0.095, fadeInEnd: 0.27, throwStart: 1.065, shrinkMid: 1.257, throwEnd: 1.365, end: 1.415,
-            dx: -66, dy: 76, dyEnd: 85, spin: -0.837758
+            fadeInStart: 0.095, fadeInEnd: 0.27, throwStart: 1.065, shrinkMid: 1.257, throwEnd: 1.365, end: 1.485,
+            dx: -66, dy: 76, dyEnd: 130, spin: -0.837758
         )
     ]
 }
@@ -194,8 +194,8 @@ private struct ThrownTrashView: View {
                 KeyframeTrack(\.opacity) {
                     LinearKeyframe(0, duration: t.fadeInStart)
                     LinearKeyframe(1, duration: t.fadeInEnd - t.fadeInStart, timingCurve: .easeOut)
-                    LinearKeyframe(1, duration: t.throwEnd - t.fadeInEnd)
-                    LinearKeyframe(0, duration: t.end - t.throwEnd, timingCurve: .easeInOut)
+                    LinearKeyframe(1, duration: t.end - t.fadeInEnd)
+                    LinearKeyframe(0, duration: 0.01)
                     LinearKeyframe(0, duration: 10)
                 }
                 KeyframeTrack(\.x) {
@@ -205,20 +205,52 @@ private struct ThrownTrashView: View {
                 KeyframeTrack(\.y) {
                     LinearKeyframe(0, duration: t.throwStart)
                     LinearKeyframe(t.dy, duration: t.throwEnd - t.throwStart, timingCurve: Self.throwCurve)
-                    LinearKeyframe(t.dyEnd, duration: t.end - t.throwEnd, timingCurve: .easeOut)
+                    LinearKeyframe(t.dyEnd, duration: t.end - t.throwEnd)
                 }
                 KeyframeTrack(\.spin) {
                     LinearKeyframe(0, duration: t.throwStart)
                     LinearKeyframe(t.spin, duration: t.throwEnd - t.throwStart, timingCurve: Self.throwCurve)
                 }
                 KeyframeTrack(\.scale) {
-                    LinearKeyframe(1, duration: t.throwStart)
+                    LinearKeyframe(0.6, duration: t.fadeInStart)
+                    SpringKeyframe(1, duration: t.throwStart - t.fadeInStart, spring: .bouncy)
                     LinearKeyframe(0.82, duration: t.shrinkMid - t.throwStart, timingCurve: .easeInOut)
-                    LinearKeyframe(0.42, duration: t.throwEnd - t.shrinkMid)
-                    LinearKeyframe(0.075, duration: t.end - t.throwEnd, timingCurve: .easeOut)
+                    LinearKeyframe(0.65, duration: t.throwEnd - t.shrinkMid)
+                    LinearKeyframe(0.55, duration: t.end - t.throwEnd)
                 }
             }
             .position(x: t.center.x.scaled, y: t.center.y.scaled)
+    }
+}
+
+// MARK: - HoleOpeningMask
+
+private struct HoleOpeningMask: Shape {
+
+    func path(in rect: CGRect) -> Path {
+        let ratio = rect.width / 270
+
+        // 구멍(63, 134, 144x60)
+        let opening = CGRect(x: 63, y: 134, width: 144, height: 60)
+        let scaled = CGRect(x: opening.minX * ratio, y: opening.minY * ratio, width: opening.width * ratio, height: opening.height * ratio)
+
+        return Path { path in
+            path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
+            path.addLine(to: CGPoint(x: rect.maxX, y: scaled.midY))
+            path.addLine(to: CGPoint(x: scaled.maxX, y: scaled.midY))
+            path.addArc(
+                center: .zero,
+                radius: 1,
+                startAngle: .degrees(0),
+                endAngle: .degrees(180),
+                clockwise: false,
+                transform: CGAffineTransform(translationX: scaled.midX, y: scaled.midY)
+                    .scaledBy(x: scaled.width / 2, y: scaled.height / 2)
+            )
+            path.addLine(to: CGPoint(x: rect.minX, y: scaled.midY))
+            path.closeSubpath()
+        }
     }
 }
 
