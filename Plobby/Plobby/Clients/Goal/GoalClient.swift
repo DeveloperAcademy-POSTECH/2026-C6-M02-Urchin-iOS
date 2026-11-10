@@ -16,6 +16,7 @@ struct GoalClient {
     var fetchDailyProgresses: @Sendable (_ goalID: UUID, _ recordType: RecordType) async throws -> [GoalDailyProgress]
     var fetchTrashSummaries: @Sendable (_ goalID: UUID, _ recordType: RecordType) async throws -> [GoalTrashSummary]
     var fetchParticipants: @Sendable (_ goalID: UUID, _ recordType: RecordType) async throws -> [GoalParticipant]
+    var fetchGoalRecords: @Sendable (_ goal: Goal) async throws -> [RecordSummary]
 }
 
 extension GoalClient: DependencyKey {
@@ -95,6 +96,39 @@ extension GoalClient: DependencyKey {
                 return try await responseDTOs.map {
                     $0.toDomain(
                         isBlocked: blockedUserIDs.contains($0.userID),
+                        profileImageURL: supabase.profileImageURL
+                    )
+                }
+            },
+            fetchGoalRecords: { goal in
+                @Dependency(\.supabaseClient) var supabase
+
+                async let currentUserIDTask = supabase.currentUserIDIfSignedIn()
+                async let hiddenRecordsTask = supabase.hiddenRecords()
+                let (currentUserID, hiddenRecords) = try await (currentUserIDTask, hiddenRecordsTask)
+
+                // 활동을 시작한 시각이 목표 기간 안에 있는 기록이에요. 끝 시각은 기간에 포함되지 않아요.
+                var query = supabase
+                    .from("records")
+                    .select(RecordSummaryResponseDTO.selectQuery)
+                    .gte("started_at", value: goal.startsAt.ISO8601Format())
+                    .lt("started_at", value: goal.endsAt.ISO8601Format())
+                    .is("deleted_at", value: nil)
+                    .excluding(hiddenRecords)
+
+                if let currentUserID {
+                    query = query.eq("my_like.user_id", value: currentUserID)
+                }
+
+                let responseDTOs: [RecordSummaryResponseDTO] = try await query
+                    .order("created_at", ascending: false)
+                    .execute()
+                    .value
+
+                return responseDTOs.compactMap {
+                    $0.toDomain(
+                        currentUserID: currentUserID,
+                        photoURL: supabase.recordPhotoURL,
                         profileImageURL: supabase.profileImageURL
                     )
                 }

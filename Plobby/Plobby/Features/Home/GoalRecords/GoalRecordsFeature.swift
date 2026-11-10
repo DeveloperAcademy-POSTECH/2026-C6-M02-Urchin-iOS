@@ -16,35 +16,63 @@ struct GoalRecordsFeature {
 
     @ObservableState
     struct State: Equatable {
+        @Shared(.membershipStatus) var membershipStatus
         @Presents var recordDetail: RecordDetailFeature.State?
 
-        let goal: HomeGoal
-        var records: [HomeGoalRecord]
+        let goal: Goal
+        var records: [RecordSummary] = []
+        var isLoading = true
         let now: Date
     }
 
     // MARK: - Action
 
     enum Action {
+        case task
+        case recordsResponse(Result<[RecordSummary], any Error>)
         case backButtonTapped
-        case recordTapped(HomeGoalRecord.ID)
+        case recordTapped(RecordSummary.ID)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
             case closed
+            case loginRequired
         }
     }
+
+    // MARK: - Dependency
+
+    @Dependency(\.goalClient) var goalClient
 
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .task:
+                let goal = state.goal
+                return .run { send in
+                    await send(.recordsResponse(Result { try await goalClient.fetchGoalRecords(goal) }))
+                }
+
+            case let .recordsResponse(.success(records)):
+                state.isLoading = false
+                state.records = records
+                return .none
+
+            case let .recordsResponse(.failure(error)):
+                state.isLoading = false
+                PlobbyLogger.error(error)
+                return .none
+
             case .backButtonTapped:
                 return .send(.delegate(.closed))
 
-            // TODO: 실제 기록 데이터가 연결되면 해당 기록 상세로 이동해요. 지금은 Mock ID라 불러오지 못해요.
+            // 비회원은 기록 상세에 들어가지 못하고 로그인을 요청해요.
+            case .recordTapped where state.membershipStatus == .guest:
+                return .send(.delegate(.loginRequired))
+
             case let .recordTapped(recordID):
                 state.recordDetail = RecordDetailFeature.State(recordID: recordID)
                 return .none
@@ -59,8 +87,9 @@ struct GoalRecordsFeature {
                 state.records.removeAll { $0.id == recordID }
                 return .none
 
-            case .recordDetail(.presented(.delegate(.blocked))):
+            case let .recordDetail(.presented(.delegate(.blocked(userID)))):
                 state.recordDetail = nil
+                state.records.removeAll { $0.userID == userID }
                 return .none
 
             case .recordDetail, .delegate:
