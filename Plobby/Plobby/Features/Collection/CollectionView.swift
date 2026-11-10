@@ -33,11 +33,39 @@ struct CollectionView: View {
         .onAppear {
             store.send(.onAppear)
         }
+        .onChange(of: store.shareRequestCount) {
+            shareCurrentCard()
+        }
         .sheet(isPresented: $store.isCategorySheetPresented.sending(\.categorySheetPresentationChanged)) {
             CollectionCategorySheet(store: store)
                 .presentationDetents([.height(684.scaled)])
                 .presentationDragIndicator(.visible)
         }
+        .fullScreenCover(isPresented: activityPickerBinding) {
+            HomeActivityPicker(
+                onSelect: { type in store.send(.activityPicked(type), transaction: Self.noAnimation) },
+                onDismiss: { store.send(.activityPickerDismissed, transaction: Self.noAnimation) }
+            )
+            .presentationBackground(.clear)
+        }
+    }
+}
+
+// MARK: - Activity Picker
+
+private extension CollectionView {
+
+    var activityPickerBinding: Binding<Bool> {
+        Binding(
+            get: { store.isActivityPickerPresented },
+            set: { if !$0 { store.send(.activityPickerDismissed, transaction: Self.noAnimation) } }
+        )
+    }
+
+    static var noAnimation: Transaction {
+        var transaction = Transaction()
+        transaction.disablesAnimations = true
+        return transaction
     }
 }
 
@@ -93,7 +121,10 @@ private extension CollectionView {
         ScrollView(.horizontal) {
             LazyHStack(spacing: 7.scaled) {
                 ForEach(store.scope(state: \.cards, action: \.cards), id: \.state.id) { cardStore in
-                    CollectionCardView(store: cardStore, isActive: cardStore.category == scrolledCategory)
+                    CollectionCardView(
+                        store: cardStore,
+                        isActive: store.isTrashCountsLoaded && cardStore.category == scrolledCategory
+                    )
                         .containerRelativeFrame(.horizontal)
                         .scrollTransition(axis: .horizontal) { content, phase in
                             content.scaleEffect(
@@ -169,7 +200,7 @@ private extension CollectionView {
 
     var shareButton: some View {
         Button {
-            shareCurrentCard()
+            store.send(.shareButtonTapped)
         } label: {
             Image(systemName: "square.and.arrow.up")
                 .font(.system(size: 18.scaled, weight: .medium))

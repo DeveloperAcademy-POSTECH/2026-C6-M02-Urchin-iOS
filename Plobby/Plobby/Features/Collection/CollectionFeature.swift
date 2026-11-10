@@ -18,8 +18,11 @@ struct CollectionFeature {
         @Presents var my: MyFeature.State?
         var profile: Profile?
         var cards: IdentifiedArrayOf<CollectionCardFeature.State> = CollectionFeature.initialCards
-        var selectedCategory: TrashCategory = .plastic
+        var selectedCategory: TrashCategory = CollectionFeature.categoryOrder[0]
         var isCategorySheetPresented = false
+        var isActivityPickerPresented = false
+        var isTrashCountsLoaded = false
+        var shareRequestCount = 0
     }
 
     // MARK: - Action
@@ -27,31 +30,55 @@ struct CollectionFeature {
     enum Action {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
+        case trashCountsResponse(Result<[TrashCategory: Int], any Error>)
         case profileTapped
         case allCategoryTapped
         case categorySheetPresentationChanged(Bool)
         case categoryTapped(TrashCategory)
         case cardScrolled(TrashCategory)
         case cards(IdentifiedActionOf<CollectionCardFeature>)
+        case shareButtonTapped
+        case activityPicked(RecordType)
+        case activityPickerDismissed
         case my(PresentationAction<MyFeature.Action>)
+        case delegate(Delegate)
+
+        enum Delegate {
+            case loginRequired
+            case recordStarted(RecordType)
+        }
     }
 
     // MARK: - Dependency
 
     @Dependency(\.userClient) var userClient
+    @Dependency(\.recordClient) var recordClient
 
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
+            if case .guest = state.membershipStatus, action.isUserInteraction {
+                return .send(.delegate(.loginRequired))
+            }
+
             switch action {
             case .onAppear:
-                guard case .member = state.membershipStatus else { return .none }
-
-                return .run { send in
-                    await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
+                guard case let .member(user) = state.membershipStatus else {
+                    state.isTrashCountsLoaded = true
+                    return .none
                 }
-                .cancellable(id: CancelID.profile, cancelInFlight: true)
+
+                return .merge(
+                    .run { send in
+                        await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
+                    }
+                    .cancellable(id: CancelID.profile, cancelInFlight: true),
+                    .run { send in
+                        await send(.trashCountsResponse(Result { try await recordClient.fetchTrashCounts(user.id) }))
+                    }
+                    .cancellable(id: CancelID.trashCounts, cancelInFlight: true)
+                )
 
             case let .profileResponse(.success(profile)):
                 state.profile = profile
@@ -62,6 +89,18 @@ struct CollectionFeature {
 
             case let .profileResponse(.failure(error)):
                 PlobbyLogger.error(error)
+                return .none
+
+            case let .trashCountsResponse(.success(counts)):
+                for category in state.cards.ids {
+                    state.cards[id: category]?.collectedCount = counts[category, default: 0]
+                }
+                state.isTrashCountsLoaded = true
+                return .none
+
+            case let .trashCountsResponse(.failure(error)):
+                PlobbyLogger.error(error)
+                state.isTrashCountsLoaded = true
                 return .none
 
             case .profileTapped:
@@ -77,8 +116,6 @@ struct CollectionFeature {
                 return .none
 
             case let .categoryTapped(category):
-                guard Self.selectableCategories.contains(category) else { return .none }
-
                 state.isCategorySheetPresented = false
                 state.selectedCategory = category
                 return .none
@@ -87,7 +124,26 @@ struct CollectionFeature {
                 state.selectedCategory = category
                 return .none
 
-            case .cards, .my:
+            case .shareButtonTapped:
+                state.shareRequestCount += 1
+                return .none
+
+            case .cards(.element(_, .delegate(.recordStartRequested))):
+                guard case .member = state.membershipStatus else {
+                    return .send(.delegate(.loginRequired))
+                }
+                state.isActivityPickerPresented = true
+                return .none
+
+            case let .activityPicked(type):
+                state.isActivityPickerPresented = false
+                return .send(.delegate(.recordStarted(type)))
+
+            case .activityPickerDismissed:
+                state.isActivityPickerPresented = false
+                return .none
+
+            case .cards, .my, .delegate:
                 return .none
             }
         }
@@ -104,24 +160,31 @@ struct CollectionFeature {
 
 extension CollectionFeature {
 
-    static let selectableCategories: Set<TrashCategory> = [.plastic, .glass, .wood]
-
     static let categoryOrder: [TrashCategory] = [
-        .plastic, .glass, .metal, .wood, .fishingGear, .clothing,
+        .glass, .plastic, .metal, .wood, .fishingGear, .clothing,
         .styrofoam, .can, .paper, .rubber, .etc
     ]
 
-    // TODO: 컬렉션 데이터 연동 후 실제 개수로 교체
     static let initialCards = IdentifiedArray(uniqueElements: categoryOrder.map { category in
-        CollectionCardFeature.State(category: category, collectedCount: sampleCounts[category, default: 0])
+        CollectionCardFeature.State(category: category, collectedCount: 0)
     })
 
     private nonisolated enum CancelID {
         case profile
+        case trashCounts
     }
+}
 
-    private static let sampleCounts: [TrashCategory: Int] = [
-        .plastic: 128, .glass: 12, .metal: 4, .fishingGear: 19,
-        .styrofoam: 8, .can: 17, .rubber: 3, .etc: 3
-    ]
+// MARK: - Action
+
+extension CollectionFeature.Action {
+
+    var isUserInteraction: Bool {
+        switch self {
+        case .allCategoryTapped, .shareButtonTapped:
+            true
+        default:
+            false
+        }
+    }
 }
