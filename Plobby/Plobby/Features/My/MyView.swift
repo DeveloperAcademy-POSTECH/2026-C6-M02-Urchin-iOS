@@ -21,15 +21,21 @@ struct MyView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            PlobbyNavigationBar(title: "마이") {
-                dismiss()
-            } trailingAction: {
-                store.send(.settingsButtonTapped)
-            } trailingLabel: {
-                Image(systemName: "gearshape")
-                    .font(.system(size: 24.scaled, weight: .regular))
-                    .foregroundStyle(Color(.textPrimary))
-                    .accessibilityLabel("설정")
+            if store.isMember {
+                PlobbyNavigationBar(title: "마이") {
+                    dismiss()
+                } trailingAction: {
+                    store.send(.settingsButtonTapped)
+                } trailingLabel: {
+                    Image(systemName: "gearshape")
+                        .font(.system(size: 24.scaled, weight: .regular))
+                        .foregroundStyle(Color(.textPrimary))
+                        .accessibilityLabel("설정")
+                }
+            } else {
+                PlobbyNavigationBar(title: "마이") {
+                    dismiss()
+                }
             }
 
             content
@@ -116,7 +122,9 @@ extension MyView {
                 .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            profileEditButton
+            if store.isMember {
+                profileEditButton
+            }
         }
         .padding(.top, 16.scaled)
     }
