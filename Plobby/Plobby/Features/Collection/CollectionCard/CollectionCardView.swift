@@ -15,6 +15,13 @@ struct CollectionCardView: View {
 
     let store: StoreOf<CollectionCardFeature>
     var isActive = true
+    var style: Style = .collection
+
+    enum Style {
+        case collection
+        /// 온보딩에서는 작은 카드에 맞춰 글자를 줄여요
+        case onboarding
+    }
 
     // MARK: - Body
 
@@ -41,7 +48,7 @@ private extension CollectionCardView {
     var header: some View {
         HStack(spacing: 0) {
             Text(store.category.name)
-                .plobbyFont(.cardTitle)
+                .plobbyFont(style == .onboarding ? .labelSelected : .cardTitle)
                 .foregroundStyle(Color(.gray0))
                 .padding(.leading, 8.scaled)
 
@@ -129,13 +136,13 @@ private extension CollectionCardView {
     var collectedCountLabel: some View {
         HStack(alignment: .lastTextBaseline) {
             Text("지금까지 모은 개수")
-                .plobbyFont(.metadata)
+                .plobbyFont(style == .onboarding ? .helper : .metadata)
                 .foregroundStyle(Color(.textDisabled))
 
             Spacer()
 
             Text("\(store.collectedCount)개")
-                .plobbyFont(.metricExtra)
+                .plobbyFont(style == .onboarding ? .metric : .metricExtra)
                 .foregroundStyle(Color(.gray0))
         }
         .padding(.horizontal, 16.scaled)
@@ -183,7 +190,7 @@ private extension CollectionCardView {
         }
 
         return Text(text)
-            .plobbyFont(.metric)
+            .plobbyFont(style == .onboarding ? .heading : .metric)
             .foregroundStyle(Color(.gray0))
             .fixedSize(horizontal: false, vertical: true)
             .padding(.top, 25.scaled)
@@ -202,7 +209,7 @@ private extension CollectionCardView {
 
     func factDescription(_ text: String) -> some View {
         Text(text)
-            .plobbyFont(.body)
+            .plobbyFont(style == .onboarding ? .helper : .body)
             .foregroundStyle(Color(.gray0))
             .fixedSize(horizontal: false, vertical: true)
             .padding(.top, 22.scaled)

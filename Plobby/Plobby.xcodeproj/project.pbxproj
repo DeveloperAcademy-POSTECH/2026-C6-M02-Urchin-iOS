@@ -188,6 +188,7 @@
 		DA688DD13099F0490064A2F4 /* PhotosPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD03099F0480064A2F4 /* PhotosPickerView.swift */; };
 		DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD23099F0A30064A2F4 /* RecordFormView.swift */; };
 		DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */; };
+		7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */; };
 		DA688DD73099F0F50064A2F4 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */; };
 		DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */; };
 		DA71D23030A2AF1900E00CD1 /* PlobbyNavigationBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */; };
@@ -259,7 +260,6 @@
 		ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AE3098338400C4916C /* TrashTypeName.swift */; };
 		ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AF3098338400C4916C /* WaterDepth.swift */; };
 		ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */; };
-		ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */; };
 		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
 		ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BA3098338400C4916C /* OnboardingPage.swift */; };
 		ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BB3098338400C4916C /* OnboardingView.swift */; };
@@ -281,6 +281,8 @@
 		ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30B309833A900C4916C /* WaterDepthTests.swift */; };
 		ECE6F31B309833AE00C4916C /* PlobbyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F318309833AE00C4916C /* PlobbyUITests.swift */; };
 		ECE6F31C309833AE00C4916C /* PlobbyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */; };
+		A16C0DE00000000000000202 /* FavoriteBeachAddFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */; };
+		A16C0DE00000000000000204 /* FavoriteBeachAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -478,6 +480,7 @@
 		DA688DD03099F0480064A2F4 /* PhotosPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerView.swift; sourceTree = "<group>"; };
 		DA688DD23099F0A30064A2F4 /* RecordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormView.swift; sourceTree = "<group>"; };
 		DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRewardView.swift; sourceTree = "<group>"; };
+		7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashScene.swift; sourceTree = "<group>"; };
 		DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
 		DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyNavigationBarStyle.swift; sourceTree = "<group>"; };
 		DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyNavigationBarConfiguration.swift; sourceTree = "<group>"; };
@@ -550,7 +553,6 @@
 		ECE6F2AE3098338400C4916C /* TrashTypeName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTypeName.swift; sourceTree = "<group>"; };
 		ECE6F2AF3098338400C4916C /* WaterDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepth.swift; sourceTree = "<group>"; };
 		ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginLabel.swift; sourceTree = "<group>"; };
-		ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageIndicator.swift; sourceTree = "<group>"; };
 		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
 		ECE6F2BA3098338400C4916C /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
 		ECE6F2BB3098338400C4916C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -577,6 +579,8 @@
 		F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSheetView.swift; sourceTree = "<group>"; };
 		F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserResponseDTO.swift; sourceTree = "<group>"; };
 		FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSummary.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -773,6 +777,15 @@
 				A11400000000000000000127 /* GoalRecordsView.swift */,
 			);
 			path = GoalRecords;
+			sourceTree = "<group>";
+		};
+		A16C0DE00000000000000205 /* FavoriteBeachAdd */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */,
+				A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */,
+			);
+			path = FavoriteBeachAdd;
 			sourceTree = "<group>";
 		};
 		A16C0DE00000000000000107 /* UserHome */ = {
@@ -1107,6 +1120,7 @@
 				B5951FB2309BA4AB0089A019 /* MyView.swift */,
 				A16C0DE00000000000000101 /* RecordListSection.swift */,
 				A16C0DE00000000000000107 /* UserHome */,
+				A16C0DE00000000000000205 /* FavoriteBeachAdd */,
 			);
 			path = My;
 			sourceTree = "<group>";
@@ -1137,6 +1151,7 @@
 			isa = PBXGroup;
 			children = (
 				DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */,
+				7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */,
 				DA688DCA3099CFB70064A2F4 /* RecordRewardFeature.swift */,
 			);
 			path = RecordReward;
@@ -1524,7 +1539,6 @@
 			isa = PBXGroup;
 			children = (
 				ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */,
-				ECE6F2B73098338400C4916C /* OnboardingPageIndicator.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -1841,6 +1855,7 @@
 				7B3C1A11309D0000004C5301 /* FlipCard.swift in Sources */,
 				DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */,
 				DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */,
+				7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */,
 				B532EAC630A2A91900029E08 /* ToastType.swift in Sources */,
 				DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */,
 				73CD656240EA8E75250648CC /* BeachRecordResponseDTO.swift in Sources */,
@@ -2014,6 +2029,8 @@
 				A16C0DE00000000000000102 /* RecordListSection.swift in Sources */,
 				A16C0DE00000000000000104 /* UserHomeFeature.swift in Sources */,
 				A16C0DE00000000000000106 /* UserHomeView.swift in Sources */,
+				A16C0DE00000000000000202 /* FavoriteBeachAddFeature.swift in Sources */,
+				A16C0DE00000000000000204 /* FavoriteBeachAddView.swift in Sources */,
 				D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */,
 				D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */,
 				D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */,
@@ -2055,7 +2072,6 @@
 				D1A0C0DE0000000000000A02 /* NotificationFeature.swift in Sources */,
 				D1A0C0DE0000000000000A04 /* NotificationView.swift in Sources */,
 				ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */,
-				ECE6F2F43098338400C4916C /* OnboardingPageIndicator.swift in Sources */,
 				DA5B0FBB3098DCCD003FEDF9 /* UpdatedRecord.swift in Sources */,
 				ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */,
 				ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */,
