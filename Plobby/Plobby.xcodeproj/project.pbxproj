@@ -1135,18 +1135,18 @@
 				A12200000000000000000203 /* PlobbyNavigationBar.swift */,
 				DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */,
 				DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */,
-				DA71D23130A2AFC100E00CD1 /* Styles */,
+				DA71D23130A2AFC100E00CD1 /* Style */,
 			);
 			path = NavigationBar;
 			sourceTree = "<group>";
 		};
-		DA71D23130A2AFC100E00CD1 /* Styles */ = {
+		DA71D23130A2AFC100E00CD1 /* Style */ = {
 			isa = PBXGroup;
 			children = (
 				DA71D23430A2B01300E00CD1 /* LeadingPlobbyNavigationBarStyle.swift */,
 				DA71D23230A2AFCE00E00CD1 /* CenteredPlobbyNavigationBarStyle.swift */,
 			);
-			path = Styles;
+			path = Style;
 			sourceTree = "<group>";
 		};
 		E117113459A087098044178D /* Record */ = {
