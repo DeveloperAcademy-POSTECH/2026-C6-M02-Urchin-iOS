@@ -36,6 +36,12 @@ struct MainTabView: View {
                             NotificationView(store: store)
                                 .toolbar(.hidden, for: .tabBar)
                         }
+                        .navigationDestination(
+                            item: $store.scope(state: \.home.goalList, action: \.home.goalList)
+                        ) { store in
+                            GoalListView(store: store)
+                                .toolbar(.hidden, for: .tabBar)
+                        }
                 }
             } label: {
                 tabLabel("홈", icon: "house", tab: .home)
