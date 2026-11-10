@@ -49,6 +49,8 @@ private extension OnboardingView {
 
             if page.showsActivityTabs {
                 activityTabs
+                    // push된 화면에서는 send(animation:)의 트랜잭션이 전달되지 않아, 뷰에서 직접 애니메이션을 걸어 모든 단계를 같게 맞춰요
+                    .animation(.easeInOut(duration: 0.2), value: store.selectedActivity)
             }
 
             if page == .collection {
@@ -150,7 +152,7 @@ private extension OnboardingView {
         let isSelected = store.selectedActivity == activity
 
         return Button {
-            store.send(.activityTabSelected(activity), animation: .easeInOut(duration: 0.2))
+            store.send(.activityTabSelected(activity))
         } label: {
             Text(title)
                 .plobbyFont(isSelected ? .actionLabel : .body)
