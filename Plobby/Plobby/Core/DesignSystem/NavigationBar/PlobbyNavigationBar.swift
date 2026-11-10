@@ -14,11 +14,14 @@ struct PlobbyNavigationBar<Style: PlobbyNavigationBarStyle, TrailingLabel: View>
     let title: String?
     let style: Style
     let onBack: () -> Void
+    let isBackEnabled: Bool
     let trailingButton: PlobbyNavigationBarConfiguration.TrailingButton?
 
     init(
         title: String? = nil,
         style: Style,
+        isBackEnabled: Bool = true,
+        isTrailingEnabled: Bool = true,
         onBack: @escaping () -> Void,
         trailingAction: @escaping () -> Void,
         @ViewBuilder trailingLabel: () -> TrailingLabel
@@ -26,9 +29,11 @@ struct PlobbyNavigationBar<Style: PlobbyNavigationBarStyle, TrailingLabel: View>
         self.title = title
         self.style = style
         self.onBack = onBack
+        self.isBackEnabled = isBackEnabled
         self.trailingButton = PlobbyNavigationBarConfiguration.TrailingButton(
             action: trailingAction,
-            label: AnyView(trailingLabel())
+            label: AnyView(trailingLabel()),
+            isEnabled: isTrailingEnabled
         )
     }
 
@@ -40,7 +45,7 @@ struct PlobbyNavigationBar<Style: PlobbyNavigationBarStyle, TrailingLabel: View>
                 title: title.map {
                     PlobbyNavigationBarConfiguration.Title(text: $0)
                 },
-                backButton: PlobbyNavigationBarConfiguration.BackButton(action: onBack),
+                backButton: PlobbyNavigationBarConfiguration.BackButton(action: onBack, isEnabled: isBackEnabled),
                 trailingButton: trailingButton
             )
         )
@@ -55,11 +60,13 @@ extension PlobbyNavigationBar where TrailingLabel == EmptyView {
     init(
         title: String? = nil,
         style: Style,
+        isBackEnabled: Bool = true,
         onBack: @escaping () -> Void
     ) {
         self.title = title
         self.style = style
         self.onBack = onBack
+        self.isBackEnabled = isBackEnabled
         self.trailingButton = nil
     }
 }
@@ -68,6 +75,8 @@ extension PlobbyNavigationBar where Style == CenteredPlobbyNavigationBarStyle {
 
     init(
         title: String? = nil,
+        isBackEnabled: Bool = true,
+        isTrailingEnabled: Bool = true,
         onBack: @escaping () -> Void,
         trailingAction: @escaping () -> Void,
         @ViewBuilder trailingLabel: () -> TrailingLabel
@@ -75,6 +84,8 @@ extension PlobbyNavigationBar where Style == CenteredPlobbyNavigationBarStyle {
         self.init(
             title: title,
             style: .centered,
+            isBackEnabled: isBackEnabled,
+            isTrailingEnabled: isTrailingEnabled,
             onBack: onBack,
             trailingAction: trailingAction,
             trailingLabel: trailingLabel
@@ -86,11 +97,13 @@ extension PlobbyNavigationBar where Style == CenteredPlobbyNavigationBarStyle, T
 
     init(
         title: String? = nil,
+        isBackEnabled: Bool = true,
         onBack: @escaping () -> Void
     ) {
         self.init(
             title: title,
             style: .centered,
+            isBackEnabled: isBackEnabled,
             onBack: onBack
         )
     }

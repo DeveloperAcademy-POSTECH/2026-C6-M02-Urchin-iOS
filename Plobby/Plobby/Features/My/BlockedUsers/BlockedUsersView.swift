@@ -19,7 +19,9 @@ struct BlockedUsersView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
+            PlobbyNavigationBar(title: "차단한 사용자", style: .leading) {
+                store.send(.backButtonTapped)
+            }
 
             content
         }
@@ -35,30 +37,6 @@ struct BlockedUsersView: View {
 // MARK: - Subviews
 
 extension BlockedUsersView {
-
-    private var navigationBar: some View {
-        HStack(spacing: 8) {
-            Button {
-                store.send(.backButtonTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 24, height: 44)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-
-            Text("차단한 사용자")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color.textPrimary)
-
-            Spacer(minLength: 0)
-        }
-        .padding(.horizontal, 20)
-        .frame(height: 56)
-    }
 
     @ViewBuilder
     private var content: some View {

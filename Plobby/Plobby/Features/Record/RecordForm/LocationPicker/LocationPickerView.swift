@@ -26,7 +26,9 @@ struct LocationPickerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            navigationBar
+            PlobbyNavigationBar(title: "활동 위치 선택") {
+                store.send(.backTapped)
+            }
 
             switch store.screen {
             case .search:
@@ -44,36 +46,6 @@ struct LocationPickerView: View {
                 cameraPosition = Self.cameraPosition(for: target.center)
             }
         }
-    }
-}
-
-// MARK: - Navigation Bar
-
-private extension LocationPickerView {
-
-    var navigationBar: some View {
-        HStack(spacing: 0) {
-            Button {
-                store.send(.backTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17.scaled, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 44.scaled, height: 44.scaled, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-
-            Spacer()
-        }
-        .overlay {
-            Text("활동 위치 선택")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
-        }
-        .padding(.horizontal, 20.scaled)
-        .frame(height: 56.scaled)
     }
 }
 
