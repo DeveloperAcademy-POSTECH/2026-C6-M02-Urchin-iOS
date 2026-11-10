@@ -90,6 +90,7 @@ struct TrashPickerFeature {
                 guard state.editingCategory == category else { return .none }
 
                 let digits = String(text.filter(\.isASCIIDigit).prefix(Self.maximumCountDigits))
+                state.countText = text
                 state.countText = digits
 
                 if let count = Int(digits), count > 0 {
@@ -105,6 +106,9 @@ struct TrashPickerFeature {
                 guard state.isEtcMemoVisible else { return .none }
 
                 state.selection.etcMemo = memo
+                if memo.count > TrashSelection.etcMemoMaximumLength {
+                    state.selection.etcMemo = String(memo.prefix(TrashSelection.etcMemoMaximumLength))
+                }
                 return .none
 
             case .cancelTapped:
