@@ -17,9 +17,7 @@ struct OnboardingFeature {
     @ObservableState
     struct State: Equatable {
         var currentPage: OnboardingPage = .goal
-        /// 플로깅/플로빙 탭에서 고른 활동. 예시 화면이 이 활동 기준으로 바뀌어요
         var selectedActivity: RecordType = .plogging
-        /// 마지막 단계에서 보여주는 예시 컬렉션 카드
         var collectionCard = CollectionCardFeature.State(category: .plastic, collectedCount: 128)
         var signIn = SignInFeature.State()
     }
@@ -29,7 +27,6 @@ struct OnboardingFeature {
     enum Action {
         case activityTabSelected(RecordType)
         case nextButtonTapped
-        /// 내비게이션 뒤로가기·스와이프로 단계가 바뀌었어요
         case pageChanged(OnboardingPage)
         case browseButtonTapped
         case collectionCard(CollectionCardFeature.Action)

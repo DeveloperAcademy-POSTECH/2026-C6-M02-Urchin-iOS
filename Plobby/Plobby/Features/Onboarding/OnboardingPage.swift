@@ -5,7 +5,6 @@
 //  Created by 이은지 on 10/30/26.
 //
 
-/// 온보딩 4단계: 목표 → 기록 → 지도 → 컬렉션
 enum OnboardingPage: Int, CaseIterable {
 
     case goal, record, map, collection
@@ -47,7 +46,6 @@ extension OnboardingPage {
         }
     }
 
-    /// 플로깅/플로빙 탭으로 예시 화면을 바꿔 볼 수 있는 단계예요
     var showsActivityTabs: Bool {
         switch self {
         case .goal, .record: true
