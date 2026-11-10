@@ -14,6 +14,7 @@ struct RecordDetailView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<RecordDetailFeature>
+    @State private var isMoreMenuPresented = false
 
     private static let photoHeight: CGFloat = 224.scaled
 
@@ -36,6 +37,12 @@ struct RecordDetailView: View {
             }
         }
         .background(Color(.gray0))
+        // 내비게이션 바 바로 아래, 더보기 버튼 오른쪽 끝에 맞춰 펼쳐요.
+        .plobbyDropdownMenu(
+            isPresented: $isMoreMenuPresented,
+            padding: EdgeInsets(top: 56.scaled, leading: 0, bottom: 0, trailing: 20.scaled),
+            items: moreMenuItems
+        )
         .task {
             await store.send(.task).finish()
         }
@@ -75,28 +82,25 @@ private extension RecordDetailView {
         .frame(height: 56.scaled)
     }
 
-    /// 버튼 바로 아래에 시스템 팝업 메뉴로 떠요.
     var moreMenu: some View {
-        Menu {
-            if store.record?.isMine == true {
-                Button("수정하기") {
-                    store.send(.moreMenuSelected(.editTapped))
-                }
-                Button("삭제하기", role: .destructive) {
-                    store.send(.moreMenuSelected(.deleteTapped))
-                }
-            } else {
-                Button("신고하기") {
-                    store.send(.moreMenuSelected(.reportTapped))
-                }
-                Button("차단하기", role: .destructive) {
-                    store.send(.moreMenuSelected(.blockTapped))
-                }
-            }
-        } label: {
-            navigationIcon(systemName: "ellipsis")
+        navigationButton(systemName: "ellipsis", accessibilityLabel: "기록 더보기") {
+            isMoreMenuPresented.toggle()
         }
-        .accessibilityLabel("기록 더보기")
+    }
+
+    /// 내 기록은 수정·삭제, 다른 사람 기록은 신고·차단을 보여줘요.
+    var moreMenuItems: [PlobbyDropdownMenu.Item] {
+        if store.record?.isMine == true {
+            [
+                .edit { store.send(.moreMenuSelected(.editTapped)) },
+                .delete { store.send(.moreMenuSelected(.deleteTapped)) }
+            ]
+        } else {
+            [
+                .report { store.send(.moreMenuSelected(.reportTapped)) },
+                .block { store.send(.moreMenuSelected(.blockTapped)) }
+            ]
+        }
     }
 
     func navigationIcon(systemName: String) -> some View {
