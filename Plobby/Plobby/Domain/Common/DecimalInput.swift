@@ -32,11 +32,24 @@ nonisolated enum DecimalInput {
 
         return Double("\(integerPart).\(fractionPart)")
     }
+
+    static func limited(_ text: String, maximumIntegerDigits: Int, locale: Locale) -> String {
+        let decimalSeparator = locale.decimalSeparator ?? "."
+        let parts = text.components(separatedBy: decimalSeparator)
+        let integerPart = String(parts[0].filter(\.isASCIIDigit).prefix(maximumIntegerDigits))
+        guard parts.count > 1 else { return integerPart }
+
+        let fractionPart = parts.dropFirst().joined().filter(\.isASCIIDigit).prefix(maximumFractionDigits)
+        return integerPart + decimalSeparator + fractionPart
+    }
+
+    static func integerDigits(of range: ClosedRange<Double>) -> Int {
+        String(Int(range.upperBound)).count
+    }
 }
 
 nonisolated extension DecimalInput {
 
-    /// 저장된 숫자를 입력칸에 다시 채울 때 써요. 소수점 첫째 자리까지만 보여요.
     static func text(from number: Double) -> String {
         number.formatted(.number.precision(.fractionLength(0...maximumFractionDigits)).grouping(.never))
     }

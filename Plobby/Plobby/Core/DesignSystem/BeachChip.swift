@@ -8,15 +8,15 @@
 import SwiftUI
 
 /// 관심 해변 칩
-/// - 관심 해변 목록(`.favorite`)과 추가 버튼(`.add`)에 사용합니다.
-/// - 지도 서치바 아래 칩은 `.searchFavorite`, 선택된 칩은 `.selectedSearchFavorite`를 사용합니다.
+/// - 지도 서치바 아래와 해변 검색 화면의 관심 해변에 `.searchFavorite`를 사용합니다.
+/// - 지도에서 시트가 열린 해변의 칩은 `.selectedSearchFavorite`를 사용합니다.
 ///
 struct BeachChip: View {
 
     // MARK: - Properties
 
     let title: String
-    var style: Style = .favorite
+    var style: Style = .searchFavorite
 
     // MARK: - Body
 
@@ -51,15 +51,11 @@ struct BeachChip: View {
 extension BeachChip {
 
     enum Style {
-        case favorite
-        case add
         case searchFavorite
         case selectedSearchFavorite
 
         var image: ImageResource {
             switch self {
-            case .favorite: .starGreen
-            case .add: .plus
             case .searchFavorite: .backgroundStarGreen
             case .selectedSearchFavorite: .backgroundWhiteStar
             }
@@ -67,74 +63,62 @@ extension BeachChip {
 
         var iconSize: CGFloat {
             switch self {
-            case .favorite: 24
-            case .add: 14
             case .searchFavorite, .selectedSearchFavorite: 16
             }
         }
 
         var textColor: Color {
             switch self {
-            case .favorite, .searchFavorite: return .textPrimary
-            case .add: return .textSecondary
+            case .searchFavorite: return .textPrimary
             case .selectedSearchFavorite: return .currentBrandText
             }
         }
         
         var font: PlobbyTypography {
             switch self {
-            case .favorite, .add, .selectedSearchFavorite: .labelSelected
+            case .selectedSearchFavorite: .labelSelected
             case .searchFavorite: .label
             }
         }
 
-        /// 아이콘이 차지하는 칸. 서치바 아래 칩은 아이콘 크기 그대로 써요.
         var iconFrameSize: CGFloat {
             switch self {
-            case .favorite, .add: 24
             case .searchFavorite, .selectedSearchFavorite: 16
             }
         }
 
         var spacing: CGFloat {
             switch self {
-            case .favorite, .add: 4
             case .searchFavorite, .selectedSearchFavorite: 6
             }
         }
 
         var leadingPadding: CGFloat {
             switch self {
-            case .favorite, .add: 8
             case .searchFavorite, .selectedSearchFavorite: 12
             }
         }
 
         var trailingPadding: CGFloat {
             switch self {
-            case .favorite, .add: 16
             case .searchFavorite, .selectedSearchFavorite: 12
             }
         }
 
         var height: CGFloat {
             switch self {
-            case .favorite, .add: 44
             case .searchFavorite, .selectedSearchFavorite: 36
             }
         }
 
-        /// 서치바 아래 칩은 캡슐 모양이에요.
         var cornerRadius: CGFloat {
             switch self {
-            case .favorite, .add: 12
             case .searchFavorite, .selectedSearchFavorite: 18
             }
         }
         
         var backgroundColor: Color {
             switch self {
-            case .favorite, .add: return .gray50
             case .searchFavorite: return .white
             case .selectedSearchFavorite: return .surfaceBrandSubtle
             }
@@ -142,7 +126,6 @@ extension BeachChip {
         
         var strokeColor: Color {
             switch self {
-            case .favorite, .add: return .currentWarmBorder
             case .searchFavorite: return .gray200
             case .selectedSearchFavorite: return .green500
             }

@@ -101,7 +101,7 @@ private extension TrashPickerView {
     var guideText: some View {
         Text(store.guideText)
             .plobbyFont(.helper)
-            .foregroundStyle(Color(.textSecondary))
+            .foregroundStyle(store.isCountOverLimit ? Color(.currentError) : Color(.textSecondary))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20.scaled)
             .padding(.top, 24.scaled)
@@ -274,7 +274,7 @@ private extension TrashPickerView {
             }
             
             if isOverLimit {
-                Text("메모를 \(TrashSelection.etcMemoMaximumLength)자 이내로 줄여주세요.")
+                Text("메모는 \(TrashSelection.etcMemoMaximumLength)자까지 입력할 수 있어요.")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.currentError))
             }
@@ -314,7 +314,6 @@ private extension TrashPickerView {
             PlobbyButton(text: "완료") {
                 store.send(.completeTapped)
             }
-            .disabled(!store.isCompleteEnabled)
         }
         .padding(.horizontal, 20.scaled)
         // 시안 하단 여백 48에서 홈 인디케이터 영역(34)을 뺀 값

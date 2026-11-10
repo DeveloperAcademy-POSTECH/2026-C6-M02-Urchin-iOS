@@ -34,7 +34,6 @@ struct NotificationView: View {
         .navigationDestination(item: $store.scope(state: \.recordDetail, action: \.recordDetail)) { store in
             RecordDetailView(store: store)
                 .toolbar(.hidden, for: .navigationBar)
-                .toolbar(.hidden, for: .tabBar)
         }
     }
 }

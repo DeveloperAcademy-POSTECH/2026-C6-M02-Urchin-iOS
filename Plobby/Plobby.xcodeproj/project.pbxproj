@@ -37,7 +37,6 @@
 		6C58EF6B7AEFD90EBE7571E4 /* ProfileResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22117CDC3BC2454F4CDAC201 /* ProfileResponseDTO.swift */; };
 		6C922A2E679C44E28DA507F7 /* AppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B876495304224301BF46BD28 /* AppNotification.swift */; };
 		73CD656240EA8E75250648CC /* BeachRecordResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99CF10416380E0C7057BE2D /* BeachRecordResponseDTO.swift */; };
-		781821F67D47B4EA5D000A8E /* RecordMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B11A53BEC65644616587EA /* RecordMenuView.swift */; };
 		7B3C1A02309D0000004C5301 /* LoginRequiredSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */; };
 		7B3C1A04309D0000004C5301 /* AppleSignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A03309D0000004C5301 /* AppleSignInCoordinator.swift */; };
 		7B3C1A06309D0000004C5301 /* AppFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A05309D0000004C5301 /* AppFeatureTests.swift */; };
@@ -120,6 +119,7 @@
 		B593431730A0DA00005EAF07 /* GoalParticipantResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B593431630A0DA00005EAF07 /* GoalParticipantResponseDTO.swift */; };
 		B5951FB3309BA4AB0089A019 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5951FB2309BA4AB0089A019 /* MyView.swift */; };
 		B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D20E7B309AC47100981996 /* SharedKey+.swift */; };
+		7B3C1A71A1B2C3D4E5F60001 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A70A1B2C3D4E5F60001 /* UINavigationController+.swift */; };
 		B5E34CC330A1A55E00AF3DA6 /* UserTrashSummaryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E34CC230A1A55E00AF3DA6 /* UserTrashSummaryResponseDTO.swift */; };
 		B70B8D19590060F1BD07CD40 /* DependencyValues+PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */; };
 		BDA985C8CDA5A070AC9A1B00 /* PhotosPickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4378F5DDBD7832C3C34F3444 /* PhotosPickerFeatureTests.swift */; };
@@ -420,6 +420,7 @@
 		B593431630A0DA00005EAF07 /* GoalParticipantResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalParticipantResponseDTO.swift; sourceTree = "<group>"; };
 		B5951FB2309BA4AB0089A019 /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
 		B5D20E7B309AC47100981996 /* SharedKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedKey+.swift"; sourceTree = "<group>"; };
+		7B3C1A70A1B2C3D4E5F60001 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		B5E34CC230A1A55E00AF3DA6 /* UserTrashSummaryResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTrashSummaryResponseDTO.swift; sourceTree = "<group>"; };
 		B6AA7F58A0468E0B8BA6AE6B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		B876495304224301BF46BD28 /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
@@ -514,7 +515,6 @@
 		DAFFB31F30A20C6B009FC4E4 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		DAFFB32130A21024009FC4E4 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeOfDay.swift; sourceTree = "<group>"; };
-		E8B11A53BEC65644616587EA /* RecordMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMenuView.swift; sourceTree = "<group>"; };
 		EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignScale.swift; sourceTree = "<group>"; };
 		EC0D4B833098E1A7000E7BB7 /* BeachClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachClient.swift; sourceTree = "<group>"; };
 		EC0D4B863098E1D0000E7BB7 /* DependencyValues+BeachClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+BeachClient.swift"; sourceTree = "<group>"; };
@@ -1137,7 +1137,6 @@
 				DA5B107330997758003FEDF9 /* MainTab.swift */,
 				DA5B107430997758003FEDF9 /* MainTabFeature.swift */,
 				DA5B107530997758003FEDF9 /* MainTabView.swift */,
-				E8B11A53BEC65644616587EA /* RecordMenuView.swift */,
 			);
 			path = MainTab;
 			sourceTree = "<group>";
@@ -1485,6 +1484,7 @@
 				7B3C1A31309D0000004C5301 /* String+.swift */,
 				EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */,
 				B5D20E7B309AC47100981996 /* SharedKey+.swift */,
+				7B3C1A70A1B2C3D4E5F60001 /* UINavigationController+.swift */,
 				7B3C1A1F309D0000004C5301 /* View+.swift */,
 			);
 			path = Extension;
@@ -1977,6 +1977,7 @@
 				DA0A9CF7309A13A1006D2504 /* TrashPickerFeature.swift in Sources */,
 				5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */,
 				B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */,
+				7B3C1A71A1B2C3D4E5F60001 /* UINavigationController+.swift in Sources */,
 				7B3C1A1E309D0000004C5301 /* View+.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
@@ -2054,7 +2055,6 @@
 				DA5B107730997758003FEDF9 /* MainTab.swift in Sources */,
 				DA5B107830997758003FEDF9 /* MainTabFeature.swift in Sources */,
 				DA5B107930997758003FEDF9 /* MainTabView.swift in Sources */,
-				781821F67D47B4EA5D000A8E /* RecordMenuView.swift in Sources */,
 				DA5B106D30997215003FEDF9 /* RecordPhotoResponseDTO.swift in Sources */,
 				DA5B106E30997215003FEDF9 /* RecordSummaryResponseDTO.swift in Sources */,
 				DA5B106F30997215003FEDF9 /* RecordTrashResponseDTO.swift in Sources */,
