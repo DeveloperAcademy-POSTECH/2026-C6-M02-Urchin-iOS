@@ -16,7 +16,6 @@ struct ProfilePhotoView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<ProfilePhotoFeature>
-    @State private var selectedImage: UIImage?
 
     // MARK: - Body
 
@@ -35,9 +34,6 @@ struct ProfilePhotoView: View {
         .buttonStyle(.plain)
         .disabled(store.isLoading)
         .accessibilityLabel("프로필 \(buttonTitle)")
-        .task(id: store.selectedImage) {
-            selectedImage = store.selectedImage.flatMap(UIImage.init(data:))
-        }
         .fullScreenCover(item: $store.scope(state: \.photoPicker, action: \.photoPicker)) { store in
             PhotosPickerView(store: store)
         }
@@ -55,7 +51,7 @@ extension ProfilePhotoView {
 
     private var photo: some View {
         Group {
-            if let selectedImage {
+            if let selectedImage = store.selectedImage.flatMap(UIImage.init(data:)) {
                 Image(uiImage: selectedImage)
                     .resizable()
                     .scaledToFill()
