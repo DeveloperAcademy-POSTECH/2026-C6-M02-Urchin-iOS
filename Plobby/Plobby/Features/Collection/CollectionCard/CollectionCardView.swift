@@ -211,7 +211,10 @@ private extension CollectionCardView {
 
     var recordButton: some View {
         Button {
-            store.send(.recordButtonTapped)
+            // 홈 기록하기처럼 시트 애니메이션 없이 팝업으로 띄워요
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            store.send(.recordButtonTapped, transaction: transaction)
         } label: {
             Label("활동 기록하기", systemImage: "plus")
                 .plobbyFont(.label)

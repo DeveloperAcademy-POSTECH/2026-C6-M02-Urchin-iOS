@@ -20,6 +20,7 @@ struct CollectionFeature {
         var cards: IdentifiedArrayOf<CollectionCardFeature.State> = CollectionFeature.initialCards
         var selectedCategory: TrashCategory = CollectionFeature.categoryOrder[0]
         var isCategorySheetPresented = false
+        var isActivityPickerPresented = false
         var isTrashCountsLoaded = false
         var shareRequestCount = 0
     }
@@ -37,12 +38,14 @@ struct CollectionFeature {
         case cardScrolled(TrashCategory)
         case cards(IdentifiedActionOf<CollectionCardFeature>)
         case shareButtonTapped
+        case activityPicked(RecordType)
+        case activityPickerDismissed
         case my(PresentationAction<MyFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
             case loginRequired
-            case recordStartRequested
+            case recordStarted(RecordType)
         }
     }
 
@@ -126,7 +129,19 @@ struct CollectionFeature {
                 return .none
 
             case .cards(.element(_, .delegate(.recordStartRequested))):
-                return .send(.delegate(.recordStartRequested))
+                guard case .member = state.membershipStatus else {
+                    return .send(.delegate(.loginRequired))
+                }
+                state.isActivityPickerPresented = true
+                return .none
+
+            case let .activityPicked(type):
+                state.isActivityPickerPresented = false
+                return .send(.delegate(.recordStarted(type)))
+
+            case .activityPickerDismissed:
+                state.isActivityPickerPresented = false
+                return .none
 
             case .cards, .my, .delegate:
                 return .none
