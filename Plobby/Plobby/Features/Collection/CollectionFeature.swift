@@ -42,6 +42,7 @@ struct CollectionFeature {
 
         enum Delegate {
             case loginRequired
+            case recordStartRequested
         }
     }
 
@@ -123,6 +124,9 @@ struct CollectionFeature {
             case .shareButtonTapped:
                 state.shareRequestCount += 1
                 return .none
+
+            case .cards(.element(_, .delegate(.recordStartRequested))):
+                return .send(.delegate(.recordStartRequested))
 
             case .cards, .my, .delegate:
                 return .none

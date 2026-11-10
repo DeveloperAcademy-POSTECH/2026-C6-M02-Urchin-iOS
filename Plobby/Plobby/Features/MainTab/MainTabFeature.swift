@@ -147,6 +147,10 @@ struct MainTabFeature {
             
             case .map:
                 return .none
+
+            case .collection(.delegate(.recordStartRequested)):
+                state.isRecordMenuPresented = true
+                return .none
             
             case .collection(.my(.presented(.delegate(.signInRequested)))):
                 return .send(.signIn(.appleSignInRequested))

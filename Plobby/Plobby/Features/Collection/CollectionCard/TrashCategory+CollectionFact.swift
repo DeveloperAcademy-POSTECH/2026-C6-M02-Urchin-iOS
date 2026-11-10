@@ -13,20 +13,21 @@ struct CollectionFact: Equatable {
 
 extension TrashCategory {
 
-    var collectionIllustrationName: String {
-        switch self {
-        case .glass: "collection_card_glass"
-        case .plastic: "collection_card_plastic"
-        case .metal: "collection_card_metal"
-        case .wood: "collection_card_wood"
-        case .fishingGear: "collection_card_fishing_gear"
-        case .clothing: "collection_card_clothing"
-        case .styrofoam: "collection_card_styrofoam"
-        case .can: "collection_card_can"
-        case .paper: "collection_card_paper"
-        case .rubber: "collection_card_rubber"
-        case .etc: "collection_card_etc"
+    func collectionIllustrationName(isEmpty: Bool) -> String {
+        let key = switch self {
+        case .glass: "glass"
+        case .plastic: "plastic"
+        case .metal: "metal"
+        case .wood: "wood"
+        case .fishingGear: "fishing_gear"
+        case .clothing: "clothing"
+        case .styrofoam: "styrofoam"
+        case .can: "can"
+        case .paper: "paper"
+        case .rubber: "rubber"
+        case .etc: "etc"
         }
+        return isEmpty ? "collection_card_empty_\(key)" : "collection_card_\(key)"
     }
 
     func collectionFact(count: Int, nickname: String?) -> CollectionFact {
