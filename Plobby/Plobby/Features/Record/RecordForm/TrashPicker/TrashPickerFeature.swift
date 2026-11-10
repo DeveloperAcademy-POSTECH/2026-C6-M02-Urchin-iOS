@@ -19,13 +19,19 @@ struct TrashPickerFeature {
         var selection: TrashSelection
         var editingCategory: TrashCategory?
         var countText: String = ""
+        var isCountOverLimit = false
+        var isEtcMemoOverLimit = false
 
         init(selection: TrashSelection) {
             self.selection = selection
         }
 
         var guideText: String {
-            selection.isEmpty
+            if isCountOverLimit {
+                return "최대 \(TrashSelection.maximumCount)개까지 입력할 수 있어요."
+            }
+
+            return selection.isEmpty
             ? "주운 쓰레기 종류를 추가해주세요."
             : "숫자를 눌러 개수를 바로 입력할 수 있어요."
         }
@@ -34,13 +40,6 @@ struct TrashPickerFeature {
             selection[.etc] > 0
         }
 
-        var isEtcMemoOverLimit: Bool {
-            selection.etcMemo.count > TrashSelection.etcMemoMaximumLength
-        }
-
-        var isCompleteEnabled: Bool {
-            !isEtcMemoOverLimit
-        }
     }
 
     // MARK: - Action
@@ -89,7 +88,9 @@ struct TrashPickerFeature {
             case let .countTextChanged(category, text):
                 guard state.editingCategory == category else { return .none }
 
-                let digits = String(text.filter(\.isASCIIDigit).prefix(Self.maximumCountDigits))
+                let allDigits = text.filter(\.isASCIIDigit)
+                let digits = String(allDigits.prefix(Self.maximumCountDigits))
+                state.isCountOverLimit = allDigits.count > Self.maximumCountDigits
                 state.countText = text
                 state.countText = digits
 
@@ -106,7 +107,8 @@ struct TrashPickerFeature {
                 guard state.isEtcMemoVisible else { return .none }
 
                 state.selection.etcMemo = memo
-                if memo.count > TrashSelection.etcMemoMaximumLength {
+                state.isEtcMemoOverLimit = memo.count > TrashSelection.etcMemoMaximumLength
+                if state.isEtcMemoOverLimit {
                     state.selection.etcMemo = String(memo.prefix(TrashSelection.etcMemoMaximumLength))
                 }
                 return .none
@@ -115,8 +117,6 @@ struct TrashPickerFeature {
                 return .send(.delegate(.cancelled))
 
             case .completeTapped:
-                guard state.isCompleteEnabled else { return .none }
-
                 commitCountEditing(&state)
                 return .send(.delegate(.confirmed(state.selection)))
 
@@ -139,5 +139,6 @@ extension TrashPickerFeature {
         state.selection[category] = Int(state.countText) ?? 0
         state.editingCategory = nil
         state.countText = ""
+        state.isCountOverLimit = false
     }
 }

@@ -31,6 +31,7 @@ struct RecordFormFeature {
         var totalWeightError: String?
         var memo: String
         var isMemoErrorVisible: Bool = false
+        var isMemoOverLimit: Bool = false
         var isSubmitting: Bool = false
         var isCompleteEnabled: Bool = false
         @Presents var destination: Destination.State?
@@ -70,10 +71,6 @@ struct RecordFormFeature {
             max(RecordFormFeature.maxPhotoCount - photos.count, 0)
         }
 
-        var isMemoOverLimit: Bool {
-            memo.count > RecordMemo.maximumLength
-        }
-        
         var hasInput: Bool {
             var current = inputs
             if mode == .create {
@@ -183,10 +180,13 @@ struct RecordFormFeature {
                     maximumIntegerDigits: DecimalInput.integerDigits(of: WaterDepth.range),
                     locale: locale
                 )
+
                 if limited != state.maxDepthText {
+                    state.maxDepthError = maxDepthError(for: state.maxDepthText)
                     state.maxDepthText = limited
+                } else {
+                    state.maxDepthError = isTypingNumber(limited) ? nil : maxDepthError(for: limited)
                 }
-                state.maxDepthError = isTypingNumber(limited) ? nil : maxDepthError(for: limited)
                 return .none
                 
             case .binding(\.totalWeightText):
@@ -196,13 +196,16 @@ struct RecordFormFeature {
                     locale: locale
                 )
                 if limited != state.totalWeightText {
+                    state.totalWeightError = totalWeightError(for: state.totalWeightText)
                     state.totalWeightText = limited
+                } else {
+                    state.totalWeightError = isTypingNumber(limited) ? nil : totalWeightError(for: limited)
                 }
-                state.totalWeightError = isTypingNumber(limited) ? nil : totalWeightError(for: limited)
                 return .none
 
             case .binding(\.memo):
-                if state.memo.count > RecordMemo.maximumLength {
+                state.isMemoOverLimit = state.memo.count > RecordMemo.maximumLength
+                if state.isMemoOverLimit {
                     state.memo = String(state.memo.prefix(RecordMemo.maximumLength))
                 }
                 if !InputText.isBlank(state.memo) {
@@ -348,7 +351,6 @@ struct RecordFormFeature {
                 return .none
                 
             case let .destination(.presented(.datePicker(.delegate(.confirmed(field, date))))):
-                // 날짜 피커가 고른 날짜에 기존 시각을 붙여 범위 안으로 맞춰 둔 값이에요.
                 state.period[field] = date
                 state.periodError = periodError(for: state.period)
                 state.destination = nil
@@ -423,8 +425,7 @@ extension RecordFormFeature {
               maxDepthError(for: state.maxDepthText) == nil,
               !state.trash.isEmpty,
               totalWeightError(for: state.totalWeightText) == nil,
-              !InputText.isBlank(state.memo),
-              !state.isMemoOverLimit
+              !InputText.isBlank(state.memo)
         else { return false }
 
         return true
