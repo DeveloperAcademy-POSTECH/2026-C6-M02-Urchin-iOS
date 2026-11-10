@@ -151,7 +151,7 @@ struct PhotosPickerFeature {
                 }
                 
                 guard state.selection.toggle(asset) != .limitExceeded else {
-                    return .send(.toast(.show(Self.limitExceededMessage)))
+                    return .send(.toast(.show(.photoLimitExceeded)))
                 }
                 
                 return .none
@@ -162,7 +162,7 @@ struct PhotosPickerFeature {
                 }
                 
                 guard state.isSingleSelection || !state.selection.isFull else {
-                    return .send(.toast(.show(Self.limitExceededMessage)))
+                    return .send(.toast(.show(.photoLimitExceeded)))
                 }
                 
                 state.isCameraPresented = true
@@ -188,7 +188,7 @@ struct PhotosPickerFeature {
                 return .none
                 
             case .cameraSaveFailed:
-                return .send(.toast(.show(Self.cameraSaveFailedMessage)))
+                return .send(.toast(.show(.photoSaveFailed)))
                 
             case .openSettingsTapped:
                 guard let url = URL(string: UIApplication.openSettingsURLString) else {
@@ -212,13 +212,6 @@ struct PhotosPickerFeature {
     }
 }
 
-// MARK: - Constants
-
-extension PhotosPickerFeature {
-    
-    static let limitExceededMessage = "사진은 최대 \(PhotoSelection.maxCount)장까지 선택할 수 있어요."
-    static let cameraSaveFailedMessage = "사진을 저장하지 못했어요. 다시 시도해주세요."
-}
 
 // MARK: - Functions
 
