@@ -160,9 +160,15 @@ private extension CollectionCardView {
 
                 factDescription(fact.description)
 
-                Spacer()
+                if store.collectedCount > 0 {
+                    Spacer()
 
-                factSource(fact.source)
+                    factSource(fact.source)
+                } else {
+                    recordButton
+                        .padding(.top, 24.scaled)
+                        .padding(.bottom, 60.scaled)
+                }
             }
             .multilineTextAlignment(.center)
         )
@@ -185,7 +191,7 @@ private extension CollectionCardView {
     }
 
     var illustration: some View {
-        Image(store.category.collectionIllustrationName)
+        Image(store.category.collectionIllustrationName(isEmpty: store.collectedCount == 0))
             .resizable()
             .scaledToFit()
             .frame(width: 242.scaled)
@@ -201,6 +207,22 @@ private extension CollectionCardView {
             .fixedSize(horizontal: false, vertical: true)
             .padding(.top, 22.scaled)
             .padding(.horizontal, 16.scaled)
+    }
+
+    var recordButton: some View {
+        Button {
+            // 홈 기록하기처럼 시트 애니메이션 없이 팝업으로 띄워요
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            store.send(.recordButtonTapped, transaction: transaction)
+        } label: {
+            Label("활동 기록하기", systemImage: "plus")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.gray0))
+                .frame(width: 128.scaled, height: 36.scaled)
+                .background(Color(.darkBGGreen), in: RoundedRectangle(cornerRadius: 8.scaled))
+        }
+        .buttonStyle(.plain)
     }
 
     func factSource(_ text: String) -> some View {

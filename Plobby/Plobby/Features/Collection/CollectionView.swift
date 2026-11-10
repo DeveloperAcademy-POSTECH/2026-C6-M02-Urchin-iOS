@@ -41,6 +41,31 @@ struct CollectionView: View {
                 .presentationDetents([.height(684.scaled)])
                 .presentationDragIndicator(.visible)
         }
+        .fullScreenCover(isPresented: activityPickerBinding) {
+            HomeActivityPicker(
+                onSelect: { type in store.send(.activityPicked(type), transaction: Self.noAnimation) },
+                onDismiss: { store.send(.activityPickerDismissed, transaction: Self.noAnimation) }
+            )
+            .presentationBackground(.clear)
+        }
+    }
+}
+
+// MARK: - Activity Picker
+
+private extension CollectionView {
+
+    var activityPickerBinding: Binding<Bool> {
+        Binding(
+            get: { store.isActivityPickerPresented },
+            set: { if !$0 { store.send(.activityPickerDismissed, transaction: Self.noAnimation) } }
+        )
+    }
+
+    static var noAnimation: Transaction {
+        var transaction = Transaction()
+        transaction.disablesAnimations = true
+        return transaction
     }
 }
 

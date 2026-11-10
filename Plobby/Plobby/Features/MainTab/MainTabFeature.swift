@@ -147,6 +147,9 @@ struct MainTabFeature {
             
             case .map:
                 return .none
+
+            case let .collection(.delegate(.recordStarted(recordType))):
+                return .send(.recordTypeSelected(recordType))
             
             case .collection(.my(.presented(.delegate(.signInRequested)))):
                 return .send(.signIn(.appleSignInRequested))

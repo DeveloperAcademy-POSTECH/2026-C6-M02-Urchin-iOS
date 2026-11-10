@@ -13,20 +13,21 @@ struct CollectionFact: Equatable {
 
 extension TrashCategory {
 
-    var collectionIllustrationName: String {
-        switch self {
-        case .glass: "collection_card_glass"
-        case .plastic: "collection_card_plastic"
-        case .metal: "collection_card_metal"
-        case .wood: "collection_card_wood"
-        case .fishingGear: "collection_card_fishing_gear"
-        case .clothing: "collection_card_clothing"
-        case .styrofoam: "collection_card_styrofoam"
-        case .can: "collection_card_can"
-        case .paper: "collection_card_paper"
-        case .rubber: "collection_card_rubber"
-        case .etc: "collection_card_etc"
+    func collectionIllustrationName(isEmpty: Bool) -> String {
+        let key = switch self {
+        case .glass: "glass"
+        case .plastic: "plastic"
+        case .metal: "metal"
+        case .wood: "wood"
+        case .fishingGear: "fishing_gear"
+        case .clothing: "clothing"
+        case .styrofoam: "styrofoam"
+        case .can: "can"
+        case .paper: "paper"
+        case .rubber: "rubber"
+        case .etc: "etc"
         }
+        return isEmpty ? "collection_card_empty_\(key)" : "collection_card_\(key)"
     }
 
     func collectionFact(count: Int, nickname: String?) -> CollectionFact {
@@ -63,7 +64,7 @@ extension TrashCategory {
         case .wood:
             return CollectionFact(
                 title: "고둥을 지키는 데\n힘을 보탰어요!",
-                description: "버려진 방부목이 바다에 잠기면 구리 성분이\n녹아내려 고둥들이 껍데기 속에 들어간 채\n움직이지 못할 수 있어요.\n\(thanks) 고둥이 사는 갯벌이\n조금 더 안전해졌어요.",
+                description: "버려진 방부목이 바다에 잠기면\n구리 성분이 녹아내려 고둥들이 껍데기 속에\n움츠러들어 움직이지 못할 수 있어요.\n\(thanks) 고둥이 사는 갯벌이\n조금 더 안전해졌어요.",
                 source: "출처: 뉴저지 의과대학\n남부 캘리포니아 연안 수질 연구 프로젝트(SCCWRP)"
             )
         case .fishingGear:
@@ -75,7 +76,7 @@ extension TrashCategory {
         case .clothing:
             return CollectionFact(
                 title: "홍합을 지키는 데\n힘을 보탰어요!",
-                description: "버려진 폴리에스터 천이 햇빛과 물살에 닳으면\n작은 플라스틱 섬유가 떨어져 나와요.\n홍합이 먹이를 먹다가 섬유까지 삼키게 되면\n성장이 눈에 띄게 더뎌질 수 있어요.\n\(thanks) 어린 홍합들이 자라는\n바다가 조금 더 안전해졌어요.",
+                description: "버려진 폴리에스터 천에서 떨어져 나온\n플라스틱 섬유를 홍합이 삼키면\n성장이 눈에 띄게 더뎌질 수 있어요.\n\(thanks) 어린 홍합들이 자라는\n바다가 조금 더 안전해졌어요.",
                 source: "출처: 중국환경과학연구원 · 플리머스 해양연구소"
             )
         case .styrofoam:
