@@ -15,7 +15,6 @@ struct RecordFlowFeature {
     @ObservableState
     struct State: Equatable {
         let recordType: RecordType
-        /// 지도에서 해변을 골라 시작하면 기록 작성 화면에 미리 채워요
         let beach: Beach?
         var step: Step.State
         
@@ -32,6 +31,7 @@ struct RecordFlowFeature {
     enum Step {
         case photoPicker(PhotosPickerFeature)
         case form(RecordFormFeature)
+        case collecting(RecordCollectingFeature)
         case reward(RecordRewardFeature)
         case detail(RecordDetailFeature)
     }
@@ -73,7 +73,17 @@ struct RecordFlowFeature {
                 return .none
                 
             case let .step(.form(.delegate(.recordCreated(recordID, beachName, trash, weightKg)))):
-                state.step = .reward(.init(recordID: recordID, beachName: beachName, trash: trash, weightKg: weightKg))
+                state.step = .collecting(.init(recordID: recordID, beachName: beachName, trash: trash, weightKg: weightKg))
+                return .none
+
+            case .step(.collecting(.delegate(.finished))):
+                guard case let .collecting(collecting) = state.step else { return .none }
+                state.step = .reward(.init(
+                    recordID: collecting.recordID,
+                    beachName: collecting.beachName,
+                    trash: collecting.trash,
+                    weightKg: collecting.weightKg
+                ))
                 return .none
                 
             case let .step(.reward(.delegate(.finished(recordID)))):

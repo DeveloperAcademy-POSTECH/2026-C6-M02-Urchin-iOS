@@ -21,6 +21,7 @@ enum PlobbyTypography {
     case heading
     case cardTitle
     case body
+    case body2
     case actionLabel
     case notification
     case label
@@ -37,6 +38,7 @@ enum PlobbyTypography {
         case .heading: .semiBold
         case .cardTitle: .semiBold
         case .body: .regular
+        case .body2: .medium
         case .actionLabel: .semiBold
         case .notification: .medium
         case .label: .medium
@@ -55,6 +57,7 @@ enum PlobbyTypography {
         case .heading: 20
         case .cardTitle: 17
         case .body: 16
+        case .body2: 16
         case .actionLabel: 16
         case .notification: 15
         case .label: 14
@@ -73,6 +76,7 @@ enum PlobbyTypography {
         case .heading: 28
         case .cardTitle: 22
         case .body: 24
+        case .body2: 24
         case .actionLabel: 24
         case .notification: 22
         case .label: 20

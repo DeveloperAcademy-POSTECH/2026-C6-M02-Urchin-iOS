@@ -24,6 +24,8 @@ struct RecordView: View {
                 PhotosPickerView(store: store)
             case let .form(store):
                 RecordFormView(store: store)
+            case let .collecting(store):
+                RecordCollectingView(store: store)
                     .transition(.asymmetric(
                         insertion: .identity,
                         removal: .opacity.animation(.linear(duration: 0.01).delay(RecordRewardView.curtainDuration))
