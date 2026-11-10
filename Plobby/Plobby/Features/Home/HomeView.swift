@@ -212,7 +212,7 @@ private extension HomeView {
                 goal: goal,
                 status: status,
                 isExpanded: store.isGoalExpanded,
-                onToggle: { store.send(.goalCardToggleTapped, transaction: Self.noAnimation) },
+                onToggle: { store.send(.goalCardToggleTapped, animation: .easeInOut(duration: 0.25)) },
                 onRecordTapped: { store.send(.recordButtonTapped, transaction: Self.noAnimation) },
                 onAllGoalsTapped: { store.send(.allGoalsButtonTapped) }
             )

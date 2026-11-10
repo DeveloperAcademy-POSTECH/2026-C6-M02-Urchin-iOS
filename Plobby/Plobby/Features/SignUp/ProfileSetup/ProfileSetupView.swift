@@ -37,6 +37,10 @@ struct ProfileSetupView: View {
             
             nextButton
         }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            isNicknameFocused = false
+        }
         .plobbyAlert($store.scope(state: \.profilePhoto.alert, action: \.profilePhoto.alert))
         .plobbyAlert($store.scope(state: \.nicknameCheck.alert, action: \.nicknameCheck.alert))
     }

@@ -29,11 +29,13 @@ struct HomeGoalCard: View {
                     buttons
                 }
                 .padding(.trailing, 12.scaled)
+                .transition(.opacity)
             }
         }
         .padding(.leading, 12.scaled)
         .padding(.vertical, 8.scaled)
         .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
+        .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
     }
 }
 
@@ -45,8 +47,23 @@ private extension HomeGoalCard {
         isExpanded || status.isFinished
     }
 
-    /// 펼치기 버튼은 카드 오른쪽 끝에 붙어요. 끝난 목표는 버튼이 없어서 오른쪽 여백을 둬요.
+    /// 진행 중인 목표는 제목 줄 어디를 눌러도 펼치고 접혀요. 끝난 목표는 늘 펼쳐져 있어서 누를 수 없어요.
+    @ViewBuilder
     var header: some View {
+        if status.isFinished {
+            headerContent
+        } else {
+            Button(action: onToggle) {
+                headerContent
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(isExpanded ? "공동 목표 접기" : "공동 목표 펼치기")
+        }
+    }
+
+    /// 펼치기 아이콘은 카드 오른쪽 끝에 붙어요. 끝난 목표는 아이콘이 없어서 오른쪽 여백을 둬요.
+    var headerContent: some View {
         HStack(spacing: 8.scaled) {
             VStack(alignment: .leading, spacing: 2.scaled) {
                 HStack(spacing: 8.scaled) {
@@ -68,7 +85,7 @@ private extension HomeGoalCard {
             }
 
             if !status.isFinished {
-                toggleButton
+                toggleIcon
             }
         }
         .padding(.trailing, status.isFinished ? 12.scaled : 0)
@@ -104,15 +121,12 @@ private extension HomeGoalCard {
         }
     }
 
-    var toggleButton: some View {
-        Button(action: onToggle) {
-            Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                .font(.system(size: 14.scaled))
-                .foregroundStyle(Color(.textSecondary))
-                .frame(width: 44.scaled, height: 44.scaled)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(isExpanded ? "공동 목표 접기" : "공동 목표 펼치기")
+    /// 펼치고 접을 때 화살표가 돌아가요.
+    var toggleIcon: some View {
+        Image(systemName: "chevron.down")
+            .font(.system(size: 14.scaled))
+            .foregroundStyle(Color(.textSecondary))
+            .rotationEffect(.degrees(isExpanded ? 180 : 0))
+            .frame(width: 44.scaled, height: 44.scaled)
     }
 }
