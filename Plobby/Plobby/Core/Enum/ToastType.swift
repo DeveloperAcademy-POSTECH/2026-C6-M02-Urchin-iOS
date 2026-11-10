@@ -8,6 +8,7 @@
 import Foundation
 
 enum ToastType: Equatable {
+    
     case photoLimitExceeded
     case photoSaveFailed
     case favoriteBeachRemoved
