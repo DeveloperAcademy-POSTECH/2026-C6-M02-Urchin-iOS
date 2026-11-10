@@ -61,6 +61,8 @@
 		7B3C1A2E309D0000004C5301 /* ConfettiScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */; };
 		7B3C1A30309D0000004C5301 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A31309D0000004C5301 /* String+.swift */; };
 		7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */; };
+		7B3C1A61309D0000004C5301 /* RecordCollectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */; };
+		7B3C1A63309D0000004C5301 /* RecordCollectingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
@@ -98,6 +100,8 @@
 		A16C0DE00000000000000304 /* ProfilePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000303 /* ProfilePhotoView.swift */; };
 		A16C0DE00000000000000306 /* NicknameCheckFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000305 /* NicknameCheckFeature.swift */; };
 		A16C0DE00000000000000308 /* NicknameCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000307 /* NicknameCheckView.swift */; };
+		A16C0DE00000000000000402 /* LoginFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000401 /* LoginFeature.swift */; };
+		A16C0DE00000000000000404 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000403 /* LoginView.swift */; };
 		A29D1CFD3712AA87F7389274 /* DependencyValues+UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */; };
 		A6BFBCB3BD04AAB29D26FEE2 /* UserBlockInsertRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162F90732D4BC19F7785AD9 /* UserBlockInsertRequestDTO.swift */; };
 		AC79ACD85403DD13EBC9ACCD /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95366258A2DD2CD25A307CDD /* CameraPicker.swift */; };
@@ -352,6 +356,8 @@
 		7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiScene.swift; sourceTree = "<group>"; };
 		7B3C1A31309D0000004C5301 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashScene.swift; sourceTree = "<group>"; };
+		7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectingView.swift; sourceTree = "<group>"; };
+		7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectingFeature.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -392,6 +398,8 @@
 		A16C0DE00000000000000303 /* ProfilePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoView.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000305 /* NicknameCheckFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckFeature.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000307 /* NicknameCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckView.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000401 /* LoginFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000403 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A683DF52E8FC8F413240B638 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
 		AC2FCBF62738B49536CDD19C /* DependencyValues+UserClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+UserClient.swift"; sourceTree = "<group>"; };
 		B1CA15540443FE5BE6EF51E8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -721,6 +729,15 @@
 			path = Confetti;
 			sourceTree = "<group>";
 		};
+		7B3C1A64309D0000004C5301 /* RecordCollecting */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */,
+				7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */,
+			);
+			path = RecordCollecting;
+			sourceTree = "<group>";
+		};
 		84C514248E87412C8FC65AA2 /* Push */ = {
 			isa = PBXGroup;
 			children = (
@@ -823,6 +840,22 @@
 				A16C0DE00000000000000307 /* NicknameCheckView.swift */,
 			);
 			path = NicknameCheck;
+		A16C0DE00000000000000405 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000401 /* LoginFeature.swift */,
+				A16C0DE00000000000000403 /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		A16C0DE00000000000000205 /* FavoriteBeachAdd */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */,
+				A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */,
+			);
+			path = FavoriteBeachAdd;
 			sourceTree = "<group>";
 		};
 		AE634BCD9D00428DBE65DAEB /* Response */ = {
@@ -1160,6 +1193,7 @@
 				DA5B10E530998932003FEDF9 /* RecordFlowFeature.swift */,
 				DA688DC33099CF830064A2F4 /* RecordForm */,
 				DA688DC23099CF830064A2F4 /* RecordReward */,
+				7B3C1A64309D0000004C5301 /* RecordCollecting */,
 				DA688DC43099CF830064A2F4 /* RecordDetail */,
 			);
 			path = Record;
@@ -1179,8 +1213,8 @@
 			isa = PBXGroup;
 			children = (
 				DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */,
-				7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */,
 				DA688DCA3099CFB70064A2F4 /* RecordRewardFeature.swift */,
+				7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */,
 			);
 			path = RecordReward;
 			sourceTree = "<group>";
@@ -1630,6 +1664,7 @@
 				DA5B107630997758003FEDF9 /* MainTab */,
 				ECE6F2B53098338400C4916C /* Home */,
 				ECE6F2BC3098338400C4916C /* Onboarding */,
+				A16C0DE00000000000000405 /* Login */,
 				ECE6F2C53098338400C4916C /* SignUp */,
 			);
 			path = Features;
@@ -1886,6 +1921,8 @@
 				7B3C1A11309D0000004C5301 /* FlipCard.swift in Sources */,
 				DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */,
 				DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */,
+				7B3C1A61309D0000004C5301 /* RecordCollectingView.swift in Sources */,
+				7B3C1A63309D0000004C5301 /* RecordCollectingFeature.swift in Sources */,
 				7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */,
 				B532EAC630A2A91900029E08 /* ToastType.swift in Sources */,
 				DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */,
@@ -2113,6 +2150,8 @@
 				ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */,
 				DA688DCB3099CFB70064A2F4 /* RecordRewardFeature.swift in Sources */,
 				ECE6F2F73098338400C4916C /* OnboardingView.swift in Sources */,
+				A16C0DE00000000000000402 /* LoginFeature.swift in Sources */,
+				A16C0DE00000000000000404 /* LoginView.swift in Sources */,
 				ECE6F2F83098338400C4916C /* SignUpCompleteFeature.swift in Sources */,
 				DA5B10E730998932003FEDF9 /* RecordFlowFeature.swift in Sources */,
 				ECE6F2F93098338400C4916C /* SignUpCompleteView.swift in Sources */,
@@ -2446,13 +2485,15 @@
 		DA1A4DCF3089FEB100AEAB52 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Z5J43V9D9J;
+				DEVELOPMENT_TEAM = RD7558P2U8;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.PlobbyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -2466,13 +2507,15 @@
 		DA1A4DD03089FEB100AEAB52 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Z5J43V9D9J;
+				DEVELOPMENT_TEAM = RD7558P2U8;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.PlobbyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;

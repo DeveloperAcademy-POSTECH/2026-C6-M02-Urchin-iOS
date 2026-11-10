@@ -26,13 +26,17 @@ final class FallingTrashScene: SKScene {
     private static let netNodeName = "net"
 
     var trash = TrashSelection()
-    var startDelay: TimeInterval = 0
     var onFinished: (() -> Void)?
+    var onFirstFrame: (() -> Void)? {
+        didSet { notifyFirstFrameIfNeeded() }
+    }
+    private var hasRenderedFirstFrame = false
 
     // MARK: - Lifecycle
 
     override func didMove(to view: SKView) {
         backgroundColor = UIColor(resource: .neutralBlack)
+        physicsWorld.gravity = CGVector(dx: 0, dy: -gravityStrength)
         addChild(floorNode)
         updateBoundary()
         startDropping()
@@ -50,6 +54,18 @@ final class FallingTrashScene: SKScene {
             body.isResting = false
         }
         keepNetsInside()
+    }
+
+    override func didFinishUpdate() {
+        guard !hasRenderedFirstFrame else { return }
+        hasRenderedFirstFrame = true
+        notifyFirstFrameIfNeeded()
+    }
+
+    private func notifyFirstFrameIfNeeded() {
+        guard hasRenderedFirstFrame, let onFirstFrame else { return }
+        self.onFirstFrame = nil
+        onFirstFrame()
     }
 
     override func willMove(from view: SKView) {
@@ -116,8 +132,7 @@ extension FallingTrashScene {
         }
 
         run(.sequence(
-            [.wait(forDuration: startDelay)]
-            + drops
+            drops
             + [.wait(forDuration: settleDuration), .run { [weak self] in self?.onFinished?() }]
         ))
     }
