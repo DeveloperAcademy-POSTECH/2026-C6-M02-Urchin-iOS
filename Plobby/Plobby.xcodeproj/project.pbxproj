@@ -83,6 +83,7 @@
 		A11400000000000000000123 /* GoalListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000122 /* GoalListView.swift */; };
 		A11400000000000000000126 /* GoalRecordsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000125 /* GoalRecordsFeature.swift */; };
 		A11400000000000000000128 /* GoalRecordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000127 /* GoalRecordsView.swift */; };
+		A12200000000000000000204 /* PlobbyNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12200000000000000000203 /* PlobbyNavigationBar.swift */; };
 		A16C0DE00000000000000102 /* RecordListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000101 /* RecordListSection.swift */; };
 		A16C0DE00000000000000104 /* UserHomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000103 /* UserHomeFeature.swift */; };
 		A16C0DE00000000000000106 /* UserHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000105 /* UserHomeView.swift */; };
@@ -182,6 +183,10 @@
 		DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD23099F0A30064A2F4 /* RecordFormView.swift */; };
 		DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */; };
 		DA688DD73099F0F50064A2F4 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */; };
+		DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */; };
+		DA71D23030A2AF1900E00CD1 /* PlobbyNavigationBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */; };
+		DA71D23330A2AFD600E00CD1 /* CenteredPlobbyNavigationBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D23230A2AFCE00E00CD1 /* CenteredPlobbyNavigationBarStyle.swift */; };
+		DA71D23530A2B01900E00CD1 /* LeadingPlobbyNavigationBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D23430A2B01300E00CD1 /* LeadingPlobbyNavigationBarStyle.swift */; };
 		DAEC87A4309B7F2A0086965E /* ToastFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87A3309B7F2A0086965E /* ToastFeature.swift */; };
 		DAEC87A6309B9F260086965E /* TrashCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87A5309B9F240086965E /* TrashCategory.swift */; };
 		DAEC87A8309C42CF0086965E /* LocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87A7309C42CA0086965E /* LocationPickerView.swift */; };
@@ -190,6 +195,7 @@
 		DAEC87AE309C4B1A0086965E /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC87AD309C4B160086965E /* Coordinate.swift */; };
 		DAEC9A02309C5A0000AA0001 /* PlobbyAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */; };
 		DAEC9A04309C5A0000AA0001 /* RecordPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEC9A03309C5A0000AA0001 /* RecordPhoto.swift */; };
+		DAFFB32030A20C6D009FC4E4 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFB31F30A20C6B009FC4E4 /* Date+.swift */; };
 		DAFFB32230A21026009FC4E4 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFFB32130A21024009FC4E4 /* View+.swift */; };
 		DD2B516972B03604A13831A7 /* BeachRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C8851DAF47D66B8A45DF88 /* BeachRecord.swift */; };
 		E86CC8B62B313EB83983CBD5 /* ProfileUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF197F9EF1671DA3CA2B8E1E /* ProfileUpdateRequestDTO.swift */; };
@@ -360,6 +366,7 @@
 		A11400000000000000000122 /* GoalListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalListView.swift; sourceTree = "<group>"; };
 		A11400000000000000000125 /* GoalRecordsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalRecordsFeature.swift; sourceTree = "<group>"; };
 		A11400000000000000000127 /* GoalRecordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalRecordsView.swift; sourceTree = "<group>"; };
+		A12200000000000000000203 /* PlobbyNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyNavigationBar.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000101 /* RecordListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordListSection.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000103 /* UserHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeFeature.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000105 /* UserHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeView.swift; sourceTree = "<group>"; };
@@ -462,6 +469,10 @@
 		DA688DD23099F0A30064A2F4 /* RecordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormView.swift; sourceTree = "<group>"; };
 		DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRewardView.swift; sourceTree = "<group>"; };
 		DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
+		DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyNavigationBarStyle.swift; sourceTree = "<group>"; };
+		DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyNavigationBarConfiguration.swift; sourceTree = "<group>"; };
+		DA71D23230A2AFCE00E00CD1 /* CenteredPlobbyNavigationBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredPlobbyNavigationBarStyle.swift; sourceTree = "<group>"; };
+		DA71D23430A2B01300E00CD1 /* LeadingPlobbyNavigationBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadingPlobbyNavigationBarStyle.swift; sourceTree = "<group>"; };
 		DAEC87A3309B7F2A0086965E /* ToastFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastFeature.swift; sourceTree = "<group>"; };
 		DAEC87A5309B9F240086965E /* TrashCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashCategory.swift; sourceTree = "<group>"; };
 		DAEC87A7309C42CA0086965E /* LocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerView.swift; sourceTree = "<group>"; };
@@ -470,6 +481,7 @@
 		DAEC87AD309C4B160086965E /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyAlert.swift; sourceTree = "<group>"; };
 		DAEC9A03309C5A0000AA0001 /* RecordPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordPhoto.swift; sourceTree = "<group>"; };
+		DAFFB31F30A20C6B009FC4E4 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		DAFFB32130A21024009FC4E4 /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeOfDay.swift; sourceTree = "<group>"; };
 		E8B11A53BEC65644616587EA /* RecordMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMenuView.swift; sourceTree = "<group>"; };
@@ -728,7 +740,7 @@
 			path = Scene;
 			sourceTree = "<group>";
 		};
-		A1140000000000000000011F /* Components */ = {
+		A1140000000000000000011F /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
 				A11400000000000000000115 /* HomeGoalCard.swift */,
@@ -737,7 +749,7 @@
 				A1140000000000000000011B /* HomeTrashSummaryPopup.swift */,
 				A1140000000000000000011D /* HomeActivityPicker.swift */,
 			);
-			path = Components;
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		A11400000000000000000124 /* GoalList */ = {
@@ -1156,6 +1168,26 @@
 			path = PhotosPicker;
 			sourceTree = "<group>";
 		};
+		DA71D22C30A2AEDB00E00CD1 /* NavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				A12200000000000000000203 /* PlobbyNavigationBar.swift */,
+				DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */,
+				DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */,
+				DA71D23130A2AFC100E00CD1 /* Style */,
+			);
+			path = NavigationBar;
+			sourceTree = "<group>";
+		};
+		DA71D23130A2AFC100E00CD1 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				DA71D23430A2B01300E00CD1 /* LeadingPlobbyNavigationBarStyle.swift */,
+				DA71D23230A2AFCE00E00CD1 /* CenteredPlobbyNavigationBarStyle.swift */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
 		E117113459A087098044178D /* Record */ = {
 			isa = PBXGroup;
 			children = (
@@ -1325,6 +1357,7 @@
 		ECE6F2933098338400C4916C /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
+				DA71D22C30A2AEDB00E00CD1 /* NavigationBar */,
 				DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */,
 				7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */,
 				ECE6F2923098338400C4916C /* PlobbyButton.swift */,
@@ -1352,6 +1385,7 @@
 			isa = PBXGroup;
 			children = (
 				DAFFB32130A21024009FC4E4 /* View+.swift */,
+				DAFFB31F30A20C6B009FC4E4 /* Date+.swift */,
 				ECE6F2973098338400C4916C /* AlertState+.swift */,
 				ECE6F2983098338400C4916C /* ButtonState+.swift */,
 				A683DF52E8FC8F413240B638 /* Calendar+.swift */,
@@ -1473,7 +1507,7 @@
 				A11400000000000000000103 /* HomeView.swift */,
 				A1140000000000000000010B /* Model */,
 				A11400000000000000000114 /* Scene */,
-				A1140000000000000000011F /* Components */,
+				A1140000000000000000011F /* Subviews */,
 				A11400000000000000000124 /* GoalList */,
 				A11400000000000000000129 /* GoalRecords */,
 			);
@@ -1798,6 +1832,7 @@
 				7B3C1A15309D0000004C5301 /* TrashPileView.swift in Sources */,
 				7B3C1A13309D0000004C5301 /* TrashCategory+CollectionFact.swift in Sources */,
 				7B3C1A11309D0000004C5301 /* FlipCard.swift in Sources */,
+				DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */,
 				DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */,
 				B532EAC630A2A91900029E08 /* ToastType.swift in Sources */,
 				DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */,
@@ -1809,6 +1844,7 @@
 				24C6452813AA7BFB5C379537 /* CheckNicknameRequestDTO.swift in Sources */,
 				E86CC8B62B313EB83983CBD5 /* ProfileUpdateRequestDTO.swift in Sources */,
 				A6BFBCB3BD04AAB29D26FEE2 /* UserBlockInsertRequestDTO.swift in Sources */,
+				DA71D23030A2AF1900E00CD1 /* PlobbyNavigationBarConfiguration.swift in Sources */,
 				6C58EF6B7AEFD90EBE7571E4 /* ProfileResponseDTO.swift in Sources */,
 				DA688DCD3099CFC70064A2F4 /* RecordDetailFeature.swift in Sources */,
 				34FBF121843E575A8727FBCF /* BlockedUserResponseDTO.swift in Sources */,
@@ -1819,6 +1855,7 @@
 				ECE6F2CE3098338400C4916C /* AppFeature.swift in Sources */,
 				ECE6F2CF3098338400C4916C /* ContentView.swift in Sources */,
 				DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */,
+				DAFFB32030A20C6D009FC4E4 /* Date+.swift in Sources */,
 				ECE6F2D03098338400C4916C /* PlobbyApp.swift in Sources */,
 				DAFFB32230A21026009FC4E4 /* View+.swift in Sources */,
 				ECD3271330A064F000C1E655 /* CollectionFeature.swift in Sources */,
@@ -1892,9 +1929,11 @@
 				B59027033098E2F800AE351D /* NotificationClient.swift in Sources */,
 				ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */,
 				DAEC9A02309C5A0000AA0001 /* PlobbyAlert.swift in Sources */,
+				DA71D23530A2B01900E00CD1 /* LeadingPlobbyNavigationBarStyle.swift in Sources */,
 				7B3C1A02309D0000004C5301 /* LoginRequiredSheet.swift in Sources */,
 				DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */,
 				EC0D4BA73098E1D0000E7BB7 /* BeachChip.swift in Sources */,
+				A12200000000000000000204 /* PlobbyNavigationBar.swift in Sources */,
 				7B3C1A0D309D0000004C5301 /* SearchBar.swift in Sources */,
 				7B3C1A0F309D0000004C5301 /* PlobbyToast.swift in Sources */,
 				DA5B106430997215003FEDF9 /* CreateRecordRequestDTO.swift in Sources */,
@@ -1925,6 +1964,7 @@
 				ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */,
 				ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */,
 				ECE6F2E03098338400C4916C /* ButtonState+.swift in Sources */,
+				DA71D23330A2AFD600E00CD1 /* CenteredPlobbyNavigationBarStyle.swift in Sources */,
 				DA032D05309B0DEE00D97C80 /* DayOfWeek.swift in Sources */,
 				ECE6F2E13098338400C4916C /* Character+.swift in Sources */,
 				7B3C1A30309D0000004C5301 /* String+.swift in Sources */,

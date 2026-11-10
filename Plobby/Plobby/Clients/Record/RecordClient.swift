@@ -83,8 +83,9 @@ nonisolated extension RecordClient: DependencyKey {
             }, fetchUserRecords: { userID in
                 @Dependency(\.supabaseClient) var supabaseClient
 
-                let currentUserID = try await supabaseClient.currentUserIDIfSignedIn()
-                let hiddenRecords = try await supabaseClient.hiddenRecords()
+                async let currentUserIDTask = supabaseClient.currentUserIDIfSignedIn()
+                async let hiddenRecordsTask = supabaseClient.hiddenRecords()
+                let (currentUserID, hiddenRecords) = try await (currentUserIDTask, hiddenRecordsTask)
 
                 var query = supabaseClient
                     .from("records")
