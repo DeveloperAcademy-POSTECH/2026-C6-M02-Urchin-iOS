@@ -14,12 +14,11 @@ struct RecordRewardView: View {
 
     // MARK: - Properties
 
-    static let curtainDuration: TimeInterval = 0.6
-
     let store: StoreOf<RecordRewardFeature>
 
     @State private var scene: FallingTrashScene
     @State private var isSummaryVisible = false
+    @State private var isSceneRendered = false
 
     // MARK: - Init
 
@@ -28,8 +27,8 @@ struct RecordRewardView: View {
 
         let scene = FallingTrashScene()
         scene.scaleMode = .resizeFill
+        scene.backgroundColor = UIColor(resource: .neutralBlack)
         scene.trash = store.trash
-        scene.startDelay = Self.curtainDuration
         _scene = State(initialValue: scene)
     }
 
@@ -38,6 +37,8 @@ struct RecordRewardView: View {
     var body: some View {
         SpriteView(scene: scene)
             .ignoresSafeArea()
+            .opacity(isSceneRendered ? 1 : 0)
+            .background(Color(.neutralBlack).ignoresSafeArea())
             .overlay(alignment: .topLeading) {
                 summary
                     .opacity(isSummaryVisible ? 1 : 0)
@@ -53,19 +54,15 @@ struct RecordRewardView: View {
             .onAppear {
                 store.send(.onAppear)
 
-                guard !store.trash.isEmpty else {
-                    withAnimation(.easeInOut(duration: 0.5).delay(Self.curtainDuration)) {
-                        isSummaryVisible = true
-                    }
-                    return
+                withAnimation(.easeInOut(duration: 0.5).delay(0.5)) {
+                    isSummaryVisible = true
                 }
 
                 scene.onFinished = {
-                    withAnimation(.easeInOut(duration: 0.5).delay(1)) {
-                        isSummaryVisible = true
-                    } completion: {
-                        scene.startTilting()
-                    }
+                    scene.startTilting()
+                }
+                scene.onFirstFrame = {
+                    isSceneRendered = true
                 }
             }
     }
