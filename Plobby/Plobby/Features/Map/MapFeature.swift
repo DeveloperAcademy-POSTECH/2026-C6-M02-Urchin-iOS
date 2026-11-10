@@ -81,9 +81,7 @@ struct MapFeature {
 
     static let defaultSpanMeters: Double = 5_000
     static let beachSpanMeters: Double = 2_000
-    /// 위도 1도 거리(약 111km)
     private static let metersPerDegree: Double = 111_000
-    /// 클러스터를 확대할 때 해변들이 화면 가장자리에 붙지 않도록 여유를 둬요.
     private static let clusterZoomPadding: Double = 1.6
     private static let sheetDismissDelay: Duration = .milliseconds(350)
 
@@ -202,7 +200,8 @@ struct MapFeature {
                 state.path.append(.searchBeach(SearchBeachFeature.State()))
                 return .none
 
-            case .beachSheet(.presented(.delegate(.homeTapped))) where !state.isMember:
+            case .beachSheet(.presented(.delegate(.homeTapped))) where !state.isMember,
+                 .beachSheet(.presented(.delegate(.loginRequired))):
                 state.beachSheet = nil
                 return .run { send in
                     try await clock.sleep(for: Self.sheetDismissDelay)

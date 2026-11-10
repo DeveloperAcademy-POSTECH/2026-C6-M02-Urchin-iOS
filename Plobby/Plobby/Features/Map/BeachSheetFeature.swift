@@ -57,6 +57,7 @@ struct BeachSheetFeature {
             case closed
             case homeTapped(Beach)
             case recordStartTapped(Beach, RecordType)
+            case loginRequired
             case favoriteChanged(isFavorite: Bool)
         }
     }
@@ -127,6 +128,8 @@ struct BeachSheetFeature {
                 return .send(.delegate(.homeTapped(state.beach)))
 
             case .recordStartTapped:
+                guard state.isMember else { return .send(.delegate(.loginRequired)) }
+
                 state.isActivityPickerPresented = true
                 return .none
 

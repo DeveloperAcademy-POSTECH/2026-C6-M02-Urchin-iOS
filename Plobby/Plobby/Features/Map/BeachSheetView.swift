@@ -141,7 +141,7 @@ private extension BeachSheetView {
                 .multilineTextAlignment(.center)
 
             Button {
-                store.send(.recordStartTapped, transaction: Self.noAnimation)
+                store.send(.recordStartTapped, transaction: store.isMember ? Self.noAnimation : Transaction())
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "doc.text.fill")

@@ -21,7 +21,10 @@ struct SearchBeachView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             searchField
-            favoriteSection
+
+            if store.isMember {
+                favoriteSection
+            }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
