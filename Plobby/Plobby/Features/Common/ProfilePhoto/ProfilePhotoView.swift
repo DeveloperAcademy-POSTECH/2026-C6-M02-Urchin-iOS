@@ -27,14 +27,14 @@ struct ProfilePhotoView: View {
             VStack(alignment: .center, spacing: 8.scaled) {
                 photo
 
-                Text("사진 추가")
+                Text(buttonTitle)
                     .plobbyFont(.labelSelected)
                     .foregroundStyle(Color(.textBrand))
             }
         }
         .buttonStyle(.plain)
         .disabled(store.isLoading)
-        .accessibilityLabel("프로필 사진 추가")
+        .accessibilityLabel("프로필 \(buttonTitle)")
         .task(id: store.selectedImage) {
             selectedImage = store.selectedImage.flatMap(UIImage.init(data:))
         }
@@ -47,6 +47,11 @@ struct ProfilePhotoView: View {
 // MARK: - 사진
 
 extension ProfilePhotoView {
+
+    /// 이미 저장된 사진이 있으면(프로필 수정) "사진 변경", 없으면(회원가입, 사진 없는 프로필) "사진 추가"예요.
+    private var buttonTitle: String {
+        store.savedImageURL == nil ? "사진 추가" : "사진 변경"
+    }
 
     private var photo: some View {
         Group {
