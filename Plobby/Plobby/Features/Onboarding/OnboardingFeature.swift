@@ -11,26 +11,25 @@ import ComposableArchitecture
 
 @Reducer
 struct OnboardingFeature {
-    
+
     // MARK: - State
-    
+
     @ObservableState
     struct State: Equatable {
-        var currentPage: OnboardingPage = .trashAmount
+        var currentPage: OnboardingPage = .goal
+        var selectedActivity: RecordType = .plogging
+        var collectionCard = CollectionCardFeature.State(category: .plastic, collectedCount: 128)
         var signIn = SignInFeature.State()
-        
-        var currentPageIndex: Int {
-            OnboardingPage.allCases.firstIndex(of: currentPage) ?? 0
-        }
     }
-    
+
     // MARK: - Action
-    
+
     enum Action {
-        case onAppear
-        case timerTicked
-        case screenTapped
+        case activityTabSelected(RecordType)
+        case nextButtonTapped
+        case pageChanged(OnboardingPage)
         case browseButtonTapped
+        case collectionCard(CollectionCardFeature.Action)
         case signIn(SignInFeature.Action)
         case delegate(Delegate)
 
@@ -38,54 +37,41 @@ struct OnboardingFeature {
             case browseWithoutSignUp
         }
     }
-    
+
     // MARK: - Body
-    
+
     var body: some Reducer<State, Action> {
         Scope(state: \.signIn, action: \.signIn) {
             SignInFeature()
         }
+        Scope(state: \.collectionCard, action: \.collectionCard) {
+            CollectionCardFeature()
+        }
 
         Reduce { state, action in
             switch action {
-            case .onAppear:
-                return startTimer()
-
-            case .timerTicked:
-                state.currentPage = state.currentPage.next
+            case let .activityTabSelected(activity):
+                state.selectedActivity = activity
                 return .none
 
-            case .screenTapped:
-                state.currentPage = state.currentPage.next
-                return startTimer()
-                
+            case .nextButtonTapped:
+                guard let next = state.currentPage.next else { return .none }
+
+                state.currentPage = next
+                return .none
+
+            case let .pageChanged(page):
+                state.currentPage = page
+                return .none
+
             case .browseButtonTapped:
                 guard !state.signIn.isSigningIn else { return .none }
-                
+
                 return .send(.delegate(.browseWithoutSignUp))
-                
-            case .signIn, .delegate:
+
+            case .collectionCard, .signIn, .delegate:
                 return .none
             }
         }
-    }
-}
-
-// MARK: - Functions
-
-extension OnboardingFeature {
-    
-    private nonisolated enum CancelID {
-        case timer
-    }
-    
-    private static let pageInterval: Duration = .seconds(3)
-    
-    private func startTimer() -> Effect<Action> {
-        .timer(
-            id: CancelID.timer,
-            interval: OnboardingFeature.pageInterval,
-            action: .timerTicked
-        )
     }
 }
