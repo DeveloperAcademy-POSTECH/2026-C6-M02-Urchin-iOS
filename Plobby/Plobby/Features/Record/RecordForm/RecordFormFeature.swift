@@ -74,7 +74,6 @@ struct RecordFormFeature {
             memo.count > RecordMemo.maximumLength
         }
         
-        /// 작성할 때는 사진 외의 값을, 수정할 때는 사진까지 처음과 비교해요.
         var hasInput: Bool {
             var current = inputs
             if mode == .create {
@@ -179,14 +178,33 @@ struct RecordFormFeature {
             action in
             switch action {
             case .binding(\.maxDepthText):
-                state.maxDepthError = nil
+                let limited = DecimalInput.limited(
+                    state.maxDepthText,
+                    maximumIntegerDigits: DecimalInput.integerDigits(of: WaterDepth.range),
+                    locale: locale
+                )
+                if limited != state.maxDepthText {
+                    state.maxDepthText = limited
+                }
+                state.maxDepthError = isTypingNumber(limited) ? nil : maxDepthError(for: limited)
                 return .none
                 
             case .binding(\.totalWeightText):
-                state.totalWeightError = nil
+                let limited = DecimalInput.limited(
+                    state.totalWeightText,
+                    maximumIntegerDigits: DecimalInput.integerDigits(of: CollectedWeight.kilogramsRange),
+                    locale: locale
+                )
+                if limited != state.totalWeightText {
+                    state.totalWeightText = limited
+                }
+                state.totalWeightError = isTypingNumber(limited) ? nil : totalWeightError(for: limited)
                 return .none
 
             case .binding(\.memo):
+                if state.memo.count > RecordMemo.maximumLength {
+                    state.memo = String(state.memo.prefix(RecordMemo.maximumLength))
+                }
                 if !InputText.isBlank(state.memo) {
                     state.isMemoErrorVisible = false
                 }
@@ -197,7 +215,6 @@ struct RecordFormFeature {
                     return .send(.delegate(.closed))
                 }
                 
-                // 계속 작성하기는 동작 없이 Alert만 닫아요.
                 state.destination = .alert(.make(.recordExitConfirm, cancel: .exitTapped))
                 return .none
                 
@@ -270,7 +287,6 @@ struct RecordFormFeature {
             case .memoFocusChanged(isFocused: true):
                 return .none
 
-            // 메모 칸을 벗어날 때 비어 있으면 필수 오류를 보여줘요
             case .memoFocusChanged(isFocused: false):
                 state.isMemoErrorVisible = InputText.isBlank(state.memo)
                 return .none
@@ -359,7 +375,6 @@ struct RecordFormFeature {
             case .destination(.presented(.alert(.exitTapped))):
                 return .send(.delegate(.closed))
                 
-            // 선택하지 않고 시트를 닫으면 필수 항목 오류를 표시
             case .destination(.dismiss):
                 switch state.destination {
                 case .locationPicker:
@@ -427,6 +442,10 @@ extension RecordFormFeature {
         return nil
     }
 
+    private func isTypingNumber(_ text: String) -> Bool {
+        text == "0" || text.hasSuffix(locale.decimalSeparator ?? ".")
+    }
+
     private func maxDepthError(for text: String) -> String? {
         guard !InputText.isBlank(text) else { return nil }
 
@@ -488,7 +507,6 @@ extension RecordFormFeature {
             trash: state.trash.selectedCategories.map { category in
                 NewRecord.Trash(
                     category: category,
-                    // 서버는 기타일 때만 custom_name을 받고, 기타면 반드시 있어야 해요. 메모가 없으면 "기타"로 채워요.
                     customName: category == .etc ? (etcMemo.isEmpty ? TrashCategory.etc.name : etcMemo) : nil,
                     quantity: state.trash[category]
                 )
@@ -539,7 +557,6 @@ extension RecordFormFeature.Destination.State: Equatable {}
 
 extension RecordFormFeature.State {
     
-    /// 이미 저장한 기록을 수정할 수 있게 양식을 채워요.
     init(editing record: RecordDetail) {
         @Shared(.beaches) var beaches
         
