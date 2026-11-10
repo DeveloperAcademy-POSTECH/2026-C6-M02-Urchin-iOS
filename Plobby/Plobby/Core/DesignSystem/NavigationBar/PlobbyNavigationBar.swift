@@ -98,6 +98,7 @@ extension PlobbyNavigationBar where Style == CenteredPlobbyNavigationBarStyle, T
 
 // MARK: - Style
 
+/// 생성자에서 style 파라미터를 .centered, .leading으로 간단히 사용하기 위함
 extension PlobbyNavigationBarStyle where Self == CenteredPlobbyNavigationBarStyle {
 
     static var centered: Self { CenteredPlobbyNavigationBarStyle() }
@@ -106,27 +107,4 @@ extension PlobbyNavigationBarStyle where Self == CenteredPlobbyNavigationBarStyl
 extension PlobbyNavigationBarStyle where Self == LeadingPlobbyNavigationBarStyle {
 
     static var leading: Self { LeadingPlobbyNavigationBarStyle() }
-}
-
-// MARK: - Preview
-
-#Preview {
-    VStack(spacing: 0) {
-        PlobbyNavigationBar {}
-
-        PlobbyNavigationBar(title: "활동 장소 선택") {}
-
-        PlobbyNavigationBar(title: "기록 상세") {} trailingAction: {} trailingLabel: {
-            Image(systemName: "ellipsis")
-                .foregroundStyle(Color(.textPrimary))
-        }
-
-        PlobbyNavigationBar(title: "알림", style: .leading) {}
-
-        PlobbyNavigationBar(title: "프로필 수정", style: .leading) {} trailingAction: {} trailingLabel: {
-            Text("저장")
-                .plobbyFont(.label)
-                .foregroundStyle(Color(.textTertiary))
-        }
-    }
 }
