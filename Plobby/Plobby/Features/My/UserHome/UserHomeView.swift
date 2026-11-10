@@ -19,8 +19,9 @@ struct UserHomeView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
-                .padding(.horizontal, 20.scaled)
+            PlobbyNavigationBar(title: "프로필") {
+                store.send(.backTapped)
+            }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 40.scaled) {
@@ -47,34 +48,6 @@ struct UserHomeView: View {
             RecordDetailView(store: store)
                 .toolbar(.hidden, for: .navigationBar)
         }
-    }
-}
-
-// MARK: - Navigation Bar
-
-extension UserHomeView {
-
-    private var navigationBar: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Button {
-                store.send(.backTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17.scaled, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 32.scaled, height: 44.scaled, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .overlay {
-            Text("프로필")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
-        }
-        .frame(height: 56.scaled)
     }
 }
 

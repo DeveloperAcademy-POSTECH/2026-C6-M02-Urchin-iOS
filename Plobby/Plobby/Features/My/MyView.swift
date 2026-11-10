@@ -21,8 +21,16 @@ struct MyView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
-                .padding(.horizontal, 20.scaled)
+            PlobbyNavigationBar(title: "마이") {
+                dismiss()
+            } trailingAction: {
+                store.send(.settingsButtonTapped)
+            } trailingLabel: {
+                Image(systemName: "gearshape")
+                    .font(.system(size: 24.scaled, weight: .regular))
+                    .foregroundStyle(Color(.textPrimary))
+                    .accessibilityLabel("설정")
+            }
 
             content
         }
@@ -45,50 +53,6 @@ struct MyView: View {
         .task(id: store.savedProfileImage) {
             savedProfileImage = store.savedProfileImage.flatMap(UIImage.init(data:))
         }
-    }
-}
-
-// MARK: - Navigation Bar
-
-extension MyView {
-
-    private var navigationBar: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17.scaled, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 32.scaled, height: 44.scaled, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            settingsButton
-        }
-        .overlay {
-            Text("마이")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
-        }
-        .frame(height: 56.scaled)
-    }
-
-    private var settingsButton: some View {
-        Button {
-            store.send(.settingsButtonTapped)
-        } label: {
-            Image(systemName: "gearshape")
-                .font(.system(size: 24.scaled, weight: .regular))
-                .foregroundStyle(Color(.textPrimary))
-                .frame(width: 44.scaled, height: 44.scaled, alignment: .trailing)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("설정")
     }
 }
 
