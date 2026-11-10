@@ -26,7 +26,7 @@ struct HomeTrashSummaryPopup: View {
             VStack(alignment: .leading, spacing: 12.scaled) {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 12.scaled) {
-                        Text("\(board.goal.recordType.resultTitle) \(board.totalTrashCount)개")
+                        Text("\(board.recordType.resultTitle) \(board.totalTrashCount)개")
                             .plobbyFont(.heading)
                             .foregroundStyle(Color(.textPrimary))
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -34,13 +34,13 @@ struct HomeTrashSummaryPopup: View {
                         HomeSheetCloseButton(action: onClose)
                     }
 
-                    Text("\(periodText), \(board.goal.recordType.name)에서 함께 모았어요")
+                    Text("\(periodText), \(board.recordType.name)에서 함께 모았어요")
                         .plobbyFont(.label)
                         .foregroundStyle(Color(.textSecondary))
                 }
 
                 LazyVGrid(columns: columns, spacing: 8.scaled) {
-                    ForEach(board.orderedTrashCounts) { item in
+                    ForEach(board.orderedTrashSummaries) { item in
                         cell(item)
                     }
                 }
@@ -53,7 +53,7 @@ struct HomeTrashSummaryPopup: View {
         }
     }
 
-    private func cell(_ item: HomeGoalTrashCount) -> some View {
+    private func cell(_ item: GoalTrashSummary) -> some View {
         HStack(spacing: 8.scaled) {
             // 컬렉션 전체 분류와 같은 종류별 대표 이미지예요
             Image(item.category.thumbnailName)
@@ -67,7 +67,7 @@ struct HomeTrashSummaryPopup: View {
                 .lineLimit(1)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Text("\(item.count)개")
+            Text("\(item.collectedCount)개")
                 .plobbyFont(.labelSelected)
                 .foregroundStyle(Color(.textPrimary))
         }

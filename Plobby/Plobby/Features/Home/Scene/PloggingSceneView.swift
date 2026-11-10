@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-/// 해변을 따라 내려가며 날짜별로 쓰레기를 줍고, 마지막에 수거대에 모으는 플로깅 장면이에요.
 struct PloggingSceneView: View {
 
-    let days: [HomeGoalDailyProgress]
+    let days: [GoalDailyProgress]
     let stage: HomeSceneStage
     let collectPulse: Int
 
@@ -30,7 +29,6 @@ struct PloggingSceneView: View {
 
 private extension PloggingSceneView {
 
-    /// 배경과 쓰레기는 함께 스크롤돼요. 사람은 화면에 머물고 해변이 지나가요.
     var beach: some View {
         ZStack(alignment: .topLeading) {
             Image(.homeSceneBeach)
@@ -56,7 +54,6 @@ private extension PloggingSceneView {
         }
     }
 
-    /// 쓰레기를 주운 사람은 수거가 끝날 때 살짝 뛰어올라요.
     var humans: some View {
         ForEach(Metrics.humans.indices, id: \.self) { index in
             Image(Metrics.humans[index].image)
@@ -72,7 +69,6 @@ private extension PloggingSceneView {
         }
     }
 
-    /// 봉투를 든 사람이 쓰레기를 담고, 마지막에는 봉투가 모두 수거대에 모여요.
     var bags: some View {
         ForEach(Metrics.humans.indices, id: \.self) { index in
             Image(.homeSceneBag)
@@ -82,7 +78,6 @@ private extension PloggingSceneView {
         }
     }
 
-    /// 수거대 뒤판이에요. 봉투보다 뒤에 그려요.
     var standBack: some View {
         ZStack(alignment: .topLeading) {
             Ellipse()
@@ -102,7 +97,6 @@ private extension PloggingSceneView {
         .opacity(isAtStand ? 1 : 0)
     }
 
-    /// 수거대 앞턱이에요. 봉투를 살짝 가려요.
     var standFront: some View {
         ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 2)
@@ -149,7 +143,6 @@ private extension PloggingSceneView {
         isAtStand ? Metrics.dayOffset(lastDay) + Metrics.finaleExtraOffset : Metrics.dayOffset(currentDay)
     }
 
-    /// 마지막에는 모두 함께 수거대 쪽으로 걸어 내려가요.
     var walkOffset: CGSize {
         isAtStand ? Metrics.finaleWalk : .zero
     }
@@ -158,7 +151,6 @@ private extension PloggingSceneView {
         isAtStand ? Metrics.standBagRects[humanIndex] : Metrics.bagRect(for: humanIndex)
     }
 
-    /// 그날 참여자 수만큼(최대 6명) 사람을 보여줘요.
     func isVisible(_ humanIndex: Int) -> Bool {
         guard days.indices.contains(currentDay) else { return humanIndex == 0 }
         let count = min(max(days[currentDay].participantCount, 1), Metrics.humans.count)
@@ -170,7 +162,6 @@ private extension PloggingSceneView {
 
 private extension PloggingSceneView {
 
-    /// 피그마 "N월 N일 플로깅 (N단계)" 프레임에서 가져온 좌표예요. (장면 너비 402 기준)
     enum Metrics {
 
         struct Human {
@@ -189,20 +180,15 @@ private extension PloggingSceneView {
             Human(image: .homeHuman06, rect: CGRect(x: 334, y: 176, width: 28, height: 64))
         ]
 
-        /// 참여자가 적을 때 먼저 보여줄 사람 순서예요. 봉투를 든 사람(2, 4번)이 먼저 나와요.
         static let visibleOrder = [1, 3, 5, 4, 0, 2]
-        /// 봉투를 들고 쓰레기를 담는 사람이에요.
         static let collectors: Set<Int> = [1, 3]
-
         static let sandShadow = Color(red: 0x85 / 255, green: 0x61 / 255, blue: 0x36 / 255).opacity(0.15)
         static let standDark = Color(red: 0x5C / 255, green: 0x77 / 255, blue: 0x6B / 255)
 
-        /// 날짜마다 해변을 얼마나 내려왔는지예요. 날짜가 더 많으면 끝 위치에 머물러요.
         static let dayOffsets: [CGFloat] = [0, 130, 252, 500]
         static let finaleExtraOffset: CGFloat = 52
         static let finaleWalk = CGSize(width: -16, height: 24)
 
-        /// 수거대 안에 놓이는 봉투 위치예요.
         static let standBagRects: [CGRect] = [
             CGRect(x: 192, y: 268, width: 14, height: 23),
             CGRect(x: 218, y: 271, width: 14, height: 23),
@@ -212,7 +198,6 @@ private extension PloggingSceneView {
             CGRect(x: 216, y: 256, width: 14, height: 23)
         ]
 
-        /// 날짜별로 흩어진 쓰레기예요. 기록한 날이 4일보다 많으면 같은 배치를 순서대로 다시 써요.
         static let trash: [[HomeSceneTrash]] = [
             [
                 HomeSceneTrash(image: .sodaCanMintS, rect: CGRect(x: 375, y: 227, width: 13, height: 19), collector: 3),

@@ -47,7 +47,7 @@ struct HomeFeature {
             stages[selectedType] ?? .arrived(day: 0)
         }
 
-        var currentDay: HomeGoalDailyProgress? {
+        var currentDay: GoalDailyProgress? {
             guard let days = board?.days, !days.isEmpty else { return nil }
             return days[min(stage.day(lastDay: days.count - 1), days.count - 1)]
         }
@@ -70,9 +70,8 @@ struct HomeFeature {
     // MARK: - Action
 
     enum Action {
-        /// 홈에 들어올 때마다(탭 이동 후 돌아올 때 포함) 활동 내역을 다시 불러와요.
         case onAppear
-        case boardsLoaded([HomeGoalBoard], now: Date)
+        case boardsResponse(Result<[HomeGoalBoard], any Error>, now: Date)
         case activityTabSelected(RecordType)
         case sceneSwiped(forward: Bool)
         case sceneStageAdvanced(RecordType, HomeSceneStage)
@@ -86,7 +85,7 @@ struct HomeFeature {
         case participantsButtonTapped
         case trashSummaryButtonTapped
         case trashSummaryDismissed
-        case participantTapped(HomeGoalParticipant.ID)
+        case participantTapped(GoalParticipant.ID)
         case sheetDismissed
         case notificationButtonTapped
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
@@ -102,6 +101,7 @@ struct HomeFeature {
 
     // MARK: - Dependency
 
+    @Dependency(\.goalClient) var goalClient
     @Dependency(\.continuousClock) var clock
     @Dependency(\.date.now) var now
     @Dependency(\.calendar) var calendar
@@ -115,29 +115,35 @@ struct HomeFeature {
             }
 
             switch action {
-            // TODO: 목표 Client가 준비되면 Supabase에서 불러오기
             case .onAppear:
                 let now = now
-                let boards = RecordType.allCases.map { HomeMock.board(for: $0, now: now, calendar: calendar) }
-                return .send(.boardsLoaded(boards, now: now))
+                return .run { send in
+                    await send(.boardsResponse(Result { try await fetchBoards(now: now) }, now: now))
+                }
+                .cancellable(id: CancelID.boards, cancelInFlight: true)
 
-            case let .boardsLoaded(boards, now):
+            case let .boardsResponse(.success(boards), now):
                 state.now = now
                 state.transitioningTypes = []
+                state.boards = [:]
+                state.statuses = [:]
                 for board in boards {
-                    let type = board.goal.recordType
-                    let status = board.goal.status(now: now, calendar: calendar)
+                    let type = board.recordType
+                    let status = board.goal.homeStatus(at: now)
                     let today = todayDay(in: board.days, now: now)
                     state.boards[type] = board
                     state.statuses[type] = status
                     state.todayDays[type] = today
-                    // 다이버와 걷는 사람은 오늘 날짜 위치에서 시작해요. 끝난 목표는 수거 결과 장면을 바로 보여줘요.
                     state.stages[type] = status.isFinished ? .finale(step: type.resultStep) : .arrived(day: today)
                 }
                 return .merge(
                     .merge(RecordType.allCases.map { .cancel(id: CancelID.scene($0)) }),
                     showScrollGuideIfNeeded(&state)
                 )
+
+            case let .boardsResponse(.failure(error), _):
+                PlobbyLogger.error(error)
+                return .none
 
             case let .activityTabSelected(type):
                 state.selectedType = type
@@ -201,13 +207,7 @@ struct HomeFeature {
                 return .none
 
             case .allGoalsButtonTapped:
-                guard let goal = state.board?.goal else { return .none }
-
-                state.goalList = GoalListFeature.State(
-                    currentGoal: goal,
-                    pastGoals: HomeMock.pastGoals(for: goal.recordType, now: state.now, calendar: calendar),
-                    now: state.now
-                )
+                state.goalList = GoalListFeature.State(now: state.now)
                 return .none
 
             case .participantsButtonTapped:
@@ -247,6 +247,9 @@ struct HomeFeature {
             case .goalList(.presented(.delegate(.closed))):
                 state.goalList = nil
                 return .none
+
+            case .goalList(.presented(.delegate(.loginRequired))):
+                return .send(.delegate(.loginRequired))
 
             case .recordDetail, .notification, .goalList, .delegate:
                 return .none
@@ -288,6 +291,7 @@ extension HomeFeature {
     private static let scrollGuideDuration: Duration = .seconds(3)
 
     private nonisolated enum CancelID: Hashable {
+        case boards
         case scene(RecordType)
         case scrollGuide
     }
@@ -299,13 +303,40 @@ extension HomeFeature {
         }
     }
 
-    /// 오늘 날짜의 순서예요. 오늘 기록이 없으면 오늘 이전의 가장 최근 기록일을 써요.
-    private func todayDay(in days: [HomeGoalDailyProgress], now: Date) -> Int {
+    /// 진행 중인 목표가 없으면 가장 최근 목표(끝난 목표)를 보여줘요. 목표가 하나도 없으면 빈 배열이에요.
+    private func fetchBoards(now: Date) async throws -> [HomeGoalBoard] {
+        let currentGoal = try await goalClient.fetchCurrentGoal(now)
+        let goal: Goal? = if let currentGoal {
+            currentGoal
+        } else {
+            try await goalClient.fetchGoals(now).first
+        }
+        guard let goal else { return [] }
+
+        async let plogging = fetchBoard(goal: goal, recordType: .plogging)
+        async let plobbing = fetchBoard(goal: goal, recordType: .plobbing)
+        return try await [plogging, plobbing]
+    }
+
+    private func fetchBoard(goal: Goal, recordType: RecordType) async throws -> HomeGoalBoard {
+        async let days = goalClient.fetchDailyProgresses(goal.id, recordType)
+        async let trashSummaries = goalClient.fetchTrashSummaries(goal.id, recordType)
+        async let participants = goalClient.fetchParticipants(goal.id, recordType)
+
+        return try await HomeGoalBoard(
+            goal: goal,
+            recordType: recordType,
+            days: days,
+            trashSummaries: trashSummaries,
+            participants: participants
+        )
+    }
+
+    private func todayDay(in days: [GoalDailyProgress], now: Date) -> Int {
         let today = calendar.startOfDay(for: now)
         return days.lastIndex { calendar.startOfDay(for: $0.day) <= today } ?? 0
     }
 
-    /// 아직 스크롤하지 않은 장면이면 "아래로 스크롤해 주세요" 안내를 잠깐 보여줘요.
     private func showScrollGuideIfNeeded(_ state: inout State) -> Effect<Action> {
         guard state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
               state.status?.isFinished == false

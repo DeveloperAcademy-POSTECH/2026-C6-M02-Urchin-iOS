@@ -8,7 +8,8 @@
 import SwiftUI
 
 /// 마이 화면과 타인 홈에서 함께 쓰는 활동 기록 목록이에요. 필터 칩, 개수, 기록 셀을 보여줘요.
-struct RecordListSection: View {
+/// 기록이 없을 때 보여줄 화면은 `emptyContent`로 바꿀 수 있어요.
+struct RecordListSection<EmptyContent: View>: View {
 
     // MARK: - Properties
 
@@ -16,8 +17,23 @@ struct RecordListSection: View {
     let selectedFilter: RecordFilter
     let onFilterChanged: (RecordFilter) -> Void
     let onRecordTapped: (RecordSummary.ID) -> Void
+    let emptyContent: EmptyContent
 
-    private static let recentDayCount = 7
+    private static var recentDayCount: Int { 7 }
+
+    init(
+        records: [RecordSummary],
+        selectedFilter: RecordFilter,
+        onFilterChanged: @escaping (RecordFilter) -> Void,
+        onRecordTapped: @escaping (RecordSummary.ID) -> Void,
+        @ViewBuilder emptyContent: () -> EmptyContent
+    ) {
+        self.records = records
+        self.selectedFilter = selectedFilter
+        self.onFilterChanged = onFilterChanged
+        self.onRecordTapped = onRecordTapped
+        self.emptyContent = emptyContent()
+    }
 
     // MARK: - Body
 
@@ -37,15 +53,44 @@ struct RecordListSection: View {
                 .padding(.top, 16.scaled)
 
             if records.isEmpty {
-                Text("아직 활동 기록이 없어요")
-                    .plobbyFont(.label)
-                    .foregroundStyle(Color(.textTertiary))
+                emptyContent
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 40.scaled)
             } else {
                 recordList
             }
         }
+    }
+}
+
+// MARK: - Empty
+
+extension RecordListSection where EmptyContent == RecordListEmptyMessage {
+
+    /// 기록이 없으면 "아직 활동 기록이 없어요"를 보여줘요.
+    init(
+        records: [RecordSummary],
+        selectedFilter: RecordFilter,
+        onFilterChanged: @escaping (RecordFilter) -> Void,
+        onRecordTapped: @escaping (RecordSummary.ID) -> Void
+    ) {
+        self.init(
+            records: records,
+            selectedFilter: selectedFilter,
+            onFilterChanged: onFilterChanged,
+            onRecordTapped: onRecordTapped
+        ) {
+            RecordListEmptyMessage()
+        }
+    }
+}
+
+struct RecordListEmptyMessage: View {
+
+    var body: some View {
+        Text("아직 활동 기록이 없어요")
+            .plobbyFont(.label)
+            .foregroundStyle(Color(.textTertiary))
     }
 }
 

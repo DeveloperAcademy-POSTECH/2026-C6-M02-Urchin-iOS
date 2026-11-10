@@ -11,7 +11,7 @@ import SwiftUI
 /// 목표가 끝나면 펼친 모양으로 "다음 목표 보기" 버튼을 보여줘요.
 struct HomeGoalCard: View {
 
-    let goal: HomeGoal
+    let goal: Goal
     let status: HomeGoalStatus
     let isExpanded: Bool
     let onToggle: () -> Void
@@ -114,110 +114,5 @@ private extension HomeGoalCard {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(isExpanded ? "공동 목표 접기" : "공동 목표 펼치기")
-    }
-}
-
-// MARK: - Components
-
-/// 목표 상태 칩이에요. (공동 목표, D-7, 목표 달성, 기간 종료)
-struct HomeGoalChip: View {
-
-    enum Style {
-        case brand
-        case neutral
-    }
-
-    let text: String
-    let style: Style
-
-    var body: some View {
-        Text(text)
-            .plobbyFont(.metadata)
-            .foregroundStyle(style == .brand ? Color(.currentBrandText) : Color(.textSecondary))
-            .padding(.horizontal, 8.scaled)
-            .padding(.vertical, 2.scaled)
-            .background(
-                style == .brand ? Color(.currentBrandSubtle) : Color(.gray50),
-                in: RoundedRectangle(cornerRadius: 8.scaled)
-            )
-    }
-}
-
-/// "74 / 200개"처럼 모은 개수와 목표 개수예요.
-struct HomeGoalCountText: View {
-
-    let collected: Int
-    let target: Int
-    var collectedStyle: PlobbyTypography = .labelSelected
-    var collectedColor: Color = Color(.currentBrandText)
-
-    var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 4.scaled) {
-            Text("\(collected)")
-                .plobbyFont(collectedStyle)
-                .foregroundStyle(collectedColor)
-
-            Text("/ \(target)개")
-                .plobbyFont(.label)
-                .foregroundStyle(Color(.textSecondary))
-        }
-        .fixedSize()
-    }
-}
-
-struct HomeGoalProgressBar: View {
-
-    let progress: Double
-    var trackColor = Color(.gray200)
-
-    var body: some View {
-        GeometryReader { proxy in
-            Capsule()
-                .fill(trackColor)
-                .overlay(alignment: .leading) {
-                    Capsule()
-                        .fill(Color(.currentBrandText))
-                        .frame(width: proxy.size.width * progress)
-                }
-        }
-        .frame(height: 8.scaled)
-    }
-}
-
-/// "11월 1일 ~ 11월 14일 | 18명 참여"예요.
-struct HomeGoalMetaRow: View {
-
-    let goal: HomeGoal
-    var showsIcons = true
-
-    var body: some View {
-        HStack(spacing: 8.scaled) {
-            label(goal.periodText, systemImage: "calendar")
-
-            Rectangle()
-                .fill(Color(.gray200))
-                .frame(width: 1.scaled, height: 12.scaled)
-
-            label("\(goal.participantCount)명 참여", systemImage: "person.fill")
-        }
-        .foregroundStyle(Color(.textSecondary))
-    }
-
-    private func label(_ text: String, systemImage: String) -> some View {
-        HStack(spacing: 4.scaled) {
-            if showsIcons {
-                Image(systemName: systemImage)
-                    .font(.system(size: 13.scaled))
-            }
-            Text(text)
-                .plobbyFont(.helper)
-        }
-    }
-}
-
-extension HomeGoal {
-
-    var periodText: String {
-        "\(startsAt.homeMonthDayText) ~ \(endsAt.homeMonthDayText)"
     }
 }

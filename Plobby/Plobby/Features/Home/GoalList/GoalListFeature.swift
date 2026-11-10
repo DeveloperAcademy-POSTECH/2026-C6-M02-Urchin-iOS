@@ -18,50 +18,76 @@ struct GoalListFeature {
     struct State: Equatable {
         @Presents var goalRecords: GoalRecordsFeature.State?
 
-        let currentGoal: HomeGoal
-        let pastGoals: [HomeGoal]
+        var currentGoal: Goal?
+        var pastGoals: [Goal] = []
+        var isLoading = true
         let now: Date
     }
 
     // MARK: - Action
 
     enum Action {
+        case task
+        case goalsResponse(Result<[Goal], any Error>)
         case backButtonTapped
         case currentGoalRecordsTapped
-        case pastGoalTapped(HomeGoal.ID)
+        case pastGoalTapped(Goal.ID)
         case goalRecords(PresentationAction<GoalRecordsFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
             case closed
+            case loginRequired
         }
     }
 
     // MARK: - Dependency
 
-    @Dependency(\.calendar) var calendar
+    @Dependency(\.goalClient) var goalClient
 
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
+            case .task:
+                let now = state.now
+                return .run { send in
+                    await send(.goalsResponse(Result { try await goalClient.fetchGoals(now) }))
+                }
+
+            case let .goalsResponse(.success(goals)):
+                state.isLoading = false
+                state.currentGoal = goals.first { $0.status(at: state.now) == .inProgress }
+                state.pastGoals = goals.filter { $0.id != state.currentGoal?.id }
+                return .none
+
+            case let .goalsResponse(.failure(error)):
+                state.isLoading = false
+                PlobbyLogger.error(error)
+                return .none
+
             case .backButtonTapped:
                 return .send(.delegate(.closed))
 
             case .currentGoalRecordsTapped:
-                state.goalRecords = recordsState(for: state.currentGoal, now: state.now)
+                guard let goal = state.currentGoal else { return .none }
+
+                state.goalRecords = GoalRecordsFeature.State(goal: goal, now: state.now)
                 return .none
 
             case let .pastGoalTapped(goalID):
                 guard let goal = state.pastGoals.first(where: { $0.id == goalID }) else { return .none }
 
-                state.goalRecords = recordsState(for: goal, now: state.now)
+                state.goalRecords = GoalRecordsFeature.State(goal: goal, now: state.now)
                 return .none
 
             case .goalRecords(.presented(.delegate(.closed))):
                 state.goalRecords = nil
                 return .none
+
+            case .goalRecords(.presented(.delegate(.loginRequired))):
+                return .send(.delegate(.loginRequired))
 
             case .goalRecords, .delegate:
                 return .none
@@ -70,13 +96,5 @@ struct GoalListFeature {
         .ifLet(\.$goalRecords, action: \.goalRecords) {
             GoalRecordsFeature()
         }
-    }
-
-    private func recordsState(for goal: HomeGoal, now: Date) -> GoalRecordsFeature.State {
-        GoalRecordsFeature.State(
-            goal: goal,
-            records: HomeMock.records(for: goal, calendar: calendar),
-            now: now
-        )
     }
 }

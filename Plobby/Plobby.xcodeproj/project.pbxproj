@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B3C1A30309D0000004C5301 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A31309D0000004C5301 /* String+.swift */; };
-		7B3C1A2E309D0000004C5301 /* ConfettiScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */; };
-		7B3C1A2C309D0000004C5301 /* ConfettiBurstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */; };
+		A1220000000000000000030D /* HomeSceneTrash.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1220000000000000000030C /* HomeSceneTrash.swift */; };
+		A1220000000000000000030B /* HomeSheetCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1220000000000000000030A /* HomeSheetCloseButton.swift */; };
+		A12200000000000000000309 /* HomeScrollGuideToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12200000000000000000308 /* HomeScrollGuideToast.swift */; };
+		A12200000000000000000307 /* HomeGoalMetaRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12200000000000000000306 /* HomeGoalMetaRow.swift */; };
+		A12200000000000000000305 /* HomeGoalProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12200000000000000000304 /* HomeGoalProgressBar.swift */; };
+		A12200000000000000000303 /* HomeGoalCountText.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12200000000000000000302 /* HomeGoalCountText.swift */; };
+		A12200000000000000000301 /* HomeGoalChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12200000000000000000300 /* HomeGoalChip.swift */; };
 		0B869218EFE0CDE95C42DC2B /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9B78BD17D2C2D1415BB669 /* TimePickerView.swift */; };
 		107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */; };
 		150DB27DA315C9A5BD0B3C42 /* DatePickerFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684E94CFA515609CA06FD71D /* DatePickerFeatureTests.swift */; };
@@ -62,13 +66,13 @@
 		7B3C1A29309D0000004C5301 /* TermsAgreementFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2A309D0000004C5301 /* TermsAgreementFeature.swift */; };
 		7B3C1A2C309D0000004C5301 /* ConfettiBurstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */; };
 		7B3C1A2E309D0000004C5301 /* ConfettiScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */; };
+		7B3C1A30309D0000004C5301 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A31309D0000004C5301 /* String+.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
 		A11400000000000000000102 /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000101 /* HomeFeature.swift */; };
 		A11400000000000000000104 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000103 /* HomeView.swift */; };
-		A11400000000000000000106 /* HomeGoalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000105 /* HomeGoalModels.swift */; };
-		A11400000000000000000108 /* HomeMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000107 /* HomeMock.swift */; };
+		A11400000000000000000106 /* HomeGoalStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000105 /* HomeGoalStatus.swift */; };
 		A1140000000000000000010A /* HomeSceneStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000109 /* HomeSceneStage.swift */; };
 		A1140000000000000000010D /* HomeSceneCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1140000000000000000010C /* HomeSceneCanvas.swift */; };
 		A1140000000000000000010F /* HomeSceneOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1140000000000000000010E /* HomeSceneOverlay.swift */; };
@@ -142,6 +146,8 @@
 		DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
+		DA23D33D30A2F4A500901240 /* HomeRankedParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA23D33C30A2F4A400901240 /* HomeRankedParticipant.swift */; };
+		DA23D33F30A2F4BB00901240 /* HomeGoalBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA23D33E30A2F4B700901240 /* HomeGoalBoard.swift */; };
 		DA2C8CF2309C711C0042C67C /* LocationClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2C8CF1309C71180042C67C /* LocationClientError.swift */; };
 		DA5B0FA630988669003FEDF9 /* RecordClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FA330988669003FEDF9 /* RecordClient.swift */; };
 		DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */; };
@@ -182,6 +188,7 @@
 		DA688DD13099F0490064A2F4 /* PhotosPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD03099F0480064A2F4 /* PhotosPickerView.swift */; };
 		DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD23099F0A30064A2F4 /* RecordFormView.swift */; };
 		DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */; };
+		7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */; };
 		DA688DD73099F0F50064A2F4 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */; };
 		DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */; };
 		DA71D23030A2AF1900E00CD1 /* PlobbyNavigationBarConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */; };
@@ -278,6 +285,8 @@
 		A16C0DE00000000000000304 /* ProfilePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000303 /* ProfilePhotoView.swift */; };
 		A16C0DE00000000000000306 /* NicknameCheckFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000305 /* NicknameCheckFeature.swift */; };
 		A16C0DE00000000000000308 /* NicknameCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000307 /* NicknameCheckView.swift */; };
+		A16C0DE00000000000000202 /* FavoriteBeachAddFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */; };
+		A16C0DE00000000000000204 /* FavoriteBeachAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -298,9 +307,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7B3C1A31309D0000004C5301 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
-		7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiScene.swift; sourceTree = "<group>"; };
-		7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiBurstView.swift; sourceTree = "<group>"; };
+		A1220000000000000000030C /* HomeSceneTrash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSceneTrash.swift; sourceTree = "<group>"; };
+		A1220000000000000000030A /* HomeSheetCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSheetCloseButton.swift; sourceTree = "<group>"; };
+		A12200000000000000000308 /* HomeScrollGuideToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScrollGuideToast.swift; sourceTree = "<group>"; };
+		A12200000000000000000306 /* HomeGoalMetaRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGoalMetaRow.swift; sourceTree = "<group>"; };
+		A12200000000000000000304 /* HomeGoalProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGoalProgressBar.swift; sourceTree = "<group>"; };
+		A12200000000000000000302 /* HomeGoalCountText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGoalCountText.swift; sourceTree = "<group>"; };
+		A12200000000000000000300 /* HomeGoalChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGoalChip.swift; sourceTree = "<group>"; };
 		008552DBBD644BB8938C1F8C /* PushEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushEvents.swift; sourceTree = "<group>"; };
 		0271B5AE315C6C8DB9FCD00B /* BeachHomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachHomeFeature.swift; sourceTree = "<group>"; };
 		033E132ECAAEEA71EF0DECA8 /* DependencyValues+PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PhotoLibraryClient.swift"; sourceTree = "<group>"; };
@@ -343,6 +356,7 @@
 		7B3C1A2A309D0000004C5301 /* TermsAgreementFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAgreementFeature.swift; sourceTree = "<group>"; };
 		7B3C1A2D309D0000004C5301 /* ConfettiBurstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiBurstView.swift; sourceTree = "<group>"; };
 		7B3C1A2F309D0000004C5301 /* ConfettiScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiScene.swift; sourceTree = "<group>"; };
+		7B3C1A31309D0000004C5301 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -351,8 +365,7 @@
 		9EF1D13BE50D40538DC75A3E /* DependencyValues+PushClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+PushClient.swift"; sourceTree = "<group>"; };
 		A11400000000000000000101 /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		A11400000000000000000103 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		A11400000000000000000105 /* HomeGoalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGoalModels.swift; sourceTree = "<group>"; };
-		A11400000000000000000107 /* HomeMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMock.swift; sourceTree = "<group>"; };
+		A11400000000000000000105 /* HomeGoalStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGoalStatus.swift; sourceTree = "<group>"; };
 		A11400000000000000000109 /* HomeSceneStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSceneStage.swift; sourceTree = "<group>"; };
 		A1140000000000000000010C /* HomeSceneCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSceneCanvas.swift; sourceTree = "<group>"; };
 		A1140000000000000000010E /* HomeSceneOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSceneOverlay.swift; sourceTree = "<group>"; };
@@ -429,6 +442,8 @@
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA23D33C30A2F4A400901240 /* HomeRankedParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRankedParticipant.swift; sourceTree = "<group>"; };
+		DA23D33E30A2F4B700901240 /* HomeGoalBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGoalBoard.swift; sourceTree = "<group>"; };
 		DA2C8CF1309C71180042C67C /* LocationClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationClientError.swift; sourceTree = "<group>"; };
 		DA5B0FA330988669003FEDF9 /* RecordClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordClient.swift; sourceTree = "<group>"; };
 		DA5B0FB23098BED4003FEDF9 /* NewRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecord.swift; sourceTree = "<group>"; };
@@ -469,6 +484,7 @@
 		DA688DD03099F0480064A2F4 /* PhotosPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerView.swift; sourceTree = "<group>"; };
 		DA688DD23099F0A30064A2F4 /* RecordFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFormView.swift; sourceTree = "<group>"; };
 		DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRewardView.swift; sourceTree = "<group>"; };
+		7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingTrashScene.swift; sourceTree = "<group>"; };
 		DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
 		DA71D22D30A2AEDE00E00CD1 /* PlobbyNavigationBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyNavigationBarStyle.swift; sourceTree = "<group>"; };
 		DA71D22F30A2AF1100E00CD1 /* PlobbyNavigationBarConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyNavigationBarConfiguration.swift; sourceTree = "<group>"; };
@@ -571,6 +587,8 @@
 		A16C0DE00000000000000303 /* ProfilePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoView.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000305 /* NicknameCheckFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckFeature.swift; sourceTree = "<group>"; };
 		A16C0DE00000000000000307 /* NicknameCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckView.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddFeature.swift; sourceTree = "<group>"; };
+		A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteBeachAddView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -721,16 +739,6 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
-		A1140000000000000000010B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				A11400000000000000000105 /* HomeGoalModels.swift */,
-				A11400000000000000000107 /* HomeMock.swift */,
-				A11400000000000000000109 /* HomeSceneStage.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		A11400000000000000000114 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
@@ -738,6 +746,7 @@
 				A1140000000000000000010E /* HomeSceneOverlay.swift */,
 				A11400000000000000000110 /* PloggingSceneView.swift */,
 				A11400000000000000000112 /* PlobbingSceneView.swift */,
+				A1220000000000000000030C /* HomeSceneTrash.swift */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -750,6 +759,12 @@
 				A11400000000000000000119 /* HomeParticipantsSheet.swift */,
 				A1140000000000000000011B /* HomeTrashSummaryPopup.swift */,
 				A1140000000000000000011D /* HomeActivityPicker.swift */,
+				A1220000000000000000030A /* HomeSheetCloseButton.swift */,
+				A12200000000000000000308 /* HomeScrollGuideToast.swift */,
+				A12200000000000000000306 /* HomeGoalMetaRow.swift */,
+				A12200000000000000000304 /* HomeGoalProgressBar.swift */,
+				A12200000000000000000302 /* HomeGoalCountText.swift */,
+				A12200000000000000000300 /* HomeGoalChip.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -770,6 +785,15 @@
 				A11400000000000000000127 /* GoalRecordsView.swift */,
 			);
 			path = GoalRecords;
+			sourceTree = "<group>";
+		};
+		A16C0DE00000000000000205 /* FavoriteBeachAdd */ = {
+			isa = PBXGroup;
+			children = (
+				A16C0DE00000000000000201 /* FavoriteBeachAddFeature.swift */,
+				A16C0DE00000000000000203 /* FavoriteBeachAddView.swift */,
+			);
+			path = FavoriteBeachAdd;
 			sourceTree = "<group>";
 		};
 		A16C0DE00000000000000107 /* UserHome */ = {
@@ -1009,6 +1033,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		DA23D33B30A2F39200901240 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				DA23D33E30A2F4B700901240 /* HomeGoalBoard.swift */,
+				DA23D33C30A2F4A400901240 /* HomeRankedParticipant.swift */,
+				A11400000000000000000105 /* HomeGoalStatus.swift */,
+				A11400000000000000000109 /* HomeSceneStage.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		DA5B0FA430988669003FEDF9 /* Record */ = {
 			isa = PBXGroup;
 			children = (
@@ -1093,6 +1128,7 @@
 				B5951FB2309BA4AB0089A019 /* MyView.swift */,
 				A16C0DE00000000000000101 /* RecordListSection.swift */,
 				A16C0DE00000000000000107 /* UserHome */,
+				A16C0DE00000000000000205 /* FavoriteBeachAdd */,
 			);
 			path = My;
 			sourceTree = "<group>";
@@ -1123,6 +1159,7 @@
 			isa = PBXGroup;
 			children = (
 				DA688DD43099F0C00064A2F4 /* RecordRewardView.swift */,
+				7B3C1A50309D0000004C5301 /* FallingTrashScene.swift */,
 				DA688DCA3099CFB70064A2F4 /* RecordRewardFeature.swift */,
 			);
 			path = RecordReward;
@@ -1499,6 +1536,7 @@
 		ECE6F2B23098338400C4916C /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				DA23D33B30A2F39200901240 /* Home */,
 				B59342EF30A0CF4F005EAF07 /* Goal */,
 				ECE6F2A63098338400C4916C /* Common */,
 				ECE6F2A03098338400C4916C /* Auth */,
@@ -1517,7 +1555,6 @@
 			children = (
 				A11400000000000000000101 /* HomeFeature.swift */,
 				A11400000000000000000103 /* HomeView.swift */,
-				A1140000000000000000010B /* Model */,
 				A11400000000000000000114 /* Scene */,
 				A1140000000000000000011F /* Subviews */,
 				A11400000000000000000124 /* GoalList */,
@@ -1839,12 +1876,14 @@
 				EC19674C309CE77F00BC4C19 /* CollectionCardView.swift in Sources */,
 				7B3C1A1C309D0000004C5301 /* CollectionCategorySheet.swift in Sources */,
 				7B3C1A19309D0000004C5301 /* TrashCategory+Asset.swift in Sources */,
+				DA23D33D30A2F4A500901240 /* HomeRankedParticipant.swift in Sources */,
 				7B3C1A17309D0000004C5301 /* TrashPileScene.swift in Sources */,
 				7B3C1A15309D0000004C5301 /* TrashPileView.swift in Sources */,
 				7B3C1A13309D0000004C5301 /* TrashCategory+CollectionFact.swift in Sources */,
 				7B3C1A11309D0000004C5301 /* FlipCard.swift in Sources */,
 				DA71D22E30A2AEDF00E00CD1 /* PlobbyNavigationBarStyle.swift in Sources */,
 				DA688DD53099F0C30064A2F4 /* RecordRewardView.swift in Sources */,
+				7B3C1A51309D0000004C5301 /* FallingTrashScene.swift in Sources */,
 				B532EAC630A2A91900029E08 /* ToastType.swift in Sources */,
 				DA688DBB3099BAE30064A2F4 /* BeachResponseDTO.swift in Sources */,
 				73CD656240EA8E75250648CC /* BeachRecordResponseDTO.swift in Sources */,
@@ -1915,6 +1954,7 @@
 				7B3C1A22309D0000004C5301 /* BeachPickerFeature.swift in Sources */,
 				4A7D2DE92816C3CEAA431506 /* PhotoThumbnailView.swift in Sources */,
 				DAEC87A8309C42CF0086965E /* LocationPickerView.swift in Sources */,
+				DA23D33F30A2F4BB00901240 /* HomeGoalBoard.swift in Sources */,
 				EC0D4B933098E1D0000E7BB7 /* WithdrawalFeedbackInsertRequestDTO.swift in Sources */,
 				EC0D4B913098E1D0000E7BB7 /* CompleteSignupRequestDTO.swift in Sources */,
 				DA0A9CFF309A1503006D2504 /* ActivityPeriod.swift in Sources */,
@@ -2021,6 +2061,8 @@
 				A16C0DE00000000000000102 /* RecordListSection.swift in Sources */,
 				A16C0DE00000000000000104 /* UserHomeFeature.swift in Sources */,
 				A16C0DE00000000000000106 /* UserHomeView.swift in Sources */,
+				A16C0DE00000000000000202 /* FavoriteBeachAddFeature.swift in Sources */,
+				A16C0DE00000000000000204 /* FavoriteBeachAddView.swift in Sources */,
 				D1A0C0DE00000000000000F2 /* AppleAuthorizationRequester.swift in Sources */,
 				D1A0C0DE00000000000000F6 /* SettingsFeature.swift in Sources */,
 				D1A0C0DE00000000000000F8 /* SettingsView.swift in Sources */,
@@ -2037,14 +2079,20 @@
 				DA5B0FDA3098E2FC003FEDF9 /* SupabaseClient+.swift in Sources */,
 				A11400000000000000000102 /* HomeFeature.swift in Sources */,
 				A11400000000000000000104 /* HomeView.swift in Sources */,
-				A11400000000000000000106 /* HomeGoalModels.swift in Sources */,
-				A11400000000000000000108 /* HomeMock.swift in Sources */,
+				A11400000000000000000106 /* HomeGoalStatus.swift in Sources */,
 				A1140000000000000000010A /* HomeSceneStage.swift in Sources */,
 				A1140000000000000000010D /* HomeSceneCanvas.swift in Sources */,
 				A1140000000000000000010F /* HomeSceneOverlay.swift in Sources */,
 				A11400000000000000000111 /* PloggingSceneView.swift in Sources */,
 				A11400000000000000000113 /* PlobbingSceneView.swift in Sources */,
 				A11400000000000000000116 /* HomeGoalCard.swift in Sources */,
+				A1220000000000000000030D /* HomeSceneTrash.swift in Sources */,
+				A1220000000000000000030B /* HomeSheetCloseButton.swift in Sources */,
+				A12200000000000000000309 /* HomeScrollGuideToast.swift in Sources */,
+				A12200000000000000000307 /* HomeGoalMetaRow.swift in Sources */,
+				A12200000000000000000305 /* HomeGoalProgressBar.swift in Sources */,
+				A12200000000000000000303 /* HomeGoalCountText.swift in Sources */,
+				A12200000000000000000301 /* HomeGoalChip.swift in Sources */,
 				A11400000000000000000118 /* HomeGoalCelebration.swift in Sources */,
 				A1140000000000000000011A /* HomeParticipantsSheet.swift in Sources */,
 				A1140000000000000000011C /* HomeTrashSummaryPopup.swift in Sources */,

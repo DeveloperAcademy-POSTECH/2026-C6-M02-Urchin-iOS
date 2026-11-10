@@ -17,7 +17,6 @@ nonisolated struct GoalTrashSummaryResponseDTO: Decodable, Sendable {
         case collectedCount = "collected_count"
     }
 
-    /// 앱이 모르는 쓰레기 종류 코드면 nil이에요.
     func toDomain() -> GoalTrashSummary? {
         guard let category = TrashCategory(code: trashCode) else { return nil }
 

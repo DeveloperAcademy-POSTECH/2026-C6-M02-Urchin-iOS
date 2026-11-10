@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-/// 장면 위에 얹는 날짜·수거량·결과·함께한 사람 버튼이에요. 장면과 달리 확대/축소하지 않아요.
 struct HomeSceneOverlay: View {
 
     let recordType: RecordType
     let stage: HomeSceneStage
-    let day: HomeGoalDailyProgress?
+    let day: GoalDailyProgress?
     let totalTrashCount: Int
     let isGoalFinished: Bool
     let onParticipantsTapped: () -> Void
@@ -24,13 +23,10 @@ struct HomeSceneOverlay: View {
                 .frame(maxHeight: .infinity, alignment: .top)
                 .padding(.top, 12.scaled)
 
-            if showsParticipantsButton {
-                participantsButton
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                    .padding(.leading, 20.scaled)
-                    .padding(.bottom, 14.scaled)
-                    .transition(.opacity)
-            }
+            participantsButton
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                .padding(.leading, 20.scaled)
+                .padding(.bottom, 14.scaled)
         }
     }
 }
@@ -117,17 +113,10 @@ private extension HomeSceneOverlay {
     var isResult: Bool {
         stage == .finale(step: recordType.resultStep)
     }
-
-    var showsParticipantsButton: Bool {
-        if isGoalFinished { return false }
-        if case .finale = stage { return false }
-        return true
-    }
 }
 
-extension View {
+private extension View {
 
-    /// 장면 위 버튼에 쓰는 그림자예요.
     func homeSceneShadow() -> some View {
         shadow(color: Color(.neutralBlack).opacity(0.08), radius: 6, y: 2)
     }

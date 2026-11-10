@@ -19,9 +19,12 @@ nonisolated struct GoalDailyProgressResponseDTO: Decodable, Sendable {
         case participantCount = "participant_count"
     }
 
-    /// 서버는 날짜를 "2026-11-04" 문자열로 줘요. 그날 0시로 바꾸고, 읽지 못하면 nil이에요.
     func toDomain() -> GoalDailyProgress? {
-        let dayFormat = Date.ISO8601FormatStyle(timeZone: .current).year().month().day()
+        let dayFormat = Date.ISO8601FormatStyle(timeZone: .current)
+            .year()
+            .month()
+            .day()
+        
         guard let date = try? Date(day, strategy: dayFormat) else { return nil }
 
         return GoalDailyProgress(
