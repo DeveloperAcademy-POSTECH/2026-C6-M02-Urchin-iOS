@@ -29,7 +29,6 @@ struct WithdrawalFeature {
             !detail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
 
-        /// 사유를 고르거나 기타를 입력하면 탈퇴할 수 있어요.
         var canWithdraw: Bool {
             (selectedReason != nil || hasDetail) && !isWithdrawing
         }
@@ -100,6 +99,9 @@ struct WithdrawalFeature {
                 return .none
 
             case .withdrawResponse(.success):
+                @Shared(.recentSearches) var recentSearches
+                $recentSearches.withLock { $0.removeAll() }
+
                 state.isWithdrawing = false
                 state.alert = .make(.withdrawalCompleted, confirm: .confirm)
                 return .none
@@ -110,7 +112,10 @@ struct WithdrawalFeature {
                 return .none
 
             case .alert(.presented(.confirm)):
-                return .send(.delegate(.withdrawn))
+                return .run { send in
+                    try? await authClient.signOut(nil)
+                    await send(.delegate(.withdrawn))
+                }
 
             case .alert, .delegate:
                 return .none
