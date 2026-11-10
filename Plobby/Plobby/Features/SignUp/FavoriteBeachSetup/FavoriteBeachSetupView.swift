@@ -17,16 +17,34 @@ struct FavoriteBeachSetupView: View {
     
     // MARK: - Body
     
+    /// 키보드가 올라와도 화면을 줄이지 않아요. 줄이면 고정 높이인 해변 목록 때문에 화면 전체가 위로 밀려요.
     var body: some View {
-        VStack(spacing: 0) {
-            progressBar
-            titleSection
-            beachPicker
+        GeometryReader { _ in
+            VStack(spacing: 0) {
+                progressBar
+                titleSection
+                beachPicker
 
-            Spacer()
+                Spacer()
 
-            bottomSection
+                bottomSection
+            }
         }
+        .ignoresSafeArea(.keyboard)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            dismissKeyboard()
+        }
+    }
+}
+
+// MARK: - Keyboard
+
+private extension FavoriteBeachSetupView {
+
+    /// 검색창은 공용 BeachPicker 안에 있어서, 화면 어디를 눌러도 키보드가 내려가게 첫 응답자를 풀어요.
+    func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
