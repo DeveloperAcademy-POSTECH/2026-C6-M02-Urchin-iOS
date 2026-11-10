@@ -128,8 +128,6 @@ extension AuthClient: DependencyKey {
                         body: DeleteAccountRequestDTO(authorizationCode: authorizationCode)
                     )
                 )
-
-                try? await supabase.auth.signOut(scope: .local)
             }
         )
     }()

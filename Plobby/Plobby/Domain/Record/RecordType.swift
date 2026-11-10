@@ -74,15 +74,3 @@ nonisolated extension RecordType {
         }
     }
 }
-
-// MARK: - Functions(MainActor)
-
-@MainActor extension RecordType {
-    
-    var image: ImageResource {
-        switch self {
-        case .plobbing: .plobbing
-        case .plogging: .plogging
-        }
-    }
-}

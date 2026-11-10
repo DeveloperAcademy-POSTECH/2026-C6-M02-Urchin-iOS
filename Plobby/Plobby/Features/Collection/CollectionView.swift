@@ -97,17 +97,55 @@ private extension CollectionView {
     }
 
     var profileThumbnail: some View {
-        AsyncImage(url: store.profile?.profileImageURL) { image in
-            image
-                .resizable()
-                .scaledToFill()
-        } placeholder: {
-            Image(systemName: "person.crop.circle.fill")
-                .resizable()
-                .foregroundStyle(Color(.gray600))
+        CollectionProfileImage(url: store.profile?.profileImageURL)
+            .frame(width: 36.scaled, height: 36.scaled)
+            .clipShape(Circle())
+    }
+}
+
+/// 컬렉션 상단 프로필 사진이에요.
+/// AsyncImage는 화면이 다시 그려지는 중에 불러오기가 취소되면 기본 이미지에 멈춰서, 직접 불러와요.
+/// 한 번 불러온 사진은 같은 주소를 다시 받아도 그대로 두고, 취소되면 다음에 다시 불러요.
+private struct CollectionProfileImage: View {
+
+    let url: URL?
+
+    @State private var image: UIImage?
+    @State private var loadedURL: URL?
+
+    var body: some View {
+        Group {
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .foregroundStyle(Color(.gray600))
+            }
         }
-        .frame(width: 36.scaled, height: 36.scaled)
-        .clipShape(Circle())
+        .task(id: url) {
+            guard let url else {
+                image = nil
+                loadedURL = nil
+                return
+            }
+            guard url != loadedURL else { return }
+
+            do {
+                let (data, _) = try await URLSession.shared.data(from: url)
+                guard let loaded = UIImage(data: data) else { return }
+
+                image = loaded
+                loadedURL = url
+            } catch {
+                // 취소는 다음 표시 때 다시 불러요. 그 밖의 실패만 남겨요.
+                if !(error is CancellationError), (error as? URLError)?.code != .cancelled {
+                    PlobbyLogger.error(error)
+                }
+            }
+        }
     }
 }
 

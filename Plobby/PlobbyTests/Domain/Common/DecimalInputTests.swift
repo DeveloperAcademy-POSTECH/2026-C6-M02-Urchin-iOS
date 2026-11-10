@@ -59,4 +59,18 @@ struct DecimalInputTests {
     func 소수점이_두_개_이상이면_변환하지_않는다() {
         #expect(DecimalInput.number(from: "8.5.1", locale: koreanLocale) == nil)
     }
+
+    @Test
+    func 입력_중인_숫자를_자릿수에_맞게_자른다() {
+        #expect(DecimalInput.limited("123.45", maximumIntegerDigits: 2, locale: koreanLocale) == "12.4")
+        #expect(DecimalInput.limited("8a.5.3", maximumIntegerDigits: 2, locale: koreanLocale) == "8.5")
+        #expect(DecimalInput.limited("8,5", maximumIntegerDigits: 2, locale: germanLocale) == "8,5")
+        #expect(DecimalInput.limited("-30", maximumIntegerDigits: 3, locale: koreanLocale) == "30")
+    }
+
+    @Test
+    func 범위_최댓값의_정수_자릿수를_구한다() {
+        #expect(DecimalInput.integerDigits(of: 0.1...99.9) == 2)
+        #expect(DecimalInput.integerDigits(of: 0.1...999.9) == 3)
+    }
 }

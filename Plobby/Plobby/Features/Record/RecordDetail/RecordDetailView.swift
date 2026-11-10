@@ -52,7 +52,6 @@ struct RecordDetailView: View {
         }
         .navigationDestination(item: $store.scope(state: \.userHome, action: \.userHome)) { store in
             UserHomeView(store: store)
-                .toolbar(.hidden, for: .tabBar)
         }
     }
 }

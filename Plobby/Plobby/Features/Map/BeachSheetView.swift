@@ -57,7 +57,32 @@ struct BeachSheetView: View {
         .task(id: store.beach.id) {
             await store.send(.task).finish()
         }
+        .fullScreenCover(isPresented: activityPickerBinding) {
+            HomeActivityPicker(
+                onSelect: { store.send(.activityPicked($0), transaction: Self.noAnimation) },
+                onDismiss: { store.send(.activityPickerDismissed, transaction: Self.noAnimation) }
+            )
+            .presentationBackground(.clear)
+        }
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+    }
+}
+
+// MARK: - Activity Picker
+
+private extension BeachSheetView {
+
+    var activityPickerBinding: Binding<Bool> {
+        Binding(
+            get: { store.isActivityPickerPresented },
+            set: { if !$0 { store.send(.activityPickerDismissed, transaction: Self.noAnimation) } }
+        )
+    }
+
+    static var noAnimation: Transaction {
+        var transaction = Transaction()
+        transaction.disablesAnimations = true
+        return transaction
     }
 }
 
@@ -74,7 +99,6 @@ private extension BeachSheetView {
 
             Spacer(minLength: 0)
 
-            // 지도 시트에서는 관심 해변을 바꿀 수 없어요. 관심 해변일 때만 선택된 별을 보여줘요.
             if store.isMember, store.isFavorite, store.content != .loading {
                 circleIcon(systemName: "star.fill", color: Color(.green500), size: 18, weight: .semibold)
                     .accessibilityLabel("관심 해변")
@@ -117,7 +141,7 @@ private extension BeachSheetView {
                 .multilineTextAlignment(.center)
 
             Button {
-                store.send(.recordStartTapped)
+                store.send(.recordStartTapped, transaction: store.isMember ? Self.noAnimation : Transaction())
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "doc.text.fill")

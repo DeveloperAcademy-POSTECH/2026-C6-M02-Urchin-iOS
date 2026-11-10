@@ -575,7 +575,7 @@ private extension RecordFormView {
                 errorText("활동 메모를 입력해 주세요")
                     .padding(.top, -12.scaled)
             } else if store.isMemoOverLimit {
-                errorText("메모를 \(RecordMemo.maximumLength)자 이내로 줄여주세요.")
+                errorText("메모는 \(RecordMemo.maximumLength)자까지 입력할 수 있어요.")
                     .padding(.top, -12.scaled)
             }
         }

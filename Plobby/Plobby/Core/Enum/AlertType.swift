@@ -53,7 +53,7 @@ extension AlertType {
         case .logoutConfirm: "로그아웃하시겠습니까?"
         case .logoutFailed: "로그아웃하지 못했어요"
         case .withdrawalConfirm: "정말 탈퇴하시겠습니까?"
-        case .withdrawalCompleted: "탈퇴한 회원입니다"
+        case .withdrawalCompleted: "탈퇴가 완료됐어요"
         case .withdrawalFailed: "탈퇴하지 못했어요"
         case .favoriteBeachLimit: "관심 해변을 더 추가할 수 없어요"
         case .recordReported: "신고가 완료되었습니다"
@@ -69,7 +69,8 @@ extension AlertType {
         case .profileImageTooLarge: "2MB 미만의 사진을 선택해 주세요."
         case .profileImageLoadFailed: "다른 사진을 선택하거나 잠시 후 다시 시도해 주세요."
         case .recordDeleteConfirm: "삭제한 기록은 복구할 수 없어요."
-        case .recordDeleted, .logoutConfirm, .withdrawalCompleted: nil
+        case .recordDeleted, .logoutConfirm: nil
+        case .withdrawalCompleted: "그동안 함께 바다를 지켜주셔서 고마워요.\n언제든 다시 찾아와 주세요."
         case .userBlockConfirm: "차단하면 이 사용자의 기록이 더 이상 보이지 않아요."
         case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요."
         case .withdrawalConfirm: "탈퇴하면 게시글, 좋아요 등 모든 활동 기록들이 삭제되어 복구되지 않습니다."
@@ -97,7 +98,7 @@ extension AlertType {
         case .recordExitConfirm: "계속 작성하기"
         case .logoutConfirm: "로그아웃"
         case .withdrawalConfirm: "계속 사용하기"
-        case .withdrawalCompleted: "홈으로 이동"
+        case .withdrawalCompleted: "확인"
         }
     }
     

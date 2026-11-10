@@ -26,42 +26,35 @@ struct MapView: View {
     // MARK: - Body
 
     var body: some View {
-        NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-            mapContent
-                .toolbar(.hidden, for: .navigationBar)
-        } destination: { store in
-            destination(store)
-                .toolbar(.hidden, for: .navigationBar)
-                .toolbar(.hidden, for: .tabBar)
-        }
-        .sheet(item: $store.scope(state: \.beachSheet, action: \.beachSheet)) { store in
-            BeachSheetView(store: store)
-                // 시안 높이(357)에 하단 안전 영역까지 포함돼 있어서 콘텐츠를 안전 영역까지 내려요
-                .ignoresSafeArea(.container, edges: .bottom)
-                .presentationDetents([.height(Self.sheetHeight)])
-                .presentationBackgroundInteraction(.enabled(upThrough: .height(Self.sheetHeight)))
-                .presentationCornerRadius(24.scaled)
-        }
-        .onAppear {
-            cameraPosition = Self.cameraPosition(for: store.cameraCommand)
-        }
-        .onChange(of: store.cameraRevision) {
-            withAnimation {
+        mapContent
+            .sheet(item: $store.scope(state: \.beachSheet, action: \.beachSheet)) { store in
+                BeachSheetView(store: store)
+                    // 시안 높이(357)에 하단 안전 영역까지 포함돼 있어서 콘텐츠를 안전 영역까지 내려요
+                    .ignoresSafeArea(.container, edges: .bottom)
+                    .presentationDetents([.height(Self.sheetHeight)])
+                    .presentationBackgroundInteraction(.enabled(upThrough: .height(Self.sheetHeight)))
+                    .presentationCornerRadius(24.scaled)
+            }
+            .onAppear {
                 cameraPosition = Self.cameraPosition(for: store.cameraCommand)
             }
-        }
-        .onChange(of: scenePhase) { _, phase in
-            if phase == .active {
-                store.send(.sceneBecameActive)
+            .onChange(of: store.cameraRevision) {
+                withAnimation {
+                    cameraPosition = Self.cameraPosition(for: store.cameraCommand)
+                }
             }
-        }
-        .task {
-            store.send(.task)
-        }
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active {
+                    store.send(.sceneBecameActive)
+                }
+            }
+            .task {
+                store.send(.task)
+            }
     }
 
     @ViewBuilder
-    private func destination(_ store: StoreOf<MapFeature.Path>) -> some View {
+    static func destination(_ store: StoreOf<MapFeature.Path>) -> some View {
         switch store.case {
         case let .beachHome(store):
             BeachHomeView(store: store)

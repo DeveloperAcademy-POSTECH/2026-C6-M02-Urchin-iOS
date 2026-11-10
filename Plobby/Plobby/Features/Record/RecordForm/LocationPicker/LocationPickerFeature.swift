@@ -21,10 +21,10 @@ struct LocationPickerFeature {
         var query: String = ""
         var searchStatus: SearchStatus = .idle
         var authorization: LocationAuthorization = .notDetermined
-        var mapCenter: Coordinate = .fallback    // 지도 가운데(핀) 좌표
-        var cameraTarget: CameraTarget = .init(center: .fallback)    // 코드로 지도를 옮길 때만 바뀌어요
-        var beachLookup: BeachLookup = .idle    // 핀 근처 해변
-        var isBeachSelected: Bool = false    // 해변 카드를 눌러 선택했는지
+        var mapCenter: Coordinate = .fallback
+        var cameraTarget: CameraTarget = .init(center: .fallback)
+        var beachLookup: BeachLookup = .idle
+        var isBeachSelected: Bool = false
         var isLocating: Bool = false
 
         var foundBeach: Beach? {
@@ -43,14 +43,14 @@ struct LocationPickerFeature {
     enum Action: BindableAction {
         case binding(BindingAction<State>)
         case authorizationResponse(LocationAuthorization)
-        case searchResultTapped(PlaceSearchResult.ID)    // 검색 결과 탭 → 해당 위치로 지도 화면 이동
-        case nearbyBeachesTapped    // 주변 해변 보기 탭
-        case currentLocationButtonTapped    // 현위치 버튼 탭
+        case searchResultTapped(PlaceSearchResult.ID)
+        case nearbyBeachesTapped
+        case currentLocationButtonTapped
         case currentLocationResponse(Result<Coordinate, any Error>)
-        case mapCameraChangeEnded(center: Coordinate)    // 사용자가 지도 중심을 옮기기를 완료했을 때 해변 조회
+        case mapCameraChangeEnded(center: Coordinate)
         case beachCardTapped
         case saveTapped
-        case backTapped    // 상단 뒤로가기: 지도면 검색으로, 검색이면 기록 양식으로
+        case backTapped
         case delegate(Delegate)
 
         @CasePathable
@@ -99,7 +99,6 @@ struct LocationPickerFeature {
 
             case .nearbyBeachesTapped:
                 state.screen = .map
-                // 위치 권한이 정해지지 않았다면 현재 위치를 받는 순간 권한 팝업이 떠요. 거부하면 기본 위치를 보여줘요.
                 return fetchCurrentLocation(&state)
 
             case .currentLocationButtonTapped:
@@ -132,7 +131,7 @@ struct LocationPickerFeature {
             case .beachCardTapped:
                 guard state.foundBeach != nil else { return .none }
 
-                state.isBeachSelected = true
+                state.isBeachSelected.toggle()
                 return .none
 
             case .saveTapped:

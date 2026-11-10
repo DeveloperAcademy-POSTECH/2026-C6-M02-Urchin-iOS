@@ -21,12 +21,15 @@ struct SearchBeachView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             searchField
-            favoriteSection
+
+            if store.isMember, !store.favoriteBeaches.isEmpty {
+                favoriteSection
+            }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     if InputText.isBlank(store.query) {
-                        if !store.recentSearches.isEmpty {
+                        if store.isMember, !store.recentSearches.isEmpty {
                             recentSection
                         }
                     } else {
@@ -100,15 +103,6 @@ private extension SearchBeachView {
                             store.send(.resultTapped(beach.id))
                         } label: {
                             BeachChip(title: beach.name)
-                        }
-                        .buttonStyle(.plain)
-                    }
-
-                    if store.favoriteBeaches.count < Beach.maximumFavoriteCount {
-                        Button {
-                            // TODO: 관심 해변 추가 흐름 연결
-                        } label: {
-                            BeachChip(title: "추가", style: .add)
                         }
                         .buttonStyle(.plain)
                     }

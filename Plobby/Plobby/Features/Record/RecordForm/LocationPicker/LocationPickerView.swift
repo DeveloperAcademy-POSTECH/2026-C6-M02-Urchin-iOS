@@ -10,7 +10,6 @@ import SwiftUI
 
 import ComposableArchitecture
 
-// TODO: 추후 디자인 시스템에 맞게 색상과 폰트를 수정
 struct LocationPickerView: View {
 
     // MARK: - Properties
@@ -234,7 +233,6 @@ private extension LocationPickerView {
             }
     }
 
-    /// 핀 끝이 지도 가운데를 가리키도록 핀 높이의 절반만큼 위로 올려요.
     var centerPin: some View {
         Image(.searchResultPin)
             .resizable()
@@ -253,14 +251,14 @@ private extension LocationPickerView {
                 if store.isLocating {
                     ProgressView()
                 } else {
-                    Image(systemName: "location")
-                        .font(.system(size: 18.scaled, weight: .medium))
+                    Image(systemName: "scope")
+                        .font(.system(size: 20, weight: .medium))
                         .foregroundStyle(Color(.textPrimary))
                 }
             }
-            .frame(width: 44.scaled, height: 44.scaled)
+            .frame(width: 44, height: 44)
             .background(Color(.gray0), in: Circle())
-            .shadow(color: Color(.neutralBlack).opacity(0.10), radius: 8, y: 2)
+            .shadow(color: .black.opacity(0.25), radius: 1, y: 1)
         }
         .buttonStyle(.plain)
         .accessibilityLabel("현재 위치로 이동")

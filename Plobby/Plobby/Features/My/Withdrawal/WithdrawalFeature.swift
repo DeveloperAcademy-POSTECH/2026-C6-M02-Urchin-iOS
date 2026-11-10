@@ -29,7 +29,7 @@ struct WithdrawalFeature {
             !detail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
 
-        /// 사유를 고르거나 기타를 입력하면 탈퇴할 수 있어요.
+        /// 사유를 고르거나 기타를 입력하면 탈퇴할 수 있어요. 둘 중 하나만 고를 수 있어요.
         var canWithdraw: Bool {
             (selectedReason != nil || hasDetail) && !isWithdrawing
         }
@@ -75,8 +75,12 @@ struct WithdrawalFeature {
                 state.selectedReason = state.selectedReason == reason ? nil : reason
                 return .none
 
+            // 기타를 쓰기 시작하면 고른 사유는 풀어요. 기타를 다 지우면 고른 것이 없어 탈퇴할 수 없어요.
             case let .detailChanged(detail):
                 state.detail = String(detail.prefix(Self.maximumDetailLength))
+                if state.hasDetail {
+                    state.selectedReason = nil
+                }
                 return .none
 
             case .withdrawButtonTapped:
@@ -100,6 +104,9 @@ struct WithdrawalFeature {
                 return .none
 
             case .withdrawResponse(.success):
+                @Shared(.recentSearches) var recentSearches
+                $recentSearches.withLock { $0.removeAll() }
+
                 state.isWithdrawing = false
                 state.alert = .make(.withdrawalCompleted, confirm: .confirm)
                 return .none
@@ -110,7 +117,10 @@ struct WithdrawalFeature {
                 return .none
 
             case .alert(.presented(.confirm)):
-                return .send(.delegate(.withdrawn))
+                return .run { send in
+                    try? await authClient.signOut(nil)
+                    await send(.delegate(.withdrawn))
+                }
 
             case .alert, .delegate:
                 return .none

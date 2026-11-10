@@ -48,11 +48,9 @@ struct SettingsView: View {
         }
         .navigationDestination(item: $store.scope(state: \.withdrawal, action: \.withdrawal)) { store in
             WithdrawalView(store: store)
-                .toolbar(.hidden, for: .tabBar)
         }
         .navigationDestination(item: $store.scope(state: \.blockedUsers, action: \.blockedUsers)) { store in
             BlockedUsersView(store: store)
-                .toolbar(.hidden, for: .tabBar)
         }
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
     }

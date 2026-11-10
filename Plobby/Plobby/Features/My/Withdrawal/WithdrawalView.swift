@@ -48,15 +48,6 @@ struct WithdrawalView: View {
         .onTapGesture {
             isDetailFocused = false
         }
-        .toolbar {
-            ToolbarSpacer(.flexible, placement: .keyboard)
-
-            ToolbarItem(placement: .keyboard) {
-                Button("완료") {
-                    isDetailFocused = false
-                }
-            }
-        }
         .toolbar(.hidden, for: .navigationBar)
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
     }

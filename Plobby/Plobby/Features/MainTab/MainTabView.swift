@@ -10,68 +10,46 @@ import SwiftUI
 import ComposableArchitecture
 
 struct MainTabView: View {
-    
+
     // MARK: - Properties
-    
+
     @Bindable var store: StoreOf<MainTabFeature>
-    
+
     // MARK: - Body
-    
+
     var body: some View {
-        TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
-            Tab(value: .home) {
-                NavigationStack {
-                    HomeView(store: store.scope(state: \.home, action: \.home))
+        NavigationStack(path: $store.scope(state: \.map.path, action: \.map.path)) {
+            tabView
+                .toolbar(.hidden, for: .navigationBar)
+                .navigationDestination(
+                    item: $store.scope(state: \.home.recordDetail, action: \.home.recordDetail)
+                ) { store in
+                    RecordDetailView(store: store)
                         .toolbar(.hidden, for: .navigationBar)
-                        .navigationDestination(
-                            item: $store.scope(state: \.home.recordDetail, action: \.home.recordDetail)
-                        ) { store in
-                            RecordDetailView(store: store)
-                                .toolbar(.hidden, for: .navigationBar)
-                                .toolbar(.hidden, for: .tabBar)
-                        }
-                        .navigationDestination(
-                            item: $store.scope(state: \.home.notification, action: \.home.notification)
-                        ) { store in
-                            NotificationView(store: store)
-                                .toolbar(.hidden, for: .tabBar)
-                        }
-                        .navigationDestination(
-                            item: $store.scope(state: \.home.goalList, action: \.home.goalList)
-                        ) { store in
-                            GoalListView(store: store)
-                                .toolbar(.hidden, for: .tabBar)
-                        }
-                        .navigationDestination(
-                            item: $store.scope(state: \.home.userHome, action: \.home.userHome)
-                        ) { store in
-                            UserHomeView(store: store)
-                                .toolbar(.hidden, for: .tabBar)
-                        }
                 }
-            } label: {
-                tabLabel("홈", icon: "house", tab: .home)
-            }
-
-            Tab(value: .map) {
-                MapView(store: store.scope(state: \.map, action: \.map))
-            } label: {
-                tabLabel("지도", icon: "map", tab: .map)
-            }
-
-            Tab(value: .collection) {
-                NavigationStack {
-                    CollectionView(store: store.scope(state: \.collection, action: \.collection))
-                        .toolbar(.hidden, for: .navigationBar)
-                        .navigationDestination(
-                            item: $store.scope(state: \.collection.my, action: \.collection.my)
-                        ) { store in
-                            myView(store: store)
-                        }
+                .navigationDestination(
+                    item: $store.scope(state: \.home.notification, action: \.home.notification)
+                ) { store in
+                    NotificationView(store: store)
                 }
-            } label: {
-                tabLabel("컬렉션", icon: "books.vertical", tab: .collection)
-            }
+                .navigationDestination(
+                    item: $store.scope(state: \.home.goalList, action: \.home.goalList)
+                ) { store in
+                    GoalListView(store: store)
+                }
+                .navigationDestination(
+                    item: $store.scope(state: \.home.userHome, action: \.home.userHome)
+                ) { store in
+                    UserHomeView(store: store)
+                }
+                .navigationDestination(
+                    item: $store.scope(state: \.collection.my, action: \.collection.my)
+                ) { store in
+                    myView(store: store)
+                }
+        } destination: { store in
+            MapView.destination(store)
+                .toolbar(.hidden, for: .navigationBar)
         }
         .tint(.primary)
         .overlay {
@@ -85,12 +63,6 @@ struct MainTabView: View {
             }
         }
         .animation(.easeInOut(duration: 0.25), value: store.isLoginSheetPresented)
-        .overlay(alignment: .bottomTrailing) {
-            if store.isRecordMenuPresented {
-                recordMenu
-            }
-        }
-        .animation(.spring(duration: 0.25), value: store.isRecordMenuPresented)
         .fullScreenCover(item: $store.scope(state: \.recordFlow, action: \.recordFlow)) { store in
             RecordView(store: store)
         }
@@ -107,21 +79,40 @@ struct MainTabView: View {
 
 // MARK: - Subviews
 
-extension MainTabView {
+private extension MainTabView {
 
-    /// 선택된 탭만 채워진 아이콘을 보여줘요
-    private func tabLabel(_ title: String, icon: String, tab: MainTab) -> some View {
+    var tabView: some View {
+        TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
+            Tab(value: .home) {
+                HomeView(store: store.scope(state: \.home, action: \.home))
+            } label: {
+                tabLabel("홈", icon: "house", tab: .home)
+            }
+
+            Tab(value: .map) {
+                MapView(store: store.scope(state: \.map, action: \.map))
+            } label: {
+                tabLabel("지도", icon: "map", tab: .map)
+            }
+
+            Tab(value: .collection) {
+                CollectionView(store: store.scope(state: \.collection, action: \.collection))
+            } label: {
+                tabLabel("컬렉션", icon: "books.vertical", tab: .collection)
+            }
+        }
+    }
+
+    func tabLabel(_ title: String, icon: String, tab: MainTab) -> some View {
         Label(title, systemImage: store.selectedTab == tab ? "\(icon).fill" : icon)
-            // 탭바가 아이콘을 자동으로 채우지 않게 해요
             .environment(\.symbolVariants, .none)
     }
 
-    private func myView(store: StoreOf<MyFeature>) -> some View {
+    func myView(store: StoreOf<MyFeature>) -> some View {
         @Bindable var store = store
 
         return MyView(store: store)
             .toolbar(.hidden, for: .navigationBar)
-            .toolbar(.hidden, for: .tabBar)
             .navigationDestination(
                 item: $store.scope(state: \.profileEdit, action: \.profileEdit)
             ) { store in
@@ -150,23 +141,5 @@ extension MainTabView {
                             .toolbar(.hidden, for: .navigationBar)
                     }
             }
-    }
-    
-    private var recordMenu: some View {
-        ZStack(alignment: .bottomTrailing) {
-            Color.black.opacity(0.4)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    store.send(.recordMenuDismissed)
-                }
-                .transition(.opacity)
-            
-            RecordMenuView { recordType in
-                store.send(.recordTypeSelected(recordType))
-            }
-            .padding(.trailing, 16)
-            .padding(.bottom, 64)
-            .transition(.scale(scale: 0.8, anchor: .bottomTrailing).combined(with: .opacity))
-        }
     }
 }

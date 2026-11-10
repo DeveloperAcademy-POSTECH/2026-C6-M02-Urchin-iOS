@@ -28,6 +28,8 @@ final class TrashPileScene: SKScene {
 
     override func didMove(to view: SKView) {
         backgroundColor = UIColor(resource: .surfaceBlack)
+        // 화면에 다시 붙을 때 멈춘 채로 남아 있으면 떨어지던 쓰레기가 그 자리에 멈춰요.
+        isPaused = false
         startIfNeeded()
     }
 
