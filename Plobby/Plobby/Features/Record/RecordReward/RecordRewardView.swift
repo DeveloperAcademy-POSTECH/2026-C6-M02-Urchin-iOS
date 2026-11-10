@@ -5,6 +5,7 @@
 //  Created by 더스틴 on 11/3/26.
 //
 
+import CoreMotion
 import SpriteKit
 import SwiftUI
 
@@ -63,6 +64,8 @@ struct RecordRewardView: View {
                 scene.onFinished = {
                     withAnimation(.easeInOut(duration: 0.5).delay(1)) {
                         isSummaryVisible = true
+                    } completion: {
+                        scene.startTilting()
                     }
                 }
             }
@@ -137,6 +140,9 @@ private final class FallingTrashScene: SKScene {
     private let floorNode = SKNode()
     private let netTilt: CGFloat = .pi / 3
     private let settleDuration: TimeInterval = 1.5
+    private let motionManager = CMMotionManager()
+    private let gravityStrength: Double = 25
+    private static let netNodeName = "net"
 
     var imageNames: [String] = []
     var startDelay: TimeInterval = 0
@@ -153,6 +159,20 @@ private final class FallingTrashScene: SKScene {
 
     override func didChangeSize(_ oldSize: CGSize) {
         updateBoundary()
+    }
+
+    override func update(_ currentTime: TimeInterval) {
+        guard let gravity = motionManager.deviceMotion?.gravity else { return }
+
+        physicsWorld.gravity = CGVector(dx: gravity.x * gravityStrength, dy: gravity.y * gravityStrength)
+        for case let body? in children.map(\.physicsBody) where body.isDynamic {
+            body.isResting = false
+        }
+        keepNetsInside()
+    }
+
+    override func willMove(from view: SKView) {
+        motionManager.stopDeviceMotionUpdates()
     }
 }
 
@@ -176,6 +196,30 @@ extension FallingTrashScene {
             to: CGPoint(x: size.width * 2, y: 0)
         )
         floorNode.physicsBody?.categoryBitMask = floorCategory
+    }
+
+    func startTilting() {
+        guard motionManager.isDeviceMotionAvailable, !motionManager.isDeviceMotionActive else { return }
+
+        physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: .zero, size: size))
+        physicsBody?.categoryBitMask = boundaryCategory
+
+        motionManager.deviceMotionUpdateInterval = 1 / 60
+        motionManager.startDeviceMotionUpdates()
+    }
+
+    private func keepNetsInside() {
+        for case let net as SKSpriteNode in children where net.name == Self.netNodeName {
+            guard let body = net.physicsBody else { continue }
+
+            let edgeOffset = net.size.width * 0.1
+            let clampedX = min(max(net.position.x, edgeOffset), size.width - edgeOffset)
+            let clampedY = min(net.position.y, size.height)
+
+            if clampedX != net.position.x { body.velocity.dx = 0 }
+            if clampedY != net.position.y { body.velocity.dy = 0 }
+            net.position = CGPoint(x: clampedX, y: clampedY)
+        }
     }
 
     private func startDropping() {
@@ -239,6 +283,7 @@ extension FallingTrashScene {
             
             node.zRotation = (x < size.width / 2 ? netTilt : -netTilt) + .pi
             node.zPosition = 1
+            node.name = Self.netNodeName
         }
 
         node.physicsBody = body
