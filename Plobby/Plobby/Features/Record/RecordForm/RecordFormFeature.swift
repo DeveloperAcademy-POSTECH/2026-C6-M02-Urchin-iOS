@@ -78,12 +78,13 @@ struct RecordFormFeature {
             remainingPhotoCount > 0 || photos.contains { if case .local = $0 { true } else { false } }
         }
 
+        /// 나갈 때 확인 팝업을 띄울지 정해요.
+        /// 새 기록은 사진을 한 장이라도 골랐으면 작성 중인 것으로 봐요.
         var hasInput: Bool {
-            var current = inputs
-            if mode == .create {
-                current.photoIDs = initialInputs.photoIDs
+            if mode == .create, !photos.isEmpty {
+                return true
             }
-            return current != initialInputs
+            return inputs != initialInputs
         }
         
         private var inputs: Inputs {
