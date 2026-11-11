@@ -426,7 +426,9 @@ extension RecordFormFeature {
               maxDepthError(for: state.maxDepthText) == nil,
               !state.trash.isEmpty,
               totalWeightError(for: state.totalWeightText) == nil,
-              !InputText.isBlank(state.memo)
+              !InputText.isBlank(state.memo),
+              // 500자를 넘겨 잘린 직후에는 안내 문구가 보이는 동안 저장을 막아요
+              !state.isMemoOverLimit
         else { return false }
 
         return true
