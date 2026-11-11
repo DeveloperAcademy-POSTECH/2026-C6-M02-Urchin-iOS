@@ -233,13 +233,15 @@ struct MyFeature {
                 state.beachRecordDetail = RecordDetailFeature.State(recordID: record.id)
                 return .none
 
-            case .beachRecordDetail(.presented(.delegate(.closed))),
-                 .beachRecordDetail(.presented(.delegate(.deleted))):
+            case .beachRecordDetail(.presented(.delegate(.closed))):
                 state.beachRecordDetail = nil
                 return .none
 
-            case let .beachRecordDetail(.presented(.delegate(.reported(recordID)))):
+            // 지운 기록도 신고한 기록처럼 해변 홈 목록에서 빼고, 정화 횟수·수거량을 다시 불러와요.
+            case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))),
+                 let .beachRecordDetail(.presented(.delegate(.reported(recordID)))):
                 state.beachRecordDetail = nil
+                state.records.removeAll { $0.id == recordID }
                 return .send(.beachHome(.presented(.recordHidden(recordID))))
 
             case let .beachRecordDetail(.presented(.delegate(.blocked(userID)))):

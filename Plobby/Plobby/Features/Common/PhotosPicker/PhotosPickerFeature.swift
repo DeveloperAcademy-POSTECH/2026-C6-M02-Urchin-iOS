@@ -31,9 +31,11 @@ struct PhotosPickerFeature {
         var isCameraPresented = false
         var toast = ToastFeature.State()
         
-        init(recordType: RecordType, alreadySelectedCount: Int = 0) {
+        /// 기록 양식에 이미 넣은 사진은 선택된 채로 열어요.
+        /// 앨범에서 다시 고를 수 없는 사진(수정 중인 기존 사진)은 그 장수만큼 한도에서 빼요.
+        init(recordType: RecordType, selectedAssets: [PhotoAsset] = [], alreadySelectedCount: Int = 0) {
             self.purpose = .record(recordType)
-            self.selection = PhotoSelection(limit: PhotoSelection.maxCount - alreadySelectedCount)
+            self.selection = PhotoSelection(selectedAssets, limit: PhotoSelection.maxCount - alreadySelectedCount)
         }
 
         static var profile: Self {

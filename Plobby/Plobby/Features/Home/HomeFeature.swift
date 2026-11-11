@@ -133,6 +133,8 @@ struct HomeFeature {
             
             switch action {
             case .onAppear:
+                // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
+                state.isGoalExpanded = false
                 let now = now
                 return .run { send in
                     await send(.boardsResponse(Result { try await fetchBoards(now: now) }, now: now))
@@ -420,6 +422,7 @@ extension HomeFeature {
     }
     
     private func showScrollGuideIfNeeded(_ state: inout State) -> Effect<Action> {
+        // 모은 쓰레기가 0개면 내려가며 볼 기록이 없어서 안내하지 않아요
         guard state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
               state.status?.isFinished == false,
               (state.board?.totalTrashCount ?? 0) > 0

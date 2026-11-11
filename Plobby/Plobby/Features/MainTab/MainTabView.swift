@@ -82,7 +82,7 @@ struct MainTabView: View {
 private extension MainTabView {
 
     var tabView: some View {
-        TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
+        TabView(selection: tabSelection) {
             Tab(value: .home) {
                 HomeView(store: store.scope(state: \.home, action: \.home))
             } label: {
@@ -101,6 +101,25 @@ private extension MainTabView {
                 tabLabel("컬렉션", icon: "books.vertical", tab: .collection)
             }
         }
+    }
+
+    /// 탭을 바꾸면 이전 탭 화면이 뒤에 그대로 남아서, 지도 검색창 키보드가 새 탭에 잠깐 떠 있다가 느리게 내려가요.
+    /// 탭을 바꾸는 순간 키보드를 애니메이션 없이 바로 내려요.
+    var tabSelection: Binding<MainTab> {
+        Binding(
+            get: { store.selectedTab },
+            set: { tab in
+                UIView.performWithoutAnimation {
+                    UIApplication.shared.sendAction(
+                        #selector(UIResponder.resignFirstResponder),
+                        to: nil,
+                        from: nil,
+                        for: nil
+                    )
+                }
+                store.send(.tabSelected(tab))
+            }
+        )
     }
 
     func tabLabel(_ title: String, icon: String, tab: MainTab) -> some View {

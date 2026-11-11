@@ -188,6 +188,11 @@ private extension RecordDetailView {
                 .foregroundStyle(Color(.textPrimary))
 
             photoCarousel(record)
+                .fullScreenCover(
+                    isPresented: $store.isPhotoViewerPresented.sending(\.photoViewerPresentationChanged)
+                ) {
+                    photoViewer(record.photos)
+                }
         }
     }
 
@@ -234,6 +239,10 @@ private extension RecordDetailView {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .clipped()
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            store.send(.photoViewerPresentationChanged(true))
+                        }
                         .tag(index)
                     }
                 }
@@ -263,6 +272,52 @@ private extension RecordDetailView {
             likeButton(record, isOnPhoto: !photos.isEmpty)
                 .padding(.trailing, 12.scaled)
                 .padding(.bottom, 8.scaled)
+        }
+    }
+
+    /// 사진을 화면 가득 원래 비율로 보여줘요. 옆으로 넘기면 상세 화면의 사진도 같이 넘어가요.
+    func photoViewer(_ photos: [RecordDetail.Photo]) -> some View {
+        ZStack(alignment: .top) {
+            Color(.neutralBlack)
+                .ignoresSafeArea()
+
+            TabView(selection: $store.currentPhotoIndex.sending(\.photoPageChanged)) {
+                ForEach(Array(photos.enumerated()), id: \.offset) { index, photo in
+                    AsyncImage(url: photo.url) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                    } placeholder: {
+                        ProgressView()
+                            .tint(Color(.gray0))
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .tag(index)
+                }
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .ignoresSafeArea()
+
+            HStack(spacing: 0) {
+                Button {
+                    store.send(.photoViewerPresentationChanged(false))
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 20.scaled, weight: .medium))
+                        .foregroundStyle(Color(.gray0))
+                        .frame(width: 44.scaled, height: 44.scaled)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("닫기")
+
+                Spacer(minLength: 0)
+
+                Text("\(store.currentPhotoIndex + 1)/\(photos.count)")
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.gray0))
+            }
+            .padding(.horizontal, 20.scaled)
         }
     }
 

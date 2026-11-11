@@ -231,7 +231,7 @@ private extension RecordFormView {
             .frame(width: 100.scaled, height: 100.scaled)
             .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
-        .disabled(store.photos.count >= maxPhotoCount)
+        .disabled(!store.canOpenPhotoPicker)
         .accessibilityLabel("사진 추가, \(store.photos.count)/\(maxPhotoCount)")
     }
 
@@ -241,20 +241,27 @@ private extension RecordFormView {
     }
 
     func photoThumbnail(_ photo: RecordPhoto, isRepresentative: Bool) -> some View {
+        photoCard(photo, isRepresentative: isRepresentative)
+            .overlay(alignment: .topTrailing) {
+                photoDeleteButton(photo.id)
+            }
+            // X 버튼은 사진 밖으로 걸쳐 있어서 끌 때 잘려 보여요. 끄는 동안에는 사진만 보여줘요.
+            .onDrag {
+                NSItemProvider(object: photo.id as NSString)
+            } preview: {
+                photoCard(photo, isRepresentative: isRepresentative)
+            }
+            .onDrop(of: [.text], delegate: PhotoDropDelegate { sourceID in
+                store.send(.photoMoved(sourceID, to: photo.id), animation: .default)
+            })
+    }
+
+    func photoCard(_ photo: RecordPhoto, isRepresentative: Bool) -> some View {
         photoImage(photo)
             .overlay(alignment: .bottom) {
                 representativeLabel(isRepresentative: isRepresentative)
             }
             .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
-            .overlay(alignment: .topTrailing) {
-                photoDeleteButton(photo.id)
-            }
-            .onDrag {
-                NSItemProvider(object: photo.id as NSString)
-            }
-            .onDrop(of: [.text], delegate: PhotoDropDelegate { sourceID in
-                store.send(.photoMoved(sourceID, to: photo.id), animation: .default)
-            })
     }
 
     @ViewBuilder

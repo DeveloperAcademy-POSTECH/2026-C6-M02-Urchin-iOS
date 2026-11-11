@@ -47,6 +47,8 @@ struct SignUpFeature {
 
         enum Delegate {
             case completed(AuthUser)
+            /// 약관 동의에서 뒤로 가면 가입을 그만두고 로그인 화면으로 돌아가요.
+            case cancelled
         }
     }
 
@@ -63,6 +65,9 @@ struct SignUpFeature {
 
         Reduce { state, action in
             switch action {
+            case .termsAgreement(.backButtonTapped):
+                return .send(.delegate(.cancelled))
+
             case .termsAgreement(.nextButtonTapped):
                 guard state.termsAgreement.isAllAgreed else { return .none }
 

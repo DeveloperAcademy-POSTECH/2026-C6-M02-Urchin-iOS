@@ -122,6 +122,8 @@ private extension BeachPickerView {
                 }
             }
         }
+        // 검색창을 누른 채 검색하지 않고 목록을 스크롤하면 키보드를 내려요
+        .scrollDismissesKeyboard(.immediately)
         .scrollIndicators(.hidden)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.leading, 7.scaled)

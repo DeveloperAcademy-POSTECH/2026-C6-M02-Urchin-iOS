@@ -127,8 +127,9 @@ extension FallingTrashScene {
 
         let interval = min(dropInterval, maxDropDuration / Double(max(ordered.count, 1)))
         let wait = SKAction.wait(forDuration: interval)
+        // 앞 화면의 구멍이 화면을 덮자마자 이어지도록, 첫 쓰레기는 기다리지 않고 바로 떨어뜨려요
         let drops = ordered.flatMap { name in
-            [wait, SKAction.run { [weak self] in self?.dropItem(name) }]
+            [SKAction.run { [weak self] in self?.dropItem(name) }, wait]
         }
 
         run(.sequence(

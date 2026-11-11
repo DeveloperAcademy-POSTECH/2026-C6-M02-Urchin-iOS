@@ -231,12 +231,13 @@ struct MapFeature {
                 state.path.append(.recordDetail(RecordDetailFeature.State(recordID: record.id)))
                 return .none
 
-            case let .path(.element(id, .recordDetail(.delegate(.closed)))),
-                let .path(.element(id, .recordDetail(.delegate(.deleted)))):
+            case let .path(.element(id, .recordDetail(.delegate(.closed)))):
                 state.path.pop(from: id)
                 return .none
 
-            case let .path(.element(id, .recordDetail(.delegate(.reported(recordID))))):
+            // 지운 기록도 신고한 기록처럼 해변 홈 목록에서 빼고, 정화 횟수·수거량을 다시 불러와요.
+            case let .path(.element(id, .recordDetail(.delegate(.deleted(recordID))))),
+                 let .path(.element(id, .recordDetail(.delegate(.reported(recordID))))):
                 state.path.pop(from: id)
                 return hideInBeachHomes(.recordHidden(recordID), state: state)
 
