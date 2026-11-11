@@ -122,6 +122,8 @@ struct HomeFeature {
             
             switch action {
             case .onAppear:
+                // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
+                state.isGoalExpanded = false
                 let now = now
                 return .run { send in
                     await send(.boardsResponse(Result { try await fetchBoards(now: now) }, now: now))
