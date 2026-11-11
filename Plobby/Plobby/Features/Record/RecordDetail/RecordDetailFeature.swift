@@ -19,6 +19,7 @@ struct RecordDetailFeature {
         let recordID: UUID
         var loadState: LoadState = .loading
         var currentPhotoIndex = 0
+        var isPhotoViewerPresented = false
         var isLikeUpdating = false
         /// 타인 홈에서 연 상세는 작성자 홈을 또 열지 않아요.
         var opensAuthorHome = true
@@ -68,6 +69,7 @@ struct RecordDetailFeature {
         case task
         case recordResponse(Result<RecordDetail, any Error>)
         case photoPageChanged(Int)
+        case photoViewerPresentationChanged(Bool)
         case likeTapped
         case likeResponse(Result<Void, any Error>)
         case backTapped
@@ -137,6 +139,11 @@ struct RecordDetailFeature {
                 
             case let .photoPageChanged(index):
                 state.currentPhotoIndex = index
+                return .none
+                
+            // 사진을 누르면 크게 보여주고, 넘긴 사진은 상세 화면과 같은 순서를 따라가요.
+            case let .photoViewerPresentationChanged(isPresented):
+                state.isPhotoViewerPresented = isPresented
                 return .none
                 
             case .likeTapped:
