@@ -55,12 +55,29 @@ struct TermsAgreementView: View {
             .disabled(!store.isAllAgreed)
         }
         .padding(.horizontal, 20.scaled)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                backButton
+            }
+        }
     }
 }
 
 // MARK: - Subviews
 
 private extension TermsAgreementView {
+
+    var backButton: some View {
+        Button {
+            store.send(.backButtonTapped)
+        } label: {
+            Image(.chevronLeft)
+                .resizable()
+                .frame(width: 24.scaled, height: 24.scaled)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("뒤로")
+    }
 
     var title: some View {
         Text("서비스 이용을 위해\n약관에 동의해주세요")

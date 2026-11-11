@@ -31,6 +31,7 @@ struct TermsAgreementFeature {
         case termsAgreementTapped
         case privacyAgreementTapped
         case nextButtonTapped
+        case backButtonTapped
     }
 
     // MARK: - Body
@@ -57,7 +58,7 @@ struct TermsAgreementFeature {
                 state.isPrivacyAgreed.toggle()
                 return .none
 
-            case .nextButtonTapped:
+            case .nextButtonTapped, .backButtonTapped:
                 return .none
             }
         }
