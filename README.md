@@ -1,13 +1,25 @@
 <img width="100%" alt="Plobby banner" src="https://github.com/user-attachments/assets/c6398688-ebe7-4fdf-9055-6fd2d1da80fa" />
 
-# <img src="https://github.com/user-attachments/assets/6a31c332-6a20-49b6-8ad4-6fddb6e24444" width="40" align="absmiddle">  플로비
-> 플로깅·플로빙 활동을 기록하고, 봉사 참여 동기를 위한 리워드와 전국 해변 봉사 지도로 함께 바다를 지키고 있음을 체감하게 하는 앱 <br>
-> 🌊 [App Store](https://apps.apple.com/kr/app/plobby-%ED%95%B4%EB%B3%80-%EC%A0%95%ED%99%94-%EA%B8%B0%EB%A1%9D/id6831732389)
+<br>
+<br>
 
-## 📷 Screenshot
-📌 Todo: 추가하기 ~.~
+해변을 걸으며 쓰레기를 줍는 **플로깅**, 바닷속 쓰레기를 줍는 **플로빙**.<br>
+Plobby와 함께라면 나의 작은 줍기가 모두의 깨끗한 바다로 이어져요.
 
-## 🔨 Tech Stack
+<img src="https://github.com/user-attachments/assets/6a31c332-6a20-49b6-8ad4-6fddb6e24444" width="20" align="absmiddle"> [App Store에서 보기 →](https://apps.apple.com/kr/app/plobby-%ED%95%B4%EB%B3%80-%EC%A0%95%ED%99%94-%EA%B8%B0%EB%A1%9D/id6831732389)
+
+<br>
+<br>
+
+# Screenshot
+| 활동 기록 | 공동 목표 | 쓰레기 컬렉션 | 해변 지도 |
+| :---: | :---: | :---: | :---: |
+| <img src="이미지주소" width="200"> | <img src="이미지주소" width="200"> | <img src="이미지주소" width="200"> | <img src="이미지주소" width="200"> |
+
+<br>
+<br>
+
+# Tech Stack
 | Category | Tools & Technologies |
 | :--- | :--- |
 | **IDE** | Xcode 26.4 |
@@ -23,12 +35,12 @@
 | **Test** | Swift Testing |
 | **Package Manager** | SPM (Swift Package Manager) |
 
-## 🛠️ Architecture
+# Architecture
 ```
 📌 Todo: 추가하기 ~.~
 ```
 
-## 📂 Foldering
+# Foldering
 ```
 📁 Plobby
 ├── 📁 App
@@ -114,12 +126,12 @@
 
 > `Core/Config.xcconfig`, `Core/GoogleService-Info.plist`는 저장소에 포함되지 않습니다. 팀 채널에서 받아 같은 위치에 넣어 주세요.
 
-## 📌 Convention
+# Convention
 ### Code Style
 [Swift 스타일쉐어 가이드](https://github.com/StyleShare/swift-style-guide)를 기반으로 하되, 팀원의 기존 스타일과 SwiftUI 프로젝트 특성을 반영하여 일부 규칙은 재정의했습니다.
 [코딩 컨벤션](https://furtive-purchase-33f.notion.site/3e4fe29d786d80edbdc0fc5d656d785c) 문서를 참고해주세요!
 
-### Commit
+## Commit
 | 타입 | 설명 |
 | :---: | --- |
 | `add` | 파일, 에셋 추가 |
@@ -140,7 +152,7 @@ ex) [style/#12] 로그인 버튼 UI 컴포넌트 구현
 - 설명은 한글로, 50자 이내의 명사형으로 간결하게 작성합니다. (Ex. ~ 구현, ~ 추가)
 - 너무 많은 내용을 한 번에 커밋하지 않고, 잘 쪼개서 커밋해주세요.
 
-### Branch
+## Branch
 | 브랜치 | 설명 |
 | :---: | --- |
 | `main` | 배포 브랜치 |
@@ -157,7 +169,7 @@ ex) feat/#3-login
 - 디폴트 브랜치는 `develop`으로 설정합니다.
 - `main`에는 직접 커밋하지 않으며, 배포 시점에 `develop` → `main` PR로만 반영합니다.
 
-## 🌊 Git Flow
+# Git Flow
 1. 작업할 내용에 대한 이슈를 생성합니다.
 2. 이슈 번호를 확인하고, 브랜치 컨벤션에 맞게 **GitHub에서** 브랜치를 생성합니다.
    - 반드시 최신 `develop` 브랜치에서 파생해야 합니다.
@@ -169,7 +181,7 @@ ex) feat/#3-login
    - `merge` 후 원격 브랜치는 삭제합니다. (로컬 브랜치는 남겨두는 것을 권장합니다.)
 6. `merge` 후 팀원에게 알리고, 모든 팀원은 로컬 `develop`을 최신화합니다.
 
-## 🧑‍💻 Team Members
+# Team Members
 | | | | | |
 | :--: | :--: | :--: | :--: | :--: |
 | [김예빈](https://github.com/ErinKYB) | [이선우](https://github.com/dlsundn) | [이은지](https://github.com/oeunji) | [정지나](https://github.com/J1naChung) | [허승준](https://github.com/dev-domo) |
