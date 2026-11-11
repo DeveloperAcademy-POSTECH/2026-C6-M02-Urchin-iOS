@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-/// 해당 활동을 함께한 사람을 수거량 순으로 보여주는 시트예요.
-/// 처음에는 상위 몇 명만 보여주고, "전체 보기"를 누르면 시트가 커지며 모두 보여줘요.
 struct HomeParticipantsSheet: View {
 
     let board: HomeGoalBoard
@@ -16,20 +14,37 @@ struct HomeParticipantsSheet: View {
     let onParticipantTapped: (GoalParticipant.ID) -> Void
     let onClose: () -> Void
 
-    @State private var detent: PresentationDetent = Self.collapsedDetent
+    @State private var isExpanded = false
+    @State private var collapsedHeight: CGFloat?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             header
             summary
             participantList
-            toggleButton
+
+            if hasMore {
+                toggleButton
+            }
         }
         .padding(.horizontal, 20.scaled)
         .padding(.top, 28.scaled)
         .padding(.bottom, 24.scaled)
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            proxy.size.height
+        } action: { height in
+            if !isExpanded {
+                collapsedHeight = height
+            }
+        }
         .frame(maxHeight: .infinity, alignment: .top)
-        .presentationDetents([Self.collapsedDetent, Self.expandedDetent], selection: $detent)
+        .onChange(of: hasMore) { _, hasMore in
+            if !hasMore {
+                isExpanded = false
+            }
+        }
+        .presentationDetents(detents, selection: detentBinding)
+        .presentationDragIndicator(.visible)
         .presentationCornerRadius(24.scaled)
         .presentationBackground(Color(.gray0))
     }
@@ -39,8 +54,23 @@ struct HomeParticipantsSheet: View {
 
 private extension HomeParticipantsSheet {
 
-    var isExpanded: Bool {
-        detent == Self.expandedDetent
+    var hasMore: Bool {
+        board.rankedParticipants.count > Self.collapsedCount
+    }
+
+    var collapsedDetent: PresentationDetent {
+        .height(collapsedHeight ?? Self.defaultCollapsedHeight.scaled)
+    }
+
+    var detents: Set<PresentationDetent> {
+        hasMore ? [collapsedDetent, Self.expandedDetent] : [collapsedDetent]
+    }
+
+    var detentBinding: Binding<PresentationDetent> {
+        Binding(
+            get: { isExpanded && hasMore ? Self.expandedDetent : collapsedDetent },
+            set: { isExpanded = $0 == Self.expandedDetent }
+        )
     }
 
     var header: some View {
@@ -106,7 +136,7 @@ private extension HomeParticipantsSheet {
     func rows(_ participants: [HomeRankedParticipant]) -> some View {
         VStack(spacing: 0) {
             ForEach(participants) { ranked in
-                HomeParticipantRow(ranked: ranked) {
+                HomeParticipantRow(ranked: ranked, showsDivider: ranked.id != participants.last?.id) {
                     onParticipantTapped(ranked.participant.id)
                 }
             }
@@ -115,7 +145,7 @@ private extension HomeParticipantsSheet {
 
     var toggleButton: some View {
         Button {
-            detent = isExpanded ? Self.collapsedDetent : Self.expandedDetent
+            isExpanded.toggle()
         } label: {
             Text(isExpanded ? "간단히 보기" : "전체 보기")
                 .plobbyFont(.labelSelected)
@@ -128,7 +158,6 @@ private extension HomeParticipantsSheet {
         .padding(.top, 8.scaled)
     }
 
-    /// "11월 1일~10일"처럼 목표 시작일부터 오늘(또는 종료일)까지예요.
     var periodText: String {
         let goal = board.goal
         let end = min(now, goal.lastDay)
@@ -143,19 +172,17 @@ private extension HomeParticipantsSheet {
 
 private extension HomeParticipantsSheet {
 
-    /// 접었을 때 보여줄 사람 수예요.
-    static let collapsedCount = 4
-    /// 피그마 시트 높이(458, 662)에서 홈 인디케이터 영역을 뺀 높이예요.
-    static let collapsedDetent = PresentationDetent.height(424.scaled)
+    static let collapsedCount = 3
     static let expandedDetent = PresentationDetent.height(628.scaled)
+    static let defaultCollapsedHeight: CGFloat = 424
 }
 
 // MARK: - Row
 
-/// 순위·프로필·닉네임·수거량 한 줄이에요. 차단한 사용자는 가려서 보여주고 누를 수 없어요.
 struct HomeParticipantRow: View {
 
     let ranked: HomeRankedParticipant
+    var showsDivider = true
     let onTap: () -> Void
 
     private var participant: GoalParticipant { ranked.participant }
@@ -179,14 +206,15 @@ struct HomeParticipantRow: View {
             }
             .padding(.vertical, 8.scaled)
             .overlay(alignment: .bottom) {
-                Capsule()
-                    .fill(Color(.gray200))
-                    .frame(height: 1.scaled)
+                if showsDivider {
+                    Capsule()
+                        .fill(Color(.gray200))
+                        .frame(height: 1.scaled)
+                }
             }
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        // 차단한 사용자는 흐리게 바꾸지 않고 누르기만 막아요.
         .allowsHitTesting(!participant.isBlocked)
         .accessibilityLabel(accessibilityText)
     }
@@ -235,7 +263,6 @@ struct HomeParticipantRow: View {
         .frame(width: 34.scaled, height: 34.scaled)
     }
 
-    /// 1~3위만 순위 배지를 달아요.
     private var showsRankBadge: Bool {
         ranked.rank <= 3 && !participant.isBlocked
     }

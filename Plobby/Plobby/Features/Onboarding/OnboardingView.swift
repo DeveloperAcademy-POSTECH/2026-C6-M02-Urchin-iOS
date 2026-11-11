@@ -14,29 +14,60 @@ struct OnboardingView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<OnboardingFeature>
+    @GestureState(resetTransaction: Transaction(animation: Self.pageAnimation)) private var dragOffset: CGFloat = 0
+
+    private static let pageAnimation: Animation = .easeInOut(duration: 0.3)
+    private static let backSwipeEdgeWidth: CGFloat = 32
+    private static let backSwipeThreshold: CGFloat = 100
 
     // MARK: - Body
 
     var body: some View {
-        NavigationStack(path: path) {
-            pageView(.goal)
-                .navigationDestination(for: OnboardingPage.self) { page in
-                    ObservingView { pageView(page) }
-                }
+        ZStack {
+            ForEach(stackedPages, id: \.self) { page in
+                card(page)
+            }
         }
+        .animation(Self.pageAnimation, value: store.currentPage)
         .plobbyAlert($store.scope(state: \.signIn.alert, action: \.signIn.alert))
     }
 }
 
-// MARK: - 내비게이션
+// MARK: - 카드 전환
 
 private extension OnboardingView {
 
-    var path: Binding<[OnboardingPage]> {
-        Binding(
-            get: { OnboardingPage.allCases.filter { $0 != .goal && $0.rawValue <= store.currentPage.rawValue } },
-            set: { store.send(.pageChanged($0.last ?? .goal)) }
-        )
+    var stackedPages: [OnboardingPage] {
+        OnboardingPage.allCases.filter { $0.rawValue <= store.currentPage.rawValue }
+    }
+
+    func card(_ page: OnboardingPage) -> some View {
+        let isTop = page == store.currentPage
+
+        return pageView(page)
+            .shadow(color: Color(.neutralBlack).opacity(isTop ? 0.12 : 0), radius: 16)
+            .offset(x: isTop ? dragOffset : 0)
+            .zIndex(Double(page.rawValue))
+            .transition(.blurFade)
+            .gesture(backSwipe(from: page), isEnabled: isTop)
+    }
+
+    func backSwipe(from page: OnboardingPage) -> some Gesture {
+        DragGesture(minimumDistance: 10)
+            .updating($dragOffset) { value, offset, _ in
+                guard page.previous != nil, value.startLocation.x < Self.backSwipeEdgeWidth else { return }
+                offset = max(0, value.translation.width)
+            }
+            .onEnded { value in
+                guard let previous = page.previous,
+                      value.startLocation.x < Self.backSwipeEdgeWidth,
+                      value.predictedEndTranslation.width > Self.backSwipeThreshold
+                else { return }
+
+                withAnimation(Self.pageAnimation) {
+                    store.send(.pageChanged(previous))
+                }
+            }
     }
 
     func pageView(_ page: OnboardingPage) -> some View {
@@ -45,8 +76,8 @@ private extension OnboardingView {
             titleSection(page)
 
             if page.showsActivityTabs {
-                activityTabs
-                    .animation(.easeInOut(duration: 0.2), value: store.selectedActivity)
+                activityTabs(page)
+                    .animation(.easeInOut(duration: 0.2), value: selectedActivity(on: page))
             }
 
             if page == .collection {
@@ -64,7 +95,6 @@ private extension OnboardingView {
             bottomButtons(page)
         }
         .background(Color(.backgroundDefault))
-        .toolbar(.hidden, for: .navigationBar)
     }
 }
 
@@ -117,10 +147,14 @@ private extension OnboardingView {
 
 private extension OnboardingView {
 
-    var activityTabs: some View {
+    func selectedActivity(on page: OnboardingPage) -> RecordType {
+        store.selectedActivities[page] ?? .plogging
+    }
+
+    func activityTabs(_ page: OnboardingPage) -> some View {
         HStack(spacing: 0) {
-            activityTab(.plogging, title: "플로깅")
-            activityTab(.plobbing, title: "플로빙")
+            activityTab(.plogging, title: "플로깅", page: page)
+            activityTab(.plobbing, title: "플로빙", page: page)
         }
         .overlay(alignment: .bottom) {
             Rectangle()
@@ -131,8 +165,8 @@ private extension OnboardingView {
         .padding(.horizontal, 20.scaled)
     }
 
-    func activityTab(_ activity: RecordType, title: String) -> some View {
-        let isSelected = store.selectedActivity == activity
+    func activityTab(_ activity: RecordType, title: String, page: OnboardingPage) -> some View {
+        let isSelected = selectedActivity(on: page) == activity
 
         return Button {
             store.send(.activityTabSelected(activity))
@@ -164,7 +198,7 @@ private extension OnboardingView {
     func illustration(_ page: OnboardingPage) -> some View {
         switch page {
         case .goal, .record, .map:
-            Image(page.illustration(for: store.selectedActivity))
+            Image(page.illustration(for: selectedActivity(on: page)))
                 .resizable()
                 .scaledToFit()
                 .frame(width: page.illustrationWidth.scaled)
@@ -224,17 +258,6 @@ private extension OnboardingView {
     }
 }
 
-// MARK: - ObservingView
-
-private struct ObservingView<Content: View>: View {
-
-    let content: () -> Content
-
-    var body: some View {
-        content()
-    }
-}
-
 // MARK: - OnboardingPage
 
 private extension OnboardingPage {
@@ -262,10 +285,29 @@ private extension OnboardingPage {
 
     var illustrationLabel: String {
         switch self {
-        case .goal: "공동 목표 예시 화면"
+        case .goal: "공통 목표 예시 화면"
         case .record: "기록 상세 예시 화면"
         case .map: "지도 예시 화면"
         case .collection: "컬렉션 카드 예시"
         }
+    }
+}
+
+// MARK: - Transition
+
+private struct BlurModifier: ViewModifier {
+
+    let radius: CGFloat
+
+    func body(content: Content) -> some View {
+        content.blur(radius: radius)
+    }
+}
+
+private extension AnyTransition {
+
+    static var blurFade: AnyTransition {
+        .modifier(active: BlurModifier(radius: 8), identity: BlurModifier(radius: 0))
+            .combined(with: .opacity)
     }
 }
