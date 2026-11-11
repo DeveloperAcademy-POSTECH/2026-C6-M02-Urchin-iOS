@@ -14,6 +14,8 @@ struct HomeSceneOverlay: View {
     let day: GoalDailyProgress?
     let totalTrashCount: Int
     let isGoalFinished: Bool
+    /// 날짜 지점에 서 있을 때만 그날 주운 개수를 보여줘요.
+    let isAtDay: Bool
     let onParticipantsTapped: () -> Void
     let onTrashSummaryTapped: () -> Void
 
@@ -49,14 +51,16 @@ private extension HomeSceneOverlay {
                 Text(day.day.homeMonthDayText)
                     .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 14.scaled))
                     .foregroundStyle(Color(.textPrimary))
-                    .contentTransition(.numericText())
+                    .contentTransition(.numericText(value: day.day.timeIntervalSince1970))
+                    .animation(.snappy(duration: 0.35), value: day.day)
                     .padding(.horizontal, 16.scaled)
                     .frame(height: 32.scaled)
                     .background(Color(.gray0).opacity(0.95), in: Capsule())
                     .homeSceneShadow()
 
-                if stage.isCollected {
-                    Text("+\(day.collectedCount)개")
+                if stage.isCollected, isAtDay {
+                    HomeCountUpText(count: day.collectedCount)
+                        .id(day.day)
                         .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 13.scaled))
                         .foregroundStyle(Color(.currentBrandText))
                         .padding(.horizontal, 8.scaled)
@@ -112,6 +116,39 @@ private extension HomeSceneOverlay {
 
     var isResult: Bool {
         stage == .finale(step: recordType.resultStep)
+    }
+}
+
+// MARK: - HomeCountUpText
+
+/// 주운 개수가 0부터 차르륵 올라가요.
+private struct HomeCountUpText: View {
+
+    let count: Int
+    @State private var shownCount = 0.0
+
+    var body: some View {
+        CountText(value: shownCount)
+            .onAppear {
+                withAnimation(.easeOut(duration: 0.6).delay(0.1)) {
+                    shownCount = Double(count)
+                }
+            }
+    }
+
+    private struct CountText: View, Animatable {
+
+        var value: Double
+
+        var animatableData: Double {
+            get { value }
+            set { value = newValue }
+        }
+
+        var body: some View {
+            Text("+\(Int(value.rounded()))개")
+                .monospacedDigit()
+        }
     }
 }
 
