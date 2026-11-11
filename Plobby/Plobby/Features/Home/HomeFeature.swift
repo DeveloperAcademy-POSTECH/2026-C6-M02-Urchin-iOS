@@ -99,6 +99,7 @@ struct HomeFeature {
         enum Delegate {
             case recordStarted(RecordType)
             case loginRequired
+            case myProfileRequested
         }
     }
     
@@ -232,11 +233,18 @@ struct HomeFeature {
                 guard let participant = state.board?.participants.first(
                     where: { $0.id == participantID}
                 ),
-                      !participant.isBlocked,
-                      participant.id != state.currentUserID
+                      !participant.isBlocked
                 else { return .none }
                 
                 state.sheet = nil
+
+                if participant.id == state.currentUserID {
+                    return .run { send in
+                        try await clock.sleep(for: Self.sheetDismissDelay)
+                        await send(.delegate(.myProfileRequested))
+                    }
+                }
+
                 return .run { send in
                     try await clock.sleep(for: Self.sheetDismissDelay)
                     await send(.userHomeOpened(participant))
