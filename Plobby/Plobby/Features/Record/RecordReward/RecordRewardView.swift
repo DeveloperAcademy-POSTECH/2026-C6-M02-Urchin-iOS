@@ -54,7 +54,8 @@ struct RecordRewardView: View {
             .onAppear {
                 store.send(.onAppear)
 
-                withAnimation(.easeInOut(duration: 0.5).delay(0.3)) {
+                // 앞 화면에서 바로 이어지도록 기다리지 않고 나타나요
+                withAnimation(.easeOut(duration: 0.35)) {
                     isSummaryVisible = true
                 }
 
