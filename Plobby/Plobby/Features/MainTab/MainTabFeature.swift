@@ -115,14 +115,15 @@ struct MainTabFeature {
                 state.pendingRecordBeach = nil
                 return .none
                 
+            // 기록하기는 탭 위에 덮어 띄워서 닫아도 홈·컬렉션이 다시 나타나지 않아요. 직접 다시 불러와야 개수가 바로 바뀌어요.
             case .recordFlow(.presented(.delegate(.closed))):
                 state.recordFlow = nil
-                return .none
+                return reloadRecordScreens(state)
                 
             case .recordFlow(.presented(.delegate(.recordDeleted))):
                 state.recordFlow = nil
                 state.selectedTab = .home
-                return .none
+                return reloadRecordScreens(state)
                 
             case let .home(.delegate(.recordStarted(recordType))):
                 return .send(.recordTypeSelected(recordType))
@@ -158,6 +159,18 @@ struct MainTabFeature {
 private extension MainTabFeature {
 
     static let sheetDismissDelay: Duration = .milliseconds(350)
+
+    /// 기록 개수를 보여주는 화면(홈 공동 목표, 컬렉션, 열려 있는 마이)을 다시 불러와요.
+    func reloadRecordScreens(_ state: State) -> Effect<Action> {
+        var effects: [Effect<Action>] = [
+            .send(.home(.onAppear)),
+            .send(.collection(.onAppear))
+        ]
+        if state.collection.my != nil {
+            effects.append(.send(.collection(.my(.presented(.onAppear)))))
+        }
+        return .merge(effects)
+    }
 
     func requestAppleSignInAfterSheetDismissed() -> Effect<Action> {
         .run { send in
