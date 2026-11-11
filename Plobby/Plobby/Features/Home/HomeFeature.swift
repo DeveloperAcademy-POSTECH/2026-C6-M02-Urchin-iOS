@@ -26,6 +26,7 @@ struct HomeFeature {
         var boards: [RecordType: HomeGoalBoard] = [:]
         var statuses: [RecordType: HomeGoalStatus] = [:]
         var stages: [RecordType: HomeSceneStage] = [:]
+        var walkProgresses: [RecordType: Double] = [:]
         var todayDays: [RecordType: Int] = [:]
         var isGoalExpanded = false
         var collectPulses: [RecordType: Int] = [:]
@@ -47,6 +48,16 @@ struct HomeFeature {
         var currentDay: GoalDailyProgress? {
             guard let days = board?.days, !days.isEmpty else { return nil }
             return days[min(stage.day(lastDay: days.count - 1), days.count - 1)]
+        }
+        
+        /// 해변 위를 걸어간 정도예요. 정수 지점이 각 날짜예요.
+        var walkProgress: Double {
+            walkProgresses[selectedType] ?? 0
+        }
+        
+        /// 쓰레기를 줍는 동안과 목표가 끝난 뒤에는 걸을 수 없어요.
+        var isWalkLocked: Bool {
+            transitioningTypes.contains(selectedType) || isGoalFinished
         }
         
         var status: HomeGoalStatus? {
@@ -74,7 +85,7 @@ struct HomeFeature {
         case onAppear
         case boardsResponse(Result<[HomeGoalBoard], any Error>, now: Date)
         case activityTabSelected(RecordType)
-        case sceneSwiped(forward: Bool)
+        case sceneWalked(to: Double)
         case sceneStageAdvanced(RecordType, HomeSceneStage)
         case sceneTransitionFinished(RecordType)
         case scrollGuideHidden
@@ -142,6 +153,7 @@ struct HomeFeature {
                     state.statuses[type] = status
                     state.todayDays[type] = today
                     state.stages[type] = status.isFinished ? .finale(step: type.resultStep) : .arrived(day: today)
+                    state.walkProgresses[type] = status.isFinished ? Double(board.days.count) : Double(today)
                 }
                 return .merge(
                     .merge(RecordType.allCases.map { .cancel(id: CancelID.scene($0)) }),
@@ -156,7 +168,8 @@ struct HomeFeature {
                 state.selectedType = type
                 return showScrollGuideIfNeeded(&state)
                 
-            case let .sceneSwiped(forward):
+                // 손가락을 따라 걸어가다가, 아직 줍지 않은 날에 닿으면 멈춰서 쓰레기를 주워요.
+            case let .sceneWalked(target):
                 let type = state.selectedType
                 guard let board = state.boards[type],
                       !board.days.isEmpty,
@@ -166,24 +179,27 @@ struct HomeFeature {
                 
                 let lastDay = board.days.count - 1
                 let stage = state.stages[type] ?? .arrived(day: 0)
-                let stages = forward
-                ? type.forwardStages(from: stage, lastDay: lastDay)
-                : type.backwardStages(from: stage, lastDay: lastDay)
-                guard let first = stages.first else { return .none }
-                
+                let collectedThrough = stage.collectedThrough(lastDay: lastDay)
+                let current = state.walkProgresses[type] ?? 0
+                let progress = min(max(target, -1), Double(lastDay + 1))
+                let nextStop = collectedThrough + 1
                 state.isScrollGuideVisible = false
-                state.transitioningTypes.insert(type)
-                apply(first, to: type, state: &state)
                 
-                return .run { send in
-                    for next in stages.dropFirst() {
-                        try await clock.sleep(for: HomeFeature.transitionDuration + HomeFeature.autoAdvanceDelay)
-                        await send(.sceneStageAdvanced(type, next), animation: HomeFeature.transitionAnimation)
-                    }
-                    try await clock.sleep(for: HomeFeature.transitionDuration)
-                    await send(.sceneTransitionFinished(type))
+                if progress > current, progress >= Double(nextStop) {
+                    state.walkProgresses[type] = Double(nextStop)
+                    return collect(at: nextStop, type: type, lastDay: lastDay, state: &state)
                 }
-                .cancellable(id: CancelID.scene(type), cancelInFlight: true)
+                
+                // 뒤로 걸어가면 지나온 날의 쓰레기가 다시 해변에 놓여서, 다시 걸어오며 주울 수 있어요.
+                state.walkProgresses[type] = progress
+                // 날짜는 다음 날까지 절반 넘게 걸어가면 바뀌어요.
+                let day = min(max(Int(progress.rounded()), 0), lastDay)
+                let collected = min(collectedThrough, Int(progress.rounded(.down)))
+                let walkingStage: HomeSceneStage = collected >= day ? .collected(day: day) : .arrived(day: day)
+                if walkingStage != stage {
+                    state.stages[type] = walkingStage
+                }
+                return .none
                 
             case let .sceneStageAdvanced(type, stage):
                 apply(stage, to: type, state: &state)
@@ -342,6 +358,23 @@ extension HomeFeature {
         case boards
         case scene(RecordType)
         case scrollGuide
+    }
+    
+    /// 그날 쓰레기를 주워요. 마지막 도착점이면 수거대·배에 모으는 마무리 장면을 보여줘요.
+    private func collect(at stop: Int, type: RecordType, lastDay: Int, state: inout State) -> Effect<Action> {
+        let stages: [HomeSceneStage] = stop > lastDay
+        ? (0...type.resultStep).map { .finale(step: $0) }
+        : [.collecting(day: stop), .collected(day: stop)]
+        
+        state.transitioningTypes.insert(type)
+        return .run { send in
+            for stage in stages {
+                await send(.sceneStageAdvanced(type, stage), animation: HomeFeature.transitionAnimation)
+                try await clock.sleep(for: HomeFeature.transitionDuration + HomeFeature.autoAdvanceDelay)
+            }
+            await send(.sceneTransitionFinished(type))
+        }
+        .cancellable(id: CancelID.scene(type), cancelInFlight: true)
     }
     
     private func apply(_ stage: HomeSceneStage, to type: RecordType, state: inout State) {
