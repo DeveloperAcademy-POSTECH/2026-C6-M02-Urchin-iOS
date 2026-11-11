@@ -382,8 +382,10 @@ extension HomeFeature {
     }
     
     private func showScrollGuideIfNeeded(_ state: inout State) -> Effect<Action> {
+        // 모은 쓰레기가 0개면 내려가며 볼 기록이 없어서 안내하지 않아요
         guard state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
-              state.status?.isFinished == false
+              state.status?.isFinished == false,
+              (state.board?.totalTrashCount ?? 0) > 0
         else {
             state.isScrollGuideVisible = false
             return .cancel(id: CancelID.scrollGuide)
