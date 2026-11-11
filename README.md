@@ -1,5 +1,7 @@
-# Plobby
-> 해양 정화 봉사자에게는 꾸준한 활동 동기를, 기관에게는 해양 환경 관리 이력을 한눈에 제공하는 서비스
+<img width="100%" alt="Plobby banner" src="https://github.com/user-attachments/assets/c6398688-ebe7-4fdf-9055-6fd2d1da80fa" />
+
+# <img src="https://github.com/user-attachments/assets/6a31c332-6a20-49b6-8ad4-6fddb6e24444" width="40" align="absmiddle">  플로비
+> 플로깅·플로빙 활동을 기록하고, 봉사 참여 동기를 위한 리워드와 전국 해변 봉사 지도로 함께 바다를 지키고 있음을 체감하게 하는 앱
 
 ## 📷 Screenshot
 📌 Todo: 추가하기 ~.~
@@ -7,15 +9,18 @@
 ## 🔨 Tech Stack
 | Category | Tools & Technologies |
 | :--- | :--- |
-| **IDE** | Xcode 26.x |
-| **Minimum Deployment Target** | iOS 26.4 |
+| **IDE** | Xcode 26.4 |
+| **Minimum Deployment Target** | iOS 26.2 |
 | **Language** | Swift 6 |
 | **UI Framework** | SwiftUI |
 | **Architecture** | TCA (The Composable Architecture) |
 | **Backend** | Supabase |
+| **Push Notification** | FCM (Firebase Cloud Messaging) |
+| **Map / Location** | MapKit, Core Location |
+| **Animation** | SpriteKit, Core Motion |
 | **Concurrency** | Swift Concurrency |
 | **Test** | Swift Testing |
-| **Package Manager** | Swift Package Manager (SPM) |
+| **Package Manager** | SPM (Swift Package Manager) |
 
 ## 🛠️ Architecture
 ```
@@ -26,20 +31,23 @@
 ```
 Plobby
 ├── Plobby
-│   ├── App            # 앱 진입점(PlobbyApp), 루트 화면, 탭 구성, 딥링크·푸시 진입 처리
-│   ├── Features       # 화면 단위 기능. 기능별 폴더에 Reducer와 View를 한 쌍으로 관리 (ex. Feed/, Record/)
-│   ├── Domain         # 데이터 모델(Entity)과 규칙(제목 생성, 입력 검증 등). 순수 Swift만 사용
+│   ├── App            # 앱 진입점(PlobbyApp, AppDelegate), 루트 흐름(AppFeature), 푸시 진입 처리
+│   ├── Features       # 화면 단위 기능. 기능별 폴더에 Reducer와 View를 한 쌍으로 관리 (ex. Home/, Record/, Map/)
+│   │   └── Common     # 여러 화면이 같이 쓰는 Feature (Apple 로그인, 닉네임 확인, 사진 선택, 토스트 등)
+│   ├── Domain         # 데이터 모델(Entity)과 규칙(입력 검증 등). 순수 Swift만 사용
 │   ├── Clients        # 외부와 통신하는 Dependency Client. Client별 폴더에 인터페이스, live 구현, DTO 관리
-│   ├── Core           # 색·글꼴, 여러 기능이 같이 쓰는 공용 UI 컴포넌트와 Extension
-│   └── Resources      # Assets(이미지·색), 문자열 등 리소스
-├── PlobbyTests        # 유닛 테스트 (Domain 규칙, Reducer TestStore)
-└── PlobbyUITests      # UI 테스트
+│   │   └── Supabase   # 모든 Client가 같이 쓰는 Supabase 연결 설정
+│   ├── Core           # 디자인 시스템(색·글꼴·공용 컴포넌트), Extension, 공용 Enum, 로거
+│   └── Resources      # Assets(이미지·색), 폰트, 해변 데이터(beaches.json)
+├── PlobbyTests        # 유닛 테스트. 앱과 같은 구조(App/, Domain/, Features/)로 관리
+└── PlobbyUITests      # UI 테스트 (주요 사용자 흐름: 온보딩, 기록하기 등)
 ```
 
 - `import Supabase`는 `Clients/` 안에서만 사용합니다.
 - DTO는 `Clients/` 밖으로 내보내지 않고, Feature에서는 `Domain/`의 Entity만 사용합니다.
 - `Domain/`은 SwiftUI, TCA, Supabase를 import하지 않습니다.
 - `Core/`는 특정 Feature를 참조하지 않습니다.
+- `Features/Common`은 화면이 있는 공용 기능, `Core/`는 화면 로직이 없는 공용 코드입니다.
 
 ## 📌 Convention
 ### Code Style
