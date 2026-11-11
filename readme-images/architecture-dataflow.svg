@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1240" viewBox="0 0 1000 620" font-family="-apple-system, 'Apple SD Gothic Neo', sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#13BD7E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="620" fill="#111315"/>
+
+  <!-- User / View -->
+  <rect x="330" y="30" width="140" height="44" rx="10" fill="#F5F6F7"/>
+  <text x="400" y="57" text-anchor="middle" font-size="15" font-weight="bold" fill="#111315">User</text>
+  <line x1="400" y1="76" x2="400" y2="118" stroke="#8A9096" stroke-width="1.2"/>
+  <text x="410" y="101" font-size="12" fill="#9AA0A6">탭 · 입력</text>
+
+  <rect x="330" y="120" width="140" height="44" rx="10" fill="#F5F6F7"/>
+  <text x="400" y="147" text-anchor="middle" font-size="15" font-weight="bold" fill="#111315">View</text>
+
+  <!-- Feature container -->
+  <rect x="40" y="200" width="500" height="216" rx="16" fill="#13BD7E" fill-opacity="0.07" stroke="#13BD7E" stroke-opacity="0.6"/>
+  <text x="60" y="225" font-size="13" font-weight="bold" fill="#13BD7E">Feature (TCA)</text>
+
+  <rect x="330" y="240" width="140" height="48" rx="10" fill="#13BD7E"/>
+  <text x="400" y="269" text-anchor="middle" font-size="15" font-weight="bold" fill="#04241A">Action</text>
+  <rect x="330" y="344" width="140" height="48" rx="10" fill="#13BD7E"/>
+  <text x="400" y="373" text-anchor="middle" font-size="15" font-weight="bold" fill="#04241A">Store</text>
+  <rect x="80" y="344" width="140" height="48" rx="10" fill="#13BD7E"/>
+  <text x="150" y="373" text-anchor="middle" font-size="15" font-weight="bold" fill="#04241A">Reducer</text>
+  <rect x="80" y="240" width="140" height="48" rx="10" fill="#13BD7E"/>
+  <text x="150" y="269" text-anchor="middle" font-size="15" font-weight="bold" fill="#04241A">State</text>
+
+  <line x1="400" y1="166" x2="400" y2="238" stroke="#8A9096" stroke-width="1.2"/>
+  <text x="410" y="190" font-size="12" fill="#9AA0A6">Send</text>
+  <line x1="400" y1="290" x2="400" y2="342" stroke="#8A9096" stroke-width="1.2"/>
+  <line x1="328" y1="368" x2="222" y2="368" stroke="#8A9096" stroke-width="1.2"/>
+  <text x="275" y="360" text-anchor="middle" font-size="12" fill="#9AA0A6">Reduce</text>
+  <line x1="150" y1="342" x2="150" y2="290" stroke="#8A9096" stroke-width="1.2"/>
+  <text x="160" y="320" font-size="12" fill="#9AA0A6">Update</text>
+  <path d="M150 238 V142 H328" fill="none" stroke="#8A9096" stroke-width="1.2"/>
+  <text x="240" y="134" text-anchor="middle" font-size="12" fill="#9AA0A6">Observe State</text>
+
+  <!-- Clients container -->
+  <rect x="640" y="200" width="320" height="216" rx="16" fill="#FFFFFF" fill-opacity="0.04" stroke="#5F6368"/>
+  <text x="660" y="225" font-size="13" font-weight="bold" fill="#C4C7CA">Clients</text>
+
+  <rect x="670" y="240" width="260" height="56" rx="10" fill="#2A2D31"/>
+  <text x="800" y="263" text-anchor="middle" font-size="15" font-weight="bold" fill="#E6E8EA">Dependency Client</text>
+  <text x="800" y="283" text-anchor="middle" font-size="12" fill="#9AA0A6">@Dependency로 주입</text>
+  <rect x="670" y="336" width="260" height="56" rx="10" fill="#2A2D31"/>
+  <text x="800" y="359" text-anchor="middle" font-size="15" font-weight="bold" fill="#E6E8EA">Live 구현</text>
+  <text x="800" y="379" text-anchor="middle" font-size="12" fill="#9AA0A6">DTO → Domain Entity 변환</text>
+  <line x1="800" y1="298" x2="800" y2="334" stroke="#8A9096" stroke-width="1.2"/>
+
+  <!-- Effect / Response -->
+  <path d="M472 376 H600 V282 H668" fill="none" stroke="#8A9096" stroke-width="1.2"/>
+  <text x="594" y="330" text-anchor="end" font-size="12" fill="#9AA0A6">Effect</text>
+  <path d="M668 254 H472" fill="none" stroke="#13BD7E" stroke-width="1.2"/>
+  <text x="590" y="246" text-anchor="middle" font-size="12" fill="#13BD7E">Response</text>
+
+  <!-- External -->
+  <path d="M800 394 V440 M689 440 H911 M689 440 V466 M800 440 V466 M911 440 V466" fill="none" stroke="#8A9096" stroke-width="1.2"/>
+  <line x1="689" y1="460" x2="689" y2="468" stroke="#8A9096" stroke-width="1.2"/>
+  <line x1="800" y1="460" x2="800" y2="468" stroke="#8A9096" stroke-width="1.2"/>
+  <line x1="911" y1="460" x2="911" y2="468" stroke="#8A9096" stroke-width="1.2"/>
+  <rect x="640" y="470" width="98" height="52" rx="10" fill="none" stroke="#5F6368"/>
+  <text x="689" y="492" text-anchor="middle" font-size="13" font-weight="bold" fill="#E6E8EA">Supabase</text>
+  <text x="689" y="510" text-anchor="middle" font-size="11" fill="#9AA0A6">DB · 인증</text>
+  <rect x="751" y="470" width="98" height="52" rx="10" fill="none" stroke="#5F6368"/>
+  <text x="800" y="492" text-anchor="middle" font-size="13" font-weight="bold" fill="#E6E8EA">Firebase</text>
+  <text x="800" y="510" text-anchor="middle" font-size="11" fill="#9AA0A6">푸시 알림</text>
+  <rect x="862" y="470" width="98" height="52" rx="10" fill="none" stroke="#5F6368"/>
+  <text x="911" y="492" text-anchor="middle" font-size="13" font-weight="bold" fill="#E6E8EA">Apple SDK</text>
+  <text x="911" y="510" text-anchor="middle" font-size="11" fill="#9AA0A6">로그인 · 위치</text>
+
+  <!-- Delegate -->
+  <rect x="40" y="452" width="500" height="92" rx="16" fill="none" stroke="#5F6368" stroke-dasharray="5 4"/>
+  <text x="60" y="476" font-size="13" font-weight="bold" fill="#C4C7CA">delegate — 자식 Feature가 부모에게 알려요</text>
+  <rect x="60" y="490" width="130" height="38" rx="9" fill="#2A2D31"/>
+  <text x="125" y="514" text-anchor="middle" font-size="13" fill="#E6E8EA">RecordForm</text>
+  <rect x="225" y="490" width="130" height="38" rx="9" fill="#2A2D31"/>
+  <text x="290" y="514" text-anchor="middle" font-size="13" fill="#E6E8EA">RecordFlow</text>
+  <rect x="390" y="490" width="130" height="38" rx="9" fill="#2A2D31"/>
+  <text x="455" y="514" text-anchor="middle" font-size="13" fill="#E6E8EA">MainTab</text>
+  <line x1="192" y1="509" x2="223" y2="509" stroke="#8A9096" stroke-width="1.2"/>
+  <line x1="357" y1="509" x2="388" y2="509" stroke="#8A9096" stroke-width="1.2"/>
+
+  <!-- Caption -->
+  <text x="40" y="584" font-size="13" fill="#9AA0A6">View → Action → Reducer → State의 단방향 흐름 · 외부 통신은 Dependency Client로 분리하고 Feature는 Domain Entity만 사용</text>
+  <path d="M395.8 112.0 L400.0 118.0 L404.2 112.0" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M395.8 232.0 L400.0 238.0 L404.2 232.0" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M395.8 336.0 L400.0 342.0 L404.2 336.0" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M228.0 363.8 L222.0 368.0 L228.0 372.2" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M154.2 296.0 L150.0 290.0 L145.8 296.0" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M322.0 146.2 L328.0 142.0 L322.0 137.8" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M795.8 328.0 L800.0 334.0 L804.2 328.0" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M662.0 286.2 L668.0 282.0 L662.0 277.8" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M478.0 249.8 L472.0 254.0 L478.0 258.2" fill="none" stroke="#13BD7E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M684.8 462.0 L689.0 468.0 L693.2 462.0" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M795.8 462.0 L800.0 468.0 L804.2 462.0" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M906.8 462.0 L911.0 468.0 L915.2 462.0" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M217.0 513.2 L223.0 509.0 L217.0 504.8" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M382.0 513.2 L388.0 509.0 L382.0 504.8" fill="none" stroke="#8A9096" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
