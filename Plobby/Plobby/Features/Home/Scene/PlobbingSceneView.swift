@@ -14,7 +14,6 @@ struct PlobbingSceneView: View {
     let days: [GoalDailyProgress]
     let stage: HomeSceneStage
     let collectPulse: Int
-    /// 바닷속을 헤엄쳐 간 정도예요. 정수 지점이 각 날짜예요.
     var walkProgress: Double = 0
 
     // MARK: - Body
@@ -27,7 +26,6 @@ struct PlobbingSceneView: View {
                 .offset(y: -camera)
                 .animation(HomeWalkPath.cameraAnimation, value: camera)
 
-            // 다이버가 먼저 헤엄쳐 가고 화면이 한 박자 늦게 따라와요.
             divers
                 .offset(y: walk)
                 .animation(HomeWalkPath.walkAnimation, value: walk)
@@ -41,7 +39,6 @@ struct PlobbingSceneView: View {
 
 extension PlobbingSceneView {
 
-    /// 쓰레기를 주운 날은 그만큼 더 깊이 들어가 있어요.
     static func walkPath(lastDay: Int, stage: HomeSceneStage) -> HomeWalkPath {
         let collectedThrough = stage.collectedThrough(lastDay: lastDay)
         let days = (0...max(lastDay, 0)).map { day in
@@ -77,8 +74,8 @@ private extension PlobbingSceneView {
             cargo
 
             ForEach(days.indices, id: \.self) { day in
-                ForEach(Metrics.trash[day % Metrics.trash.count]) { item in
-                    trash(item, day: day)
+                ForEach(Array(Metrics.trash[day % Metrics.trash.count].enumerated()), id: \.element.id) { index, item in
+                    trash(item, day: day, index: index)
                 }
             }
         }
@@ -164,7 +161,7 @@ private extension PlobbingSceneView {
         return Array(collected.suffix(Metrics.netTrashSlots.count))
     }
 
-    func trash(_ item: HomeSceneTrash, day: Int) -> some View {
+    func trash(_ item: HomeSceneTrash, day: Int, index: Int) -> some View {
         let phase = HomeSceneTrashPhase(trashDay: day, stage: stage)
         let arrival = Metrics.arrivalOffset(day, lastDay: lastDay)
         let net = Metrics.netRect(for: item.collector).offsetBy(dx: Metrics.diverGroup.minX, dy: Metrics.diverGroup.minY)
@@ -175,7 +172,7 @@ private extension PlobbingSceneView {
         return Image(item.image)
             .resizable()
             .scaledToFit()
-            .rotationEffect(.degrees(item.rotation))
+            .rotationEffect(.degrees(item.rotation + HomeSceneTrash.scatterRotation(day: day, index: index)))
             .floatingButtonShadow(rect.offsetBy(dx: 0, dy: arrival))
             .opacity(phase.opacity)
     }
@@ -208,19 +205,16 @@ private extension PlobbingSceneView {
         }
     }
 
-    /// 다이버가 바닷속에서 내려간 거리예요. 마지막 도착점에서는 배로 올라가요.
     var walk: CGFloat {
         if case .finale = stage { return worldOffset }
         return Self.walkPath(lastDay: lastDay, stage: stage).offset(at: walkProgress)
     }
 
-    /// 화면은 다이버를 따라 내려가지만 바다 끝을 넘지는 않아요. 그래서 바다 끝에서는 다이버가 화면 안에서 헤엄쳐요.
     func cameraOffset(designHeight: CGFloat) -> CGFloat {
         if case .finale = stage { return worldOffset }
         return min(max(walk, 0), max(Metrics.world.height - designHeight, 0))
     }
 
-    /// 헤엄칠 때 좌우로 살랑살랑 흔들려요. -1...1이에요.
     var swimSway: CGFloat {
         if case .finale = stage { return 0 }
         return sin(walk / Metrics.strokeLength * .pi)
@@ -286,9 +280,7 @@ private extension PlobbingSceneView {
             (CGPoint(x: -2.5, y: 2.5), 24),
             (CGPoint(x: 2.5, y: 0.5), -12)
         ]
-        /// 마지막 날까지 내려가는 깊이예요. 이보다 더 내려가면 바다 그림이 끝나요.
         static let lastArrivalOffset: CGFloat = 640
-        /// 날짜가 적을 때 하루에 내려가는 최대 깊이예요.
         static let maxDaySpacing: CGFloat = 220
         static let collectDive: CGFloat = 55
         static let seaStartOffset: CGFloat = -30
@@ -332,7 +324,6 @@ private extension PlobbingSceneView {
             Cargo(image: .cupRedS, rect: CGRect(x: 196, y: 75, width: 9, height: 13))
         ]
 
-        /// 날짜 수에 맞춰 바다를 나눠요. 날이 많아도 바다 끝을 넘지 않아요.
         static func arrivalOffset(_ day: Int, lastDay: Int) -> CGFloat {
             let spacing = min(maxDaySpacing, lastArrivalOffset / CGFloat(max(lastDay, 1)))
             return CGFloat(min(max(day, 0), lastDay)) * spacing

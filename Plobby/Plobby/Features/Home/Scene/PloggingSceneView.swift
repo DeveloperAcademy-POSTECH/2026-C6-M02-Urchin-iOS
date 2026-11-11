@@ -14,7 +14,6 @@ struct PloggingSceneView: View {
     let days: [GoalDailyProgress]
     let stage: HomeSceneStage
     let collectPulse: Int
-    /// 해변 위를 걸어간 정도예요. 정수 지점이 각 날짜예요.
     var walkProgress: Double = 0
 
     // MARK: - Body
@@ -29,7 +28,6 @@ struct PloggingSceneView: View {
 
             standBack
 
-            // 사람이 먼저 걸어가고 화면이 한 박자 늦게 따라와요.
             Group {
                 shadows
                 humans
@@ -67,8 +65,8 @@ private extension PloggingSceneView {
                 .floatingButtonShadow(Metrics.background)
 
             ForEach(days.indices, id: \.self) { day in
-                ForEach(Metrics.trash[day % Metrics.trash.count]) { item in
-                    trash(item, day: day)
+                ForEach(Array(Metrics.trash[day % Metrics.trash.count].enumerated()), id: \.element.id) { index, item in
+                    trash(item, day: day, index: index)
                 }
             }
         }
@@ -95,7 +93,6 @@ private extension PloggingSceneView {
                 }
             }
             .frame(width: Metrics.humans[index].rect.width, height: Metrics.humans[index].rect.height, alignment: .topLeading)
-            // 쓰레기를 주우면 다 같이 한 명씩 엇갈려 폴짝 뛰어요
             .keyframeAnimator(initialValue: 0.0, trigger: collectPulse) { content, hop in
                 content.offset(y: hop)
             } keyframes: { _ in
@@ -181,7 +178,7 @@ private extension PloggingSceneView {
 
 private extension PloggingSceneView {
 
-    func trash(_ item: HomeSceneTrash, day: Int) -> some View {
+    func trash(_ item: HomeSceneTrash, day: Int, index: Int) -> some View {
         let phase = HomeSceneTrashPhase(trashDay: day, stage: stage)
         let rect = phase.isAtCollector
             ? item.rect.homeSceneShrunk(to: Metrics.eatenScale, center: bagMouth(of: collector(for: item, day: day)))
@@ -190,7 +187,7 @@ private extension PloggingSceneView {
         return Image(item.image)
             .resizable()
             .scaledToFit()
-            .rotationEffect(.degrees(item.rotation))
+            .rotationEffect(.degrees(item.rotation + HomeSceneTrash.scatterRotation(day: day, index: index)))
             .floatingButtonShadow(rect.offsetBy(dx: 0, dy: Metrics.dayOffset(day, lastDay: lastDay)))
             .opacity(phase.opacity)
     }
@@ -239,13 +236,11 @@ private extension PloggingSceneView {
         isAtStand ? worldOffset : Self.walkPath(lastDay: lastDay).offset(at: walkProgress)
     }
 
-    /// 화면은 사람을 따라 내려가지만 해변 끝을 넘지는 않아요. 그래서 해변 끝에서는 사람이 화면 안에서 걸어가요.
     func cameraOffset(designHeight: CGFloat) -> CGFloat {
         guard !isAtStand else { return worldOffset }
         return min(max(walk, 0), max(Metrics.background.height - designHeight, 0))
     }
 
-    /// 걸을 때 한 걸음마다 살짝 튀어 올라요. 사람마다 발걸음을 엇갈리게 해요.
     func stepBob(_ index: Int) -> CGFloat {
         guard !isAtStand else { return 0 }
         let phase = (walk + CGFloat(index) * Metrics.stepLength / 3) / Metrics.stepLength * .pi
@@ -293,9 +288,7 @@ private extension PloggingSceneView {
         static let sandShadow = Color(red: 0x85 / 255, green: 0x61 / 255, blue: 0x36 / 255).opacity(0.15)
         static let standDark = Color(red: 0x5C / 255, green: 0x77 / 255, blue: 0x6B / 255)
 
-        /// 마지막 날까지 내려가는 거리예요. 이보다 더 내려가면 해변 그림이 끝나요.
         static let lastDayOffset: CGFloat = 500
-        /// 날짜가 적을 때 하루에 내려가는 최대 거리예요.
         static let maxDaySpacing: CGFloat = 170
         static let finaleExtraOffset: CGFloat = 52
         static let beachStartOffset: CGFloat = -80
@@ -350,7 +343,6 @@ private extension PloggingSceneView {
             ]
         ]
 
-        /// 날짜 수에 맞춰 해변을 나눠요. 날이 많아도 해변 끝을 넘지 않아요.
         static func dayOffset(_ day: Int, lastDay: Int) -> CGFloat {
             let spacing = min(maxDaySpacing, lastDayOffset / CGFloat(max(lastDay, 1)))
             return CGFloat(min(max(day, 0), lastDay)) * spacing
