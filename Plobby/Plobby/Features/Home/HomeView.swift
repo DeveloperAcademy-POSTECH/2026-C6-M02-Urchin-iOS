@@ -16,6 +16,8 @@ struct HomeView: View {
     @Bindable var store: StoreOf<HomeFeature>
     
     @Namespace private var tabUnderline
+    /// 끌기 시작한 곳이에요. 쓰레기를 줍고 나면 그 자리에서 다시 시작해요.
+    @State private var walkDragStart: (progress: Double, translation: CGFloat)?
     
     // MARK: - Body
     
@@ -135,11 +137,11 @@ private extension HomeView {
         return ZStack {
             switch type {
             case .plogging:
-                PloggingSceneView(days: days, stage: store.stage, collectPulse: pulse)
+                PloggingSceneView(days: days, stage: store.stage, collectPulse: pulse, walkProgress: store.walkProgress)
                     .ignoresSafeArea(edges: .bottom)
                     .transition(.opacity)
             case .plobbing:
-                PlobbingSceneView(days: days, stage: store.stage, collectPulse: pulse)
+                PlobbingSceneView(days: days, stage: store.stage, collectPulse: pulse, walkProgress: store.walkProgress)
                     .ignoresSafeArea(edges: .bottom)
                     .transition(.opacity)
             }
@@ -155,6 +157,7 @@ private extension HomeView {
                 day: store.currentDay,
                 totalTrashCount: store.board?.totalTrashCount ?? 0,
                 isGoalFinished: store.isGoalFinished,
+                isAtDay: store.walkProgress == store.walkProgress.rounded(),
                 onParticipantsTapped: { store.send(.participantsButtonTapped) },
                 onTrashSummaryTapped: { store.send(.trashSummaryButtonTapped, transaction: Self.noAnimation) }
             )
@@ -171,18 +174,38 @@ private extension HomeView {
         }
         .frame(maxHeight: .infinity)
         .contentShape(Rectangle())
-        .gesture(swipeGesture)
+        .gesture(walkGesture)
         .animation(.easeInOut(duration: 0.2), value: store.isScrollGuideVisible)
     }
     
-    var swipeGesture: some Gesture {
-        DragGesture(minimumDistance: 20)
-            .onEnded { value in
-                let dy = value.translation.height
-                guard abs(dy) > 40, abs(dy) > abs(value.translation.width) else { return }
+    /// 손가락을 올리면 사람이 해변 아래로 걸어가고, 내리면 뒤로 걸어가요.
+    var walkGesture: some Gesture {
+        DragGesture(minimumDistance: 4)
+            .onChanged { value in
+                guard !store.isWalkLocked else {
+                    walkDragStart = nil
+                    return
+                }
                 
-                store.send(.sceneSwiped(forward: dy < 0), animation: HomeFeature.transitionAnimation)
+                let translation = value.translation.height
+                let start = walkDragStart ?? (store.walkProgress, translation)
+                walkDragStart = start
+                
+                let progress = walkPath.progress(from: start.progress, moving: start.translation - translation)
+                store.send(.sceneWalked(to: progress), animation: .easeInOut(duration: 0.3))
             }
+            .onEnded { _ in
+                walkDragStart = nil
+            }
+    }
+    
+    var walkPath: HomeWalkPath {
+        let lastDay = max((store.board?.days.count ?? 1) - 1, 0)
+        
+        switch store.selectedType {
+        case .plogging: return PloggingSceneView.walkPath(lastDay: lastDay)
+        case .plobbing: return PlobbingSceneView.walkPath(lastDay: lastDay, stage: store.stage)
+        }
     }
     
     var recordButton: some View {
