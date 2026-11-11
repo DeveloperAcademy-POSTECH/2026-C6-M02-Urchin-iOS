@@ -103,26 +103,44 @@ private extension PlobbingSceneView {
 
     func diver(_ index: Int) -> some View {
         let spot = Metrics.divers[index]
+        let netAnchor = spot.netAnchor
 
         return ZStack(alignment: .topLeading) {
             Image(spot.image)
                 .resizable()
-                .frame(width: 56, height: 31)
-                .rotationEffect(.degrees(spot.rotation))
-                .position(spot.center)
 
-            Image(.homeSceneNet)
-                .resizable()
-                .keyframeAnimator(initialValue: 1.0, trigger: collectPulse) { content, scale in
-                    content.scaleEffect(scale, anchor: .top)
-                } keyframes: { _ in
-                    SpringKeyframe(1.3, duration: 0.15)
-                    SpringKeyframe(1.0, duration: 0.35, spring: .bouncy)
-                }
-                .rotationEffect(.degrees(8))
-                .floatingButtonShadow(Metrics.netRect(for: index))
+            ForEach(Array(netTrash(for: index).enumerated()), id: \.offset) { slot, image in
+                let place = Metrics.netTrashSlots[slot]
+                Image(image)
+                    .resizable()
+                    .scaledToFit()
+                    .rotationEffect(.degrees(place.rotation))
+                    .floatingButtonShadow(CGRect(
+                        x: spot.netCenter.x + place.offset.x - Metrics.netTrashSize.width / 2,
+                        y: spot.netCenter.y + place.offset.y - Metrics.netTrashSize.height / 2,
+                        width: Metrics.netTrashSize.width,
+                        height: Metrics.netTrashSize.height
+                    ))
+            }
         }
+        .frame(width: spot.rect.width, height: spot.rect.height, alignment: .topLeading)
+        .keyframeAnimator(initialValue: 1.0, trigger: collectPulse) { content, scale in
+            content.scaleEffect(scale, anchor: netAnchor)
+        } keyframes: { _ in
+            SpringKeyframe(1.08, duration: 0.15)
+            SpringKeyframe(1.0, duration: 0.35, spring: .bouncy)
+        }
+        .floatingButtonShadow(spot.rect)
         .opacity(isVisible(index) ? 1 : 0)
+    }
+
+    func netTrash(for diverIndex: Int) -> [ImageResource] {
+        let collected = days.indices.flatMap { day in
+            Metrics.trash[day % Metrics.trash.count]
+                .filter { $0.collector == diverIndex && HomeSceneTrashPhase(trashDay: day, stage: stage) == .collected }
+                .map(\.image)
+        }
+        return Array(collected.suffix(Metrics.netTrashSlots.count))
     }
 
     func trash(_ item: HomeSceneTrash, day: Int) -> some View {
@@ -222,8 +240,12 @@ private extension PlobbingSceneView {
 
         struct Diver {
             let image: ImageResource
-            let center: CGPoint
-            let rotation: Double
+            let rect: CGRect
+            let netCenter: CGPoint
+
+            var netAnchor: UnitPoint {
+                UnitPoint(x: netCenter.x / rect.width, y: netCenter.y / rect.height)
+            }
         }
 
         struct Cargo {
@@ -240,15 +262,21 @@ private extension PlobbingSceneView {
 
         static let diverGroup = CGRect(x: 90, y: 172, width: 190, height: 152)
         static let divers: [Diver] = [
-            Diver(image: .homeDiver01, center: CGPoint(x: 52, y: 39), rotation: 28),
-            Diver(image: .homeDiver02, center: CGPoint(x: 112, y: 27), rotation: 32),
-            Diver(image: .homeDiver03, center: CGPoint(x: 156, y: 55), rotation: 42),
-            Diver(image: .homeDiver04, center: CGPoint(x: 40, y: 87), rotation: 41),
-            Diver(image: .homeDiver05, center: CGPoint(x: 100, y: 79), rotation: 34),
-            Diver(image: .homeDiver06, center: CGPoint(x: 148, y: 107), rotation: 41)
+            Diver(image: .homeDiver01, rect: CGRect(x: 19.46, y: 12, width: 76, height: 66), netCenter: CGPoint(x: 56.02, y: 53.3)),
+            Diver(image: .homeDiver02, rect: CGRect(x: 77.04, y: 0, width: 76, height: 68), netCenter: CGPoint(x: 53.44, y: 52.3)),
+            Diver(image: .homeDiver03, rect: CGRect(x: 120.92, y: 28, width: 65, height: 73), netCenter: CGPoint(x: 47.56, y: 62.3)),
+            Diver(image: .homeDiver04, rect: CGRect(x: 0, y: 60, width: 75, height: 73), netCenter: CGPoint(x: 52.48, y: 60.3)),
+            Diver(image: .homeDiver05, rect: CGRect(x: 63.87, y: 52, width: 76, height: 69), netCenter: CGPoint(x: 54.61, y: 57.3)),
+            Diver(image: .homeDiver06, rect: CGRect(x: 108, y: 80, width: 75, height: 75), netCenter: CGPoint(x: 54.48, y: 64.3))
         ]
 
         static let visibleOrder = [0, 1, 5, 2, 3, 4]
+
+        static let netTrashSize = CGSize(width: 7, height: 8)
+        static let netTrashSlots: [(offset: CGPoint, rotation: Double)] = [
+            (CGPoint(x: -2.5, y: 2.5), 24),
+            (CGPoint(x: 2.5, y: 0.5), -12)
+        ]
         /// 마지막 날까지 내려가는 깊이예요. 이보다 더 내려가면 바다 그림이 끝나요.
         static let lastArrivalOffset: CGFloat = 640
         /// 날짜가 적을 때 하루에 내려가는 최대 깊이예요.
@@ -302,8 +330,13 @@ private extension PlobbingSceneView {
         }
 
         static func netRect(for diverIndex: Int) -> CGRect {
-            let center = divers[diverIndex].center
-            return CGRect(x: center.x + 14, y: center.y + 18, width: 16, height: 19)
+            let diver = divers[diverIndex]
+            return CGRect(
+                x: diver.rect.minX + diver.netCenter.x - 8,
+                y: diver.rect.minY + diver.netCenter.y - 9.5,
+                width: 16,
+                height: 19
+            )
         }
     }
 }
