@@ -231,7 +231,7 @@ private extension RecordFormView {
             .frame(width: 100.scaled, height: 100.scaled)
             .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
-        .disabled(store.photos.count >= maxPhotoCount)
+        .disabled(!store.canOpenPhotoPicker)
         .accessibilityLabel("사진 추가, \(store.photos.count)/\(maxPhotoCount)")
     }
 

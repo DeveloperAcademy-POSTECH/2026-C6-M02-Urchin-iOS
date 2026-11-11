@@ -72,6 +72,12 @@ struct RecordFormFeature {
             max(RecordFormFeature.maxPhotoCount - photos.count, 0)
         }
 
+        /// 5장이 꽉 차도 앨범에서 고른 사진이 있으면 들어가서 바꿀 수 있어요.
+        /// 수정 중인 기존 사진만으로 꽉 차 있으면 앨범에서 바꿀 사진이 없어서 막아요.
+        var canOpenPhotoPicker: Bool {
+            remainingPhotoCount > 0 || photos.contains { if case .local = $0 { true } else { false } }
+        }
+
         var hasInput: Bool {
             var current = inputs
             if mode == .create {
@@ -223,13 +229,18 @@ struct RecordFormFeature {
                 return .none
                 
             case .cameraTapped:
-                guard state.remainingPhotoCount > 0 else {
+                guard state.canOpenPhotoPicker else {
                     return .none
                 }
                 
+                let localAssets = state.photos.compactMap { photo -> PhotoAsset? in
+                    guard case let .local(asset) = photo else { return nil }
+                    return asset
+                }
                 state.destination = .photoPicker(PhotosPickerFeature.State(
                     recordType: state.recordType,
-                    alreadySelectedCount: state.photos.count
+                    selectedAssets: localAssets,
+                    alreadySelectedCount: state.photos.count - localAssets.count
                 ))
                 return .none
                 
@@ -334,8 +345,14 @@ struct RecordFormFeature {
                 ))
                 return .none
                 
+            // 앨범에서 고른 그대로 바꿔요. 선택을 푼 사진은 빼고, 계속 고른 사진은 자리를 지키고, 새 사진은 뒤에 붙여요.
             case let .destination(.presented(.photoPicker(.delegate(.finished(photos))))):
-                for photo in photos.prefix(state.remainingPhotoCount) {
+                let selectedIDs = Set(photos.map { RecordPhoto.local($0).id })
+                state.photos.removeAll { photo in
+                    guard case .local = photo else { return false }
+                    return !selectedIDs.contains(photo.id)
+                }
+                for photo in photos where state.photos.count < RecordFormFeature.maxPhotoCount {
                     state.photos.updateOrAppend(.local(photo))
                 }
                 state.destination = nil
