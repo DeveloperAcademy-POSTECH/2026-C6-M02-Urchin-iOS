@@ -29,6 +29,7 @@ struct HomeFeature {
         var walkProgresses: [RecordType: Double] = [:]
         var todayDays: [RecordType: Int] = [:]
         var isGoalExpanded = false
+        var hasSetInitialGoalExpansion = false
         var collectPulses: [RecordType: Int] = [:]
         var transitioningTypes: Set<RecordType> = []
         var sheet: Sheet?
@@ -153,8 +154,9 @@ struct HomeFeature {
                     state.stages[type] = status.isFinished ? .finale(step: type.resultStep) : .arrived(day: today)
                     state.walkProgresses[type] = status.isFinished ? Double(board.days.count) : Double(today)
                 }
-                if let goal = boards.first?.goal, goal.collectedCount == 0 {
-                    state.isGoalExpanded = true
+                if !state.hasSetInitialGoalExpansion, let goal = boards.first?.goal {
+                    state.hasSetInitialGoalExpansion = true
+                    state.isGoalExpanded = goal.collectedCount == 0
                 }
                 return .merge(
                     .merge(RecordType.allCases.map { .cancel(id: CancelID.scene($0)) }),
@@ -167,6 +169,7 @@ struct HomeFeature {
                 
             case let .activityTabSelected(type):
                 state.selectedType = type
+                state.hasSetInitialGoalExpansion = true
                 state.isGoalExpanded = false
                 return showScrollGuideIfNeeded(&state)
                 
@@ -213,6 +216,7 @@ struct HomeFeature {
                 return .none
                 
             case .goalCardToggleTapped:
+                state.hasSetInitialGoalExpansion = true
                 state.isGoalExpanded.toggle()
                 return .none
                 

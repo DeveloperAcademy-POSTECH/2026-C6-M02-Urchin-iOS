@@ -14,7 +14,7 @@ struct OnboardingView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<OnboardingFeature>
-    @State private var dragOffset: CGFloat = 0
+    @GestureState(resetTransaction: Transaction(animation: Self.pageAnimation)) private var dragOffset: CGFloat = 0
 
     private static let pageAnimation: Animation = .easeInOut(duration: 0.3)
     private static let backSwipeEdgeWidth: CGFloat = 32
@@ -54,18 +54,18 @@ private extension OnboardingView {
 
     func backSwipe(from page: OnboardingPage) -> some Gesture {
         DragGesture(minimumDistance: 10)
-            .onChanged { value in
+            .updating($dragOffset) { value, offset, _ in
                 guard page.previous != nil, value.startLocation.x < Self.backSwipeEdgeWidth else { return }
-                dragOffset = max(0, value.translation.width)
+                offset = max(0, value.translation.width)
             }
             .onEnded { value in
-                guard let previous = page.previous, dragOffset > 0 else { return }
+                guard let previous = page.previous,
+                      value.startLocation.x < Self.backSwipeEdgeWidth,
+                      value.predictedEndTranslation.width > Self.backSwipeThreshold
+                else { return }
 
                 withAnimation(Self.pageAnimation) {
-                    if value.predictedEndTranslation.width > Self.backSwipeThreshold {
-                        store.send(.pageChanged(previous))
-                    }
-                    dragOffset = 0
+                    store.send(.pageChanged(previous))
                 }
             }
     }

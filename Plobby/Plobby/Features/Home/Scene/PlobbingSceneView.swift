@@ -155,7 +155,7 @@ private extension PlobbingSceneView {
     func netTrash(for diverIndex: Int) -> [ImageResource] {
         let collected = days.indices.flatMap { day in
             Metrics.trash[day % Metrics.trash.count]
-                .filter { $0.collector == diverIndex && HomeSceneTrashPhase(trashDay: day, stage: stage) == .collected }
+                .filter { collector(for: $0, day: day) == diverIndex && HomeSceneTrashPhase(trashDay: day, stage: stage) == .collected }
                 .map(\.image)
         }
         return Array(collected.suffix(Metrics.netTrashSlots.count))
@@ -164,7 +164,7 @@ private extension PlobbingSceneView {
     func trash(_ item: HomeSceneTrash, day: Int, index: Int) -> some View {
         let phase = HomeSceneTrashPhase(trashDay: day, stage: stage)
         let arrival = Metrics.arrivalOffset(day, lastDay: lastDay)
-        let net = Metrics.netRect(for: item.collector).offsetBy(dx: Metrics.diverGroup.minX, dy: Metrics.diverGroup.minY)
+        let net = Metrics.netRect(for: collector(for: item, day: day)).offsetBy(dx: Metrics.diverGroup.minX, dy: Metrics.diverGroup.minY)
         let rect = phase.isAtCollector
             ? item.rect.homeSceneShrunk(to: 0.25, center: CGPoint(x: net.midX, y: net.midY + Metrics.collectDive))
             : item.rect
@@ -229,9 +229,18 @@ private extension PlobbingSceneView {
     }
 
     func isVisible(_ diverIndex: Int) -> Bool {
-        guard days.indices.contains(currentDay) else { return diverIndex == 0 }
-        let count = min(max(days[currentDay].participantCount, 1), Metrics.divers.count)
-        return Metrics.visibleOrder.prefix(count).contains(diverIndex)
+        visibleDivers(on: currentDay).contains(diverIndex)
+    }
+
+    func visibleDivers(on day: Int) -> [Int] {
+        guard days.indices.contains(day) else { return [Metrics.visibleOrder[0]] }
+        let count = min(max(days[day].participantCount, 1), Metrics.divers.count)
+        return Array(Metrics.visibleOrder.prefix(count))
+    }
+
+    func collector(for item: HomeSceneTrash, day: Int) -> Int {
+        let visible = visibleDivers(on: day)
+        return visible.contains(item.collector) ? item.collector : visible[item.collector % visible.count]
     }
 }
 

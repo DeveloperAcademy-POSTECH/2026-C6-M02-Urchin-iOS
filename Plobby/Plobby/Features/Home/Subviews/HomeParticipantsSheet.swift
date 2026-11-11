@@ -38,6 +38,11 @@ struct HomeParticipantsSheet: View {
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .onChange(of: hasMore) { _, hasMore in
+            if !hasMore {
+                isExpanded = false
+            }
+        }
         .presentationDetents(detents, selection: detentBinding)
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(24.scaled)
@@ -63,7 +68,7 @@ private extension HomeParticipantsSheet {
 
     var detentBinding: Binding<PresentationDetent> {
         Binding(
-            get: { isExpanded ? Self.expandedDetent : collapsedDetent },
+            get: { isExpanded && hasMore ? Self.expandedDetent : collapsedDetent },
             set: { isExpanded = $0 == Self.expandedDetent }
         )
     }
