@@ -12,9 +12,20 @@ Plobby와 함께라면 나의 작은 줍기가 모두의 깨끗한 바다로 이
 <br>
 
 # Screenshot
-| 활동 기록 | 공동 목표 | 쓰레기 컬렉션 | 해변 지도 |
+### 기록하기
+| 활동 선택 | 기록 작성 | 쓰레기 모으기 | 리워드 |
 | :---: | :---: | :---: | :---: |
-| <img src="이미지주소" width="200"> | <img src="이미지주소" width="200"> | <img src="이미지주소" width="200"> | <img src="이미지주소" width="200"> |
+| <img src="" width="200"> | <img src="" width="200"> | <img src="" width="200"> | <img src="" width="200"> |
+
+### 함께하기
+| 공동 목표 | 쓰레기 컬렉션 | 해변 지도 |
+| :---: | :---: | :---: |
+| <img src="" width="200"> | <img src="" width="200"> | <img src="" width="200"> |
+
+### 시작하기
+| 온보딩 | 기록 상세 | 마이 |
+| :---: | :---: | :---: |
+| <img src="" width="200"> | <img src="" width="200"> | <img src="" width="200"> |
 
 <br>
 <br>
@@ -35,10 +46,16 @@ Plobby와 함께라면 나의 작은 줍기가 모두의 깨끗한 바다로 이
 | **Test** | Swift Testing |
 | **Package Manager** | SPM (Swift Package Manager) |
 
+<br>
+<br>
+
 # Architecture
 ```
 📌 Todo: 추가하기 ~.~
 ```
+
+<br>
+<br>
 
 # Foldering
 ```
@@ -126,6 +143,9 @@ Plobby와 함께라면 나의 작은 줍기가 모두의 깨끗한 바다로 이
 
 > `Core/Config.xcconfig`, `Core/GoogleService-Info.plist`는 저장소에 포함되지 않습니다. 팀 채널에서 받아 같은 위치에 넣어 주세요.
 
+<br>
+<br>
+
 # Convention
 ### Code Style
 [Swift 스타일쉐어 가이드](https://github.com/StyleShare/swift-style-guide)를 기반으로 하되, 팀원의 기존 스타일과 SwiftUI 프로젝트 특성을 반영하여 일부 규칙은 재정의했습니다.
@@ -141,6 +161,7 @@ Plobby와 함께라면 나의 작은 줍기가 모두의 깨끗한 바다로 이
 | `fix` | 버그 수정 |
 | `refactor` | 코드 리팩토링 |
 | `style` | UI 작업 |
+| `delete` | 코드 또는 파일 삭제 |
 | `setting` | 프로젝트 세팅 |
 
 ```
@@ -169,6 +190,9 @@ ex) feat/#3-login
 - 디폴트 브랜치는 `develop`으로 설정합니다.
 - `main`에는 직접 커밋하지 않으며, 배포 시점에 `develop` → `main` PR로만 반영합니다.
 
+<br>
+<br>
+
 # Git Flow
 1. 작업할 내용에 대한 이슈를 생성합니다.
 2. 이슈 번호를 확인하고, 브랜치 컨벤션에 맞게 **GitHub에서** 브랜치를 생성합니다.
@@ -180,6 +204,9 @@ ex) feat/#3-login
 5. 코드 리뷰 후 모든 개발 팀원의 `approve`를 받으면 `develop`에 `merge` 합니다.
    - `merge` 후 원격 브랜치는 삭제합니다. (로컬 브랜치는 남겨두는 것을 권장합니다.)
 6. `merge` 후 팀원에게 알리고, 모든 팀원은 로컬 `develop`을 최신화합니다.
+
+<br>
+<br>
 
 # Team Members
 | | | | | |
