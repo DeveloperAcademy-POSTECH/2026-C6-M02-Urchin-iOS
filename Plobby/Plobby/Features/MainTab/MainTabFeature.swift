@@ -125,6 +125,10 @@ struct MainTabFeature {
                 state.selectedTab = .home
                 return reloadRecordScreens(state)
                 
+            case .home(.delegate(.myProfileRequested)):
+                state.collection.my = MyFeature.State()
+                return .none
+
             case let .home(.delegate(.recordStarted(recordType))):
                 return .send(.recordTypeSelected(recordType))
             

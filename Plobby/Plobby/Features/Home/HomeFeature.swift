@@ -29,6 +29,7 @@ struct HomeFeature {
         var walkProgresses: [RecordType: Double] = [:]
         var todayDays: [RecordType: Int] = [:]
         var isGoalExpanded = false
+        var hasSetInitialGoalExpansion = false
         var collectPulses: [RecordType: Int] = [:]
         var transitioningTypes: Set<RecordType> = []
         var sheet: Sheet?
@@ -50,12 +51,10 @@ struct HomeFeature {
             return days[min(stage.day(lastDay: days.count - 1), days.count - 1)]
         }
         
-        /// 해변 위를 걸어간 정도예요. 정수 지점이 각 날짜예요.
         var walkProgress: Double {
             walkProgresses[selectedType] ?? 0
         }
         
-        /// 쓰레기를 줍는 동안과 목표가 끝난 뒤에는 걸을 수 없어요.
         var isWalkLocked: Bool {
             transitioningTypes.contains(selectedType) || isGoalFinished
         }
@@ -110,6 +109,7 @@ struct HomeFeature {
         enum Delegate {
             case recordStarted(RecordType)
             case loginRequired
+            case myProfileRequested
         }
     }
     
@@ -156,6 +156,10 @@ struct HomeFeature {
                     state.stages[type] = status.isFinished ? .finale(step: type.resultStep) : .arrived(day: today)
                     state.walkProgresses[type] = status.isFinished ? Double(board.days.count) : Double(today)
                 }
+                if !state.hasSetInitialGoalExpansion, let goal = boards.first?.goal {
+                    state.hasSetInitialGoalExpansion = true
+                    state.isGoalExpanded = goal.collectedCount == 0
+                }
                 return .merge(
                     .merge(RecordType.allCases.map { .cancel(id: CancelID.scene($0)) }),
                     showScrollGuideIfNeeded(&state)
@@ -167,9 +171,10 @@ struct HomeFeature {
                 
             case let .activityTabSelected(type):
                 state.selectedType = type
+                state.hasSetInitialGoalExpansion = true
+                state.isGoalExpanded = false
                 return showScrollGuideIfNeeded(&state)
                 
-                // 손가락을 따라 걸어가다가, 아직 줍지 않은 날에 닿으면 멈춰서 쓰레기를 주워요.
             case let .sceneWalked(target):
                 let type = state.selectedType
                 guard let board = state.boards[type],
@@ -191,9 +196,7 @@ struct HomeFeature {
                     return collect(at: nextStop, type: type, lastDay: lastDay, state: &state)
                 }
                 
-                // 뒤로 걸어가면 지나온 날의 쓰레기가 다시 해변에 놓여서, 다시 걸어오며 주울 수 있어요.
                 state.walkProgresses[type] = progress
-                // 날짜는 다음 날까지 절반 넘게 걸어가면 바뀌어요.
                 let day = min(max(Int(progress.rounded()), 0), lastDay)
                 let collected = min(collectedThrough, Int(progress.rounded(.down)))
                 let walkingStage: HomeSceneStage = collected >= day ? .collected(day: day) : .arrived(day: day)
@@ -215,6 +218,7 @@ struct HomeFeature {
                 return .none
                 
             case .goalCardToggleTapped:
+                state.hasSetInitialGoalExpansion = true
                 state.isGoalExpanded.toggle()
                 return .none
                 
@@ -246,16 +250,22 @@ struct HomeFeature {
                 state.isTrashSummaryPresented = false
                 return .none
                 
-                // 함께한 사람 시트를 닫은 뒤 그 사람의 홈으로 이동해요. 나와 차단한 사람은 열지 않아요.
             case let .participantTapped(participantID):
                 guard let participant = state.board?.participants.first(
                     where: { $0.id == participantID}
                 ),
-                      !participant.isBlocked,
-                      participant.id != state.currentUserID
+                      !participant.isBlocked
                 else { return .none }
                 
                 state.sheet = nil
+
+                if participant.id == state.currentUserID {
+                    return .run { send in
+                        try await clock.sleep(for: Self.sheetDismissDelay)
+                        await send(.delegate(.myProfileRequested))
+                    }
+                }
+
                 return .run { send in
                     try await clock.sleep(for: Self.sheetDismissDelay)
                     await send(.userHomeOpened(participant))
@@ -298,7 +308,6 @@ struct HomeFeature {
                 state.userHome = nil
                 return .none
                 
-                // 차단한 사람은 함께한 사람 목록에서 가려 보여야 해서 다시 불러와요.
             case .userHome(.presented(.delegate(.blocked))):
                 state.userHome = nil
                 return .send(.onAppear)
@@ -356,7 +365,6 @@ extension HomeFeature {
         case scrollGuide
     }
     
-    /// 그날 쓰레기를 주워요. 마지막 도착점이면 수거대·배에 모으는 마무리 장면을 보여줘요.
     private func collect(at stop: Int, type: RecordType, lastDay: Int, state: inout State) -> Effect<Action> {
         let stages: [HomeSceneStage] = stop > lastDay
         ? (0...type.resultStep).map { .finale(step: $0) }
@@ -380,7 +388,6 @@ extension HomeFeature {
         }
     }
     
-    /// 진행 중인 목표가 없으면 가장 최근 목표(끝난 목표)를 보여줘요. 목표가 하나도 없으면 빈 배열이에요.
     private func fetchBoards(now: Date) async throws -> [HomeGoalBoard] {
         let currentGoal = try await goalClient.fetchCurrentGoal(now)
         let goal: Goal? = if let currentGoal {

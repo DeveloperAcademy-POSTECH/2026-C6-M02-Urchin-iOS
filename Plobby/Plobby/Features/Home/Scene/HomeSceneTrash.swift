@@ -14,6 +14,13 @@ struct HomeSceneTrash: Identifiable {
     let rect: CGRect
     let collector: Int
     var rotation: Double = 0
+
+    static func scatterRotation(day: Int, index: Int) -> Double {
+        let dayHash: Int = (day + 1) * 73_856_093
+        let indexHash: Int = (index + 1) * 19_349_663
+        let spread: Int = (dayHash ^ indexHash) % 81
+        return Double(spread) - 40
+    }
 }
 
 enum HomeSceneTrashPhase {
@@ -21,7 +28,6 @@ enum HomeSceneTrashPhase {
     case collecting
     case collected
 
-    /// 아직 걸어가지 않은 날의 쓰레기도 해변에 흩어져 보여서, 걸어가며 주울 수 있어요.
     init(trashDay: Int, stage: HomeSceneStage) {
         switch stage {
         case .finale:
