@@ -15,28 +15,60 @@ struct OnboardingView: View {
 
     @Bindable var store: StoreOf<OnboardingFeature>
 
+    @State private var dragOffset: CGFloat = 0
+
+    private static let pageAnimation: Animation = .easeInOut(duration: 0.3)
+    private static let backSwipeEdgeWidth: CGFloat = 32
+    private static let backSwipeThreshold: CGFloat = 100
+
     // MARK: - Body
 
     var body: some View {
-        NavigationStack(path: path) {
-            pageView(.goal)
-                .navigationDestination(for: OnboardingPage.self) { page in
-                    ObservingView { pageView(page) }
-                }
+        ZStack {
+            ForEach(stackedPages, id: \.self) { page in
+                card(page)
+            }
         }
+        .animation(Self.pageAnimation, value: store.currentPage)
         .plobbyAlert($store.scope(state: \.signIn.alert, action: \.signIn.alert))
     }
 }
 
-// MARK: - 내비게이션
+// MARK: - 카드 전환
 
 private extension OnboardingView {
 
-    var path: Binding<[OnboardingPage]> {
-        Binding(
-            get: { OnboardingPage.allCases.filter { $0 != .goal && $0.rawValue <= store.currentPage.rawValue } },
-            set: { store.send(.pageChanged($0.last ?? .goal)) }
-        )
+    var stackedPages: [OnboardingPage] {
+        OnboardingPage.allCases.filter { $0.rawValue <= store.currentPage.rawValue }
+    }
+
+    func card(_ page: OnboardingPage) -> some View {
+        let isTop = page == store.currentPage
+
+        return pageView(page)
+            .shadow(color: Color(.neutralBlack).opacity(isTop ? 0.12 : 0), radius: 16)
+            .offset(x: isTop ? dragOffset : 0)
+            .zIndex(Double(page.rawValue))
+            .transition(.blurFade)
+            .gesture(backSwipe(from: page), isEnabled: isTop)
+    }
+
+    func backSwipe(from page: OnboardingPage) -> some Gesture {
+        DragGesture(minimumDistance: 10)
+            .onChanged { value in
+                guard page.previous != nil, value.startLocation.x < Self.backSwipeEdgeWidth else { return }
+                dragOffset = max(0, value.translation.width)
+            }
+            .onEnded { value in
+                guard let previous = page.previous, dragOffset > 0 else { return }
+
+                withAnimation(Self.pageAnimation) {
+                    if value.predictedEndTranslation.width > Self.backSwipeThreshold {
+                        store.send(.pageChanged(previous))
+                    }
+                    dragOffset = 0
+                }
+            }
     }
 
     func pageView(_ page: OnboardingPage) -> some View {
@@ -64,7 +96,6 @@ private extension OnboardingView {
             bottomButtons(page)
         }
         .background(Color(.backgroundDefault))
-        .toolbar(.hidden, for: .navigationBar)
     }
 }
 
@@ -224,17 +255,6 @@ private extension OnboardingView {
     }
 }
 
-// MARK: - ObservingView
-
-private struct ObservingView<Content: View>: View {
-
-    let content: () -> Content
-
-    var body: some View {
-        content()
-    }
-}
-
 // MARK: - OnboardingPage
 
 private extension OnboardingPage {
@@ -267,5 +287,24 @@ private extension OnboardingPage {
         case .map: "지도 예시 화면"
         case .collection: "컬렉션 카드 예시"
         }
+    }
+}
+
+// MARK: - Transition
+
+private struct BlurModifier: ViewModifier {
+
+    let radius: CGFloat
+
+    func body(content: Content) -> some View {
+        content.blur(radius: radius)
+    }
+}
+
+private extension AnyTransition {
+
+    static var blurFade: AnyTransition {
+        .modifier(active: BlurModifier(radius: 8), identity: BlurModifier(radius: 0))
+            .combined(with: .opacity)
     }
 }
