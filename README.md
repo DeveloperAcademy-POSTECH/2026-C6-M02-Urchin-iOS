@@ -29,25 +29,89 @@
 
 ## 📂 Foldering
 ```
-Plobby
-├── Plobby
-│   ├── App            # 앱 진입점(PlobbyApp, AppDelegate), 루트 흐름(AppFeature), 푸시 진입 처리
-│   ├── Features       # 화면 단위 기능. 기능별 폴더에 Reducer와 View를 한 쌍으로 관리 (ex. Home/, Record/, Map/)
-│   │   └── Common     # 여러 화면이 같이 쓰는 Feature (Apple 로그인, 닉네임 확인, 사진 선택, 토스트 등)
-│   ├── Domain         # 데이터 모델(Entity)과 규칙(입력 검증 등). 순수 Swift만 사용
-│   ├── Clients        # 외부와 통신하는 Dependency Client. Client별 폴더에 인터페이스, live 구현, DTO 관리
-│   │   └── Supabase   # 모든 Client가 같이 쓰는 Supabase 연결 설정
-│   ├── Core           # 디자인 시스템(색·글꼴·공용 컴포넌트), Extension, 공용 Enum, 로거
-│   └── Resources      # Assets(이미지·색), 폰트, 해변 데이터(beaches.json)
-├── PlobbyTests        # 유닛 테스트. 앱과 같은 구조(App/, Domain/, Features/)로 관리
-└── PlobbyUITests      # UI 테스트 (주요 사용자 흐름: 온보딩, 기록하기 등)
+📁 Plobby
+├── 📁 App
+│   ├── 📝 PlobbyApp
+│   ├── 📝 AppDelegate
+│   ├── 📝 AppFeature
+│   └── 📝 ContentView
+├── 📁 Features
+│   ├── 📁 Common
+│   ├── 📁 MainTab
+│   ├── 📁 Onboarding
+│   ├── 📁 Login
+│   ├── 📁 SignUp
+│   ├── 📁 Home
+│   │   ├── 📁 GoalList
+│   │   ├── 📁 Subviews
+│   │   ├── 📝 HomeFeature
+│   │   └── 📝 HomeView
+│   ├── 📁 Record
+│   │   ├── 📁 RecordForm
+│   │   ├── 📁 RecordCollecting
+│   │   ├── 📁 RecordReward
+│   │   ├── 📁 RecordDetail
+│   │   ├── 📝 RecordFlowFeature
+│   │   └── 📝 RecordView
+│   ├── 📁 Map
+│   ├── 📁 Collection
+│   ├── 📁 My
+│   └── 📁 Notification
+├── 📁 Domain
+│   ├── 📁 Common
+│   ├── 📁 Auth
+│   ├── 📁 Beach
+│   ├── 📁 Goal
+│   ├── 📁 Member
+│   ├── 📁 Notification
+│   └── 📁 Record
+├── 📁 Clients
+│   ├── 📁 Supabase
+│   ├── 📁 Auth
+│   ├── 📁 Beach
+│   ├── 📁 Goal
+│   ├── 📁 Record
+│   │   ├── 📁 DTO
+│   │   │   ├── 📁 Request
+│   │   │   └── 📁 Response
+│   │   ├── 📝 RecordClient
+│   │   └── 📝 DependencyValues+Record
+│   ├── 📁 User
+│   ├── 📁 Notification
+│   ├── 📁 Push
+│   ├── 📁 Location
+│   └── 📁 Photo
+├── 📁 Core
+│   ├── 📁 DesignSystem
+│   ├── 📁 Extension
+│   ├── 📁 Enum
+│   ├── 📁 Common
+│   ├── ⚙️ Config.xcconfig
+│   └── ⚙️ GoogleService-Info.plist
+├── 📁 Resources
+│   ├── 🖼️ Assets
+│   ├── 🔤 Fonts
+│   └── 🗂️ beaches.json
+├── 📁 PlobbyTests
+└── 📁 PlobbyUITests
 ```
+
+| 폴더 | 역할 |
+| :--- | :--- |
+| `App` | 앱 진입점, 루트 흐름(온보딩 · 로그인 · 메인 탭 전환), 푸시 등록 |
+| `Features` | 화면 단위 기능. Feature(Reducer)와 View를 1:1로 관리 |
+| `Domain` | 앱에서 쓰는 Entity와 입력 규칙. 순수 Swift만 사용 |
+| `Clients` | 외부 통신 Dependency Client와 DTO(Request / Response) |
+| `Core` | 디자인 시스템, Extension, 공용 Enum, 로거 |
+| `Resources` | 이미지 · 색 · 폰트 · 해변 데이터 |
 
 - `import Supabase`는 `Clients/` 안에서만 사용합니다.
 - DTO는 `Clients/` 밖으로 내보내지 않고, Feature에서는 `Domain/`의 Entity만 사용합니다.
 - `Domain/`은 SwiftUI, TCA, Supabase를 import하지 않습니다.
 - `Core/`는 특정 Feature를 참조하지 않습니다.
 - `Features/Common`은 화면이 있는 공용 기능, `Core/`는 화면 로직이 없는 공용 코드입니다.
+
+> `Core/Config.xcconfig`, `Core/GoogleService-Info.plist`는 저장소에 포함되지 않습니다. 팀 채널에서 받아 같은 위치에 넣어 주세요.
 
 ## 📌 Convention
 ### Code Style
