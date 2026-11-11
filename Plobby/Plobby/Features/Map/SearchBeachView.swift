@@ -14,32 +14,29 @@ struct SearchBeachView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<SearchBeachFeature>
-
     @FocusState private var isSearchFocused: Bool
 
     // MARK: - Body
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 0) {
             searchField
-                .padding(.horizontal, 20)
-                .padding(.vertical, 8)
+
+            if store.isMember, !store.favoriteBeaches.isEmpty {
+                favoriteSection
+            }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     if InputText.isBlank(store.query) {
-                        if store.isMember, !store.favoriteBeaches.isEmpty {
-                            favoriteSection
-                        }
-
-                        if !store.recentSearches.isEmpty {
+                        if store.isMember, !store.recentSearches.isEmpty {
                             recentSection
                         }
                     } else {
                         searchResults
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 20.scaled)
             }
             .scrollDismissesKeyboard(.interactively)
         }
@@ -57,37 +54,39 @@ struct SearchBeachView: View {
 private extension SearchBeachView {
 
     var searchField: some View {
-        HStack(spacing: 8) {
-            Button {
-                store.send(.backTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 24, height: 24)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-
-            TextField(
-                "",
-                text: $store.query,
-                prompt: Text("해변, 해수욕장 이름을 검색해주세요.")
-                    .foregroundStyle(Color(.textTertiary))
-            )
-            .focused($isSearchFocused)
-            .plobbyFont(.body)
-            .foregroundStyle(Color(.textPrimary))
-            .submitLabel(.search)
+        SearchBar {
+            backButton
+        } content: {
+            searchTextField
         }
-        .padding(.horizontal, 12)
-        .frame(height: 56)
-        .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 12))
-        .overlay {
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(.currentWarmBorder), lineWidth: 1)
+        .padding(.horizontal, 20.scaled)
+        .padding(.vertical, 8.scaled)
+        .padding(.bottom, 8.scaled)
+    }
+    
+    var backButton: some View {
+        Button {
+            store.send(.backTapped)
+        } label: {
+            Image(.chevronLeft)
+                .resizable()
+                .frame(width: 24.scaled, height: 24.scaled)
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel("뒤로")
+    }
+    
+    var searchTextField: some View {
+        TextField(
+            "",
+            text: $store.query,
+            prompt: Text(SearchBarPlaceholder.beachOrResort)
+                .foregroundStyle(Color(.textSecondary))
+        )
+        .focused($isSearchFocused)
+        .plobbyFont(.body)
+        .foregroundStyle(Color(.textPrimary))
+        .submitLabel(.search)
     }
 }
 
@@ -95,33 +94,15 @@ private extension SearchBeachView {
 
 private extension SearchBeachView {
 
-    // TODO: 관심 해변 추가 흐름이 정해지면 "+ 추가" 버튼 연결
     var favoriteSection: some View {
         section("관심 해변") {
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: 8.scaled) {
                     ForEach(store.favoriteBeaches) { beach in
                         Button {
                             store.send(.resultTapped(beach.id))
                         } label: {
-                            HStack(spacing: 4) {
-                                Image(systemName: "star.fill")
-                                    .font(.system(size: 10, weight: .medium))
-                                    .foregroundStyle(Color(.green500))
-                                    .frame(width: 24, height: 24)
-
-                                Text(beach.name)
-                                    .font(.custom(PretendardWeight.semiBold.rawValue, size: 14))
-                                    .foregroundStyle(Color(.textPrimary))
-                            }
-                            .padding(.leading, 8)
-                            .padding(.trailing, 16)
-                            .frame(height: 44)
-                            .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color(.currentWarmBorder), lineWidth: 1)
-                            }
+                            BeachChip(title: beach.name)
                         }
                         .buttonStyle(.plain)
                     }
@@ -129,6 +110,7 @@ private extension SearchBeachView {
             }
             .scrollClipDisabled()
         }
+        .padding(.horizontal, 20.scaled)
     }
 }
 
@@ -138,9 +120,9 @@ private extension SearchBeachView {
 
     var recentSection: some View {
         section("최근 검색") {
-            VStack(spacing: 4) {
+            VStack(spacing: 4.scaled) {
                 ForEach(store.recentSearches) { beach in
-                    HStack(spacing: 8) {
+                    HStack(spacing: 8.scaled) {
                         favoriteIcon(beach)
 
                         Button {
@@ -148,7 +130,7 @@ private extension SearchBeachView {
                         } label: {
                             Text(beach.name)
                                 .plobbyFont(.body)
-                                .foregroundStyle(Color(.textPrimary))
+                                .foregroundStyle(Color(.gray900))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .contentShape(Rectangle())
                         }
@@ -157,33 +139,38 @@ private extension SearchBeachView {
                         Button {
                             store.send(.recentDeleteTapped(beach), animation: .default)
                         } label: {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 11))
-                                .foregroundStyle(Color(.textTertiary))
-                                .frame(width: 36, height: 36)
-                                .contentShape(Rectangle())
+                            Image(.mapXmark)
+                                .resizable()
+                                .frame(width: 36.scaled, height: 36.scaled)
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel("\(beach.name) 최근 검색 삭제")
+                        .accessibilityLabel("최근 검색 삭제")
                     }
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 8.scaled)
                 }
             }
         }
     }
 
-    /// 관심 해변이면 별, 아니면 핀. 로그인했으면 눌러서 관심 해변을 바꿀 수 있어요.
     func favoriteIcon(_ beach: Beach) -> some View {
         let isFavorite = store.isMember && store.favoriteBeaches.contains { $0.id == beach.id }
 
         return Button {
             store.send(.favoriteTapped(beach))
         } label: {
-            Image(systemName: isFavorite ? "star.fill" : "mappin.circle.fill")
-                .font(.system(size: isFavorite ? 16 : 20))
-                .foregroundStyle(isFavorite ? Color(.green500) : Color(.textTertiary))
-                .frame(width: 36, height: 36)
-                .background(Color(.gray50), in: Circle())
+            Group {
+                if isFavorite {
+                    Image(.starGreen)
+                        .resizable()
+                        .frame(width: 32.scaled, height: 32.scaled)
+                } else {
+                    Image(.mapPin)
+                        .resizable()
+                        .frame(width: 36.scaled, height: 36.scaled)
+                }
+            }
+            .frame(width: 36.scaled, height: 36.scaled)
+            .background(Color(.gray50), in: Circle())
         }
         .buttonStyle(.plain)
         .disabled(!store.isMember)
@@ -207,7 +194,7 @@ private extension SearchBeachView {
                     Button {
                         store.send(.resultTapped(result.id))
                     } label: {
-                        VStack(alignment: .leading, spacing: 4) {
+                        VStack(alignment: .leading, spacing: 4.scaled) {
                             Text(result.name)
                                 .plobbyFont(.body)
                                 .foregroundStyle(Color(.textPrimary))
@@ -217,7 +204,7 @@ private extension SearchBeachView {
                                 .foregroundStyle(Color(.textSecondary))
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.vertical, 12)
+                        .padding(.vertical, 12.scaled)
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
@@ -230,7 +217,7 @@ private extension SearchBeachView {
             }
 
         case .empty:
-            VStack(spacing: 4) {
+            VStack(spacing: 4.scaled) {
                 Text("검색 결과가 없어요")
                     .plobbyFont(.body)
                     .foregroundStyle(Color(.textPrimary))
@@ -240,18 +227,25 @@ private extension SearchBeachView {
                     .foregroundStyle(Color(.textSecondary))
             }
             .frame(maxWidth: .infinity)
-            .padding(.top, 80)
+            .padding(.top, 80.scaled)
         }
     }
+}
 
-    func section(_ title: String, @ViewBuilder content: () -> some View) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
+private extension SearchBeachView {
+    
+    func section(
+        _ title: String
+        , @ViewBuilder content: () -> some View)
+    -> some View {
+        VStack(alignment: .leading, spacing: 0) {
             Text(title)
                 .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
+                .foregroundStyle(Color(.gray900))
+                .padding(.bottom, 16.scaled)
 
             content()
         }
-        .padding(.vertical, 16)
+        .padding(.vertical, 16.scaled)
     }
 }

@@ -12,24 +12,16 @@ struct AppleLoginLabel: View {
     // MARK: - Body
 
     var body: some View {
-        label
-            .font(.system(size: 18.scaled, weight: .semibold))
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 51.scaled)
-            .background(.black, in: RoundedRectangle(cornerRadius: 8.scaled))
-    }
-}
-
-// MARK: - Subviews
-
-extension AppleLoginLabel {
-
-    private var label: some View {
-        HStack(alignment: .center, spacing: 16.scaled) {
-            Image(systemName: "applelogo")
+        HStack(spacing: 16.scaled) {
+            Image(systemName: "apple.logo")
+                .font(.system(size: 18.scaled, weight: .semibold))
 
             Text("Apple로 로그인")
+                .plobbyFont(.cardTitle)
         }
+        .foregroundStyle(Color(.gray0))
+        .frame(maxWidth: .infinity)
+        .frame(height: 56.scaled)
+        .background(Color(.neutralBlack), in: RoundedRectangle(cornerRadius: 8.scaled))
     }
 }

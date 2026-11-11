@@ -19,6 +19,7 @@ struct AppFeature {
         /// 저장된 세션을 확인하는 중이에요.
         case launching
         case onboarding(OnboardingFeature.State)
+        case login(LoginFeature.State)
         case signUp(SignUpFeature.State)
         case mainTab(MainTabFeature.State)
     }
@@ -32,6 +33,7 @@ struct AppFeature {
         case deviceTokenReceived(String)
         case pushTapped(UUID)
         case onboarding(OnboardingFeature.Action)
+        case login(LoginFeature.Action)
         case signUp(SignUpFeature.Action)
         case mainTab(MainTabFeature.Action)
     }
@@ -61,22 +63,24 @@ struct AppFeature {
                     syncBeaches()
                 )
 
+            // 이미 앱을 쓰던 회원은 온보딩을 본 것으로 쳐서, 로그아웃하면 로그인 화면으로 가요
             case let .sessionRestored(.success(.member(user))):
+                markOnboardingSeen()
                 updateMembershipStatus(.member(user))
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()
 
-            case let .sessionRestored(.success(.newUser(user, fullName))):
-                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
+            case let .sessionRestored(.success(.newUser(user))):
+                state = .signUp(SignUpFeature.State(user: user))
                 return .none
 
             case let .sessionRestored(.failure(error)):
                 PlobbyLogger.error(error)
-                state = .onboarding(OnboardingFeature.State())
+                state = signedOutState()
                 return .none
 
             case .sessionRestored(.success(nil)):
-                state = .onboarding(OnboardingFeature.State())
+                state = signedOutState()
                 return .none
                 
             case .sessionEnded:
@@ -92,7 +96,7 @@ struct AppFeature {
                 }
 
                 updateMembershipStatus(.guest)
-                state = .onboarding(OnboardingFeature.State())
+                state = signedOutState()
                 return .cancel(id: CancelID.restoreSession)
 
             case let .deviceTokenReceived(token):
@@ -108,16 +112,22 @@ struct AppFeature {
 
                 return .send(.mainTab(.pushTapped(recordID)))
 
-            case let .onboarding(.signIn(.delegate(.signedIn(user)))):
+            case let .onboarding(.signIn(.delegate(.signedIn(user)))),
+                 let .login(.signIn(.delegate(.signedIn(user)))):
+                markOnboardingSeen()
                 updateMembershipStatus(.member(user))
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()
 
-            case let .onboarding(.signIn(.delegate(.needsSignUp(user, fullName)))):
-                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
+            case let .onboarding(.signIn(.delegate(.needsSignUp(user)))),
+                 let .login(.signIn(.delegate(.needsSignUp(user)))):
+                markOnboardingSeen()
+                state = .signUp(SignUpFeature.State(user: user))
                 return .none
 
-            case .onboarding(.delegate(.browseWithoutSignUp)):
+            case .onboarding(.delegate(.browseWithoutSignUp)),
+                 .login(.delegate(.browseWithoutSignUp)):
+                markOnboardingSeen()
                 updateMembershipStatus(.guest)
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return .none
@@ -129,7 +139,7 @@ struct AppFeature {
 
             case .mainTab(.delegate(.signedOut)):
                 updateMembershipStatus(.guest)
-                state = .onboarding(OnboardingFeature.State())
+                state = .login(LoginFeature.State())
                 return .none
 
             case let .mainTab(.signIn(.delegate(.signedIn(user)))):
@@ -140,16 +150,19 @@ struct AppFeature {
                     .send(.mainTab(.home(.onAppear)))
                 )
 
-            case let .mainTab(.signIn(.delegate(.needsSignUp(user, fullName)))):
-                state = .signUp(SignUpFeature.State(user: user, fullName: fullName))
+            case let .mainTab(.signIn(.delegate(.needsSignUp(user)))):
+                state = .signUp(SignUpFeature.State(user: user))
                 return .none
 
-            case .onboarding, .signUp, .mainTab:
+            case .onboarding, .login, .signUp, .mainTab:
                 return .none
             }
         }
         .ifCaseLet(\.onboarding, action: \.onboarding) {
             OnboardingFeature()
+        }
+        .ifCaseLet(\.login, action: \.login) {
+            LoginFeature()
         }
         .ifCaseLet(\.signUp, action: \.signUp) {
             SignUpFeature()
@@ -169,6 +182,19 @@ extension AppFeature {
         $membershipStatus.withLock { $0 = status }
     }
 
+    /// 로그인하지 않은 상태로 보여줄 첫 화면이에요. 온보딩을 본 적 있으면 로그인 화면이에요.
+    private func signedOutState() -> State {
+        @Shared(.hasSeenOnboarding) var hasSeenOnboarding
+
+        return hasSeenOnboarding ? .login(LoginFeature.State()) : .onboarding(OnboardingFeature.State())
+    }
+
+    /// 온보딩에서 로그인하거나 둘러보기로 넘어가면, 다음 실행부터는 로그인 화면을 보여줘요.
+    private func markOnboardingSeen() {
+        @Shared(.hasSeenOnboarding) var hasSeenOnboarding
+        $hasSeenOnboarding.withLock { $0 = true }
+    }
+
     private nonisolated enum CancelID {
         case restoreSession
     }
@@ -179,7 +205,7 @@ extension AppFeature {
                 guard let user = await authClient.fetchCurrentUser() else { return nil }
 
                 let profile = try await userClient.fetchMyProfile()
-                return profile != nil ? .member(user) : .newUser(user, fullName: user.fullName)
+                return profile != nil ? .member(user) : .newUser(user)
             }))
         }
         .cancellable(id: CancelID.restoreSession)
@@ -216,9 +242,7 @@ extension AppFeature {
             PlobbyLogger.error(error)
         }
     }
-
-    /// 회원이 된 직후에 불러요. 알림 권한을 요청하고, 허용되면 기기 토큰을 등록해요.
-    /// 설정에서 알림을 끈 기기는 건너뛰어요.
+    
     private func submitCurrentDeviceToken() -> Effect<Action> {
         @Shared(.isPushEnabled) var isPushEnabled
         guard isPushEnabled else { return .none }

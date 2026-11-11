@@ -20,13 +20,11 @@ struct MainTabFeature {
         @Presents var recordFlow: RecordFlowFeature.State?
 
         var selectedTab: MainTab = .home
-        var isRecordMenuPresented = false
-        /// 지도에서 기록하기를 눌러 연 기록 메뉴라면, 고른 해변을 기록 작성까지 넘겨요
         var pendingRecordBeach: Beach?
         var isLoginSheetPresented = false
         var home: HomeFeature.State
         var map = MapFeature.State()
-        var my = MyFeature.State()
+        var collection = CollectionFeature.State()
         var signIn = SignInFeature.State()
     }
     
@@ -34,14 +32,13 @@ struct MainTabFeature {
     
     enum Action {
         case tabSelected(MainTab)
-        case recordMenuDismissed
         case recordTypeSelected(RecordType)
         case loginSheetPresentationChanged(Bool)
         case appleLoginButtonTapped
         case pushTapped(UUID)
         case home(HomeFeature.Action)
         case map(MapFeature.Action)
-        case my(MyFeature.Action)
+        case collection(CollectionFeature.Action)
         case recordFlow(PresentationAction<RecordFlowFeature.Action>)
         case signIn(SignInFeature.Action)
         case delegate(Delegate)
@@ -67,14 +64,13 @@ struct MainTabFeature {
         Scope(state: \.map, action: \.map) {
             MapFeature()
         }
-        Scope(state: \.my, action: \.my) {
-            MyFeature()
+        Scope(state: \.collection, action: \.collection) {
+            CollectionFeature()
         }
         
         Reduce { state, action in
             switch action {
             case .recordTypeSelected where state.membershipStatus == .guest:
-                state.isRecordMenuPresented = false
                 state.pendingRecordBeach = nil
                 guard !state.signIn.isSigningIn else { return .none }
 
@@ -82,7 +78,8 @@ struct MainTabFeature {
                 return .none
                 
             case .home(.delegate(.loginRequired)) where !state.signIn.isSigningIn,
-                 .my(.delegate(.loginRequired)) where !state.signIn.isSigningIn,
+                 .collection(.delegate(.loginRequired)) where !state.signIn.isSigningIn,
+                 .collection(.my(.presented(.delegate(.loginRequired)))) where !state.signIn.isSigningIn,
                  .map(.delegate(.loginRequired)) where !state.signIn.isSigningIn:
                 state.isLoginSheetPresented = true
                 return .none
@@ -100,32 +97,20 @@ struct MainTabFeature {
             case let .pushTapped(recordID):
                 guard state.recordFlow == nil else { return .none }
 
-                state.isRecordMenuPresented = false
-                state.pendingRecordBeach = nil
+                state.map.path.removeAll()
+                state.collection.my = nil
+
                 state.selectedTab = .home
                 state.home.notification = NotificationFeature.State(
                     recordDetail: RecordDetailFeature.State(recordID: recordID)
                 )
                 return .none
 
-            case .tabSelected(.record):
-                state.isRecordMenuPresented.toggle()
-                state.pendingRecordBeach = nil
-                return .none
-                
             case let .tabSelected(tab):
                 state.selectedTab = tab
-                state.isRecordMenuPresented = false
-                state.pendingRecordBeach = nil
-                return .none
-                
-            case .recordMenuDismissed:
-                state.isRecordMenuPresented = false
-                state.pendingRecordBeach = nil
                 return .none
                 
             case let .recordTypeSelected(recordType):
-                state.isRecordMenuPresented = false
                 state.recordFlow = RecordFlowFeature.State(recordType: recordType, beach: state.pendingRecordBeach)
                 state.pendingRecordBeach = nil
                 return .none
@@ -145,24 +130,20 @@ struct MainTabFeature {
             case .home:
                 return .none
             
-            case let .map(.delegate(.recordStartRequested(beach))):
-                state.isRecordMenuPresented = true
+            case let .map(.delegate(.recordStartRequested(beach, recordType))):
                 state.pendingRecordBeach = beach
-                return .none
+                return .send(.recordTypeSelected(recordType))
             
             case .map:
                 return .none
-            
-            case .my(.delegate(.signInRequested)):
-                return .send(.signIn(.appleSignInRequested))
 
-            case .my(.delegate(.signedOut)):
+            case let .collection(.delegate(.recordStarted(recordType))):
+                return .send(.recordTypeSelected(recordType))
+            
+            case .collection(.my(.presented(.delegate(.signedOut)))):
                 return .send(.delegate(.signedOut))
-            
-            case .my:
-                return .none
-            
-            case .recordFlow, .signIn, .delegate:
+
+            case .collection, .recordFlow, .signIn, .delegate:
                 return .none
             }
         }

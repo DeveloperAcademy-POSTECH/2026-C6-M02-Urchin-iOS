@@ -21,8 +21,13 @@ struct WithdrawalView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
-                .padding(.horizontal, 20)
+            PlobbyNavigationBar(
+                title: "회원 탈퇴",
+                style: .leading,
+                isBackEnabled: !store.isWithdrawing
+            ) {
+                store.send(.backButtonTapped)
+            }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 32) {
@@ -43,15 +48,6 @@ struct WithdrawalView: View {
         .onTapGesture {
             isDetailFocused = false
         }
-        .toolbar {
-            ToolbarSpacer(.flexible, placement: .keyboard)
-
-            ToolbarItem(placement: .keyboard) {
-                Button("완료") {
-                    isDetailFocused = false
-                }
-            }
-        }
         .toolbar(.hidden, for: .navigationBar)
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
     }
@@ -61,36 +57,13 @@ struct WithdrawalView: View {
 
 extension WithdrawalView {
 
-    private var navigationBar: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Button {
-                store.send(.backButtonTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 32, height: 44, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .disabled(store.isWithdrawing)
-            .accessibilityLabel("뒤로")
-
-            Text("회원 탈퇴")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .frame(height: 56)
-    }
-
     private var reasonSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             sectionTitle("탈퇴하는 이유가 궁금해요")
 
             VStack(alignment: .leading, spacing: 12) {
-                ForEach(WithdrawalReason.allCases, id: \.self) { reason in
-                    reasonButton(reason)
+                ForEach(WithdrawalReason.allCases, id: \.self) {
+                    reasonButton($0)
                 }
             }
         }

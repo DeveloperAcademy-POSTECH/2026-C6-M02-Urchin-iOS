@@ -21,6 +21,7 @@ struct RecordRewardFeature {
         var trash = TrashSelection()
         var weightKg: Double?
         var nickname: String?
+        var goal: Goal?
     }
 
     // MARK: - Action
@@ -28,6 +29,7 @@ struct RecordRewardFeature {
     enum Action {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
+        case goalResponse(Result<Goal?, any Error>)
         case nextButtonTapped
         case closeButtonTapped
         case delegate(Delegate)
@@ -42,6 +44,8 @@ struct RecordRewardFeature {
     // MARK: - Dependency
 
     @Dependency(\.userClient) var userClient
+    @Dependency(\.goalClient) var goalClient
+    @Dependency(\.date.now) var now
 
     // MARK: - Body
 
@@ -49,15 +53,29 @@ struct RecordRewardFeature {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                return .run { send in
-                    await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
-                }
+                let now = now
+                return .merge(
+                    .run { send in
+                        await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
+                    },
+                    .run { send in
+                        await send(.goalResponse(Result { try await goalClient.fetchCurrentGoal(now) }))
+                    }
+                )
                 
             case let .profileResponse(.success(profile)):
                 state.nickname = profile?.nickname
                 return .none
                 
             case let .profileResponse(.failure(error)):
+                PlobbyLogger.error(error)
+                return .none
+
+            case let .goalResponse(.success(goal)):
+                state.goal = goal
+                return .none
+
+            case let .goalResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 return .none
                 

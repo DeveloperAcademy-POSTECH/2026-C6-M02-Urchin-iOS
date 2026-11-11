@@ -1,0 +1,253 @@
+//
+//  PlobbingSceneView.swift
+//  Plobby
+//
+//  Created by 더스틴 on 11/8/26.
+//
+
+import SwiftUI
+
+struct PlobbingSceneView: View {
+
+    let days: [GoalDailyProgress]
+    let stage: HomeSceneStage
+    let collectPulse: Int
+
+    var body: some View {
+        HomeSceneCanvas { _ in
+            sea
+            divers
+        }
+    }
+}
+
+// MARK: - Layers
+
+private extension PlobbingSceneView {
+
+    var sea: some View {
+        ZStack(alignment: .topLeading) {
+            Image(.homeSceneSky)
+                .resizable()
+                .floatingButtonShadow(Metrics.sky)
+
+            Image(.homeSceneSea)
+                .resizable()
+                .floatingButtonShadow(Metrics.seabed)
+
+            Rectangle()
+                .fill(Metrics.surfaceLine)
+                .floatingButtonShadow(Metrics.surface)
+
+            Image(.homeSceneBoat)
+                .resizable()
+                .floatingButtonShadow(Metrics.boat)
+
+            cargo
+
+            ForEach(days.indices, id: \.self) { day in
+                ForEach(Metrics.trash[day % Metrics.trash.count]) { item in
+                    trash(item, day: day)
+                }
+            }
+        }
+        .frame(width: Metrics.world.width, height: Metrics.world.height, alignment: .topLeading)
+        .offset(y: -worldOffset)
+    }
+
+    var divers: some View {
+        ZStack(alignment: .topLeading) {
+            ForEach(Metrics.divers.indices, id: \.self) { index in
+                diver(index)
+            }
+        }
+        .frame(width: Metrics.diverGroup.width, height: Metrics.diverGroup.height, alignment: .topLeading)
+        .phaseAnimator([0.0, 1.0]) { content, phase in
+            content.offset(y: phase * 4)
+        } animation: { _ in
+            .easeInOut(duration: 1.6)
+        }
+        .scaleEffect(isSurfaced ? Metrics.surfacedScale : 1, anchor: .topLeading)
+        .offset(diverOffset)
+        .opacity(isLoaded ? 0 : 1)
+        .offset(x: Metrics.diverGroup.minX, y: Metrics.diverGroup.minY)
+    }
+
+    func diver(_ index: Int) -> some View {
+        let spot = Metrics.divers[index]
+
+        return ZStack(alignment: .topLeading) {
+            Image(spot.image)
+                .resizable()
+                .frame(width: 56, height: 31)
+                .rotationEffect(.degrees(spot.rotation))
+                .position(spot.center)
+
+            Image(.homeSceneNet)
+                .resizable()
+                .keyframeAnimator(initialValue: 1.0, trigger: collectPulse) { content, scale in
+                    content.scaleEffect(scale, anchor: .top)
+                } keyframes: { _ in
+                    SpringKeyframe(1.3, duration: 0.15)
+                    SpringKeyframe(1.0, duration: 0.35, spring: .bouncy)
+                }
+                .rotationEffect(.degrees(8))
+                .floatingButtonShadow(Metrics.netRect(for: index))
+        }
+        .opacity(isVisible(index) ? 1 : 0)
+    }
+
+    func trash(_ item: HomeSceneTrash, day: Int) -> some View {
+        let phase = HomeSceneTrashPhase(trashDay: day, stage: stage)
+        let arrival = Metrics.arrivalOffset(day)
+        let net = Metrics.netRect(for: item.collector).offsetBy(dx: Metrics.diverGroup.minX, dy: Metrics.diverGroup.minY)
+        let rect = phase.isAtCollector
+            ? item.rect.homeSceneShrunk(to: 0.25, center: CGPoint(x: net.midX, y: net.midY + Metrics.collectDive))
+            : item.rect
+
+        return Image(item.image)
+            .resizable()
+            .scaledToFit()
+            .rotationEffect(.degrees(item.rotation))
+            .floatingButtonShadow(rect.offsetBy(dx: 0, dy: arrival))
+            .opacity(phase.opacity)
+    }
+
+    var cargo: some View {
+        ForEach(Metrics.cargo.indices, id: \.self) { index in
+            let item = Metrics.cargo[index]
+            Image(item.image)
+                .resizable()
+                .scaledToFit()
+                .floatingButtonShadow(item.rect.offsetBy(dx: 0, dy: isLoaded ? 0 : 60))
+                .opacity(isLoaded ? 1 : 0)
+                .animation(.spring(duration: 0.6, bounce: 0.35).delay(Double(index) * 0.04), value: isLoaded)
+        }
+    }
+}
+
+// MARK: - State
+
+private extension PlobbingSceneView {
+
+    var lastDay: Int { max(days.count - 1, 0) }
+
+    var currentDay: Int { stage.day(lastDay: lastDay) }
+
+    var isSurfaced: Bool {
+        if case let .finale(step) = stage { return step >= 1 }
+        return false
+    }
+
+    var isLoaded: Bool {
+        stage == .finale(step: RecordType.plobbing.resultStep)
+    }
+
+    var worldOffset: CGFloat {
+        switch stage {
+        case let .arrived(day): Metrics.arrivalOffset(day)
+        case let .collecting(day), let .collected(day): Metrics.arrivalOffset(day) + Metrics.collectDive
+        case .finale(step: 0): Metrics.arrivalOffset(lastDay) + Metrics.collectDive
+        case .finale: 0
+        }
+    }
+
+    var diverOffset: CGSize {
+        switch stage {
+        case .finale(step: 0): Metrics.swimUpOffset
+        case .finale: Metrics.surfacedOffset
+        default: .zero
+        }
+    }
+
+    func isVisible(_ diverIndex: Int) -> Bool {
+        guard days.indices.contains(currentDay) else { return diverIndex == 0 }
+        let count = min(max(days[currentDay].participantCount, 1), Metrics.divers.count)
+        return Metrics.visibleOrder.prefix(count).contains(diverIndex)
+    }
+}
+
+// MARK: - Metrics
+
+private extension PlobbingSceneView {
+
+    enum Metrics {
+
+        struct Diver {
+            let image: ImageResource
+            let center: CGPoint
+            let rotation: Double
+        }
+
+        struct Cargo {
+            let image: ImageResource
+            let rect: CGRect
+        }
+
+        static let world = CGRect(x: 0, y: 0, width: 402, height: 1332)
+        static let sky = CGRect(x: 0, y: 0, width: 402, height: 132)
+        static let surface = CGRect(x: 0, y: 130, width: 402, height: 2)
+        static let seabed = CGRect(x: 0, y: 132, width: 402, height: 1200)
+        static let boat = CGRect(x: 112, y: 44, width: 179, height: 99)
+        static let surfaceLine = Color(red: 0xC2 / 255, green: 0xE6 / 255, blue: 0xF0 / 255)
+
+        static let diverGroup = CGRect(x: 90, y: 172, width: 190, height: 152)
+        static let divers: [Diver] = [
+            Diver(image: .homeDiver01, center: CGPoint(x: 52, y: 39), rotation: 28),
+            Diver(image: .homeDiver02, center: CGPoint(x: 112, y: 27), rotation: 32),
+            Diver(image: .homeDiver03, center: CGPoint(x: 156, y: 55), rotation: 42),
+            Diver(image: .homeDiver04, center: CGPoint(x: 40, y: 87), rotation: 41),
+            Diver(image: .homeDiver05, center: CGPoint(x: 100, y: 79), rotation: 34),
+            Diver(image: .homeDiver06, center: CGPoint(x: 148, y: 107), rotation: 41)
+        ]
+
+        static let visibleOrder = [0, 1, 5, 2, 3, 4]
+        static let arrivalOffsets: [CGFloat] = [0, 180, 420, 640]
+        static let collectDive: CGFloat = 55
+        static let swimUpOffset = CGSize(width: 16, height: -56)
+        static let surfacedScale: CGFloat = 0.6
+        static let surfacedOffset = CGSize(width: 18, height: -66)
+        
+        static let trash: [[HomeSceneTrash]] = [
+            [
+                HomeSceneTrash(image: .bottleWhiteS, rect: CGRect(x: 109, y: 300, width: 14, height: 34), collector: 0, rotation: -24),
+                HomeSceneTrash(image: .buoyHorizontalOrangeS, rect: CGRect(x: 262, y: 330, width: 36, height: 19), collector: 1, rotation: -12),
+                HomeSceneTrash(image: .sodaCanMintS, rect: CGRect(x: 140, y: 400, width: 18, height: 26), collector: 5)
+            ],
+            [
+                HomeSceneTrash(image: .plasticBagWhiteS, rect: CGRect(x: 280, y: 330, width: 22, height: 30), collector: 1, rotation: 12),
+                HomeSceneTrash(image: .glassBottleGreenS, rect: CGRect(x: 140, y: 350, width: 10, height: 34), collector: 0, rotation: 24),
+                HomeSceneTrash(image: .tinCanRedS, rect: CGRect(x: 240, y: 410, width: 24, height: 19), collector: 5, rotation: -24)
+            ],
+            [
+                HomeSceneTrash(image: .sodaCanMintS, rect: CGRect(x: 110, y: 340, width: 18, height: 26), collector: 3),
+                HomeSceneTrash(image: .bottleBlueS, rect: CGRect(x: 305, y: 300, width: 14, height: 34), collector: 2, rotation: 12),
+                HomeSceneTrash(image: .buoyHorizontalOrangeS, rect: CGRect(x: 200, y: 410, width: 36, height: 19), collector: 4, rotation: -12)
+            ],
+            [
+                HomeSceneTrash(image: .bottleWhiteS, rect: CGRect(x: 125, y: 330, width: 14, height: 34), collector: 0, rotation: 24),
+                HomeSceneTrash(image: .cupRedS, rect: CGRect(x: 265, y: 390, width: 18, height: 25), collector: 3, rotation: -12),
+                HomeSceneTrash(image: .plasticBagWhiteS, rect: CGRect(x: 310, y: 290, width: 22, height: 30), collector: 5)
+            ]
+        ]
+
+        static let cargo: [Cargo] = [
+            Cargo(image: .bottleWhiteS, rect: CGRect(x: 127, y: 70, width: 8, height: 18)),
+            Cargo(image: .buoyHorizontalOrangeS, rect: CGRect(x: 138, y: 78, width: 18, height: 10)),
+            Cargo(image: .sodaCanMintS, rect: CGRect(x: 158, y: 74, width: 10, height: 14)),
+            Cargo(image: .glassBottleGreenS, rect: CGRect(x: 171, y: 69, width: 6, height: 19)),
+            Cargo(image: .tinCanRedS, rect: CGRect(x: 180, y: 78, width: 13, height: 10)),
+            Cargo(image: .plasticBagWhiteS, rect: CGRect(x: 145, y: 64, width: 11, height: 15)),
+            Cargo(image: .cupRedS, rect: CGRect(x: 196, y: 75, width: 9, height: 13))
+        ]
+
+        static func arrivalOffset(_ day: Int) -> CGFloat {
+            arrivalOffsets[min(day, arrivalOffsets.count - 1)]
+        }
+
+        static func netRect(for diverIndex: Int) -> CGRect {
+            let center = divers[diverIndex].center
+            return CGRect(x: center.x + 14, y: center.y + 18, width: 16, height: 19)
+        }
+    }
+}

@@ -19,8 +19,9 @@ struct NotificationView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
-                .padding(.horizontal, 20)
+            PlobbyNavigationBar(title: "알림", style: .leading) {
+                store.send(.backButtonTapped)
+            }
 
             content
         }
@@ -33,7 +34,6 @@ struct NotificationView: View {
         .navigationDestination(item: $store.scope(state: \.recordDetail, action: \.recordDetail)) { store in
             RecordDetailView(store: store)
                 .toolbar(.hidden, for: .navigationBar)
-                .toolbar(.hidden, for: .tabBar)
         }
     }
 }
@@ -42,28 +42,6 @@ struct NotificationView: View {
 
 extension NotificationView {
 
-    private var navigationBar: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Button {
-                store.send(.backButtonTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 32, height: 44, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-
-            Text("알림")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .frame(height: 56)
-    }
-
     @ViewBuilder
     private var content: some View {
         if store.isLoading {
@@ -71,8 +49,8 @@ extension NotificationView {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if store.isEmpty {
             Text("아직 받은 알림이 없어요")
-                .plobbyFont(.body)
-                .foregroundStyle(Color(.textTertiary))
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             ScrollView {
@@ -101,7 +79,7 @@ extension NotificationView {
         } label: {
             Text("모두 읽음")
                 .plobbyFont(.label)
-                .foregroundStyle(store.hasUnread ? Color(.textSecondary) : Color(.textDisabled))
+                .foregroundStyle(store.hasUnread ? Color(.gray700) : Color(.textDisabled))
                 .frame(height: 44)
                 .contentShape(Rectangle())
         }
@@ -116,7 +94,7 @@ extension NotificationView {
         if !notifications.isEmpty {
             VStack(alignment: .leading, spacing: 0) {
                 Text(title)
-                    .plobbyFont(.cardTitle)
+                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 16))
                     .foregroundStyle(Color(.textPrimary))
                     .padding(.horizontal, 20)
                     .padding(.top, 16)
@@ -144,11 +122,11 @@ extension NotificationView {
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(notification.title)
-                        .plobbyFont(.body)
+                        .plobbyFont(.notification)
                         .foregroundStyle(Color(.textPrimary))
 
                     Text(notification.subtitle)
-                        .plobbyFont(.label)
+                        .plobbyFont(.helper)
                         .foregroundStyle(Color(.textSecondary))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

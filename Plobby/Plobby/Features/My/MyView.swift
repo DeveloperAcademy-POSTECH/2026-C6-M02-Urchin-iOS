@@ -13,36 +13,48 @@ struct MyView: View {
 
     // MARK: - Properties
 
-    let store: StoreOf<MyFeature>
+    @Bindable var store: StoreOf<MyFeature>
     @State private var savedProfileImage: UIImage?
+    @Environment(\.dismiss) private var dismiss
 
     // MARK: - Body
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Group {
-                header
-
-                if case .member = store.membershipStatus {
-                    profile
-                } else {
-                    guestLoginPrompt
+            if store.isMember {
+                PlobbyNavigationBar(title: "마이") {
+                    dismiss()
+                } trailingAction: {
+                    store.send(.settingsButtonTapped)
+                } trailingLabel: {
+                    Image(systemName: "gearshape")
+                        .font(.system(size: 24.scaled, weight: .regular))
+                        .foregroundStyle(Color(.textPrimary))
+                        .accessibilityLabel("설정")
+                }
+            } else {
+                PlobbyNavigationBar(title: "마이") {
+                    dismiss()
                 }
             }
-            .padding(.horizontal, 20)
 
-            // FIXME: 설정 화면 진입 방식 정해지면 제거 (임시로 프로필 아래에 설정 목록을 보여줘요)
-            if case .member = store.membershipStatus {
-                SettingsView(
-                    store: store.scope(state: \.settingsList, action: \.settingsList),
-                    showsNavigationBar: false
-                )
-                .padding(.top, 24)
-            }
+            content
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .plobbyToast(store.toast.toastType) {
+            store.send(.favoriteBeachUndoButtonTapped, animation: Self.favoriteBeachAnimation)
+        }
         .onAppear {
             store.send(.onAppear)
+        }
+        .onChange(of: store.isMember) {
+            store.send(.onAppear)
+        }
+        .sheet(item: $store.scope(state: \.favoriteBeachAdd, action: \.favoriteBeachAdd)) { store in
+            FavoriteBeachAddView(store: store)
+                .presentationDetents([.height(FavoriteBeachAddView.sheetHeight)])
+                .presentationDragIndicator(.visible)
+                .presentationBackground(Color(.gray0))
         }
         .task(id: store.savedProfileImage) {
             savedProfileImage = store.savedProfileImage.flatMap(UIImage.init(data:))
@@ -50,60 +62,69 @@ struct MyView: View {
     }
 }
 
-// MARK: - Subviews
+// MARK: - Content
 
 extension MyView {
 
-    private var header: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Text("마이")
-                .font(.system(size: 20, weight: .semibold))
-                .frame(maxWidth: .infinity, alignment: .leading)
+    /// 비회원도 회원과 같은 구성으로 보여주고, 값만 비워둬요.
+    private var content: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 16.scaled) {
+                    profile
 
-            // FIXME: 설정 목록을 프로필 아래로 임시 이동해서 설정 아이콘을 숨겨둠
-            // Button {
-            //     store.send(.settingsButtonTapped)
-            // } label: {
-            //     Image(systemName: "gearshape")
-            //         .font(.system(size: 24, weight: .regular))
-            //         .foregroundStyle(.black)
-            // }
+                    activitySummary
+                }
+                .padding(.horizontal, 20.scaled)
+                .padding(.bottom, 16.scaled)
+
+                favoriteBeachSection
+                    .padding(.top, 16.scaled)
+                    .padding(.bottom, 24.scaled)
+
+                RecordListSection(
+                    records: store.filteredRecords,
+                    selectedFilter: store.recordFilter,
+                    onFilterChanged: { store.send(.recordFilterChanged($0)) },
+                    onRecordTapped: { store.send(.recordTapped($0)) }
+                ) {
+                    if store.isMember {
+                        RecordListEmptyMessage()
+                    } else {
+                        guestRecordPrompt
+                    }
+                }
+                .padding(.horizontal, 20.scaled)
+                .padding(.top, 16.scaled)
+            }
+            .padding(.bottom, 24.scaled)
         }
-        .frame(height: 56)
     }
+
+    private func sectionTitle(_ title: String) -> some View {
+        Text(title)
+            .plobbyFont(.cardTitle)
+            .foregroundStyle(Color(.textPrimary))
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+// MARK: - 프로필
+
+extension MyView {
 
     private var profile: some View {
-        HStack(alignment: .center, spacing: 16) {
+        HStack(alignment: .center, spacing: 16.scaled) {
             profileImage
 
-            Text(store.profile?.nickname ?? "")
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundStyle(.black)
+            Text(store.isMember ? store.profile?.nickname ?? "" : "로그인이 필요해요")
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            profileEditButton
-        }
-        .padding(.top, 16)
-    }
-
-    /// 비회원에게 로그인을 안내하고 바로 Apple 로그인을 할 수 있게 해요
-    private var guestLoginPrompt: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("로그인하고 내 활동을 기록해보세요")
-                .plobbyFont(.heading)
-                .foregroundStyle(Color(.textPrimary))
-
-            Text("로그인 후 내 기록과 프로필을 관리할 수 있어요.")
-                .plobbyFont(.label)
-                .foregroundStyle(Color(.textSecondary))
-                .padding(.top, 8.scaled)
-
-            Button {
-                store.send(.appleLoginButtonTapped)
-            } label: {
-                AppleLoginLabel()
+            if store.isMember {
+                profileEditButton
             }
-            .padding(.top, 24.scaled)
         }
         .padding(.top, 16.scaled)
     }
@@ -120,12 +141,13 @@ extension MyView {
                         .resizable()
                         .scaledToFill()
                 } placeholder: {
-                    Circle()
-                        .fill(.gray.opacity(0.2))
+                    Image(systemName: "person.crop.circle.fill")
+                        .resizable()
+                        .foregroundStyle(Color(.gray600))
                 }
             }
         }
-        .frame(width: 56, height: 56)
+        .frame(width: 48.scaled, height: 48.scaled)
         .clipShape(Circle())
     }
 
@@ -134,14 +156,191 @@ extension MyView {
             store.send(.profileEditButtonTapped)
         } label: {
             Text("프로필 수정")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.gray)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
+                .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 13.scaled))
+                .foregroundStyle(Color(.textSecondary))
+                .padding(.horizontal, 12.scaled)
+                .padding(.vertical, 8.scaled)
+                .background(Color(.gray50), in: Capsule())
                 .overlay {
                     Capsule()
-                        .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                        .stroke(Color(.gray500), lineWidth: 1)
                 }
+        }
+    }
+}
+
+// MARK: - 활동 요약
+
+extension MyView {
+
+    private var activitySummary: some View {
+        HStack(alignment: .center, spacing: 8.scaled) {
+            activitySummaryCard(title: "활동 기록", value: memberValue("\(store.records.count)개"))
+            activitySummaryCard(title: "수거 개수", value: memberValue("\(store.collectedTrashCount)개"))
+            activitySummaryCard(
+                title: "수거 무게",
+                value: memberValue("\(store.collectedWeightKg.formatted(.number.precision(.fractionLength(0...1))))kg")
+            )
+        }
+    }
+
+    /// 비회원은 숫자 대신 "-"를 보여줘요.
+    private func memberValue(_ value: String) -> String {
+        store.isMember ? value : "-"
+    }
+
+    private func activitySummaryCard(title: String, value: String) -> some View {
+        VStack(alignment: .center, spacing: 4.scaled) {
+            Text(title)
+                .plobbyFont(.metadata)
+                .foregroundStyle(Color(.textTertiary))
+
+            Text(value)
+                .plobbyFont(.metric)
+                .foregroundStyle(Color(.currentBrandText))
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12.scaled)
+        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12.scaled))
+    }
+}
+
+// MARK: - 비회원
+
+extension MyView {
+
+    private var guestRecordPrompt: some View {
+        VStack(alignment: .center, spacing: 0) {
+            Text("로그인 후 활동을 기록해보세요")
+                .plobbyFont(.cardTitle)
+                .foregroundStyle(Color(.textPrimary))
+
+            Text("새 기록으로\n지도에 활동 흔적을 남겨보아요")
+                .plobbyFont(.helper)
+                .foregroundStyle(Color(.textTertiary))
+                .multilineTextAlignment(.center)
+                .padding(.top, 8.scaled)
+
+            Button {
+                store.send(.recordStartButtonTapped)
+            } label: {
+                HStack(alignment: .center, spacing: 6.scaled) {
+                    Image(systemName: "doc.text.fill")
+                        .font(.system(size: 14.scaled, weight: .regular))
+
+                    Text("활동 기록하기")
+                        .plobbyFont(.labelSelected)
+                }
+                .foregroundStyle(Color(.green600))
+                .padding(.horizontal, 20.scaled)
+                .frame(height: 36.scaled)
+                .overlay {
+                    Capsule()
+                        .stroke(Color(.green500), lineWidth: 1)
+                }
+                .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .padding(.top, 16.scaled)
+        }
+    }
+}
+
+// MARK: - 관심 해변
+
+extension MyView {
+
+    /// 관심 해변을 해제하거나 되돌릴 때 카드가 천천히 빠지고 돌아오게 해요.
+    private static let favoriteBeachAnimation: Animation = .easeInOut(duration: 0.5)
+
+    private var favoriteBeachSection: some View {
+        VStack(alignment: .leading, spacing: 16.scaled) {
+            HStack(alignment: .center, spacing: 0) {
+                sectionTitle("관심 해변")
+
+                favoriteBeachAddButton
+            }
+            .padding(.horizontal, 20.scaled)
+
+            if !store.isMember {
+                EmptyView()
+            } else if store.favoriteBeaches.isEmpty {
+                Text("+를 눌러 자주 가는 해변을 추가해 보세요")
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.textTertiary))
+                    .padding(.horizontal, 20.scaled)
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(alignment: .center, spacing: 12.scaled) {
+                        ForEach(store.favoriteBeaches) { beach in
+                            Button {
+                                store.send(.favoriteBeachTapped(beach))
+                            } label: {
+                                favoriteBeachCard(beach)
+                            }
+                            .buttonStyle(.plain)
+                            .transition(.opacity.combined(with: .scale(scale: 0.9)))
+                        }
+                    }
+                    .padding(.horizontal, 20.scaled)
+                    .animation(Self.favoriteBeachAnimation, value: store.favoriteBeaches)
+                }
+            }
+        }
+    }
+
+    /// 관심 해변이 최대 개수만큼 있으면 더 추가할 수 없어서 흐리게 보여줘요.
+    private var favoriteBeachAddButton: some View {
+        Button {
+            store.send(.favoriteBeachAddButtonTapped)
+        } label: {
+            Image(systemName: "plus.circle")
+                .font(.system(size: 20.scaled, weight: .regular))
+                .foregroundStyle(store.isFavoriteBeachLimitReached ? Color(.textTertiary) : Color(.textPrimary))
+                .frame(width: 24.scaled, height: 24.scaled)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(store.isFavoriteBeachLimitReached)
+        .accessibilityLabel("관심 해변 추가")
+    }
+
+    private func favoriteBeachCard(_ beach: Beach) -> some View {
+        HStack(alignment: .center, spacing: 12.scaled) {
+            VStack(alignment: .leading, spacing: 2.scaled) {
+                Text(beach.name)
+                    .plobbyFont(.actionLabel)
+                    .foregroundStyle(Color(.textPrimary))
+
+                Text(beach.address)
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.textSecondary))
+            }
+            .lineLimit(1)
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Button {
+                store.send(.favoriteBeachUnfavoriteButtonTapped(beach), animation: Self.favoriteBeachAnimation)
+            } label: {
+                Image(systemName: "star.fill")
+                    .font(.system(size: 12.scaled, weight: .regular))
+                    .foregroundStyle(Color(.green500))
+                    .frame(width: 15.scaled, height: 14.scaled)
+                    .frame(width: 32.scaled, height: 32.scaled)
+                    .background(Color(.gray50), in: Circle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("관심 해변 해제")
+        }
+        .padding(.horizontal, 16.scaled)
+        .padding(.vertical, 14.scaled)
+        .frame(width: 210.scaled)
+        .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 16.scaled))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16.scaled)
+                .stroke(Color(.currentWarmBorder), lineWidth: 1)
         }
     }
 }

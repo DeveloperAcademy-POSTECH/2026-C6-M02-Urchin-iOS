@@ -22,9 +22,8 @@ struct BeachSheetView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             header
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 20.scaled)
 
-            // 기록이 있는지 알기 전에는 이름과 닫기 버튼만 보여줘요.
             switch store.content {
             case .loading:
                 ProgressView()
@@ -35,29 +34,55 @@ struct BeachSheetView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             case .received, .failed:
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 0) {
                     stats
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, 20.scaled)
+                        .padding(.bottom, 20.scaled)
 
                     homeButton
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, 20.scaled)
+                        .padding(.bottom, 8.scaled)
 
                     photos
                 }
-                .padding(.top, 4)
+                .padding(.top, 4.scaled)
                 .frame(maxHeight: .infinity, alignment: .top)
             }
         }
-        .padding(.top, 28)
-        .padding(.bottom, 16)
+        .padding(.top, 28.scaled)
+        .padding(.bottom, 16.scaled)
         .animation(.easeInOut(duration: 0.2), value: store.content)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color(.gray0))
-        // 시트가 열린 채로 다른 핀을 고르면 같은 시트에 해변만 바뀌어요. 해변이 바뀔 때마다 다시 불러와요.
         .task(id: store.beach.id) {
             await store.send(.task).finish()
         }
+        .fullScreenCover(isPresented: activityPickerBinding) {
+            HomeActivityPicker(
+                onSelect: { store.send(.activityPicked($0), transaction: Self.noAnimation) },
+                onDismiss: { store.send(.activityPickerDismissed, transaction: Self.noAnimation) }
+            )
+            .presentationBackground(.clear)
+        }
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+    }
+}
+
+// MARK: - Activity Picker
+
+private extension BeachSheetView {
+
+    var activityPickerBinding: Binding<Bool> {
+        Binding(
+            get: { store.isActivityPickerPresented },
+            set: { if !$0 { store.send(.activityPickerDismissed, transaction: Self.noAnimation) } }
+        )
+    }
+
+    static var noAnimation: Transaction {
+        var transaction = Transaction()
+        transaction.disablesAnimations = true
+        return transaction
     }
 }
 
@@ -66,25 +91,26 @@ struct BeachSheetView: View {
 private extension BeachSheetView {
 
     var header: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 16.scaled) {
             Text(store.beach.name)
-                .font(.custom(PretendardWeight.semiBold.rawValue, size: 24))
+                .plobbyFont(.headingLarge)
                 .foregroundStyle(Color(.textPrimary))
                 .lineLimit(1)
 
             Spacer(minLength: 0)
 
-            if store.isMember, store.content != .loading {
-                circleButton(
-                    systemName: store.isFavorite ? "star.fill" : "star",
-                    color: store.isFavorite ? Color(.green500) : Color(.textSecondary),
-                    accessibilityLabel: store.isFavorite ? "관심 해변 해제" : "관심 해변 등록"
-                ) {
-                    store.send(.favoriteTapped)
-                }
+            if store.isMember, store.isFavorite, store.content != .loading {
+                circleIcon(systemName: "star.fill", color: Color(.green500), size: 18, weight: .semibold)
+                    .accessibilityLabel("관심 해변")
             }
 
-            circleButton(systemName: "xmark", color: Color(.textPrimary), accessibilityLabel: "닫기") {
+            circleButton(
+                systemName: "xmark",
+                color: Color(.textPrimary),
+                size: 13,
+                weight: .semibold,
+                accessibilityLabel: "닫기"
+            ) {
                 store.send(.closeTapped)
             }
         }
@@ -103,7 +129,6 @@ private extension BeachSheetView {
             .foregroundStyle(Color(.textPrimary))
     }
 
-    /// 기록이 없는 해변. 첫 기록을 남기도록 안내해요.
     var emptyContent: some View {
         VStack(spacing: 8) {
             Text("활동 기록을 등록해보세요")
@@ -116,7 +141,7 @@ private extension BeachSheetView {
                 .multilineTextAlignment(.center)
 
             Button {
-                store.send(.recordStartTapped)
+                store.send(.recordStartTapped, transaction: store.isMember ? Self.noAnimation : Transaction())
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "doc.text.fill")
@@ -126,34 +151,34 @@ private extension BeachSheetView {
                         .plobbyFont(.actionLabel)
                 }
                 .foregroundStyle(Color(.green600))
-                .padding(.horizontal, 32)
-                .frame(height: 38)
+                .padding(.horizontal, 32.scaled)
+                .frame(height: 38.scaled)
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color(.green500), lineWidth: 1)
                 }
             }
             .buttonStyle(.plain)
-            .padding(.top, 8)
+            .padding(.top, 8.scaled)
         }
-        // 시트 높이는 그대로 두고 남은 공간의 가운데에 놓여요.
     }
 
     var homeButton: some View {
         Button {
             store.send(.homeTapped)
         } label: {
-            HStack(spacing: 4) {
+            HStack(spacing: 4.scaled) {
                 Image(systemName: "newspaper.fill")
-                    .font(.system(size: 14))
+                    .font(.system(size: 14.scaled))
+                    .frame(width: 20.scaled, height: 20.scaled)
 
                 Text("기록 보기")
                     .plobbyFont(.actionLabel)
             }
             .foregroundStyle(Color(.gray0))
-            .padding(.horizontal, 16)
-            .frame(height: 36)
-            .background(Color(.green600), in: RoundedRectangle(cornerRadius: 8))
+            .padding(.horizontal, 16.scaled)
+            .frame(height: 36.scaled)
+            .background(Color(.green600), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .buttonStyle(.plain)
     }
@@ -164,11 +189,11 @@ private extension BeachSheetView {
         case .loading:
             ProgressView()
                 .frame(maxWidth: .infinity)
-                .frame(height: Self.photoSize)
+                .frame(height: Self.photoSize.scaled)
 
         case let .received(summary) where !summary.photoURLs.isEmpty:
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: 8.scaled) {
                     ForEach(summary.photoURLs, id: \.self) { url in
                         AsyncImage(url: url) { image in
                             image
@@ -177,13 +202,13 @@ private extension BeachSheetView {
                         } placeholder: {
                             Color(.gray50)
                         }
-                        .frame(width: Self.photoSize, height: Self.photoSize)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .frame(width: Self.photoSize.scaled, height: Self.photoSize.scaled)
+                        .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
                     }
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 20.scaled)
             }
-            .padding(.vertical, 8)
+            .padding(.vertical, 16.scaled)
 
         case .received, .empty, .failed:
             EmptyView()
@@ -193,21 +218,27 @@ private extension BeachSheetView {
     func circleButton(
         systemName: String,
         color: Color,
+        size: CGFloat,
+        weight: Font.Weight,
         accessibilityLabel: String,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
-            Image(systemName: systemName)
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(color)
-                .frame(width: 36, height: 36)
-                .background(Color(.gray50), in: Circle())
-                .overlay {
-                    Circle()
-                        .stroke(Color(.currentWarmBorder), lineWidth: 1)
-                }
+            circleIcon(systemName: systemName, color: color, size: size, weight: weight)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
+    }
+
+    func circleIcon(systemName: String, color: Color, size: CGFloat, weight: Font.Weight) -> some View {
+        Image(systemName: systemName)
+            .font(.system(size: size.scaled, weight: weight))
+            .foregroundStyle(color)
+            .frame(width: 36.scaled, height: 36.scaled)
+            .background(Color(.gray50), in: Circle())
+            .overlay {
+                Circle()
+                    .stroke(Color(.currentWarmBorder), lineWidth: 1)
+            }
     }
 }

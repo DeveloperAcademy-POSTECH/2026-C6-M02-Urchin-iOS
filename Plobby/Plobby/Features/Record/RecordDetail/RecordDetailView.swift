@@ -14,8 +14,9 @@ struct RecordDetailView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<RecordDetailFeature>
+    @State private var isMoreMenuPresented = false
 
-    private static let photoHeight: CGFloat = 224
+    private static let photoHeight: CGFloat = 224.scaled
 
     // MARK: - Body
 
@@ -36,12 +37,21 @@ struct RecordDetailView: View {
             }
         }
         .background(Color(.gray0))
+        // 내비게이션 바 바로 아래, 더보기 버튼 오른쪽 끝에 맞춰 펼쳐요.
+        .plobbyDropdownMenu(
+            isPresented: $isMoreMenuPresented,
+            padding: EdgeInsets(top: 56.scaled, leading: 0, bottom: 0, trailing: 20.scaled),
+            items: moreMenuItems
+        )
         .task {
             await store.send(.task).finish()
         }
         .plobbyAlert($store.scope(state: \.alert, action: \.alert))
         .fullScreenCover(item: $store.scope(state: \.editForm, action: \.editForm)) { store in
             RecordFormView(store: store)
+        }
+        .navigationDestination(item: $store.scope(state: \.userHome, action: \.userHome)) { store in
+            UserHomeView(store: store)
         }
     }
 }
@@ -67,39 +77,36 @@ private extension RecordDetailView {
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
         }
-        .padding(.horizontal, 20)
-        .frame(height: 56)
+        .padding(.horizontal, 20.scaled)
+        .frame(height: 56.scaled)
     }
 
-    /// 버튼 바로 아래에 시스템 팝업 메뉴로 떠요.
     var moreMenu: some View {
-        Menu {
-            if store.record?.isMine == true {
-                Button("수정하기") {
-                    store.send(.moreMenuSelected(.editTapped))
-                }
-                Button("삭제하기", role: .destructive) {
-                    store.send(.moreMenuSelected(.deleteTapped))
-                }
-            } else {
-                Button("신고하기") {
-                    store.send(.moreMenuSelected(.reportTapped))
-                }
-                Button("차단하기", role: .destructive) {
-                    store.send(.moreMenuSelected(.blockTapped))
-                }
-            }
-        } label: {
-            navigationIcon(systemName: "ellipsis")
+        navigationButton(systemName: "ellipsis", accessibilityLabel: "기록 더보기") {
+            isMoreMenuPresented.toggle()
         }
-        .accessibilityLabel("기록 더보기")
+    }
+
+    /// 내 기록은 수정·삭제, 다른 사람 기록은 신고·차단을 보여줘요.
+    var moreMenuItems: [PlobbyDropdownMenu.Item] {
+        if store.record?.isMine == true {
+            [
+                .edit { store.send(.moreMenuSelected(.editTapped)) },
+                .delete { store.send(.moreMenuSelected(.deleteTapped)) }
+            ]
+        } else {
+            [
+                .report { store.send(.moreMenuSelected(.reportTapped)) },
+                .block { store.send(.moreMenuSelected(.blockTapped)) }
+            ]
+        }
     }
 
     func navigationIcon(systemName: String) -> some View {
         Image(systemName: systemName)
-            .font(.system(size: 17, weight: .medium))
+            .font(.system(size: 17.scaled, weight: .medium))
             .foregroundStyle(Color(.textPrimary))
-            .frame(width: 44, height: 44)
+            .frame(width: 44.scaled, height: 44.scaled)
             .contentShape(Rectangle())
     }
 
@@ -122,20 +129,20 @@ private extension RecordDetailView {
 
     func content(_ record: RecordDetail) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 40) {
+            VStack(alignment: .leading, spacing: 40.scaled) {
                 header(record)
                 summarySection(record)
                 trashSection
                 memoSection(record)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 24)
-            .padding(.bottom, 48)
+            .padding(.horizontal, 20.scaled)
+            .padding(.top, 24.scaled)
+            .padding(.bottom, 48.scaled)
         }
     }
 
     var failedView: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 16.scaled) {
             Text("기록을 불러오지 못했어요")
                 .plobbyFont(.body)
                 .foregroundStyle(Color(.textSecondary))
@@ -155,19 +162,26 @@ private extension RecordDetailView {
 private extension RecordDetailView {
 
     func header(_ record: RecordDetail) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                profileImage(record.profileImageURL)
+        VStack(alignment: .leading, spacing: 12.scaled) {
+            Button {
+                store.send(.authorProfileTapped)
+            } label: {
+                HStack(spacing: 8.scaled) {
+                    profileImage(record.profileImageURL)
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(record.nickname)
-                        .plobbyFont(.label)
+                    VStack(alignment: .leading, spacing: 2.scaled) {
+                        Text(record.nickname)
+                            .plobbyFont(.label)
 
-                    Text(Self.relativeTime(record.createdAt))
-                        .plobbyFont(.metadata)
+                        Text(Self.relativeTime(record.createdAt))
+                            .plobbyFont(.metadata)
+                    }
+                    .foregroundStyle(Color(.textSecondary))
                 }
-                .foregroundStyle(Color(.textSecondary))
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .allowsHitTesting(!record.isMine && store.opensAuthorHome)
 
             Text(record.title)
                 .plobbyFont(.heading)
@@ -184,12 +198,12 @@ private extension RecordDetailView {
                 .scaledToFill()
         } placeholder: {
             Image(systemName: "person.fill")
-                .font(.system(size: 14))
+                .font(.system(size: 14.scaled))
                 .foregroundStyle(Color(.gray0))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color(.gray300))
         }
-        .frame(width: 32, height: 32)
+        .frame(width: 32.scaled, height: 32.scaled)
         .clipShape(Circle())
     }
 
@@ -198,9 +212,9 @@ private extension RecordDetailView {
 
         return ZStack {
             if photos.isEmpty {
-                VStack(spacing: 8) {
+                VStack(spacing: 8.scaled) {
                     Image(systemName: "camera.fill")
-                        .font(.system(size: 20))
+                        .font(.system(size: 20.scaled))
 
                     Text("활동 사진이 없어요")
                         .plobbyFont(.helper)
@@ -226,7 +240,7 @@ private extension RecordDetailView {
                 .tabViewStyle(.page(indexDisplayMode: .never))
 
                 LinearGradient(
-                    colors: [.clear, .black.opacity(0.4)],
+                    colors: [.clear, Color(.neutralBlack).opacity(0.4)],
                     startPoint: .center,
                     endPoint: .bottom
                 )
@@ -234,21 +248,21 @@ private extension RecordDetailView {
             }
         }
         .frame(height: Self.photoHeight)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
         .overlay(alignment: .topTrailing) {
             if !photos.isEmpty {
                 Text("\(store.currentPhotoIndex + 1)/\(photos.count)")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.gray0))
-                    .frame(width: 44, height: 26)
-                    .background(.black.opacity(0.4), in: RoundedRectangle(cornerRadius: 8))
-                    .padding(12)
+                    .frame(width: 44.scaled, height: 26.scaled)
+                    .background(Color(.neutralBlack).opacity(0.4), in: RoundedRectangle(cornerRadius: 8.scaled))
+                    .padding(12.scaled)
             }
         }
         .overlay(alignment: .bottomTrailing) {
             likeButton(record, isOnPhoto: !photos.isEmpty)
-                .padding(.trailing, 12)
-                .padding(.bottom, 8)
+                .padding(.trailing, 12.scaled)
+                .padding(.bottom, 8.scaled)
         }
     }
 
@@ -256,10 +270,10 @@ private extension RecordDetailView {
         Button {
             store.send(.likeTapped)
         } label: {
-            VStack(spacing: 4) {
+            VStack(spacing: 4.scaled) {
                 Image(systemName: record.likedByMe ? "heart.fill" : "heart")
-                    .font(.system(size: 26))
-                    .frame(width: 32, height: 32)
+                    .font(.system(size: 26.scaled))
+                    .frame(width: 32.scaled, height: 32.scaled)
 
                 Text("\(record.likeCount)")
                     .plobbyFont(.metadata)
@@ -290,7 +304,7 @@ private extension RecordDetailView {
                 }
             }
             .overlay {
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 8.scaled)
                     .stroke(Color(.gray300), lineWidth: 1)
             }
         }
@@ -307,7 +321,7 @@ private extension RecordDetailView {
                 .foregroundStyle(Color(.textPrimary))
         }
         .plobbyFont(.body)
-        .padding(16)
+        .padding(16.scaled)
     }
 }
 
@@ -317,33 +331,23 @@ private extension RecordDetailView {
 
     @ViewBuilder
     var trashSection: some View {
-        switch store.trashLayout {
-        case .hidden:
-            EmptyView()
+        if let summary = store.trashSummary, !summary.items.isEmpty {
+            trashCard(items: summary.items) {
+                if let weight = summary.weight {
+                    HStack(spacing: 24.scaled) {
+                        metric("총개수", value: "\(summary.totalCount)개")
 
-        case let .countAndWeight(totalCount, weight, items):
-            trashCard(items: items) {
-                HStack(spacing: 24) {
-                    metric("총개수", value: "\(totalCount)개")
+                        Rectangle()
+                            .fill(Color(.gray200))
+                            .frame(width: 1, height: 44.scaled)
 
-                    Rectangle()
-                        .fill(Color(.gray200))
-                        .frame(width: 1, height: 44)
-
-                    metric("총무게", value: "\(Self.decimalText(weight))kg")
+                        metric("총무게", value: "\(Self.decimalText(weight))kg")
+                    }
+                    .padding(16.scaled)
+                    .frame(height: 86.scaled)
+                } else {
+                    metricRow("총개수", value: "\(summary.totalCount)개")
                 }
-                .padding(16)
-                .frame(height: 86)
-            }
-
-        case let .countOnly(totalCount, items):
-            trashCard(items: items) {
-                metricRow("총개수", value: "\(totalCount)개")
-            }
-
-        case let .weightOnly(weight):
-            trashCard(items: []) {
-                metricRow("총무게", value: "\(Self.decimalText(weight))kg")
             }
         }
     }
@@ -368,20 +372,20 @@ private extension RecordDetailView {
                     }
                     .plobbyFont(.body)
                     .foregroundStyle(Color(.textPrimary))
-                    .padding(.horizontal, 16)
-                    .frame(height: 56)
+                    .padding(.horizontal, 16.scaled)
+                    .frame(height: 56.scaled)
                 }
             }
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
             .overlay {
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 8.scaled)
                     .stroke(Color(.gray300), lineWidth: 1)
             }
         }
     }
 
     func metric(_ title: String, value: String) -> some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 4.scaled) {
             Text(title)
                 .plobbyFont(.helper)
                 .foregroundStyle(Color(.textSecondary))
@@ -405,7 +409,7 @@ private extension RecordDetailView {
                 .plobbyFont(.heading)
                 .foregroundStyle(Color(.textPrimary))
         }
-        .padding(16)
+        .padding(16.scaled)
     }
 }
 
@@ -426,7 +430,7 @@ private extension RecordDetailView {
     }
 
     func section(_ title: String, @ViewBuilder content: () -> some View) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 16.scaled) {
             Text(title)
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))

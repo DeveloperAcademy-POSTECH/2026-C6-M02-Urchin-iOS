@@ -35,6 +35,8 @@ struct PhotoThumbnailView: View {
         }
         .frame(width: size.width, height: size.height)
         .clipped()
+        // clipped()는 그리기만 자르고 터치 영역은 그대로라, scaledToFill로 넘친 부분이 옆 셀 터치를 가로채요
+        .contentShape(Rectangle())
         .task(id: assetID) {
             let pixelSize = CGSize(width: size.width * displayScale, height: size.height * displayScale)
             image = await photoLibraryClient.thumbnail(assetID, pixelSize)

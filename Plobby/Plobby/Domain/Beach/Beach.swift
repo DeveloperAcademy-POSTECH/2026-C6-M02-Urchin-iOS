@@ -17,6 +17,8 @@ nonisolated struct Beach: Identifiable, Equatable, Sendable {
 }
 
 nonisolated extension Beach {
+
+    static let maximumFavoriteCount = 3
     
     var coordinate: Coordinate {
         .init(latitude: latitude, longitude: longitude)

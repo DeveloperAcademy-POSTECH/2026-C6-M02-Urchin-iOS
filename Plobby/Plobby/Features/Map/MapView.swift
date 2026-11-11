@@ -15,53 +15,46 @@ struct MapView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<MapFeature>
-
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var visibleRegion: MKCoordinateRegion?
-    /// MapKit이 알려주는 탭한 마커. 바텀시트를 여는 신호로만 쓰고 바로 비워요.
     @State private var tappedMarkerID: UUID?
     @State private var mapSize: CGSize = .zero
     @Environment(\.scenePhase) private var scenePhase
 
-    private static let sheetHeight: CGFloat = 400
+    private static let sheetHeight: CGFloat = 357.scaled
 
     // MARK: - Body
 
     var body: some View {
-        NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-            mapContent
-                .toolbar(.hidden, for: .navigationBar)
-        } destination: { store in
-            destination(store)
-                .toolbar(.hidden, for: .navigationBar)
-                .toolbar(.hidden, for: .tabBar)
-        }
-        .sheet(item: $store.scope(state: \.beachSheet, action: \.beachSheet)) { store in
-            BeachSheetView(store: store)
-                .presentationDetents([.height(Self.sheetHeight)])
-                .presentationBackgroundInteraction(.enabled(upThrough: .height(Self.sheetHeight)))
-                .presentationCornerRadius(24)
-        }
-        .onAppear {
-            cameraPosition = Self.cameraPosition(for: store.cameraCommand)
-        }
-        .onChange(of: store.cameraRevision) {
-            withAnimation {
+        mapContent
+            .sheet(item: $store.scope(state: \.beachSheet, action: \.beachSheet)) { store in
+                BeachSheetView(store: store)
+                    // 시안 높이(357)에 하단 안전 영역까지 포함돼 있어서 콘텐츠를 안전 영역까지 내려요
+                    .ignoresSafeArea(.container, edges: .bottom)
+                    .presentationDetents([.height(Self.sheetHeight)])
+                    .presentationBackgroundInteraction(.enabled(upThrough: .height(Self.sheetHeight)))
+                    .presentationCornerRadius(24.scaled)
+            }
+            .onAppear {
                 cameraPosition = Self.cameraPosition(for: store.cameraCommand)
             }
-        }
-        .onChange(of: scenePhase) { _, phase in
-            if phase == .active {
-                store.send(.sceneBecameActive)
+            .onChange(of: store.cameraRevision) {
+                withAnimation {
+                    cameraPosition = Self.cameraPosition(for: store.cameraCommand)
+                }
             }
-        }
-        .task {
-            store.send(.task)
-        }
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active {
+                    store.send(.sceneBecameActive)
+                }
+            }
+            .task {
+                store.send(.task)
+            }
     }
 
     @ViewBuilder
-    private func destination(_ store: StoreOf<MapFeature.Path>) -> some View {
+    static func destination(_ store: StoreOf<MapFeature.Path>) -> some View {
         switch store.case {
         case let .beachHome(store):
             BeachHomeView(store: store)
@@ -88,21 +81,25 @@ private extension MapView {
 
         // 마커 탭은 MapKit 선택으로 받아요. 주석 안에 탭 제스처를 다는 것보다 MapKit이 직접 처리해서 더 안정적이에요.
         return Map(position: $cameraPosition, selection: $tappedMarkerID) {
-            // 화면 근처에서 보이는 마커(핀, 점)만 지도에 올려요. 숨긴 마커가 투명하게 남아 있으면 그 자리의 탭을 가로채요.
+            // 화면 근처에서 보이는 핀과 클러스터만 지도에 올려요.
             // MapKit은 주석 뷰의 크기로 탭을 판정해서, 뷰 크기를 그려지는 모양에 딱 맞춰요.
-            ForEach(markers.filter { layout.style(for: $0.id) != .hidden }) { marker in
-                let style = layout.style(for: marker.id)
-
-                Annotation(marker.beach.name, coordinate: marker.beach.coordinate.location, anchor: style == .pin ? .bottom : .center) {
-                    BeachMarkerView(
+            ForEach(markers.filter { layout.pinIDs.contains($0.id) }) { marker in
+                Annotation(marker.beach.name, coordinate: marker.beach.coordinate.location, anchor: .bottom) {
+                    BeachPinView(
                         recordCount: marker.recordCount,
-                        style: style,
                         isSelected: marker.id == store.selectedBeachID
                     )
                 }
-                // 이름은 핀에만 보여줘요. MapKit 이름표는 탭 영역에 들어가지 않아요.
-                .annotationTitles(style == .pin ? .automatic : .hidden)
                 .tag(marker.id)
+            }
+
+            // 겹친 해변은 기록 수를 더한 숫자 원 하나로 묶어요. 이름은 보여주지 않아요.
+            ForEach(layout.clusters) { cluster in
+                Annotation("", coordinate: cluster.coordinate.location, anchor: .center) {
+                    BeachClusterView(recordCount: cluster.recordCount)
+                }
+                .annotationTitles(.hidden)
+                .tag(cluster.id)
             }
 
             if store.isLocationAuthorized {
@@ -114,6 +111,10 @@ private extension MapView {
             // 영역이 그대로면 마커를 다시 그리지 않아요. 마커 탭과 다시 그리기가 겹치지 않게 해요.
             guard !MarkerLayout.isSameRegion(visibleRegion, context.region) else { return }
             visibleRegion = context.region
+
+            if store.isShowingCurrentLocation, !Self.isLooking(at: store.currentLocation, in: context.region) {
+                store.send(.cameraMovedAwayFromCurrentLocation)
+            }
         }
         .onGeometryChange(for: CGSize.self) { proxy in
             proxy.size
@@ -124,27 +125,31 @@ private extension MapView {
             guard let id else { return }
             tappedMarkerID = nil
 
-            // 다른 핀에 가려 숨긴 마커는 탭해도 반응하지 않게 해요.
-            guard let marker = markers.first(where: { $0.id == id }),
-                  layout.style(for: id) != .hidden
-            else { return }
-            store.send(.markerTapped(marker))
+            if let cluster = layout.cluster(for: id) {
+                store.send(.clusterTapped(cluster.markers))
+            } else if layout.pinIDs.contains(id), let marker = markers.first(where: { $0.id == id }) {
+                store.send(.markerTapped(marker))
+            }
         }
         .overlay(alignment: .top) {
-            VStack(spacing: 8) {
+            VStack(spacing: 14.scaled) {
                 searchBar
+                    .padding(.horizontal, 20.scaled)
+
+                if store.isMember, !store.favoriteBeaches.isEmpty {
+                    favoriteChips
+                }
 
                 if store.authorization == .denied {
                     locationOffBadge
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 8)
+            .padding(.top, 8.scaled)
         }
         .overlay(alignment: .bottomTrailing) {
             currentLocationButton
-                .padding(.trailing, 20)
-                .padding(.bottom, 16)
+                .padding(.trailing, 20.scaled)
+                .padding(.bottom, 16.scaled)
         }
     }
 
@@ -152,24 +157,39 @@ private extension MapView {
         Button {
             store.send(.searchButtonTapped)
         } label: {
-            HStack(spacing: 8) {
+            SearchBar {
                 Image(systemName: "magnifyingglass")
-                    .font(.system(size: 17, weight: .medium))
+                    .font(.system(size: 17.scaled, weight: .medium))
                     .foregroundStyle(Color(.textSecondary))
-                    .frame(width: 24, height: 24)
-
-                Text("해변, 해수욕장 이름을 검색해주세요.")
-                    .plobbyFont(.body)
-                    .foregroundStyle(Color(.textTertiary))
-
-                Spacer(minLength: 0)
+            } content: {
+                Text(SearchBarPlaceholder.beachOrResort)
             }
-            .padding(.horizontal, 12)
-            .frame(height: 56)
-            .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 12))
             .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
         }
         .buttonStyle(.plain)
+    }
+
+    /// 관심 해변 칩. 시트가 열린 해변의 칩만 선택된 모양이에요.
+    var favoriteChips: some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 8.scaled) {
+                ForEach(store.favoriteBeaches) { beach in
+                    Button {
+                        store.send(.favoriteChipTapped(beach))
+                    } label: {
+                        BeachChip(
+                            title: beach.name,
+                            style: beach.id == store.selectedBeachID ? .selectedSearchFavorite : .searchFavorite
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            // 칩 테두리가 잘리지 않게 위아래로 여유를 둬요.
+            .padding(.vertical, 1)
+        }
+        .scrollIndicators(.hidden)
+        .contentMargins(.horizontal, 20, for: .scrollContent)
     }
 
     var locationOffBadge: some View {
@@ -184,8 +204,8 @@ private extension MapView {
                     .font(.system(size: 10, weight: .semibold))
             }
             .foregroundStyle(Color(.textTertiary))
-            .padding(.horizontal, 16)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 16.scaled)
+            .padding(.vertical, 4.scaled)
             .background(Color(.gray0), in: Capsule())
         }
         .buttonStyle(.plain)
@@ -201,7 +221,7 @@ private extension MapView {
                 } else {
                     Image(systemName: "scope")
                         .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(Color(.textPrimary))
+                        .foregroundStyle(store.isShowingCurrentLocation ? Color(.green500) : Color(.textPrimary))
                 }
             }
             .frame(width: 44, height: 44)
@@ -216,6 +236,13 @@ private extension MapView {
 // MARK: - Functions
 
 private extension MapView {
+
+    /// 현위치가 화면 가운데 근처(보이는 범위의 10% 안)에 있으면 현위치를 보고 있다고 봐요.
+    static func isLooking(at location: Coordinate?, in region: MKCoordinateRegion) -> Bool {
+        guard let location else { return false }
+        return abs(region.center.latitude - location.latitude) < region.span.latitudeDelta * 0.1
+            && abs(region.center.longitude - location.longitude) < region.span.longitudeDelta * 0.1
+    }
 
     static func cameraPosition(for command: CameraCommand) -> MapCameraPosition {
         .region(region(for: command))
@@ -236,19 +263,29 @@ private extension MapView {
 
 // MARK: - MarkerLayout
 
-/// 화면에서 서로 겹치는 핀을 골라 점으로 바꿔요. 선택한 핀, 기록이 많은 핀 순서로 자리를 먼저 차지해요.
-/// MapKit은 그리는 순서를 보장하지 않아서, 핀 몸통에 가려질 점은 아예 그리지 않아요.
+/// 화면에서 서로 겹치는 해변을 하나의 클러스터로 묶어요. 선택한 해변, 기록이 많은 해변 순서로 자리를 먼저 차지하고,
+/// 그 자리에 겹치는 해변들이 뒤따라 묶여요. 혼자 남은 해변은 핀, 둘 이상 묶이면 숫자 원으로 보여줘요.
 private struct MarkerLayout {
 
     /// 핀(배지 포함)이 차지하는 크기. 핀은 좌표 위쪽으로 그려져요.
-    static let pinSize = CGSize(width: 68, height: 76)
-    /// 핀 아래 해변 이름
-    static let labelSize = CGSize(width: 110, height: 20)
-    /// 점의 탭 영역
-    static let dotSize: CGFloat = 24
+    static let pinSize = CGSize(width: 68.scaled, height: 76.scaled)
+    /// 클러스터 원의 지름
+    static let clusterSize: CGFloat = 52.scaled
+
+    /// 여러 해변을 묶은 클러스터예요. 가장 먼저 자리를 차지한 해변 위치에 그려요.
+    struct Cluster: Identifiable {
+        /// 맨 앞 해변의 ID를 그대로 써요. MapKit 선택 태그로도 써요.
+        let id: UUID
+        let coordinate: Coordinate
+        let markers: [BeachMarker]
+
+        var recordCount: Int {
+            markers.reduce(0) { $0 + $1.recordCount }
+        }
+    }
 
     private(set) var pinIDs: Set<UUID> = []
-    private(set) var dotIDs: Set<UUID> = []
+    private(set) var clusters: [Cluster] = []
 
     static func isSameRegion(_ lhs: MKCoordinateRegion?, _ rhs: MKCoordinateRegion) -> Bool {
         guard let lhs else { return false }
@@ -259,10 +296,8 @@ private struct MarkerLayout {
             && abs(lhs.span.longitudeDelta - rhs.span.longitudeDelta) < tolerance
     }
 
-    func style(for id: UUID) -> MarkerStyle {
-        if pinIDs.contains(id) { return .pin }
-        if dotIDs.contains(id) { return .dot }
-        return .hidden
+    func cluster(for id: UUID) -> Cluster? {
+        clusters.first { $0.id == id }
     }
 
     init(markers: [BeachMarker], selectedID: UUID?, region: MKCoordinateRegion, mapSize: CGSize) {
@@ -272,7 +307,7 @@ private struct MarkerLayout {
         let pointsPerLongitude = mapSize.width / region.span.longitudeDelta
         let pointsPerLatitude = mapSize.height / region.span.latitudeDelta
 
-        // 화면 밖 핀은 계산에서 빼요. 움직일 때 미리 그려 두도록 화면 크기만큼 여유를 둬요.
+        // 화면 밖 해변은 계산에서 빼요. 움직일 때 미리 그려 두도록 화면 크기만큼 여유를 둬요.
         let latitudeRange = (region.center.latitude - region.span.latitudeDelta)...(region.center.latitude + region.span.latitudeDelta)
         let longitudeRange = (region.center.longitude - region.span.longitudeDelta)...(region.center.longitude + region.span.longitudeDelta)
 
@@ -288,61 +323,37 @@ private struct MarkerLayout {
                 ))
             }
 
-        var pinPoints: [CGPoint] = []
-        var dots: [(UUID, CGPoint)] = []
+        // 자리를 차지한 해변(그룹의 기준점)과 그 자리에 묶인 해변들
+        var groups: [(anchor: CGPoint, markers: [BeachMarker], isSelected: Bool)] = []
 
         for (marker, point) in ordered {
-            let overlaps = pinPoints.contains {
-                abs($0.x - point.x) < Self.pinSize.width && abs($0.y - point.y) < Self.pinSize.height
+            // 선택한 해변은 늘 핀으로 따로 보여줘요.
+            if marker.id == selectedID {
+                groups.append((point, [marker], true))
+                continue
             }
 
-            if !overlaps || marker.id == selectedID {
-                pinPoints.append(point)
-                pinIDs.insert(marker.id)
+            let index = groups.firstIndex { group in
+                !group.isSelected
+                    && abs(group.anchor.x - point.x) < Self.pinSize.width
+                    && abs(group.anchor.y - point.y) < Self.pinSize.height
+            }
+
+            if let index {
+                groups[index].markers.append(marker)
             } else {
-                dots.append((marker.id, point))
+                groups.append((point, [marker], false))
             }
         }
 
-        // 점의 탭 영역이 핀이나 이름표에 조금이라도 닿으면 점을 그리지 않아요. 보이는 핀의 탭을 점이 가로채지 않게 해요.
-        let margin = Self.dotSize / 2
-        dotIDs = Set(dots.filter { _, point in
-            !pinPoints.contains { pin in
-                let touchesPin = abs(pin.x - point.x) < Self.pinSize.width / 2 + margin
-                    && point.y > pin.y - Self.pinSize.height - margin
-                    && point.y < pin.y + margin
-                let touchesLabel = abs(pin.x - point.x) < Self.labelSize.width / 2 + margin
-                    && point.y > pin.y
-                    && point.y < pin.y + Self.labelSize.height + margin
-                return touchesPin || touchesLabel
+        for group in groups {
+            guard let first = group.markers.first else { continue }
+
+            if group.markers.count == 1 {
+                pinIDs.insert(first.id)
+            } else {
+                clusters.append(Cluster(id: first.id, coordinate: first.beach.coordinate, markers: group.markers))
             }
-        }.map(\.0))
-    }
-}
-
-// MARK: - BeachMarkerView
-
-private enum MarkerStyle: Equatable {
-    case pin
-    case dot
-    case hidden
-}
-
-/// 해변 하나의 마커. 핀이나 점을 그 크기 그대로 그려요. 탭 영역이 그려진 모양과 같아져요.
-private struct BeachMarkerView: View {
-
-    let recordCount: Int
-    let style: MarkerStyle
-    let isSelected: Bool
-
-    var body: some View {
-        switch style {
-        case .pin:
-            BeachPinView(recordCount: recordCount, isSelected: isSelected)
-        case .dot:
-            BeachDotView()
-        case .hidden:
-            EmptyView()
         }
     }
 }
@@ -357,7 +368,7 @@ private struct BeachPinView: View {
     let isSelected: Bool
 
     /// 원(52) + 꼬리(9) - 겹치는 부분(3)
-    static let height: CGFloat = 58
+    static let height: CGFloat = 58.scaled
 
     private var background: Color { isSelected ? Color(.green500) : Color(.gray0) }
     private var iconColor: Color { isSelected ? Color(.gray0) : Color(.green500) }
@@ -365,7 +376,7 @@ private struct BeachPinView: View {
     var body: some View {
         VStack(spacing: -3) {
             icon
-                .frame(width: 52, height: 52)
+                .frame(width: 52.scaled, height: 52.scaled)
                 .background(background, in: Circle())
 
             Image(systemName: "triangle.fill")
@@ -373,8 +384,6 @@ private struct BeachPinView: View {
                 .foregroundStyle(background)
                 .rotationEffect(.degrees(180))
         }
-        .compositingGroup()
-        .shadow(color: .black.opacity(0.25), radius: 2, y: 2)
         .overlay(alignment: .topTrailing) {
             if recordCount > 0 {
                 Text("\(recordCount)")
@@ -398,7 +407,7 @@ private struct BeachPinView: View {
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(iconColor)
-                .frame(width: 26, height: 28)
+                .frame(width: 26.scaled, height: 28.scaled)
         } else {
             Image(systemName: "water.waves")
                 .font(.system(size: 20, weight: .semibold))
@@ -407,21 +416,32 @@ private struct BeachPinView: View {
     }
 }
 
-// MARK: - BeachDotView
+// MARK: - BeachClusterView
 
-/// 핀이 겹치는 곳에 대신 찍는 점
-private struct BeachDotView: View {
+/// 겹친 해변들을 묶은 원. 묶인 해변의 기록 수 합을 보여주고, 기록이 없으면 물결을 보여줘요.
+private struct BeachClusterView: View {
+
+    let recordCount: Int
 
     var body: some View {
-        Circle()
-            .fill(Color(.gray0))
-            .frame(width: 10, height: 10)
-            .overlay {
-                Circle()
-                    .stroke(Color(.green500), lineWidth: 2.5)
+        Group {
+            if recordCount > 0 {
+                Text("\(recordCount)")
+                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 18))
+                    .foregroundStyle(Color(.currentBrandText))
+                    .minimumScaleFactor(0.6)
+                    .lineLimit(1)
+                    .padding(.horizontal, 6)
+            } else {
+                Image(systemName: "water.waves")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(Color(.green500))
             }
-            .frame(width: MarkerLayout.dotSize, height: MarkerLayout.dotSize)
-            .contentShape(Rectangle())
+        }
+        .frame(width: MarkerLayout.clusterSize, height: MarkerLayout.clusterSize)
+        .background(Color(.gray0), in: Circle())
+        .contentShape(Circle())
+        .accessibilityLabel(recordCount > 0 ? "해변 묶음, 기록 \(recordCount)개" : "해변 묶음")
     }
 }
 

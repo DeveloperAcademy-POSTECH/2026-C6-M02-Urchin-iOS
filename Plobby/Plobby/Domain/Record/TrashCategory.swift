@@ -28,7 +28,7 @@ nonisolated extension TrashCategory {
         case .plastic: "플라스틱"
         case .metal: "금속"
         case .wood: "나무"
-        case .fishingGear: "낚시·어업 용품"
+        case .fishingGear: "낚시·어업용품"
         case .clothing: "옷·천"
         case .styrofoam: "스티로폼"
         case .can: "캔"

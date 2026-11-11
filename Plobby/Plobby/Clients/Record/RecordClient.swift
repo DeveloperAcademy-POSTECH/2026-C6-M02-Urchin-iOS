@@ -13,12 +13,14 @@ import Supabase
 nonisolated struct RecordClient {
     var fetchRecord: @Sendable (_ recordID: UUID) async throws -> RecordDetail
     var fetchRecords: @Sendable (_ offset: Int, _ limit: Int) async throws -> [RecordSummary]
+    var fetchUserRecords: @Sendable (_ userID: UUID) async throws -> [RecordSummary]
     var submitRecord: @Sendable (_ record: NewRecord) async throws -> Void
     var updateRecord: @Sendable (_ record: UpdatedRecord) async throws -> Void
     var like: @Sendable (_ recordID: UUID) async throws -> Void
     var unlike: @Sendable (_ recordID: UUID) async throws -> Void
     var removeRecord: @Sendable (_ recordID: UUID) async throws -> Void
     var reportRecord: @Sendable (_ recordID: UUID) async throws -> Void
+    var fetchTrashCounts: @Sendable (_ userID: UUID) async throws -> [TrashCategory: Int]
 }
 
 nonisolated extension RecordClient: DependencyKey {
@@ -74,6 +76,36 @@ nonisolated extension RecordClient: DependencyKey {
                 return responseDTOs.compactMap {
                     $0.toDomain(
                         currentUserID: userID,
+                        photoURL: supabaseClient.recordPhotoURL,
+                        profileImageURL: supabaseClient.profileImageURL
+                    )
+                }
+            }, fetchUserRecords: { userID in
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                async let currentUserIDTask = supabaseClient.currentUserIDIfSignedIn()
+                async let hiddenRecordsTask = supabaseClient.hiddenRecords()
+                let (currentUserID, hiddenRecords) = try await (currentUserIDTask, hiddenRecordsTask)
+
+                var query = supabaseClient
+                    .from("records")
+                    .select(RecordSummaryResponseDTO.selectQuery)
+                    .eq("user_id", value: userID)
+                    .is("deleted_at", value: nil)
+                    .excluding(hiddenRecords)
+
+                if let currentUserID {
+                    query = query.eq("my_like.user_id", value: currentUserID)
+                }
+
+                let responseDTOs: [RecordSummaryResponseDTO] = try await query
+                    .order("created_at", ascending: false)
+                    .execute()
+                    .value
+
+                return responseDTOs.compactMap {
+                    $0.toDomain(
+                        currentUserID: currentUserID,
                         photoURL: supabaseClient.recordPhotoURL,
                         profileImageURL: supabaseClient.profileImageURL
                     )
@@ -136,6 +168,21 @@ nonisolated extension RecordClient: DependencyKey {
                     .from("record_reports")
                     .insert(RecordReportInsertRequestDTO(recordID: recordID, reporterID: uid))
                     .execute()
+            }, fetchTrashCounts: { userID in
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                let responseDTOs: [UserTrashSummaryResponseDTO] = try await supabaseClient
+                    .from("user_trash_summary")
+                    .select("trash_code, collected_count")
+                    .eq("user_id", value: userID)
+                    .execute()
+                    .value
+
+                return responseDTOs.reduce(into: [:]) { counts, responseDTO in
+                    guard let category = TrashCategory(code: responseDTO.trashCode) else { return }
+
+                    counts[category] = responseDTO.collectedCount
+                }
             }
         )
     }()

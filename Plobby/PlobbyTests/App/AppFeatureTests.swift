@@ -15,7 +15,7 @@ import ComposableArchitecture
 @Suite(.serialized)
 struct AppFeatureTests {
 
-    private let user = AuthUser(id: UUID(0), email: "plobby@example.com", fullName: "플로비")
+    private let user = AuthUser(id: UUID(0), email: "plobby@example.com")
     private let profile = Profile(userID: UUID(0), nickname: "플로비", profileImageKey: nil, profileImageURL: nil)
 
     // MARK: - 세션 복원
@@ -32,6 +32,7 @@ struct AppFeatureTests {
         await store.send(.task)
         await store.receive(\.sessionRestored.success) {
             $0 = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
+            $0.mainTab?.$membershipStatus.withLock { $0 = .member(self.user) }
         }
         await store.finish()
 
@@ -45,7 +46,7 @@ struct AppFeatureTests {
 
         await store.send(.task)
         await store.receive(\.sessionRestored.success) {
-            $0 = .signUp(SignUpFeature.State(user: self.user, fullName: "플로비"))
+            $0 = .signUp(SignUpFeature.State(user: self.user))
         }
         await store.finish()
     }
@@ -57,6 +58,17 @@ struct AppFeatureTests {
         await store.send(.task)
         await store.receive(\.sessionRestored.success) {
             $0 = .onboarding(OnboardingFeature.State())
+        }
+        await store.finish()
+    }
+
+    @Test
+    func 온보딩을_본_적_있으면_로그인_화면으로_이동한다() async {
+        let store = makeStore(currentUser: nil, hasSeenOnboarding: true)
+
+        await store.send(.task)
+        await store.receive(\.sessionRestored.success) {
+            $0 = .login(LoginFeature.State())
         }
         await store.finish()
     }
@@ -75,7 +87,7 @@ struct AppFeatureTests {
     // MARK: - 세션 종료
 
     @Test
-    func 회원의_세션이_끝나면_비회원으로_온보딩에_이동한다() async {
+    func 회원의_세션이_끝나면_비회원으로_로그인_화면에_이동한다() async {
         let (signedOutEvents, signOut) = AsyncStream<Void>.makeStream()
         let store = makeStore(
             currentUser: user,
@@ -86,11 +98,12 @@ struct AppFeatureTests {
         await store.send(.task)
         await store.receive(\.sessionRestored.success) {
             $0 = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
+            $0.mainTab?.$membershipStatus.withLock { $0 = .member(self.user) }
         }
 
         signOut.yield()
         await store.receive(\.sessionEnded) {
-            $0 = .onboarding(OnboardingFeature.State())
+            $0 = .login(LoginFeature.State())
         }
         signOut.finish()
         await store.finish()
@@ -133,6 +146,31 @@ struct AppFeatureTests {
     }
 
     @Test
+    func 로그아웃하면_로그인_화면으로_이동한다() async {
+        let store = TestStore(initialState: .mainTab(MainTabFeature.State(home: HomeFeature.State()))) {
+            AppFeature()
+        }
+
+        await store.send(.mainTab(.delegate(.signedOut))) {
+            $0 = .login(LoginFeature.State())
+        }
+    }
+
+    @Test
+    func 온보딩에서_둘러보기를_누르면_다음부터_로그인_화면을_보여준다() async {
+        let store = TestStore(initialState: .onboarding(OnboardingFeature.State())) {
+            AppFeature()
+        }
+
+        await store.send(.onboarding(.delegate(.browseWithoutSignUp))) {
+            $0 = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
+        }
+
+        @Shared(.hasSeenOnboarding) var hasSeenOnboarding
+        #expect(hasSeenOnboarding)
+    }
+
+    @Test
     func 온보딩에서_세션이_끝나면_무시한다() async {
         let store = TestStore(initialState: .onboarding(OnboardingFeature.State())) {
             AppFeature()
@@ -146,13 +184,18 @@ struct AppFeatureTests {
 
 private extension AppFeatureTests {
 
+    /// 공유 상태가 앞 테스트 값으로 남지 않도록 온보딩을 본 적 있는지도 매번 정해요.
     func makeStore(
         currentUser: AuthUser?,
+        hasSeenOnboarding: Bool = false,
         fetchMyProfile: @escaping @Sendable () async throws -> Profile? = { nil },
         signedOutEvents: AsyncStream<Void> = .finished,
         submitDeviceToken: @escaping @Sendable (String) async throws -> Void = { _ in }
     ) -> TestStoreOf<AppFeature> {
-        TestStore(initialState: .launching) {
+        @Shared(.hasSeenOnboarding) var seen
+        $seen.withLock { $0 = hasSeenOnboarding }
+
+        return TestStore(initialState: .launching) {
             AppFeature()
         } withDependencies: {
             $0.authClient = .mock(currentUser: currentUser, signedOutEvents: signedOutEvents)
@@ -178,7 +221,7 @@ private extension AuthClient {
 
     static func mock(currentUser: AuthUser?, signedOutEvents: AsyncStream<Void>) -> Self {
         AuthClient(
-            signInWithApple: { _, _, _ in throw MockError() },
+            signInWithApple: { _, _ in throw MockError() },
             fetchCredential: { _ in .failure(.failed) },
             fetchAppleAuthorizationCode: { throw MockError() },
             fetchCurrentUser: { currentUser },

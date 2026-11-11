@@ -19,16 +19,15 @@ struct BlockedUsersView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            navigationBar
+            PlobbyNavigationBar(title: "차단한 사용자", style: .leading) {
+                store.send(.backButtonTapped)
+            }
 
             content
         }
         .background(Color(.gray0))
         .toolbar(.hidden, for: .navigationBar)
-        .overlay(alignment: .bottom) {
-            toast
-        }
-        .animation(.easeInOut(duration: 0.2), value: store.toast.toastMessage)
+        .plobbyToast(store.toast.toastType)
         .task {
             await store.send(.task).finish()
         }
@@ -38,30 +37,6 @@ struct BlockedUsersView: View {
 // MARK: - Subviews
 
 extension BlockedUsersView {
-
-    private var navigationBar: some View {
-        HStack(spacing: 8) {
-            Button {
-                store.send(.backButtonTapped)
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(width: 24, height: 44)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("뒤로")
-
-            Text("차단한 사용자")
-                .font(.custom(PretendardWeight.semiBold.rawValue, size: 18))
-                .foregroundStyle(Color(.textPrimary))
-
-            Spacer(minLength: 0)
-        }
-        .padding(.horizontal, 20)
-        .frame(height: 56)
-    }
 
     @ViewBuilder
     private var content: some View {
@@ -146,25 +121,8 @@ extension BlockedUsersView {
 
     private func message(_ text: String) -> some View {
         Text(text)
-            .plobbyFont(.label)
+            .plobbyFont(.body)
             .foregroundStyle(Color(.textTertiary))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    @ViewBuilder
-    private var toast: some View {
-        if let message = store.toast.toastMessage {
-            Text(message)
-                .plobbyFont(.body)
-                .foregroundStyle(Color(.gray0))
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 16)
-                .background(Color(.gray800), in: RoundedRectangle(cornerRadius: 8))
-                .padding(.horizontal, 20)
-                .padding(.bottom, 16)
-                .transition(.opacity)
-                .accessibilityAddTraits(.isStaticText)
-        }
     }
 }
