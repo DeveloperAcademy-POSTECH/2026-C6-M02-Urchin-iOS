@@ -14,7 +14,6 @@ struct OnboardingView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<OnboardingFeature>
-
     @State private var dragOffset: CGFloat = 0
 
     private static let pageAnimation: Animation = .easeInOut(duration: 0.3)
@@ -77,8 +76,8 @@ private extension OnboardingView {
             titleSection(page)
 
             if page.showsActivityTabs {
-                activityTabs
-                    .animation(.easeInOut(duration: 0.2), value: store.selectedActivity)
+                activityTabs(page)
+                    .animation(.easeInOut(duration: 0.2), value: selectedActivity(on: page))
             }
 
             if page == .collection {
@@ -148,10 +147,14 @@ private extension OnboardingView {
 
 private extension OnboardingView {
 
-    var activityTabs: some View {
+    func selectedActivity(on page: OnboardingPage) -> RecordType {
+        store.selectedActivities[page] ?? .plogging
+    }
+
+    func activityTabs(_ page: OnboardingPage) -> some View {
         HStack(spacing: 0) {
-            activityTab(.plogging, title: "플로깅")
-            activityTab(.plobbing, title: "플로빙")
+            activityTab(.plogging, title: "플로깅", page: page)
+            activityTab(.plobbing, title: "플로빙", page: page)
         }
         .overlay(alignment: .bottom) {
             Rectangle()
@@ -162,8 +165,8 @@ private extension OnboardingView {
         .padding(.horizontal, 20.scaled)
     }
 
-    func activityTab(_ activity: RecordType, title: String) -> some View {
-        let isSelected = store.selectedActivity == activity
+    func activityTab(_ activity: RecordType, title: String, page: OnboardingPage) -> some View {
+        let isSelected = selectedActivity(on: page) == activity
 
         return Button {
             store.send(.activityTabSelected(activity))
@@ -195,7 +198,7 @@ private extension OnboardingView {
     func illustration(_ page: OnboardingPage) -> some View {
         switch page {
         case .goal, .record, .map:
-            Image(page.illustration(for: store.selectedActivity))
+            Image(page.illustration(for: selectedActivity(on: page)))
                 .resizable()
                 .scaledToFit()
                 .frame(width: page.illustrationWidth.scaled)
