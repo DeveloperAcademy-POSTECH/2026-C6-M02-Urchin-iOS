@@ -228,7 +228,6 @@ struct HomeFeature {
                 state.isTrashSummaryPresented = false
                 return .none
                 
-                // 함께한 사람 시트를 닫은 뒤 그 사람의 홈으로 이동해요. 나와 차단한 사람은 열지 않아요.
             case let .participantTapped(participantID):
                 guard let participant = state.board?.participants.first(
                     where: { $0.id == participantID}
@@ -280,7 +279,6 @@ struct HomeFeature {
                 state.userHome = nil
                 return .none
                 
-                // 차단한 사람은 함께한 사람 목록에서 가려 보여야 해서 다시 불러와요.
             case .userHome(.presented(.delegate(.blocked))):
                 state.userHome = nil
                 return .send(.onAppear)
@@ -345,7 +343,6 @@ extension HomeFeature {
         }
     }
     
-    /// 진행 중인 목표가 없으면 가장 최근 목표(끝난 목표)를 보여줘요. 목표가 하나도 없으면 빈 배열이에요.
     private func fetchBoards(now: Date) async throws -> [HomeGoalBoard] {
         let currentGoal = try await goalClient.fetchCurrentGoal(now)
         let goal: Goal? = if let currentGoal {
@@ -381,7 +378,8 @@ extension HomeFeature {
     
     private func showScrollGuideIfNeeded(_ state: inout State) -> Effect<Action> {
         guard state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
-              state.status?.isFinished == false
+              state.status?.isFinished == false,
+              (state.board?.totalTrashCount ?? 0) > 0
         else {
             state.isScrollGuideVisible = false
             return .cancel(id: CancelID.scrollGuide)
