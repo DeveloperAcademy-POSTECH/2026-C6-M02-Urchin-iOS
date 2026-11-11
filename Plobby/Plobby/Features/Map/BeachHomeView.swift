@@ -23,26 +23,30 @@ struct BeachHomeView: View {
                 store.send(.backTapped)
             }
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    header
-                        .padding(.horizontal, 20)
-                        .padding(.top, 16)
+            // 해변을 지키는 사람들의 회색 영역이 화면 맨 아래(홈 인디케이터 아래)까지 채워지도록 해요
+            GeometryReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        header
+                            .padding(.horizontal, 20)
+                            .padding(.top, 16)
 
-                    Rectangle()
-                        .fill(Color(.gray200))
-                        .frame(height: 1)
-                        .padding(.horizontal, 8)
-                        .padding(.top, 24)
+                        Rectangle()
+                            .fill(Color(.gray200))
+                            .frame(height: 1)
+                            .padding(.horizontal, 8)
+                            .padding(.top, 24)
 
-                    recordSection
-                        .padding(.horizontal, 20)
-                        .padding(.top, 32)
+                        recordSection
+                            .padding(.horizontal, 20)
+                            .padding(.top, 32)
 
-                    guardianSection
-                        .padding(.top, 16)
+                        guardianSection(bottomInset: proxy.safeAreaInsets.bottom)
+                            .padding(.top, 16)
+                    }
+                    .frame(minHeight: proxy.size.height + proxy.safeAreaInsets.bottom, alignment: .top)
                 }
-                .padding(.bottom, 40)
+                .ignoresSafeArea(edges: .bottom)
             }
         }
         .background(Color(.gray0))
@@ -313,8 +317,10 @@ private extension BeachHomeView {
 
 private extension BeachHomeView {
 
+    /// 기록이 적어 화면이 남아도 회색 영역이 맨 아래까지 늘어나요.
+    /// 사람이 없으면 회색 영역 없이 아래 여백만 둬요.
     @ViewBuilder
-    var guardianSection: some View {
+    func guardianSection(bottomInset: CGFloat) -> some View {
         if case let .loaded(summary) = store.summary, !summary.guardians.isEmpty {
             let guardians = summary.guardians.prefix(BeachHomeFeature.guardianLimit)
 
@@ -341,8 +347,17 @@ private extension BeachHomeView {
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 24)
-            .padding(.vertical, 32)
-            .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 24))
+            .padding(.top, 32)
+            .padding(.bottom, 32 + bottomInset)
+            .frame(maxHeight: .infinity, alignment: .top)
+            // 화면 맨 아래에 붙으므로 위쪽 모서리만 둥글게 해요
+            .background(
+                Color(.gray50),
+                in: UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24)
+            )
+        } else {
+            Color.clear
+                .frame(height: 24 + bottomInset)
         }
     }
 
