@@ -285,7 +285,7 @@ private extension OnboardingPage {
 
     var illustrationLabel: String {
         switch self {
-        case .goal: "공동 목표 예시 화면"
+        case .goal: "공통 목표 예시 화면"
         case .record: "기록 상세 예시 화면"
         case .map: "지도 예시 화면"
         case .collection: "컬렉션 카드 예시"

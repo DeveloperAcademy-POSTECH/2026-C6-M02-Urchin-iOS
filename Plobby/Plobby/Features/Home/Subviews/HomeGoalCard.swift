@@ -55,7 +55,7 @@ private extension HomeGoalCard {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(isExpanded ? "공동 목표 접기" : "공동 목표 펼치기")
+            .accessibilityLabel(isExpanded ? "공통 목표 접기" : "공통 목표 펼치기")
         }
     }
 
@@ -63,7 +63,7 @@ private extension HomeGoalCard {
         HStack(spacing: 8.scaled) {
             VStack(alignment: .leading, spacing: 2.scaled) {
                 HStack(spacing: 8.scaled) {
-                    Text("공동 목표")
+                    Text("공통 목표")
                     Text(status.chipText)
                 }
                 .plobbyFont(.helper)

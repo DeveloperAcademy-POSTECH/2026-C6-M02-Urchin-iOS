@@ -19,7 +19,7 @@ struct GoalListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            PlobbyNavigationBar(title: "공동 목표") {
+            PlobbyNavigationBar(title: "공통 목표") {
                 store.send(.backButtonTapped)
             }
 
