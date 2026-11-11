@@ -1,7 +1,8 @@
 <img width="100%" alt="Plobby banner" src="https://github.com/user-attachments/assets/c6398688-ebe7-4fdf-9055-6fd2d1da80fa" />
 
 # <img src="https://github.com/user-attachments/assets/6a31c332-6a20-49b6-8ad4-6fddb6e24444" width="40" align="absmiddle">  플로비
-> 플로깅·플로빙 활동을 기록하고, 봉사 참여 동기를 위한 리워드와 전국 해변 봉사 지도로 함께 바다를 지키고 있음을 체감하게 하는 앱
+> 플로깅·플로빙 활동을 기록하고, 봉사 참여 동기를 위한 리워드와 전국 해변 봉사 지도로 함께 바다를 지키고 있음을 체감하게 하는 앱 <br>
+> 🌊 [App Store](https://apps.apple.com/kr/app/plobby-%ED%95%B4%EB%B3%80-%EC%A0%95%ED%99%94-%EA%B8%B0%EB%A1%9D/id6831732389)
 
 ## 📷 Screenshot
 📌 Todo: 추가하기 ~.~
