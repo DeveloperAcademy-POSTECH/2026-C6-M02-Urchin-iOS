@@ -50,12 +50,10 @@ struct HomeFeature {
             return days[min(stage.day(lastDay: days.count - 1), days.count - 1)]
         }
         
-        /// 해변 위를 걸어간 정도예요. 정수 지점이 각 날짜예요.
         var walkProgress: Double {
             walkProgresses[selectedType] ?? 0
         }
         
-        /// 쓰레기를 줍는 동안과 목표가 끝난 뒤에는 걸을 수 없어요.
         var isWalkLocked: Bool {
             transitioningTypes.contains(selectedType) || isGoalFinished
         }
@@ -155,6 +153,9 @@ struct HomeFeature {
                     state.stages[type] = status.isFinished ? .finale(step: type.resultStep) : .arrived(day: today)
                     state.walkProgresses[type] = status.isFinished ? Double(board.days.count) : Double(today)
                 }
+                if let goal = boards.first?.goal, goal.collectedCount == 0 {
+                    state.isGoalExpanded = true
+                }
                 return .merge(
                     .merge(RecordType.allCases.map { .cancel(id: CancelID.scene($0)) }),
                     showScrollGuideIfNeeded(&state)
@@ -166,9 +167,9 @@ struct HomeFeature {
                 
             case let .activityTabSelected(type):
                 state.selectedType = type
+                state.isGoalExpanded = false
                 return showScrollGuideIfNeeded(&state)
                 
-                // 손가락을 따라 걸어가다가, 아직 줍지 않은 날에 닿으면 멈춰서 쓰레기를 주워요.
             case let .sceneWalked(target):
                 let type = state.selectedType
                 guard let board = state.boards[type],
@@ -190,9 +191,7 @@ struct HomeFeature {
                     return collect(at: nextStop, type: type, lastDay: lastDay, state: &state)
                 }
                 
-                // 뒤로 걸어가면 지나온 날의 쓰레기가 다시 해변에 놓여서, 다시 걸어오며 주울 수 있어요.
                 state.walkProgresses[type] = progress
-                // 날짜는 다음 날까지 절반 넘게 걸어가면 바뀌어요.
                 let day = min(max(Int(progress.rounded()), 0), lastDay)
                 let collected = min(collectedThrough, Int(progress.rounded(.down)))
                 let walkingStage: HomeSceneStage = collected >= day ? .collected(day: day) : .arrived(day: day)
@@ -360,7 +359,6 @@ extension HomeFeature {
         case scrollGuide
     }
     
-    /// 그날 쓰레기를 주워요. 마지막 도착점이면 수거대·배에 모으는 마무리 장면을 보여줘요.
     private func collect(at stop: Int, type: RecordType, lastDay: Int, state: inout State) -> Effect<Action> {
         let stages: [HomeSceneStage] = stop > lastDay
         ? (0...type.resultStep).map { .finale(step: $0) }

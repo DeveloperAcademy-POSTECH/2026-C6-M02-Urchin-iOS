@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-/// 홈 상단 공동 목표 카드예요. 펼치면 기간·참여 인원·진행률·기록하기를, 접으면 제목과 수거량만 보여줘요.
-/// 목표가 끝나면 펼친 모양으로 "다음 목표 보기" 버튼을 보여줘요.
 struct HomeGoalCard: View {
 
     let goal: Goal
@@ -47,7 +45,6 @@ private extension HomeGoalCard {
         isExpanded || status.isFinished
     }
 
-    /// 진행 중인 목표는 제목 줄 어디를 눌러도 펼치고 접혀요. 끝난 목표는 늘 펼쳐져 있어서 누를 수 없어요.
     @ViewBuilder
     var header: some View {
         if status.isFinished {
@@ -62,7 +59,6 @@ private extension HomeGoalCard {
         }
     }
 
-    /// 펼치기 아이콘은 카드 오른쪽 끝에 붙어요. 끝난 목표는 아이콘이 없어서 오른쪽 여백을 둬요.
     var headerContent: some View {
         HStack(spacing: 8.scaled) {
             VStack(alignment: .leading, spacing: 2.scaled) {
@@ -121,12 +117,12 @@ private extension HomeGoalCard {
         }
     }
 
-    /// 펼치고 접을 때 화살표가 돌아가요.
     var toggleIcon: some View {
         Image(systemName: "chevron.down")
             .font(.system(size: 14.scaled))
             .foregroundStyle(Color(.textSecondary))
             .rotationEffect(.degrees(isExpanded ? 180 : 0))
-            .frame(width: 44.scaled, height: 44.scaled)
+            .padding(.trailing, CGFloat(12 - 1.5).scaled)
+            .frame(width: 44.scaled, height: 44.scaled, alignment: .trailing)
     }
 }
