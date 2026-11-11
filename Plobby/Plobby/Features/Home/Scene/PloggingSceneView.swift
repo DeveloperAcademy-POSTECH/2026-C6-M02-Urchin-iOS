@@ -9,11 +9,15 @@ import SwiftUI
 
 struct PloggingSceneView: View {
 
+    // MARK: - Properties
+
     let days: [GoalDailyProgress]
     let stage: HomeSceneStage
     let collectPulse: Int
     /// 해변 위를 걸어간 정도예요. 정수 지점이 각 날짜예요.
     var walkProgress: Double = 0
+
+    // MARK: - Body
 
     var body: some View {
         HomeSceneCanvas { designHeight in
@@ -82,29 +86,26 @@ private extension PloggingSceneView {
 
     var humans: some View {
         ForEach(Metrics.humans.indices, id: \.self) { index in
-            Image(Metrics.humans[index].image)
-                .resizable()
-                // 쓰레기를 주우면 다 같이 한 명씩 엇갈려 폴짝 뛰어요
-                .keyframeAnimator(initialValue: 0.0, trigger: collectPulse) { content, hop in
-                    content.offset(y: hop)
-                } keyframes: { _ in
-                    LinearKeyframe(0, duration: Double(Metrics.visibleOrder.firstIndex(of: index) ?? 0) * 0.06)
-                    SpringKeyframe(-Metrics.jumpHeight, duration: 0.18)
-                    SpringKeyframe(0, duration: 0.45, spring: .bouncy)
-                }
-                .floatingButtonShadow(Metrics.humans[index].rect.offsetBy(dx: walkOffset.width, dy: walkOffset.height))
-                .offset(y: stepBob(index))
-                .opacity(isVisible(index) ? 1 : 0)
-        }
-    }
+            ZStack(alignment: .topLeading) {
+                Image(Metrics.humans[index].image)
+                    .resizable()
 
-    /// 쓰레기봉지는 걸어 다닐 때는 없고, 마지막에 수거대에만 놓여요.
-    var bags: some View {
-        ForEach(Metrics.humans.indices, id: \.self) { index in
-            Image(.homeSceneBag)
-                .resizable()
-                .floatingButtonShadow(Metrics.standBagRects[index])
-                .opacity(isAtStand ? 1 : 0)
+                if let bag = Metrics.carriedBagRects[index] {
+                    carriedBag(bag, collector: index)
+                }
+            }
+            .frame(width: Metrics.humans[index].rect.width, height: Metrics.humans[index].rect.height, alignment: .topLeading)
+            // 쓰레기를 주우면 다 같이 한 명씩 엇갈려 폴짝 뛰어요
+            .keyframeAnimator(initialValue: 0.0, trigger: collectPulse) { content, hop in
+                content.offset(y: hop)
+            } keyframes: { _ in
+                LinearKeyframe(0, duration: max(Double(Metrics.visibleOrder.firstIndex(of: index) ?? 0) * 0.06, 0.01))
+                SpringKeyframe(-Metrics.jumpHeight, duration: 0.18)
+                SpringKeyframe(0, duration: 0.45, spring: .bouncy)
+            }
+            .floatingButtonShadow(Metrics.humans[index].rect.offsetBy(dx: walkOffset.width, dy: walkOffset.height))
+            .offset(y: stepBob(index))
+            .opacity(isVisible(index) ? 1 : 0)
         }
     }
 
@@ -139,12 +140,51 @@ private extension PloggingSceneView {
         .frame(width: HomeSceneCanvas<EmptyView>.designWidth, alignment: .topLeading)
         .opacity(isAtStand ? 1 : 0)
     }
+}
+
+// MARK: - Bag
+
+private extension PloggingSceneView {
+
+    func carriedBag(_ rect: CGRect, collector: Int) -> some View {
+        ZStack(alignment: .topLeading) {
+            Image(.homeSceneBag)
+                .resizable()
+                .scaleEffect(x: -1)
+
+            ForEach(Array(bagTrash(for: collector).enumerated()), id: \.offset) { slot, image in
+                let place = Metrics.bagTrashSlots[slot]
+                Image(image)
+                    .resizable()
+                    .scaledToFit()
+                    .rotationEffect(.degrees(place.rotation))
+                    .floatingButtonShadow(place.rect)
+            }
+        }
+        .frame(width: rect.width, height: rect.height, alignment: .topLeading)
+        .rotationEffect(.degrees(stage.isCollected ? Metrics.bagSwingRotation : 0), anchor: Metrics.bagHandleAnchor)
+        .floatingButtonShadow(rect)
+        .opacity(isAtStand ? 0 : 1)
+    }
+
+    var bags: some View {
+        ForEach(Metrics.humans.indices, id: \.self) { index in
+            Image(.homeSceneBag)
+                .resizable()
+                .floatingButtonShadow(Metrics.standBagRects[index])
+                .opacity(isAtStand ? 1 : 0)
+        }
+    }
+}
+
+// MARK: - Trash
+
+private extension PloggingSceneView {
 
     func trash(_ item: HomeSceneTrash, day: Int) -> some View {
         let phase = HomeSceneTrashPhase(trashDay: day, stage: stage)
-        // 주우면 가장 가까운 사람에게 쏙 빨려 들어가요
         let rect = phase.isAtCollector
-            ? item.rect.homeSceneShrunk(to: Metrics.eatenScale, center: eaterPoint(for: item, day: day))
+            ? item.rect.homeSceneShrunk(to: Metrics.eatenScale, center: bagMouth(of: collector(for: item, day: day)))
             : item.rect
 
         return Image(item.image)
@@ -155,14 +195,23 @@ private extension PloggingSceneView {
             .opacity(phase.opacity)
     }
 
-    /// 그날 화면에 보이는 사람 중 쓰레기와 가장 가까운 사람의 얼굴 쪽이에요.
-    func eaterPoint(for item: HomeSceneTrash, day: Int) -> CGPoint {
-        let trash = CGPoint(x: item.rect.midX, y: item.rect.midY)
-        let points = visibleHumans(on: day).map { index in
-            let human = Metrics.humans[index].rect
-            return CGPoint(x: human.midX, y: human.minY + Metrics.mouthOffset)
+    func collector(for item: HomeSceneTrash, day: Int) -> Int {
+        visibleHumans(on: day).contains(item.collector) ? item.collector : Metrics.defaultCollector
+    }
+
+    func bagMouth(of collector: Int) -> CGPoint {
+        let human = Metrics.humans[collector].rect
+        let bag = Metrics.carriedBagRects[collector] ?? .zero
+        return CGPoint(x: human.minX + bag.minX + Metrics.bagMouth.x, y: human.minY + bag.minY + Metrics.bagMouth.y)
+    }
+
+    func bagTrash(for collector: Int) -> [ImageResource] {
+        let collected = days.indices.flatMap { day in
+            Metrics.trash[day % Metrics.trash.count]
+                .filter { self.collector(for: $0, day: day) == collector && HomeSceneTrashPhase(trashDay: day, stage: stage) == .collected }
+                .map(\.image)
         }
-        return points.min { hypot($0.x - trash.x, $0.y - trash.y) < hypot($1.x - trash.x, $1.y - trash.y) } ?? trash
+        return Array(collected.suffix(Metrics.bagTrashSlots.count))
     }
 }
 
@@ -254,8 +303,20 @@ private extension PloggingSceneView {
         static let stepHeight: CGFloat = 3
         static let jumpHeight: CGFloat = 16
         static let eatenScale: CGFloat = 0.2
-        static let mouthOffset: CGFloat = 16
         static let finaleWalk = CGSize(width: -16, height: 24)
+
+        static let carriedBagRects: [Int: CGRect] = [
+            1: CGRect(x: 5, y: 35, width: 14, height: 23),
+            3: CGRect(x: 2, y: 34, width: 14, height: 23)
+        ]
+        static let defaultCollector = 1
+        static let bagMouth = CGPoint(x: 6, y: 9)
+        static let bagSwingRotation: Double = -14
+        static let bagHandleAnchor = UnitPoint(x: 0.8, y: 0)
+        static let bagTrashSlots: [(rect: CGRect, rotation: Double)] = [
+            (CGRect(x: 1, y: 7, width: 5, height: 6), -10),
+            (CGRect(x: 5.5, y: 5, width: 6, height: 6), 12)
+        ]
 
         static let standBagRects: [CGRect] = [
             CGRect(x: 192, y: 268, width: 14, height: 23),

@@ -9,11 +9,15 @@ import SwiftUI
 
 struct PlobbingSceneView: View {
 
+    // MARK: - Properties
+
     let days: [GoalDailyProgress]
     let stage: HomeSceneStage
     let collectPulse: Int
     /// 바닷속을 헤엄쳐 간 정도예요. 정수 지점이 각 날짜예요.
     var walkProgress: Double = 0
+
+    // MARK: - Body
 
     var body: some View {
         HomeSceneCanvas { designHeight in
@@ -134,6 +138,23 @@ private extension PlobbingSceneView {
         .opacity(isVisible(index) ? 1 : 0)
     }
 
+    var cargo: some View {
+        ForEach(Metrics.cargo.indices, id: \.self) { index in
+            let item = Metrics.cargo[index]
+            Image(item.image)
+                .resizable()
+                .scaledToFit()
+                .floatingButtonShadow(item.rect.offsetBy(dx: 0, dy: isLoaded ? 0 : 60))
+                .opacity(isLoaded ? 1 : 0)
+                .animation(.spring(duration: 0.6, bounce: 0.35).delay(Double(index) * 0.04), value: isLoaded)
+        }
+    }
+}
+
+// MARK: - Trash
+
+private extension PlobbingSceneView {
+
     func netTrash(for diverIndex: Int) -> [ImageResource] {
         let collected = days.indices.flatMap { day in
             Metrics.trash[day % Metrics.trash.count]
@@ -157,18 +178,6 @@ private extension PlobbingSceneView {
             .rotationEffect(.degrees(item.rotation))
             .floatingButtonShadow(rect.offsetBy(dx: 0, dy: arrival))
             .opacity(phase.opacity)
-    }
-
-    var cargo: some View {
-        ForEach(Metrics.cargo.indices, id: \.self) { index in
-            let item = Metrics.cargo[index]
-            Image(item.image)
-                .resizable()
-                .scaledToFit()
-                .floatingButtonShadow(item.rect.offsetBy(dx: 0, dy: isLoaded ? 0 : 60))
-                .opacity(isLoaded ? 1 : 0)
-                .animation(.spring(duration: 0.6, bounce: 0.35).delay(Double(index) * 0.04), value: isLoaded)
-        }
     }
 }
 
