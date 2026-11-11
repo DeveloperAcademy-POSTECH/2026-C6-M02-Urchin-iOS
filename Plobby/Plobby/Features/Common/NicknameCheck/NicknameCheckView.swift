@@ -97,7 +97,7 @@ extension NicknameCheckView {
 extension NicknameCheckView {
 
     private var message: (text: String, isError: Bool)? {
-        if store.isFormatInvalid {
+        if store.isFormatInvalid || store.isOverLimit {
             return ("한글, 영문, 숫자로 \(Nickname.minimumLength)~\(Nickname.maximumLength)자 입력해주세요.", true)
         }
         if store.isAvailable == false {

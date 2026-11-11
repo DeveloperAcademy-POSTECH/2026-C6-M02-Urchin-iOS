@@ -24,6 +24,8 @@ struct NicknameCheckFeature {
         var isAvailable: Bool?
         /// 중복 확인을 마친 닉네임이에요. 입력창을 다시 눌러 같은 값이 들어와도 결과를 지키려고 기억해요.
         var checkedNickname: String?
+        /// 10자를 넘겨 잘린 직후예요. 활동 메모처럼 안내 문구를 보여주고 중복 확인을 막아요.
+        var isOverLimit = false
         @Presents var alert: AlertState<Action.Alert>?
 
         init(originalNickname: String? = nil) {
@@ -44,11 +46,11 @@ struct NicknameCheckFeature {
         }
 
         var hasError: Bool {
-            isFormatInvalid || isAvailable == false
+            isFormatInvalid || isOverLimit || isAvailable == false
         }
 
         var canCheck: Bool {
-            isChanged && Nickname.isValid(nickname) && !isChecking && !isChecked
+            isChanged && Nickname.isValid(nickname) && !isOverLimit && !isChecking && !isChecked
         }
     }
 
@@ -76,10 +78,14 @@ struct NicknameCheckFeature {
 
         Reduce { state, action in
             switch action {
+            // 활동 메모처럼 10자를 넘기면 10자로 자르고, 안내 문구를 보여주면서 중복 확인을 막아요.
             // 확인한 닉네임과 달라졌을 때만 이전 결과를 지워요. 입력창에 포커스만 줘도 같은 값이 다시 들어오기 때문이에요.
-            // 글자 수는 자르지 않아요. 한글 조합 중에는 잘라도 입력창에 그대로 남아 화면과 값이 어긋나요.
-            // 대신 10자를 넘으면 형식 오류 문구를 보여주고 중복 확인·저장을 막아요.
             case .binding(\.nickname):
+                state.isOverLimit = state.nickname.count > Nickname.maximumLength
+                if state.isOverLimit {
+                    state.nickname = String(state.nickname.prefix(Nickname.maximumLength))
+                }
+
                 guard state.nickname != state.checkedNickname else { return .none }
 
                 state.isChecking = false
