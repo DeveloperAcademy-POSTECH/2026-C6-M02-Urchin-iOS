@@ -210,7 +210,11 @@ private extension CollectionView {
     var bottomButtons: some View {
         HStack(spacing: 8.scaled) {
             allCategoryButton
-            shareButton
+
+            // 비회원은 공유를 숨겨요. 전체 분류가 남은 너비를 채워요.
+            if store.membershipStatus != .guest {
+                shareButton
+            }
         }
         .padding(.horizontal, 32.scaled)
         .padding(.bottom, 28.scaled)
