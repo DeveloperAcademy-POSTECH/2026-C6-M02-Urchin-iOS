@@ -11,7 +11,7 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
 
     static let selectQuery = """
         id, type, record_id, is_read, created_at, others_count, \
-        actor_nickname, beach_name, record_type, record_deleted, goal_id
+        actor_nickname, beach_name, record_type, record_deleted, goal_id, goal_title, record_started_at
         """
 
     let id: UUID
@@ -27,6 +27,10 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
     let recordDeleted: Bool
     /// 목표 달성 알림이 가리키는 목표예요.
     let goalID: UUID?
+    /// 목표 달성 알림에 보여줄 목표 이름이에요.
+    let goalTitle: String?
+    /// 신고 삭제 알림에 보여줄 기록 날짜예요.
+    let recordStartedAt: Date?
 
     enum CodingKeys: String, CodingKey {
         case id, type
@@ -39,6 +43,8 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
         case recordType = "record_type"
         case recordDeleted = "record_deleted"
         case goalID = "goal_id"
+        case goalTitle = "goal_title"
+        case recordStartedAt = "record_started_at"
     }
 
     func toDomain() -> AppNotification {
@@ -64,6 +70,8 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
             isRead: isRead,
             isRecordDeleted: recordDeleted,
             goalID: goalID,
+            goalTitle: goalTitle,
+            recordStartedAt: recordStartedAt,
             createdAt: createdAt
         )
     }

@@ -174,8 +174,8 @@ private extension AppNotification.Kind {
         switch self {
         case .like: "heart.fill"
         case .newRecordAtFavoriteBeach: "water.waves"
-        case .reportRemoved: "exclamationmark.circle.fill"
-        case .goalAchieved: "trophy.fill"
+        case .reportRemoved: "light.beacon.max.fill"
+        case .goalAchieved: "flag.fill"
         }
     }
 }
