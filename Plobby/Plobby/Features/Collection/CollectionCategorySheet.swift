@@ -35,11 +35,9 @@ struct CollectionCategorySheet: View {
 private extension CollectionCategorySheet {
 
     var header: some View {
-        HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 0) {
-                title
-            }
-            
+        HStack(alignment: .center) {
+            title
+
             Spacer()
 
             closeButton
@@ -50,7 +48,7 @@ private extension CollectionCategorySheet {
     
     var title: some View {
         Text("전체 분류")
-            .plobbyFont(.headingLarge)
+            .plobbyFont(.heading)
             .foregroundStyle(Color(.textPrimary))
             .padding(.leading, 20.scaled)
     }
@@ -60,15 +58,11 @@ private extension CollectionCategorySheet {
             store.send(.categorySheetPresentationChanged(false))
         } label: {
             Image(systemName: "xmark")
-                .font(.system(size: 10.scaled, weight: .medium))
-                .frame(width: 20.scaled, height: 20.scaled)
+                .font(.system(size: 16.scaled, weight: .semibold))
                 .foregroundStyle(Color(.textPrimary))
-                .frame(width: 36.scaled, height: 36.scaled)
-                .background(Color(.gray50), in: Circle())
-                .overlay {
-                    Circle()
-                        .strokeBorder(Color(.currentWarmBorder), lineWidth: 1)
-                }
+                .padding(.trailing, CGFloat(-2).scaled)
+                .frame(width: 44.scaled, height: 44.scaled, alignment: .trailing)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel("닫기")
