@@ -15,11 +15,11 @@ struct CollectionCardView: View {
 
     let store: StoreOf<CollectionCardFeature>
     var isActive = true
+    var isGuest = false
     var style: Style = .collection
 
     enum Style {
         case collection
-        /// 온보딩에서는 작은 카드에 맞춰 글자를 줄여요
         case onboarding
     }
 
@@ -28,10 +28,28 @@ struct CollectionCardView: View {
     var body: some View {
         FlipCard(
             angle: store.isFlipped ? 180 : 0,
-            front: front,
-            back: back
+            front: frontFace,
+            back: backFace
         )
         .animation(.easeInOut(duration: 0.6), value: store.isFlipped)
+    }
+
+    @ViewBuilder
+    private var frontFace: some View {
+        if isGuest {
+            guestFront
+        } else {
+            front
+        }
+    }
+
+    @ViewBuilder
+    private var backFace: some View {
+        if isGuest {
+            guestBack
+        } else {
+            back
+        }
     }
 }
 
@@ -219,7 +237,6 @@ private extension CollectionCardView {
 
     var recordButton: some View {
         Button {
-            // 홈 기록하기처럼 시트 애니메이션 없이 팝업으로 띄워요
             var transaction = Transaction()
             transaction.disablesAnimations = true
             store.send(.recordButtonTapped, transaction: transaction)
@@ -240,5 +257,76 @@ private extension CollectionCardView {
             .fixedSize(horizontal: false, vertical: true)
             .padding(.bottom, 36.scaled)
             .padding(.horizontal, 16.scaled)
+    }
+}
+
+// MARK: - 비회원 카드
+
+private extension CollectionCardView {
+
+    var guestFront: some View {
+        guestFace(
+            title: "바다에서 주운 것들이\n내 컬렉션에 쌓여요",
+            image: Image(store.category.collectionIllustrationName(isEmpty: false)),
+            imageWidth: 220,
+            description: "수거한 \(store.category.name)\(store.category.name.objectParticle) 기록해\n\(store.category.name) 컬렉션을 채워보세요"
+        )
+    }
+
+    var guestBack: some View {
+        guestFace(
+            title: "수거기록을 남기면\n확인할 수 있어요",
+            image: Image(.collectionCardGuestLocked),
+            imageWidth: 181.5,
+            description: "로그인하고 \(store.category.name)\n수거 기록을 남겨보세요"
+        )
+    }
+
+    func guestFace(title: String, image: Image, imageWidth: CGFloat, description: String) -> some View {
+        cardFace(
+            VStack(spacing: 0) {
+                header
+
+                Text(title)
+                    .plobbyFont(.heading)
+                    .foregroundStyle(Color(.gray0))
+                    .padding(.top, 16.scaled)
+
+                Spacer(minLength: 16.scaled)
+
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: imageWidth.scaled)
+                    .accessibilityHidden(true)
+
+                Spacer(minLength: 16.scaled)
+
+                Text(description)
+                    .plobbyFont(.body)
+                    .foregroundStyle(Color(.gray0))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 16.scaled)
+
+                loginButton
+                    .padding(.top, 28.scaled)
+                    .padding(.bottom, 62.scaled)
+            }
+            .multilineTextAlignment(.center)
+        )
+    }
+
+    /// 비회원 탭은 화면에서 로그인 시트로 이어져요. 기록하기와 같은 흐름이라 기록 요청으로 보내요.
+    var loginButton: some View {
+        Button {
+            store.send(.recordButtonTapped)
+        } label: {
+            Text("로그인하기")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.gray0))
+                .frame(width: 141.scaled, height: 41.scaled)
+                .background(Color(.darkBGGreen), in: RoundedRectangle(cornerRadius: 8.scaled))
+        }
+        .buttonStyle(.plain)
     }
 }
