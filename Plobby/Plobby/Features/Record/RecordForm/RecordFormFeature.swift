@@ -20,6 +20,7 @@ struct RecordFormFeature {
         let mode: Mode
         private(set) var initialInputs: Inputs
         var photos: IdentifiedArrayOf<RecordPhoto>
+        var isPhotoErrorVisible: Bool = false
         var beach: Beach?
         var isLocationErrorVisible: Bool = false
         var period: ActivityPeriod
@@ -27,6 +28,7 @@ struct RecordFormFeature {
         var maxDepthText: String
         var maxDepthError: String?
         var trash: TrashSelection
+        var isTrashErrorVisible: Bool = false
         var totalWeightText: String
         var totalWeightError: String?
         var memo: String
@@ -72,14 +74,10 @@ struct RecordFormFeature {
             max(RecordFormFeature.maxPhotoCount - photos.count, 0)
         }
 
-        /// 5장이 꽉 차도 앨범에서 고른 사진이 있으면 들어가서 바꿀 수 있어요.
-        /// 수정 중인 기존 사진만으로 꽉 차 있으면 앨범에서 바꿀 사진이 없어서 막아요.
         var canOpenPhotoPicker: Bool {
             remainingPhotoCount > 0 || photos.contains { if case .local = $0 { true } else { false } }
         }
 
-        /// 나갈 때 확인 팝업을 띄울지 정해요.
-        /// 새 기록은 사진을 한 장이라도 골랐으면 작성 중인 것으로 봐요.
         var hasInput: Bool {
             if mode == .create, !photos.isEmpty {
                 return true
@@ -247,6 +245,7 @@ struct RecordFormFeature {
                 
             case let .photoDeleteTapped(id):
                 state.photos.remove(id: id)
+                state.isPhotoErrorVisible = state.photos.isEmpty
                 return .none
                 
             case let .photoMoved(sourceID, targetID):
@@ -356,10 +355,12 @@ struct RecordFormFeature {
                 for photo in photos where state.photos.count < RecordFormFeature.maxPhotoCount {
                     state.photos.updateOrAppend(.local(photo))
                 }
+                state.isPhotoErrorVisible = state.photos.isEmpty
                 state.destination = nil
                 return .none
                 
             case .destination(.presented(.photoPicker(.delegate(.cancelled)))):
+                state.isPhotoErrorVisible = state.photos.isEmpty
                 state.destination = nil
                 return .none
                 
@@ -383,10 +384,12 @@ struct RecordFormFeature {
                 
             case let .destination(.presented(.trashPicker(.delegate(.confirmed(selection))))):
                 state.trash = selection
+                state.isTrashErrorVisible = selection.isEmpty
                 state.destination = nil
                 return .none
 
             case .destination(.presented(.trashPicker(.delegate(.cancelled)))):
+                state.isTrashErrorVisible = state.trash.isEmpty
                 state.destination = nil
                 return .none
 
@@ -398,6 +401,10 @@ struct RecordFormFeature {
                 
             case .destination(.dismiss):
                 switch state.destination {
+                case .photoPicker:
+                    state.isPhotoErrorVisible = state.photos.isEmpty
+                case .trashPicker:
+                    state.isTrashErrorVisible = state.trash.isEmpty
                 case .locationPicker:
                     state.isLocationErrorVisible = state.beach == nil
                 case .datePicker, .timePicker:
@@ -427,9 +434,11 @@ struct RecordFormFeature {
 extension RecordFormFeature {
 
     private func validate(_ state: inout State) -> Bool {
+        state.isPhotoErrorVisible = state.photos.isEmpty
         state.isLocationErrorVisible = state.beach == nil
         state.periodError = periodError(for: state.period)
         state.maxDepthError = maxDepthError(for: state.maxDepthText)
+        state.isTrashErrorVisible = state.trash.isEmpty
         state.totalWeightError = totalWeightError(for: state.totalWeightText)
         state.isMemoErrorVisible = InputText.isBlank(state.memo)
 
@@ -445,7 +454,6 @@ extension RecordFormFeature {
               !state.trash.isEmpty,
               totalWeightError(for: state.totalWeightText) == nil,
               !InputText.isBlank(state.memo),
-              // 500자를 넘겨 잘린 직후에는 안내 문구가 보이는 동안 저장을 막아요
               !state.isMemoOverLimit
         else { return false }
 
@@ -454,7 +462,7 @@ extension RecordFormFeature {
 
     private func periodError(for period: ActivityPeriod) -> String? {
         guard period.isComplete else {
-            return "활동 날짜와 시간을 입력해주세요."
+            return "활동 날짜와 시간을 입력해 주세요."
         }
 
         guard period.isValid else {

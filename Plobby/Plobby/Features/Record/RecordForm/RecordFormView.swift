@@ -208,6 +208,11 @@ private extension RecordFormView {
                 }
             }
             .scrollClipDisabled()
+
+            if store.isPhotoErrorVisible {
+                errorText("사진을 1장 이상 추가해 주세요.")
+                    .padding(.top, -8.scaled)
+            }
         }
     }
 
@@ -381,7 +386,7 @@ private extension RecordFormView {
             .buttonStyle(.plain)
 
             if store.isLocationErrorVisible {
-                errorText("활동한 해변을 선택해주세요.")
+                errorText("활동한 해변을 선택해 주세요.")
                     .padding(.top, -8.scaled)
             }
         }
@@ -507,7 +512,10 @@ private extension RecordFormView {
                 totalWeightRow
             }
 
-            if let error = store.totalWeightError {
+            if store.isTrashErrorVisible {
+                errorText("주운 쓰레기를 선택해 주세요.")
+                    .padding(.top, -12.scaled)
+            } else if let error = store.totalWeightError {
                 errorText(error)
                     .padding(.top, -12.scaled)
             }
@@ -579,7 +587,7 @@ private extension RecordFormView {
             .formFieldBorder(isError: store.isMemoErrorVisible || store.isMemoOverLimit)
 
             if store.isMemoErrorVisible {
-                errorText("활동 메모를 입력해 주세요")
+                errorText("활동 메모를 입력해 주세요.")
                     .padding(.top, -12.scaled)
             } else if store.isMemoOverLimit {
                 errorText("메모는 \(RecordMemo.maximumLength)자까지 입력할 수 있어요.")
