@@ -15,7 +15,6 @@ struct FavoriteBeachAddView: View {
 
     let store: StoreOf<FavoriteBeachAddFeature>
 
-    /// 시트가 마이 화면의 프로필 아래부터 덮도록 Figma 높이에 맞춰요.
     static let sheetHeight: CGFloat = 709.scaled
 
     // MARK: - Body

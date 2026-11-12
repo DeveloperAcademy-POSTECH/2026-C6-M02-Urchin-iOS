@@ -27,9 +27,6 @@ struct FavoriteBeachSetupView: View {
                 progressBar
                 titleSection
                 beachPicker
-
-                Spacer()
-
                 bottomSection
             }
         }
@@ -77,8 +74,9 @@ private extension FavoriteBeachSetupView {
     }
     
     var beachPicker: some View {
-        BeachPickerView(store: store.scope(state: \.picker, action: \.picker))
+        BeachPickerView(store: store.scope(state: \.picker, action: \.picker), regionSectionHeight: nil)
             .padding(.top, 24.scaled)
+            .padding(.bottom, 16.scaled)
             .padding(.horizontal, 20.scaled)
     }
 }
