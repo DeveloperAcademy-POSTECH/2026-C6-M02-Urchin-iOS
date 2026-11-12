@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-/// 마이 화면과 타인 홈에서 함께 쓰는 활동 기록 목록이에요. 필터 칩, 개수, 기록 셀을 보여줘요.
-/// 기록이 없을 때 보여줄 화면은 `emptyContent`로 바꿀 수 있어요.
 struct RecordListSection<EmptyContent: View>: View {
 
     // MARK: - Properties
@@ -67,7 +65,6 @@ struct RecordListSection<EmptyContent: View>: View {
 
 extension RecordListSection where EmptyContent == RecordListEmptyMessage {
 
-    /// 기록이 없으면 "아직 활동 기록이 없어요"를 보여줘요.
     init(
         records: [RecordSummary],
         selectedFilter: RecordFilter,
@@ -99,29 +96,7 @@ struct RecordListEmptyMessage: View {
 extension RecordListSection {
 
     private var filterChips: some View {
-        HStack(alignment: .center, spacing: 8.scaled) {
-            ForEach(RecordFilter.allCases, id: \.self) { filter in
-                let isSelected = selectedFilter == filter
-
-                Button {
-                    onFilterChanged(filter)
-                } label: {
-                    Text(filter.title)
-                        .plobbyFont(.labelSelected)
-                        .foregroundStyle(isSelected ? Color(.gray0) : Color(.textPrimary))
-                        .padding(.horizontal, 16.scaled)
-                        .frame(height: 36.scaled)
-                        .background(isSelected ? Color(.gray800) : Color(.gray50), in: Capsule())
-                        .overlay {
-                            if !isSelected {
-                                Capsule()
-                                    .stroke(Color(.currentWarmBorder), lineWidth: 1)
-                            }
-                        }
-                }
-                .buttonStyle(.plain)
-            }
-        }
+        RecordFilterChips(selectedFilter: selectedFilter, onFilterChanged: onFilterChanged)
     }
 }
 
@@ -191,7 +166,6 @@ extension RecordListSection {
 
 extension RecordListSection {
 
-    /// 최근 7일 안의 기록은 "1일 전"처럼, 그보다 오래된 기록은 "2026.10.08"처럼 보여줘요.
     private func recordDate(_ date: Date) -> Text {
         let recentLimit = Calendar.current.date(byAdding: .day, value: -Self.recentDayCount, to: .now) ?? .now
         let dateFormat = Date.VerbatimFormatStyle(

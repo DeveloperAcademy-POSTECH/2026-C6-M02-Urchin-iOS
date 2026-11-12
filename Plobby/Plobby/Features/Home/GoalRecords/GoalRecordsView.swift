@@ -90,19 +90,24 @@ private extension GoalRecordsView {
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
 
+            RecordFilterChips(selectedFilter: store.recordFilter) { filter in
+                store.send(.recordFilterChanged(filter))
+            }
+            .padding(.top, 12.scaled)
+
             if store.isLoading {
                 ProgressView()
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 48.scaled)
-            } else if store.records.isEmpty {
+            } else if store.filteredRecords.isEmpty {
                 Text("아직 올라온 기록이 없어요")
                     .plobbyFont(.body)
                     .foregroundStyle(Color(.textTertiary))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 48.scaled)
             } else {
-                ForEach(Array(store.records.enumerated()), id: \.element.id) { index, record in
-                    recordRow(record, showsDivider: index < store.records.count - 1)
+                ForEach(Array(store.filteredRecords.enumerated()), id: \.element.id) { index, record in
+                    recordRow(record, showsDivider: index < store.filteredRecords.count - 1)
                 }
             }
         }

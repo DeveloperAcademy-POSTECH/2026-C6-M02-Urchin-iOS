@@ -251,6 +251,7 @@
 		ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28F3098338400C4916C /* PlobbyLogger.swift */; };
 		ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */; };
 		ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2923098338400C4916C /* PlobbyButton.swift */; };
+		7B3C1A83A1B2C3D4E5F60001 /* RecordFilterChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A82A1B2C3D4E5F60001 /* RecordFilterChips.swift */; };
 		ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2943098338400C4916C /* AlertType.swift */; };
 		ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2953098338400C4916C /* Secrets.swift */; };
 		ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2973098338400C4916C /* AlertState+.swift */; };
@@ -269,6 +270,7 @@
 		ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AD3098338400C4916C /* RecordMemo.swift */; };
 		ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AE3098338400C4916C /* TrashTypeName.swift */; };
 		ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AF3098338400C4916C /* WaterDepth.swift */; };
+		7B3C1A81A1B2C3D4E5F60001 /* RecordFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A80A1B2C3D4E5F60001 /* RecordFilter.swift */; };
 		ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */; };
 		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
 		ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BA3098338400C4916C /* OnboardingPage.swift */; };
@@ -551,6 +553,7 @@
 		ECE6F28F3098338400C4916C /* PlobbyLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyLogger.swift; sourceTree = "<group>"; };
 		ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageCompressor.swift; sourceTree = "<group>"; };
 		ECE6F2923098338400C4916C /* PlobbyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyButton.swift; sourceTree = "<group>"; };
+		7B3C1A82A1B2C3D4E5F60001 /* RecordFilterChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterChips.swift; sourceTree = "<group>"; };
 		ECE6F2943098338400C4916C /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		ECE6F2953098338400C4916C /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		ECE6F2973098338400C4916C /* AlertState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertState+.swift"; sourceTree = "<group>"; };
@@ -570,6 +573,7 @@
 		ECE6F2AD3098338400C4916C /* RecordMemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMemo.swift; sourceTree = "<group>"; };
 		ECE6F2AE3098338400C4916C /* TrashTypeName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTypeName.swift; sourceTree = "<group>"; };
 		ECE6F2AF3098338400C4916C /* WaterDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepth.swift; sourceTree = "<group>"; };
+		7B3C1A80A1B2C3D4E5F60001 /* RecordFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilter.swift; sourceTree = "<group>"; };
 		ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginLabel.swift; sourceTree = "<group>"; };
 		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
 		ECE6F2BA3098338400C4916C /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
@@ -1436,6 +1440,7 @@
 				DAEC9A01309C5A0000AA0001 /* PlobbyAlert.swift */,
 				7B3C1A01309D0000004C5301 /* LoginRequiredSheet.swift */,
 				ECE6F2923098338400C4916C /* PlobbyButton.swift */,
+				7B3C1A82A1B2C3D4E5F60001 /* RecordFilterChips.swift */,
 				EC0D4BA63098E1D0000E7BB7 /* BeachChip.swift */,
 				A12200000000000000000401 /* PlobbyDropdownMenu.swift */,
 				7B3C1A0E309D0000004C5301 /* SearchBar.swift */,
@@ -1556,6 +1561,7 @@
 				ECE6F2AD3098338400C4916C /* RecordMemo.swift */,
 				ECE6F2AE3098338400C4916C /* TrashTypeName.swift */,
 				ECE6F2AF3098338400C4916C /* WaterDepth.swift */,
+				7B3C1A80A1B2C3D4E5F60001 /* RecordFilter.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -2013,6 +2019,7 @@
 				DA5B0FE53099A001003FEDF9 /* RecordSummary.swift in Sources */,
 				B59027033098E2F800AE351D /* NotificationClient.swift in Sources */,
 				ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */,
+				7B3C1A83A1B2C3D4E5F60001 /* RecordFilterChips.swift in Sources */,
 				DAEC9A02309C5A0000AA0001 /* PlobbyAlert.swift in Sources */,
 				DA71D23530A2B01900E00CD1 /* LeadingPlobbyNavigationBarStyle.swift in Sources */,
 				7B3C1A02309D0000004C5301 /* LoginRequiredSheet.swift in Sources */,
@@ -2104,6 +2111,7 @@
 				D1A0C0DE0000000000000C04 /* ProfileEditView.swift in Sources */,
 				DA688DD33099F0A70064A2F4 /* RecordFormView.swift in Sources */,
 				ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */,
+				7B3C1A81A1B2C3D4E5F60001 /* RecordFilter.swift in Sources */,
 				B59342F130A0CF68005EAF07 /* Goal.swift in Sources */,
 				DA688DCF3099EFFF0064A2F4 /* RecordView.swift in Sources */,
 				DA5B0FDA3098E2FC003FEDF9 /* SupabaseClient+.swift in Sources */,

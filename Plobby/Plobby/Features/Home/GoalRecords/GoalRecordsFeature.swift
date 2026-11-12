@@ -21,8 +21,14 @@ struct GoalRecordsFeature {
 
         let goal: Goal
         var records: [RecordSummary] = []
+        var recordFilter: RecordFilter = .all
         var isLoading = true
         let now: Date
+
+        var filteredRecords: [RecordSummary] {
+            guard let recordType = recordFilter.recordType else { return records }
+            return records.filter { $0.recordType == recordType }
+        }
     }
 
     // MARK: - Action
@@ -30,6 +36,7 @@ struct GoalRecordsFeature {
     enum Action {
         case task
         case recordsResponse(Result<[RecordSummary], any Error>)
+        case recordFilterChanged(RecordFilter)
         case backButtonTapped
         case recordTapped(RecordSummary.ID)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
@@ -69,7 +76,6 @@ struct GoalRecordsFeature {
             case .backButtonTapped:
                 return .send(.delegate(.closed))
 
-            // 비회원은 기록 상세에 들어가지 못하고 로그인을 요청해요.
             case .recordTapped where state.membershipStatus == .guest:
                 return .send(.delegate(.loginRequired))
 
@@ -90,6 +96,10 @@ struct GoalRecordsFeature {
             case let .recordDetail(.presented(.delegate(.blocked(userID)))):
                 state.recordDetail = nil
                 state.records.removeAll { $0.userID == userID }
+                return .none
+
+            case let .recordFilterChanged(filter):
+                state.recordFilter = filter
                 return .none
 
             case .recordDetail, .delegate:
