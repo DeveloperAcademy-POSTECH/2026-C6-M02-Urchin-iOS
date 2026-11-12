@@ -83,7 +83,6 @@ struct GuestTapInterceptor: UIViewRepresentable {
                 return false
             }
 
-            // 탭바와 지도는 비회원도 그대로 써요.
             var view = touch.view
             while let current = view {
                 if current is UITabBar || current is MKMapView { return false }

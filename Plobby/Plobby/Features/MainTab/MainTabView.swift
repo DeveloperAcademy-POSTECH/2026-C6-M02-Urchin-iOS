@@ -86,7 +86,6 @@ struct MainTabView: View {
 
 private extension MainTabView {
 
-    /// 비회원은 탭 화면에서 무엇을 눌러도 로그인 시트를 띄워요. 로그인 중이거나 알림이 떠 있으면 막지 않아요.
     var isGuestTapIntercepted: Bool {
         store.membershipStatus == .guest
             && !store.isLoginSheetPresented
