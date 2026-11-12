@@ -76,6 +76,7 @@ private extension CollectionCardView {
                 }
         }
         .buttonStyle(.plain)
+        .guestTapAllowed()
     }
 }
 

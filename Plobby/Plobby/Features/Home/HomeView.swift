@@ -120,6 +120,7 @@ private extension HomeView {
                 .accessibilityAddTraits(isSelected ? .isSelected : [])
             }
         }
+        .guestTapAllowed()
         .padding(.bottom, 4.scaled)
         .background(Color(.gray0))
     }
