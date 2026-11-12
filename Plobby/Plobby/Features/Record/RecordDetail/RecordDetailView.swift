@@ -60,29 +60,16 @@ struct RecordDetailView: View {
 private extension RecordDetailView {
 
     var navigationBar: some View {
-        HStack(spacing: 0) {
-            navigationButton(systemName: "chevron.left", accessibilityLabel: "뒤로") {
-                store.send(.backTapped)
-            }
-
-            Spacer()
-
-            moreMenu
-                .opacity(store.record == nil ? 0 : 1)
-                .disabled(store.record == nil)
-        }
-        .overlay {
-            Text("기록 상세")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
-        }
-        .padding(.horizontal, 20.scaled)
-        .frame(height: 56.scaled)
-    }
-
-    var moreMenu: some View {
-        navigationButton(systemName: "ellipsis", accessibilityLabel: "기록 더보기") {
+        PlobbyNavigationBar(title: "기록 상세", isTrailingEnabled: store.record != nil) {
+            store.send(.backTapped)
+        } trailingAction: {
             isMoreMenuPresented.toggle()
+        } trailingLabel: {
+            Image(systemName: "ellipsis")
+                .font(.system(size: 17.scaled, weight: .medium))
+                .foregroundStyle(Color(.textPrimary))
+                .opacity(store.record == nil ? 0 : 1)
+                .accessibilityLabel("기록 더보기")
         }
     }
 
@@ -98,26 +85,6 @@ private extension RecordDetailView {
                 .block { store.send(.moreMenuSelected(.blockTapped)) }
             ]
         }
-    }
-
-    func navigationIcon(systemName: String) -> some View {
-        Image(systemName: systemName)
-            .font(.system(size: 17.scaled, weight: .medium))
-            .foregroundStyle(Color(.textPrimary))
-            .frame(width: 44.scaled, height: 44.scaled)
-            .contentShape(Rectangle())
-    }
-
-    func navigationButton(
-        systemName: String,
-        accessibilityLabel: String,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action) {
-            navigationIcon(systemName: systemName)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(accessibilityLabel)
     }
 }
 
