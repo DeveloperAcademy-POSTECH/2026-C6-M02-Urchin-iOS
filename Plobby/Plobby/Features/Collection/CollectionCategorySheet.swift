@@ -71,6 +71,7 @@ private extension CollectionCategorySheet {
                 }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("닫기")
         .padding(.trailing, 20.scaled)
     }
 }
