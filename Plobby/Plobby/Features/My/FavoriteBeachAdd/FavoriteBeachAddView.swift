@@ -21,12 +21,23 @@ struct FavoriteBeachAddView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            header
+            VStack(alignment: .leading, spacing: 0) {
+                header
 
-            BeachPickerView(store: store.scope(state: \.picker, action: \.picker), regionSectionHeight: nil)
-                .padding(.top, 40.scaled)
+                BeachPickerView(store: store.scope(state: \.picker, action: \.picker), regionSectionHeight: nil)
+                    .padding(.top, 40.scaled)
+                    .padding(.bottom, 16.scaled)
+            }
+            .padding(.horizontal, 20.scaled)
+
+            BeachPickerBottomBar(
+                store: store.scope(state: \.picker, action: \.picker),
+                emptyMessage: "해변을 선택하면 관심 해변에 추가돼요",
+                buttonTitle: "완료"
+            ) {
+                store.send(.closeButtonTapped)
+            }
         }
-        .padding(.horizontal, 20.scaled)
         .padding(.top, 24.scaled)
         .frame(maxHeight: .infinity, alignment: .top)
         .plobbyToast(store.toast.toastType)

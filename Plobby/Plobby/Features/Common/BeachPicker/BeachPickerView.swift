@@ -147,3 +147,90 @@ private extension BeachPickerView {
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
+
+// MARK: - BeachPickerBottomBar
+
+struct BeachPickerBottomBar: View {
+
+    // MARK: - Properties
+
+    let store: StoreOf<BeachPickerFeature>
+    let emptyMessage: String
+    let buttonTitle: String
+    var isButtonDisabled = false
+    let onButtonTapped: () -> Void
+
+    // MARK: - Body
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8.scaled) {
+            selectionSection
+
+            PlobbyButton(text: buttonTitle, action: onButtonTapped)
+                .disabled(isButtonDisabled)
+        }
+        .padding(.top, 16.scaled)
+        .padding(.horizontal, 20.scaled)
+        .padding(.bottom, 14.scaled)
+        .background(Color(.backgroundDefault))
+    }
+}
+
+// MARK: - 고른 해변
+
+private extension BeachPickerBottomBar {
+
+    @ViewBuilder
+    var selectionSection: some View {
+        if store.selectedBeaches.isEmpty {
+            Text(emptyMessage)
+                .plobbyFont(.helper)
+                .foregroundStyle(Color(.textSecondary))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8.scaled)
+        } else {
+            VStack(alignment: .leading, spacing: 0) {
+                if store.isSelectionFull {
+                    Text("관심 해변은 \(Beach.maximumFavoriteCount)개까지만 고를 수 있어요")
+                        .plobbyFont(.helper)
+                        .foregroundStyle(Color(.textSecondary))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+
+                ScrollView(.horizontal) {
+                    HStack(spacing: 4.scaled) {
+                        ForEach(store.selectedBeaches) { beach in
+                            selectedBeachChip(beach)
+                        }
+                    }
+                }
+                .scrollIndicators(.hidden)
+                .frame(height: 44.scaled)
+            }
+        }
+    }
+
+    func selectedBeachChip(_ beach: Beach) -> some View {
+        Button {
+            store.send(.beachTapped(beach.id))
+        } label: {
+            HStack(spacing: 0) {
+                Text(beach.name)
+                    .plobbyFont(.label)
+                    .lineLimit(1)
+
+                Image(systemName: "xmark")
+                    .font(.system(size: 12.scaled))
+                    .frame(width: 28.scaled, height: 32.scaled)
+            }
+            .foregroundStyle(Color(.textBrand))
+            .padding(.leading, 12.scaled)
+            .frame(height: 32.scaled)
+            .background(Color(.surfaceBrandSubtle), in: Capsule())
+            .frame(height: 44.scaled)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(beach.name) 선택 해제")
+    }
+}
