@@ -62,6 +62,7 @@
 		7B3C1A61309D0000004C5301 /* RecordCollectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */; };
 		7B3C1A63309D0000004C5301 /* RecordCollectingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */; };
 		7B3C1A71A1B2C3D4E5F60001 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A70A1B2C3D4E5F60001 /* UINavigationController+.swift */; };
+		7B3C1A93A1B2C3D4E5F60001 /* GuestTapInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A92A1B2C3D4E5F60001 /* GuestTapInterceptor.swift */; };
 		7B3C1A81A1B2C3D4E5F60001 /* RecordFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A80A1B2C3D4E5F60001 /* RecordFilter.swift */; };
 		7B3C1A83A1B2C3D4E5F60001 /* RecordFilterChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A82A1B2C3D4E5F60001 /* RecordFilterChips.swift */; };
 		7B3C1A91A1B2C3D4E5F60001 /* RecordMenuFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A90A1B2C3D4E5F60001 /* RecordMenuFeature.swift */; };
@@ -361,6 +362,7 @@
 		7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectingView.swift; sourceTree = "<group>"; };
 		7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectingFeature.swift; sourceTree = "<group>"; };
 		7B3C1A70A1B2C3D4E5F60001 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
+		7B3C1A92A1B2C3D4E5F60001 /* GuestTapInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestTapInterceptor.swift; sourceTree = "<group>"; };
 		7B3C1A80A1B2C3D4E5F60001 /* RecordFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilter.swift; sourceTree = "<group>"; };
 		7B3C1A82A1B2C3D4E5F60001 /* RecordFilterChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterChips.swift; sourceTree = "<group>"; };
 		7B3C1A90A1B2C3D4E5F60001 /* RecordMenuFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMenuFeature.swift; sourceTree = "<group>"; };
@@ -1481,6 +1483,7 @@
 				EC0D4BA03098E1D0000E7BB7 /* Effect+.swift */,
 				B5D20E7B309AC47100981996 /* SharedKey+.swift */,
 				7B3C1A70A1B2C3D4E5F60001 /* UINavigationController+.swift */,
+				7B3C1A92A1B2C3D4E5F60001 /* GuestTapInterceptor.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1975,6 +1978,7 @@
 				5A1C0E7B2F4D4E8A9B3C6D11 /* TrashPickerView.swift in Sources */,
 				B5D20E7C309AC47100981996 /* SharedKey+.swift in Sources */,
 				7B3C1A71A1B2C3D4E5F60001 /* UINavigationController+.swift in Sources */,
+				7B3C1A93A1B2C3D4E5F60001 /* GuestTapInterceptor.swift in Sources */,
 				ECE6F2D23098338400C4916C /* AppleSignInError+.swift in Sources */,
 				ECE6F2D33098338400C4916C /* Result+.swift in Sources */,
 				ECE6F2D43098338400C4916C /* AppleNonce.swift in Sources */,
