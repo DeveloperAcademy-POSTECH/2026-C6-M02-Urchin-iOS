@@ -9,7 +9,6 @@ import Foundation
 
 import ComposableArchitecture
 
-/// 다른 사용자의 홈이에요. 기록 상세에서 작성자 프로필을 누르면 열리고, 그 사용자의 활동 기록만 보여줘요.
 @Reducer
 struct UserHomeFeature {
 
@@ -23,6 +22,7 @@ struct UserHomeFeature {
         var records: [RecordSummary] = []
         var recordFilter: RecordFilter = .all
         @Presents var recordDetail: RecordDetailFeature.State?
+        @Presents var alert: AlertState<Action.Alert>?
 
         var filteredRecords: [RecordSummary] {
             guard let recordType = recordFilter.recordType else { return records }
@@ -39,12 +39,19 @@ struct UserHomeFeature {
         case backTapped
         case recordFilterChanged(RecordFilter)
         case recordTapped(RecordSummary.ID)
+        case blockMenuTapped
+        case blockResponse(Result<Void, any Error>)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
+        case alert(PresentationAction<Alert>)
         case delegate(Delegate)
+
+        enum Alert: Equatable {
+            case confirmBlockTapped
+            case blockedConfirmTapped
+        }
 
         enum Delegate {
             case closed
-            /// 이 사용자를 차단했어요. 부모는 홈을 닫고 이 사용자의 기록을 모두 빼요.
             case blocked(userID: UUID)
         }
     }
@@ -52,6 +59,7 @@ struct UserHomeFeature {
     // MARK: - Dependency
 
     @Dependency(\.recordClient) var recordClient
+    @Dependency(\.userClient) var userClient
 
     // MARK: - Body
 
@@ -96,13 +104,35 @@ struct UserHomeFeature {
                 state.recordDetail = nil
                 return .send(.delegate(.blocked(userID: userID)))
 
-            case .recordDetail, .delegate:
+            case .blockMenuTapped:
+                state.alert = .make(.userBlockConfirm, confirm: .confirmBlockTapped)
+                return .none
+
+            case .alert(.presented(.confirmBlockTapped)):
+                return .run { [userID = state.userID] send in
+                    await send(.blockResponse(Result { try await userClient.submitBlock(userID) }))
+                }
+
+            case .blockResponse(.success):
+                state.alert = .make(.userBlocked, confirm: .blockedConfirmTapped)
+                return .none
+
+            case let .blockResponse(.failure(error)):
+                PlobbyLogger.error(error)
+                state.alert = .make(.userBlockFailed)
+                return .none
+
+            case .alert(.presented(.blockedConfirmTapped)):
+                return .send(.delegate(.blocked(userID: state.userID)))
+
+            case .recordDetail, .alert, .delegate:
                 return .none
             }
         }
         .ifLet(\.$recordDetail, action: \.recordDetail) {
             RecordDetailFeature()
         }
+        .ifLet(\.$alert, action: \.alert)
     }
 }
 

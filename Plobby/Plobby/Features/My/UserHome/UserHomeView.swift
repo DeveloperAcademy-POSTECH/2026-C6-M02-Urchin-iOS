@@ -15,12 +15,21 @@ struct UserHomeView: View {
 
     @Bindable var store: StoreOf<UserHomeFeature>
 
+    @State private var isMoreMenuPresented = false
+
     // MARK: - Body
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             PlobbyNavigationBar(title: "프로필") {
                 store.send(.backTapped)
+            } trailingAction: {
+                isMoreMenuPresented.toggle()
+            } trailingLabel: {
+                Image(systemName: "ellipsis")
+                    .font(.system(size: 17.scaled, weight: .medium))
+                    .foregroundStyle(Color(.textPrimary))
+                    .accessibilityLabel("프로필 더보기")
             }
 
             ScrollView {
@@ -41,6 +50,12 @@ struct UserHomeView: View {
         .frame(maxHeight: .infinity, alignment: .top)
         .background(Color(.gray0))
         .toolbar(.hidden, for: .navigationBar)
+        .plobbyDropdownMenu(
+            isPresented: $isMoreMenuPresented,
+            padding: EdgeInsets(top: 56.scaled, leading: 0, bottom: 0, trailing: 12.scaled),
+            items: [.block { store.send(.blockMenuTapped) }]
+        )
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
         .task {
             await store.send(.task).finish()
         }
