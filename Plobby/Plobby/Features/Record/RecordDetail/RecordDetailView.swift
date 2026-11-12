@@ -37,7 +37,6 @@ struct RecordDetailView: View {
             }
         }
         .background(Color(.gray0))
-        // 내비게이션 바 바로 아래, 더보기 버튼 오른쪽 끝에 맞춰 펼쳐요.
         .plobbyDropdownMenu(
             isPresented: $isMoreMenuPresented,
             padding: EdgeInsets(top: 56.scaled, leading: 0, bottom: 0, trailing: 20.scaled),
@@ -87,7 +86,6 @@ private extension RecordDetailView {
         }
     }
 
-    /// 내 기록은 수정·삭제, 다른 사람 기록은 신고·차단을 보여줘요.
     var moreMenuItems: [PlobbyDropdownMenu.Item] {
         if store.record?.isMine == true {
             [
@@ -275,7 +273,6 @@ private extension RecordDetailView {
         }
     }
 
-    /// 사진을 화면 가득 원래 비율로 보여줘요. 옆으로 넘기면 상세 화면의 사진도 같이 넘어가요.
     func photoViewer(_ photos: [RecordDetail.Photo]) -> some View {
         ZStack(alignment: .top) {
             Color(.neutralBlack)
@@ -506,7 +503,6 @@ private extension RecordDetailView {
         return formatter.localizedString(for: date, relativeTo: .now)
     }
 
-    /// 2026.10.23. — 이틀에 걸친 활동이면 2026.10.23. - 2026.10.24.
     static func dateText(_ record: RecordDetail) -> String {
         let start = record.startedAt.formatted(dateStyle)
         guard !Calendar.current.isDate(record.startedAt, inSameDayAs: record.endedAt) else {
@@ -515,19 +511,25 @@ private extension RecordDetailView {
         return "\(start) - \(record.endedAt.formatted(dateStyle))"
     }
 
-    /// 15:00 - 16:00 (1시간 30분)
     static func timeText(_ record: RecordDetail) -> String {
         let minutes = max(Int(record.endedAt.timeIntervalSince(record.startedAt) / 60), 0)
-        let hours = minutes / 60
+        return "\(record.startedAt.formatted(timeStyle)) - \(record.endedAt.formatted(timeStyle)) (\(durationText(minutes: minutes)))"
+    }
+
+    static func durationText(minutes: Int) -> String {
+        let days = minutes / (24 * 60)
+        let hours = minutes % (24 * 60) / 60
         let remainder = minutes % 60
 
-        let duration = switch (hours, remainder) {
+        guard days == 0 else {
+            return hours == 0 ? "\(days)일" : "\(days)일 \(hours)시간"
+        }
+
+        return switch (hours, remainder) {
         case (0, _): "\(remainder)분"
         case (_, 0): "\(hours)시간"
         default: "\(hours)시간 \(remainder)분"
         }
-
-        return "\(record.startedAt.formatted(timeStyle)) - \(record.endedAt.formatted(timeStyle)) (\(duration))"
     }
 
     static func decimalText(_ value: Double) -> String {
