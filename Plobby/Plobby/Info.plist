@@ -29,7 +29,7 @@
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>
-		<string>brand_primary</string>
+		<string>gray_0</string>
 	</dict>
 </dict>
 </plist>
