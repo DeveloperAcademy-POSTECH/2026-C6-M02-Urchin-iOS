@@ -11,12 +11,13 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
 
     static let selectQuery = """
         id, type, record_id, is_read, created_at, others_count, \
-        actor_nickname, beach_name, record_type, record_deleted
+        actor_nickname, beach_name, record_type, record_deleted, goal_id
         """
 
     let id: UUID
     let type: NotificationType
-    let recordID: UUID
+    /// 목표 달성처럼 기록과 상관없는 알림은 비어 있어요.
+    let recordID: UUID?
     let isRead: Bool
     let createdAt: Date
     let othersCount: Int
@@ -24,6 +25,8 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
     let beachName: String?
     let recordType: String?
     let recordDeleted: Bool
+    /// 목표 달성 알림이 가리키는 목표예요.
+    let goalID: UUID?
 
     enum CodingKeys: String, CodingKey {
         case id, type
@@ -35,6 +38,7 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
         case beachName = "beach_name"
         case recordType = "record_type"
         case recordDeleted = "record_deleted"
+        case goalID = "goal_id"
     }
 
     func toDomain() -> AppNotification {
@@ -45,6 +49,10 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
             kind = .like(likerNickname: actorNickname, othersCount: othersCount)
         case .beachRecord:
             kind = .newRecordAtFavoriteBeach(authorNickname: actorNickname)
+        case .reportRemoved:
+            kind = .reportRemoved
+        case .goalAchieved:
+            kind = .goalAchieved
         }
 
         return AppNotification(
@@ -55,6 +63,7 @@ nonisolated struct NotificationResponseDTO: Decodable, Sendable {
             recordType: recordType.flatMap(RecordType.init(rawValue:)),
             isRead: isRead,
             isRecordDeleted: recordDeleted,
+            goalID: goalID,
             createdAt: createdAt
         )
     }
@@ -65,5 +74,7 @@ nonisolated extension NotificationResponseDTO {
     enum NotificationType: String, Decodable, Sendable {
         case like
         case beachRecord = "beach_record"
+        case reportRemoved = "report_removed"
+        case goalAchieved = "goal_achieved"
     }
 }
