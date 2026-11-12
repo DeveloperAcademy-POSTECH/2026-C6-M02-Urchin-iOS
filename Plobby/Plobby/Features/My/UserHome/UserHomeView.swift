@@ -16,6 +16,7 @@ struct UserHomeView: View {
     @Bindable var store: StoreOf<UserHomeFeature>
 
     @State private var isMoreMenuPresented = false
+    @State private var menuRecord: RecordSummary?
 
     // MARK: - Body
 
@@ -40,7 +41,9 @@ struct UserHomeView: View {
                         records: store.filteredRecords,
                         selectedFilter: store.recordFilter,
                         onFilterChanged: { store.send(.recordFilterChanged($0)) },
-                        onRecordTapped: { store.send(.recordTapped($0)) }
+                        onRecordTapped: { store.send(.recordTapped($0)) },
+                        onMoreTapped: { menuRecord = $0 },
+                        menuRecordID: menuRecord?.id
                     )
                 }
                 .padding(.horizontal, 20.scaled)
@@ -55,6 +58,10 @@ struct UserHomeView: View {
             padding: EdgeInsets(top: 56.scaled, leading: 0, bottom: 0, trailing: 12.scaled),
             items: [.block { store.send(.blockMenuTapped) }]
         )
+        .recordMoreMenu(record: $menuRecord, isMine: { _ in false }) { record, menu in
+            store.send(.recordMenuSelected(record, menu))
+        }
+        .recordMenu(store: store.scope(state: \.recordMenu, action: \.recordMenu.presented))
         .plobbyAlert(store: store, state: \.alert, action: \.alert)
         .task {
             await store.send(.task).finish()

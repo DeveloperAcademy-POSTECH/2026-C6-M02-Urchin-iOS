@@ -22,6 +22,7 @@ struct UserHomeFeature {
         var records: [RecordSummary] = []
         var recordFilter: RecordFilter = .all
         @Presents var recordDetail: RecordDetailFeature.State?
+        @Presents var recordMenu: RecordMenuFeature.State?
         @Presents var alert: AlertState<Action.Alert>?
 
         var filteredRecords: [RecordSummary] {
@@ -39,9 +40,11 @@ struct UserHomeFeature {
         case backTapped
         case recordFilterChanged(RecordFilter)
         case recordTapped(RecordSummary.ID)
+        case recordMenuSelected(RecordSummary, RecordMenuFeature.Menu)
         case blockMenuTapped
         case blockResponse(Result<Void, any Error>)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
+        case recordMenu(PresentationAction<RecordMenuFeature.Action>)
         case alert(PresentationAction<Alert>)
         case delegate(Delegate)
 
@@ -104,6 +107,24 @@ struct UserHomeFeature {
                 state.recordDetail = nil
                 return .send(.delegate(.blocked(userID: userID)))
 
+            case let .recordMenuSelected(record, menu):
+                state.recordMenu = RecordMenuFeature.State(record: record)
+                return .send(.recordMenu(.presented(.menuSelected(menu))))
+
+            case .recordMenu(.presented(.delegate(.updated))):
+                state.recordMenu = nil
+                return fetchRecords(userID: state.userID)
+
+            case let .recordMenu(.presented(.delegate(.deleted(recordID)))),
+                 let .recordMenu(.presented(.delegate(.reported(recordID)))):
+                state.recordMenu = nil
+                state.records.removeAll { $0.id == recordID }
+                return .none
+
+            case let .recordMenu(.presented(.delegate(.blocked(userID)))):
+                state.recordMenu = nil
+                return .send(.delegate(.blocked(userID: userID)))
+
             case .blockMenuTapped:
                 state.alert = .make(.userBlockConfirm, confirm: .confirmBlockTapped)
                 return .none
@@ -125,12 +146,15 @@ struct UserHomeFeature {
             case .alert(.presented(.blockedConfirmTapped)):
                 return .send(.delegate(.blocked(userID: state.userID)))
 
-            case .recordDetail, .alert, .delegate:
+            case .recordDetail, .recordMenu, .alert, .delegate:
                 return .none
             }
         }
         .ifLet(\.$recordDetail, action: \.recordDetail) {
             RecordDetailFeature()
+        }
+        .ifLet(\.$recordMenu, action: \.recordMenu) {
+            RecordMenuFeature()
         }
         .ifLet(\.$alert, action: \.alert)
     }

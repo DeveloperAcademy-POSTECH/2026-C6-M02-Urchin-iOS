@@ -17,6 +17,8 @@ struct PlobbyDropdownMenu: View {
     let items: [Item]
     let onSelect: (Item) -> Void
 
+    static var width: CGFloat { 184 }
+
     // MARK: - Body
 
     var body: some View {
@@ -31,7 +33,7 @@ struct PlobbyDropdownMenu: View {
             }
         }
         .padding(8.scaled)
-        .frame(width: 184.scaled)
+        .frame(width: Self.width.scaled)
         .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 16.scaled))
         .shadow(color: .black.opacity(0.1), radius: 6, y: 2)
     }
@@ -92,7 +94,6 @@ extension PlobbyDropdownMenu.Item {
 
 extension View {
 
-    /// 화면 위에 드롭다운 메뉴를 띄워요. 메뉴는 `alignment` 위치에서 `padding`만큼 떨어져 놓여요.
     func plobbyDropdownMenu(
         isPresented: Binding<Bool>,
         alignment: Alignment = .topTrailing,
@@ -102,7 +103,6 @@ extension View {
         overlay(alignment: alignment) {
             if isPresented.wrappedValue {
                 ZStack(alignment: alignment) {
-                    // 메뉴 밖을 누르면 닫혀요.
                     Color.clear
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -115,6 +115,57 @@ extension View {
                     }
                     .padding(padding)
                     .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .topTrailing)))
+                }
+            }
+        }
+        .animation(.easeOut(duration: 0.15), value: isPresented.wrappedValue)
+    }
+}
+
+// MARK: - Anchored
+
+private struct PlobbyDropdownAnchorKey: PreferenceKey {
+
+    static var defaultValue: Anchor<CGRect>? { nil }
+
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) {
+        value = value ?? nextValue()
+    }
+}
+
+extension View {
+
+    func plobbyDropdownAnchor(isPresented: Bool) -> some View {
+        anchorPreference(key: PlobbyDropdownAnchorKey.self, value: .bounds) { isPresented ? $0 : nil }
+    }
+
+    func plobbyAnchoredDropdownMenu(
+        isPresented: Binding<Bool>,
+        items: [PlobbyDropdownMenu.Item]
+    ) -> some View {
+        overlayPreferenceValue(PlobbyDropdownAnchorKey.self) { anchor in
+            GeometryReader { proxy in
+                if isPresented.wrappedValue, let anchor {
+                    let buttonFrame = proxy[anchor]
+
+                    ZStack(alignment: .topLeading) {
+                        // 메뉴 밖을 누르면 닫혀요.
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                isPresented.wrappedValue = false
+                            }
+
+                        PlobbyDropdownMenu(items: items) { item in
+                            isPresented.wrappedValue = false
+                            item.action()
+                        }
+                        .offset(
+                            x: buttonFrame.maxX - PlobbyDropdownMenu.width.scaled,
+                            y: buttonFrame.maxY + 4.scaled
+                        )
+                        .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .topTrailing)))
+                    }
                 }
             }
         }

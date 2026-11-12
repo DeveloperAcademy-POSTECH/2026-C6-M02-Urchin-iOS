@@ -14,6 +14,7 @@ struct GoalRecordsView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<GoalRecordsFeature>
+    @State private var menuRecord: RecordSummary?
 
     // MARK: - Body
 
@@ -35,6 +36,10 @@ struct GoalRecordsView: View {
             .scrollIndicators(.hidden)
         }
         .background(Color(.gray0))
+        .recordMoreMenu(record: $menuRecord, isMine: { $0.userID == store.memberID }) { record, menu in
+            store.send(.recordMenuSelected(record, menu))
+        }
+        .recordMenu(store: store.scope(state: \.recordMenu, action: \.recordMenu.presented))
         .toolbar(.hidden, for: .navigationBar)
         .task {
             await store.send(.task).finish()
@@ -113,12 +118,23 @@ private extension GoalRecordsView {
         }
     }
 
+    static var imageSize: CGFloat { 72 }
+    static var rowVerticalPadding: CGFloat { 12 }
+    static var titleSpacing: CGFloat { 4 }
+
+    static var moreButtonTop: CGFloat {
+        let textHeight = PlobbyTypography.actionLabel.lineHeight + titleSpacing + PlobbyTypography.label.lineHeight
+        return rowVerticalPadding + (imageSize - textHeight) / 2
+    }
+
     func recordRow(_ record: RecordSummary, showsDivider: Bool) -> some View {
-        Button {
+        let showsMoreButton = store.memberID != nil
+
+        return Button {
             store.send(.recordTapped(record.id))
         } label: {
-            HStack(spacing: 12.scaled) {
-                VStack(alignment: .leading, spacing: 4.scaled) {
+            HStack(spacing: showsMoreButton ? RecordMoreButton.imageSpacing.scaled : 12.scaled) {
+                VStack(alignment: .leading, spacing: Self.titleSpacing.scaled) {
                     Text(record.title)
                         .plobbyFont(.actionLabel)
                         .foregroundStyle(Color(.textPrimary))
@@ -134,6 +150,7 @@ private extension GoalRecordsView {
                     .lineLimit(1)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.trailing, showsMoreButton ? RecordMoreButton.width.scaled : 0)
 
                 AsyncImage(url: record.coverPhotoURL) { image in
                     image
@@ -142,10 +159,10 @@ private extension GoalRecordsView {
                 } placeholder: {
                     Color(.gray100)
                 }
-                .frame(width: 72.scaled, height: 72.scaled)
+                .frame(width: Self.imageSize.scaled, height: Self.imageSize.scaled)
                 .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
             }
-            .padding(.vertical, 12.scaled)
+            .padding(.vertical, Self.rowVerticalPadding.scaled)
             .overlay(alignment: .bottom) {
                 if showsDivider {
                     Rectangle()
@@ -156,5 +173,14 @@ private extension GoalRecordsView {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .overlay(alignment: .topTrailing) {
+            if showsMoreButton {
+                RecordMoreButton(isMenuPresented: menuRecord?.id == record.id) {
+                    menuRecord = record
+                }
+                .padding(.top, Self.moreButtonTop.scaled)
+                .padding(.trailing, (Self.imageSize + RecordMoreButton.imageSpacing).scaled)
+            }
+        }
     }
 }
