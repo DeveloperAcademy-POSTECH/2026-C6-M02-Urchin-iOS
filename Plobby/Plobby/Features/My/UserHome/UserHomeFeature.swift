@@ -86,8 +86,7 @@ struct UserHomeFeature {
                 state.recordDetail = nil
                 return fetchRecords(userID: state.userID)
 
-            case let .recordDetail(.presented(.delegate(.reported(recordID)))),
-                 let .recordDetail(.presented(.delegate(.deleted(recordID)))):
+            case let .recordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.recordDetail = nil
                 state.records.removeAll { $0.id == recordID }
                 return .none

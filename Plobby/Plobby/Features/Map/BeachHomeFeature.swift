@@ -71,8 +71,8 @@ struct BeachHomeFeature {
         case moreRecordsTapped
         case showAllTapped
         case recordTapped(BeachRecord)
-        /// 신고한 기록을 목록에서 빼요.
-        case recordHidden(UUID)
+        /// 지운 기록을 목록에서 빼요.
+        case recordRemoved(UUID)
         /// 차단한 사용자의 기록을 목록에서 모두 빼요.
         case userBlocked(UUID)
         case backTapped
@@ -178,8 +178,8 @@ struct BeachHomeFeature {
             case let .recordTapped(record):
                 return .send(.delegate(.recordSelected(record)))
 
-            // 목록에서 바로 빼고, 요약은 숨긴 기록을 뺀 기준으로 다시 불러와요.
-            case let .recordHidden(recordID):
+            // 목록에서 바로 빼고, 요약을 다시 불러와요.
+            case let .recordRemoved(recordID):
                 return removeRecords(where: { $0.id == recordID }, state: &state)
 
             case let .userBlocked(userID):

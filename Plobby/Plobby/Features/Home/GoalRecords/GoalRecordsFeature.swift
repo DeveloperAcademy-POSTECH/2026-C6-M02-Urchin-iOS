@@ -81,8 +81,7 @@ struct GoalRecordsFeature {
                 state.recordDetail = nil
                 return .none
 
-            case let .recordDetail(.presented(.delegate(.deleted(recordID)))),
-                 let .recordDetail(.presented(.delegate(.reported(recordID)))):
+            case let .recordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.recordDetail = nil
                 state.records.removeAll { $0.id == recordID }
                 return .none

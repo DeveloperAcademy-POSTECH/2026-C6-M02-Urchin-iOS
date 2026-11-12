@@ -12,7 +12,7 @@ import ComposableArchitecture
 @Reducer
 struct MyFeature {
 
-    // MARK: - State
+    // MARK: - State 
 
     @ObservableState
     struct State: Equatable {
@@ -237,12 +237,11 @@ struct MyFeature {
                 state.beachRecordDetail = nil
                 return .none
 
-            // 지운 기록도 신고한 기록처럼 해변 홈 목록에서 빼고, 정화 횟수·수거량을 다시 불러와요.
-            case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))),
-                 let .beachRecordDetail(.presented(.delegate(.reported(recordID)))):
+            // 지운 기록은 해변 홈 목록에서 빼고, 정화 횟수·수거량을 다시 불러와요.
+            case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.beachRecordDetail = nil
                 state.records.removeAll { $0.id == recordID }
-                return .send(.beachHome(.presented(.recordHidden(recordID))))
+                return .send(.beachHome(.presented(.recordRemoved(recordID))))
 
             case let .beachRecordDetail(.presented(.delegate(.blocked(userID)))):
                 state.beachRecordDetail = nil
