@@ -16,8 +16,8 @@ struct HomeView: View {
     @Bindable var store: StoreOf<HomeFeature>
     
     @Namespace private var tabUnderline
-    /// 끌기 시작한 곳이에요. 쓰레기를 줍고 나면 그 자리에서 다시 시작해요.
     @State private var walkDragStart: (progress: Double, translation: CGFloat)?
+    @State private var dragAxis: Axis?
     
     // MARK: - Body
     
@@ -177,11 +177,14 @@ private extension HomeView {
         .gesture(walkGesture)
         .animation(.easeInOut(duration: 0.2), value: store.isScrollGuideVisible)
     }
-    
-    /// 손가락을 올리면 사람이 해변 아래로 걸어가고, 내리면 뒤로 걸어가요.
+
     var walkGesture: some Gesture {
         DragGesture(minimumDistance: 4)
             .onChanged { value in
+                let axis = dragAxis ?? (abs(value.translation.width) > abs(value.translation.height) ? .horizontal : .vertical)
+                dragAxis = axis
+                guard axis == .vertical else { return }
+
                 guard !store.isWalkLocked else {
                     walkDragStart = nil
                     return
@@ -194,9 +197,26 @@ private extension HomeView {
                 let progress = walkPath.progress(from: start.progress, moving: start.translation - translation)
                 store.send(.sceneWalked(to: progress), animation: .easeInOut(duration: 0.3))
             }
-            .onEnded { _ in
-                walkDragStart = nil
+            .onEnded { value in
+                defer {
+                    walkDragStart = nil
+                    dragAxis = nil
+                }
+                guard dragAxis == .horizontal else { return }
+
+                switchTab(by: value.predictedEndTranslation.width)
             }
+    }
+
+    func switchTab(by translation: CGFloat) {
+        guard abs(translation) > Self.tabSwipeThreshold,
+              let index = Self.tabs.firstIndex(of: store.selectedType)
+        else { return }
+
+        let nextIndex = index + (translation < 0 ? 1 : -1)
+        guard Self.tabs.indices.contains(nextIndex) else { return }
+
+        store.send(.activityTabSelected(Self.tabs[nextIndex]), animation: .smooth(duration: 0.3))
     }
     
     var walkPath: HomeWalkPath {
@@ -289,6 +309,7 @@ private extension HomeView {
 private extension HomeView {
     
     static let tabs: [RecordType] = [.plogging, .plobbing]
+    static let tabSwipeThreshold: CGFloat = 60
     
     static var noAnimation: Transaction {
         var transaction = Transaction()
