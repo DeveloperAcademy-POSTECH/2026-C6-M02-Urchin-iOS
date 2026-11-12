@@ -283,6 +283,9 @@ private extension BeachClient {
         submitFavoriteBeach: { _ in },
         removeFavoriteBeach: { _ in },
         fetchRecordCounts: { [:] },
-        fetchBeachRecords: { _, _ in [] }
+        fetchBeachRecords: { _, _ in [] },
+        fetchBeachSummary: { _, _ in
+            BeachSummary(recordCount: 0, participantCount: 0, totalTrashCount: 0, photoURLs: [], guardians: [])
+        }
     )
 }

@@ -211,7 +211,7 @@ extension BeachHomeFeature {
     private func fetchSummary(beachID: UUID) -> Effect<Action> {
         .run { send in
             await send(.summaryResponse(Result {
-                try await beachClient.fetchBeachRecords(beachID, nil).summary(photoLimit: 0)
+                try await beachClient.fetchBeachSummary(beachID, 0)
             }))
         }
     }

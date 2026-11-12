@@ -84,7 +84,7 @@ struct BeachSheetFeature {
                 state.content = .loading
                 return .run { [beachID = state.beach.id] send in
                     await send(.summaryResponse(Result {
-                        try await beachClient.fetchBeachRecords(beachID, nil).summary(photoLimit: Self.photoLimit)
+                        try await beachClient.fetchBeachSummary(beachID, Self.photoLimit)
                     }))
                 }
 
