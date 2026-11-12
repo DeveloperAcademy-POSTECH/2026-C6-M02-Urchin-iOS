@@ -23,7 +23,6 @@ struct BeachHomeView: View {
                 store.send(.backTapped)
             }
 
-            // 해변을 지키는 사람들의 회색 영역이 화면 맨 아래(홈 인디케이터 아래)까지 채워지도록 해요
             GeometryReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
@@ -53,7 +52,7 @@ struct BeachHomeView: View {
         .task {
             await store.send(.task).finish()
         }
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
     }
 }
 
@@ -155,13 +154,6 @@ private extension BeachHomeView {
                 }
 
                 Spacer()
-
-                // FIXME: 전체보기 동작이 정해지면 다시 표시 (심사 시 동작 없는 버튼으로 보이지 않게 숨김)
-                // Button("전체보기") {
-                //     store.send(.showAllTapped)
-                // }
-                // .plobbyFont(.helper)
-                // .foregroundStyle(Color(.textSecondary))
             }
 
             records
@@ -317,8 +309,6 @@ private extension BeachHomeView {
 
 private extension BeachHomeView {
 
-    /// 기록이 적어 화면이 남아도 회색 영역이 맨 아래까지 늘어나요.
-    /// 사람이 없으면 회색 영역 없이 아래 여백만 둬요.
     @ViewBuilder
     func guardianSection(bottomInset: CGFloat) -> some View {
         if case let .loaded(summary) = store.summary, !summary.guardians.isEmpty {
@@ -350,7 +340,6 @@ private extension BeachHomeView {
             .padding(.top, 32)
             .padding(.bottom, 32 + bottomInset)
             .frame(maxHeight: .infinity, alignment: .top)
-            // 화면 맨 아래에 붙으므로 위쪽 모서리만 둥글게 해요
             .background(
                 Color(.gray50),
                 in: UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24)
@@ -407,7 +396,6 @@ private struct ProfileAvatar: View {
 
 // MARK: - FlowLayout
 
-/// 가로로 채우다가 넘치면 다음 줄로 넘기는 칩 레이아웃
 private struct FlowLayout: Layout {
 
     let spacing: CGFloat

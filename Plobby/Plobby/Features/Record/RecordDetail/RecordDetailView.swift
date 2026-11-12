@@ -45,7 +45,7 @@ struct RecordDetailView: View {
         .task {
             await store.send(.task).finish()
         }
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
         .fullScreenCover(item: $store.scope(state: \.editForm, action: \.editForm)) { store in
             RecordFormView(store: store)
         }

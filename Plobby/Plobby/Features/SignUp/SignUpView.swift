@@ -32,6 +32,6 @@ struct SignUpView: View {
                 SignUpCompleteView(store: store)
             }
         }
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
     }
 }

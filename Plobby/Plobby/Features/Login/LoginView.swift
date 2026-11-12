@@ -33,7 +33,7 @@ struct LoginView: View {
                 .ignoresSafeArea()
         }
         .background(Color(.gray0))
-        .plobbyAlert($store.scope(state: \.signIn.alert, action: \.signIn.alert))
+        .plobbyAlert(store: store, state: \.signIn.alert, action: \.signIn.alert)
     }
 }
 

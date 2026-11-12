@@ -39,7 +39,7 @@ struct RecordFormView: View {
                     .presentationDragIndicator(.visible)
                     .presentationCornerRadius(20)
             }
-            .plobbyAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+            .plobbyAlert(store: store, state: \.destination?.alert, action: \.destination.alert)
     }
 }
 

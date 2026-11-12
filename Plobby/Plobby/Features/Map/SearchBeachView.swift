@@ -45,7 +45,7 @@ struct SearchBeachView: View {
         .onAppear {
             isSearchFocused = true
         }
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
     }
 }
 
