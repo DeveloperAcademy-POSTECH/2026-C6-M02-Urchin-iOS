@@ -20,6 +20,10 @@ struct ProfileSetupView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            PlobbyNavigationBar(title: "회원가입") {
+                store.send(.backButtonTapped)
+            }
+
             progressBar
             titleSection
 
@@ -37,6 +41,7 @@ struct ProfileSetupView: View {
             
             nextButton
         }
+        .toolbar(.hidden, for: .navigationBar)
         .contentShape(Rectangle())
         .onTapGesture {
             isNicknameFocused = false

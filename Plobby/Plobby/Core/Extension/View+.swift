@@ -13,15 +13,4 @@ extension View {
         frame(width: rect.width, height: rect.height)
             .position(x: rect.midX, y: rect.midY)
     }
-    
-    func plobbyNavigationTitle(_ title: String) -> some View {
-        navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(title)
-                        .plobbyFont(.cardTitle)
-                        .foregroundStyle(Color(.textPrimary))
-                }
-            }
-    }
 }

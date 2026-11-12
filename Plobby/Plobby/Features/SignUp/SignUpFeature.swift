@@ -47,7 +47,6 @@ struct SignUpFeature {
 
         enum Delegate {
             case completed(AuthUser)
-            /// 약관 동의에서 뒤로 가면 가입을 그만두고 로그인 화면으로 돌아가요.
             case cancelled
         }
     }
@@ -103,6 +102,11 @@ struct SignUpFeature {
             case .signUpResponse(.failure):
                 state.isSigningUp = false
                 state.alert = .make(.signUpFailed)
+                return .none
+
+            case let .path(.element(id: id, action: .profileSetup(.backButtonTapped))),
+                 let .path(.element(id: id, action: .favoriteBeachSetup(.backButtonTapped))):
+                state.path.pop(from: id)
                 return .none
 
             case .path(.element(id: _, action: .complete(.completeButtonTapped))):

@@ -24,11 +24,9 @@ struct SignUpView: View {
             switch pathStore.case {
             case let .profileSetup(store):
                 ProfileSetupView(store: store)
-                    .plobbyNavigationTitle("회원가입")
 
             case let .favoriteBeachSetup(store):
                 FavoriteBeachSetupView(store: store)
-                    .plobbyNavigationTitle("회원가입")
 
             case let .complete(store):
                 SignUpCompleteView(store: store)
