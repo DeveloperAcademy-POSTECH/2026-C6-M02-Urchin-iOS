@@ -11,6 +11,7 @@ import ComposableArchitecture
 
 struct OnboardingView: View {
 
+    // MARK: - Properties
 
     @Bindable var store: StoreOf<OnboardingFeature>
     @GestureState(resetTransaction: Transaction(animation: Self.pageAnimation)) private var dragOffset: CGFloat = 0
@@ -19,6 +20,7 @@ struct OnboardingView: View {
     private static let backSwipeEdgeWidth: CGFloat = 32
     private static let backSwipeThreshold: CGFloat = 100
 
+    // MARK: - Body
 
     var body: some View {
         ZStack {
