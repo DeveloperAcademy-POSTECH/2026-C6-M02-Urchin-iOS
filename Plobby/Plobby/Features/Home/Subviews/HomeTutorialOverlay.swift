@@ -12,6 +12,7 @@ import SwiftUI
 enum HomeTutorialStep: CaseIterable, Equatable {
     case goal
     case goalToggle
+    case goalFill
     case goalPeriod
     case recordIntro
     case recordResult
@@ -29,6 +30,7 @@ enum HomeTutorialStep: CaseIterable, Equatable {
         switch self {
         case .goal: "우리가 플로깅과 플로빙으로 함께 채워 가는 목표예요"
         case .goalToggle: "공통 목표를 눌러 보세요"
+        case .goalFill: nil
         case .goalPeriod: "기간이 끝나거나 목표가 달성되면 새 목표가 시작돼요"
         case .recordIntro: "기록이 쌓이면 어떻게 보일까요?"
         case .recordResult: "이렇게 기록하면 공통 목표에 포함돼요"
@@ -40,7 +42,7 @@ enum HomeTutorialStep: CaseIterable, Equatable {
 
     var target: HomeTutorialTarget? {
         switch self {
-        case .goal, .goalToggle, .goalPeriod: .goalCard
+        case .goal, .goalToggle, .goalFill, .goalPeriod: .goalCard
         case .recordIntro, .recordResult, .scroll: .scene
         case .activitySwitch: .activityTabs
         case .finish: nil
@@ -99,7 +101,7 @@ struct HomeTutorialOverlay: View {
             // 펼치기 안내에서는 강조한 목표 카드만 눌리게 비워 두고, 나머지 영역은 눌러도 넘어가지 않아요.
             .contentShape(TapArea(hole: step == .goalToggle ? highlight : nil), eoFill: true)
             .onTapGesture {
-                guard step != .finish, step != .goalToggle else { return }
+                guard ![.goalToggle, .goalFill, .finish].contains(step) else { return }
                 onAdvance()
             }
         }

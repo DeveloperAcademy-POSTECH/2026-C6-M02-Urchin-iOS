@@ -15,7 +15,10 @@ struct HomeTutorialView: View {
 
     let step: HomeTutorialStep
     let onToggleTapped: () -> Void
+    let onGoalFilled: () -> Void
     let onFrameChanged: (HomeTutorialTarget, CGRect) -> Void
+
+    @State private var filledGoalCount = Self.goalFillSteps[0]
 
     // MARK: - Body
 
@@ -26,14 +29,15 @@ struct HomeTutorialView: View {
             HomeGoalCard(
                 goal: Self.goal(collectedCount: goalCollectedCount),
                 status: .inProgress(remainingDays: 7),
-                isExpanded: step == .goalPeriod,
+                isExpanded: step == .goalFill || step == .goalPeriod,
                 onToggle: {
                     guard step == .goalToggle else { return }
                     onToggleTapped()
                 },
                 onRecordTapped: {},
                 onAllGoalsTapped: {},
-                highlightsToggle: step == .goalToggle
+                highlightsToggle: step == .goalToggle,
+                showsAchievedLabel: goalCollectedCount >= Self.targetCount
             )
             .tutorialTarget(.goalCard, onChange: onFrameChanged)
             .padding(.horizontal, 20.scaled)
@@ -46,6 +50,9 @@ struct HomeTutorialView: View {
                 .tutorialTarget(.scene, onChange: onFrameChanged)
         }
         .background(Color(.gray0))
+        .task(id: step) {
+            await fillGoalIfNeeded()
+        }
     }
 }
 
@@ -135,7 +142,7 @@ private extension HomeTutorialView {
     /// 기록 안내 전에는 아직 아무도 기록하지 않은 상태로, 기록 결과부터는 하루치 기록이 더해진 상태로 보여줘요.
     var isTrashCollected: Bool {
         switch step {
-        case .goal, .goalToggle, .goalPeriod, .recordIntro: false
+        case .goal, .goalToggle, .goalFill, .goalPeriod, .recordIntro: false
         case .recordResult, .scroll, .activitySwitch, .finish: true
         }
     }
@@ -143,9 +150,30 @@ private extension HomeTutorialView {
     var goalCollectedCount: Int {
         switch step {
         case .goal, .goalToggle: 0
+        case .goalFill: filledGoalCount
         case .goalPeriod: Self.targetCount
         default: isTrashCollected ? Self.day.collectedCount : 0
         }
+    }
+
+    /// 카드가 펼쳐지면 50 → 150 → 200개로 차오르고, 다 차고 잠시 뒤 목표 기간 안내로 넘어가요.
+    func fillGoalIfNeeded() async {
+        guard step == .goalFill else { return }
+
+        filledGoalCount = Self.goalFillSteps[0]
+        for count in Self.goalFillSteps.dropFirst() {
+            try? await Task.sleep(for: Self.goalFillInterval)
+            guard !Task.isCancelled else { return }
+
+            withAnimation(.easeInOut(duration: 0.5)) {
+                filledGoalCount = count
+            }
+        }
+
+        try? await Task.sleep(for: Self.goalFilledDelay)
+        guard !Task.isCancelled else { return }
+
+        onGoalFilled()
     }
 
     var sceneStage: HomeSceneStage {
@@ -162,6 +190,9 @@ private extension HomeTutorialView {
 private extension HomeTutorialView {
 
     static let targetCount = 200
+    static let goalFillSteps = [50, 150, 200]
+    static let goalFillInterval: Duration = .seconds(0.8)
+    static let goalFilledDelay: Duration = .seconds(0.5)
 
     static let startDate: Date = {
         let calendar = Calendar.current
