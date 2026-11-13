@@ -105,7 +105,7 @@ private extension GoalRecordsView {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 48.scaled)
             } else if store.filteredRecords.isEmpty {
-                Text("아직 올라온 기록이 없어요")
+                Text(store.recordFilter == .all ? "아직 올라온 기록이 없어요" : "해당 유형의 기록이 없어요")
                     .plobbyFont(.body)
                     .foregroundStyle(Color(.textTertiary))
                     .frame(maxWidth: .infinity)
@@ -178,7 +178,7 @@ private extension GoalRecordsView {
                 RecordMoreButton(isMenuPresented: menuRecord?.id == record.id) {
                     menuRecord = record
                 }
-                .padding(.top, Self.moreButtonTop.scaled)
+                .padding(.top, (Self.moreButtonTop - RecordMoreButton.tapInset).scaled)
                 .padding(.trailing, (Self.imageSize + RecordMoreButton.imageSpacing).scaled)
             }
         }
