@@ -304,6 +304,7 @@
 		557157056AC946144CE427FB /* GoalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5065290F5E68F90E10B575 /* GoalTests.swift */; };
 		19E4832C3D96A086D9E7CFA9 /* GoalProgressResponseDTOTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A06800F443C07BE5BF3C744 /* GoalProgressResponseDTOTests.swift */; };
 		141214772660EF8FBD85C337 /* HomeFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A05330B9E52B6A4C89AED2C /* HomeFeatureTests.swift */; };
+		7B3C1A99A1B2C3D4E5F60001 /* HomeTutorialFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A98A1B2C3D4E5F60001 /* HomeTutorialFeatureTests.swift */; };
 		0FC12212AABB5BEF5C65F89B /* GoalListFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68FA7013036EDED2048F1CC /* GoalListFeatureTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -624,6 +625,7 @@
 		3B5065290F5E68F90E10B575 /* GoalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoalTests.swift"; sourceTree = "<group>"; };
 		1A06800F443C07BE5BF3C744 /* GoalProgressResponseDTOTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoalProgressResponseDTOTests.swift"; sourceTree = "<group>"; };
 		9A05330B9E52B6A4C89AED2C /* HomeFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeFeatureTests.swift"; sourceTree = "<group>"; };
+		7B3C1A98A1B2C3D4E5F60001 /* HomeTutorialFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTutorialFeatureTests.swift; sourceTree = "<group>"; };
 		F68FA7013036EDED2048F1CC /* GoalListFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoalListFeatureTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1820,6 +1822,7 @@
 			isa = PBXGroup;
 			children = (
 				9A05330B9E52B6A4C89AED2C /* HomeFeatureTests.swift */,
+				7B3C1A98A1B2C3D4E5F60001 /* HomeTutorialFeatureTests.swift */,
 				F68FA7013036EDED2048F1CC /* GoalListFeatureTests.swift */,
 			);
 			path = Home;
@@ -2260,6 +2263,7 @@
 				557157056AC946144CE427FB /* GoalTests.swift in Sources */,
 				19E4832C3D96A086D9E7CFA9 /* GoalProgressResponseDTOTests.swift in Sources */,
 				141214772660EF8FBD85C337 /* HomeFeatureTests.swift in Sources */,
+				7B3C1A99A1B2C3D4E5F60001 /* HomeTutorialFeatureTests.swift in Sources */,
 				0FC12212AABB5BEF5C65F89B /* GoalListFeatureTests.swift in Sources */,
 				68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */,
 				49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */,
