@@ -122,7 +122,7 @@ final class GuestTapAllowedFrames {
     }
 }
 
-private struct GuestTapAllowedModifier: ViewModifier {
+struct GuestTapAllowedModifier: ViewModifier {
 
     @State private var id = UUID()
     @State private var frame: CGRect = .zero
@@ -141,13 +141,5 @@ private struct GuestTapAllowedModifier: ViewModifier {
             .onDisappear {
                 GuestTapAllowedFrames.shared.update(id, frame: nil)
             }
-    }
-}
-
-extension View {
-
-    /// 비회원이 눌러도 로그인 시트 대신 원래 동작을 해요.
-    func guestTapAllowed() -> some View {
-        modifier(GuestTapAllowedModifier())
     }
 }
