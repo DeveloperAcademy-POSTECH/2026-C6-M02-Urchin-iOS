@@ -38,6 +38,7 @@ struct RecordReportView: View {
                 .padding(.top, 16.scaled)
                 .padding(.bottom, 24.scaled)
             }
+            .disabled(store.isReporting)
             .scrollDismissesKeyboard(.interactively)
 
             reportButton
