@@ -58,7 +58,9 @@ struct HomeView: View {
             if let step = store.tutorialStep {
                 HomeTutorialView(
                     step: step,
+                    recordType: store.tutorialRecordType,
                     onToggleTapped: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.25)) },
+                    onActivitySwitched: { store.send(.tutorialActivitySwitched, animation: .smooth(duration: 0.35)) },
                     onAutoAdvance: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.5)) },
                     onFrameChanged: { store.send(.tutorialFrameChanged($0, $1)) }
                 )
