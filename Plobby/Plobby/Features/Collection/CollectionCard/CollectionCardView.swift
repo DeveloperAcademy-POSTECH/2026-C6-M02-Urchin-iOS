@@ -316,7 +316,7 @@ private extension CollectionCardView {
         )
     }
 
-    /// 비회원 탭은 화면에서 로그인 시트로 이어져요. 기록하기와 같은 흐름이라 기록 요청으로 보내요.
+    /// 비회원 탭은 화면에서 가로채 로그인 시트로 이어져요.
     var loginButton: some View {
         Button {
             store.send(.recordButtonTapped)

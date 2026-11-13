@@ -37,7 +37,6 @@ struct GoalListFeature {
 
         enum Delegate {
             case closed
-            case loginRequired
         }
     }
 
@@ -85,9 +84,6 @@ struct GoalListFeature {
             case .goalRecords(.presented(.delegate(.closed))):
                 state.goalRecords = nil
                 return .none
-
-            case .goalRecords(.presented(.delegate(.loginRequired))):
-                return .send(.delegate(.loginRequired))
 
             case .goalRecords, .delegate:
                 return .none
