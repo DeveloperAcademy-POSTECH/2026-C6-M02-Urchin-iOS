@@ -129,10 +129,11 @@ private extension HomeTutorialView {
             HomeSceneBackdrop(image: backdrop)
                 .ignoresSafeArea()
 
+            // 튜토리얼에서는 사람들이 카드와 문구에 가리지 않게 장면을 조금 더 내려서 보여줘요.
             scene()
-                .padding(.top, cardHeight)
-                .ignoresSafeArea(edges: .bottom)
                 .tutorialTarget(.scene, onChange: onFrameChanged)
+                .padding(.top, cardHeight + Self.sceneDrop.scaled)
+                .ignoresSafeArea(edges: .bottom)
         }
     }
 
@@ -211,6 +212,7 @@ private extension HomeTutorialView {
 private extension HomeTutorialView {
 
     static let targetCount = 200
+    static let sceneDrop: CGFloat = 80
     static let goalFillSteps = [50, 150, 200]
     static let goalFillInterval: Duration = .seconds(0.8)
     static let goalFilledDelay: Duration = .seconds(0.5)

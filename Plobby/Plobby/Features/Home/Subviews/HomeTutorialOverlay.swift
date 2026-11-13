@@ -209,7 +209,7 @@ private extension HomeTutorialOverlay {
             Circle()
                 .frame(width: diameter, height: diameter)
                 .blur(radius: 24)
-                .position(Self.spotlightCenter(in: rect))
+                .position(spotlightCenter(in: rect))
 
         default:
             RoundedRectangle(cornerRadius: 16.scaled)
@@ -240,9 +240,20 @@ private extension HomeTutorialOverlay {
         }
     }
 
-    // ponytail: 장면 속 사람들 위치를 장면 크기 비율로 어림잡았어요. 장면 배치가 바뀌면 이 비율을 조정해요.
-    static func spotlightCenter(in scene: CGRect) -> CGPoint {
-        CGPoint(x: scene.minX + scene.width * 0.68, y: scene.minY + scene.height * 0.42)
+    /// 장면 속 사람(잠수부) 무리의 가운데예요. 장면은 시안 폭(402) 좌표로 그려서, 같은 좌표에 배율만 곱해요.
+    func spotlightCenter(in scene: CGRect) -> CGPoint {
+        let point = Self.groupCenter(recordType: recordType, isCollected: step.showsCountChip)
+        let scale = scene.width / DesignScale.frameWidth
+        return CGPoint(x: scene.minX + point.x * scale, y: scene.minY + point.y * scale)
+    }
+
+    /// 플로깅은 `PloggingSceneView.Metrics.humans`, 플로빙은 `PlobbingSceneView.Metrics.diverGroup`의 가운데예요.
+    /// 플로빙은 쓰레기를 담으면 잠수부가 아래로 내려가서(`collectDive`) 그만큼 따라 내려가요.
+    static func groupCenter(recordType: RecordType, isCollected: Bool) -> CGPoint {
+        switch recordType {
+        case .plogging: CGPoint(x: 284, y: 165)
+        case .plobbing: CGPoint(x: 185, y: isCollected ? 303 : 248)
+        }
     }
 
     static let spotlightDiameter: CGFloat = 260
