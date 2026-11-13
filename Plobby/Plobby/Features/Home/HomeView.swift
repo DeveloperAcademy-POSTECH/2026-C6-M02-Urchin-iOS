@@ -54,6 +54,19 @@ struct HomeView: View {
                 .padding(.bottom, 8.scaled)
         }
         .background(Color(.gray0))
+        .overlay {
+            if let step = store.tutorialStep {
+                HomeTutorialView(
+                    step: step,
+                    recordType: store.tutorialRecordType,
+                    onToggleTapped: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.25)) },
+                    onActivitySwitched: { store.send(.tutorialActivitySwitched, animation: .smooth(duration: 0.35)) },
+                    onAutoAdvance: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.5)) },
+                    onFrameChanged: { store.send(.tutorialFrameChanged($0, $1)) }
+                )
+                .transition(.opacity)
+            }
+        }
         .sheet(item: sheetBinding) { sheet in
             sheetContent(sheet)
         }

@@ -39,6 +39,11 @@ struct HomeFeature {
         var isTrashSummaryPresented = false
         var isActivityPickerPresented = false
         var isScrollGuideVisible = false
+        var tutorialStep: HomeTutorialStep?
+        /// 튜토리얼에서 보고 있는 활동이에요. 플로깅을 다 본 뒤 전환 버튼을 누르면 플로빙 기록 안내를 한 번 더 봐요.
+        var tutorialRecordType: RecordType = .plogging
+        /// 튜토리얼에서 밝게 비출 영역이에요. 탭바까지 덮는 안내 막은 메인 탭에서 그려서 여기 모아 둬요.
+        var tutorialFrames: [HomeTutorialTarget: CGRect] = [:]
         var now = Date.distantPast
         
         var board: HomeGoalBoard? {
@@ -112,6 +117,11 @@ struct HomeFeature {
         case participantTapped(GoalParticipant.ID)
         case userHomeOpened(GoalParticipant)
         case sheetDismissed
+        case tutorialAdvanced
+        case tutorialIntroFinished
+        case tutorialActivitySwitched
+        case tutorialFrameChanged(HomeTutorialTarget, CGRect)
+        case tutorialFinished
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
         case goalList(PresentationAction<GoalListFeature.Action>)
         case userHome(PresentationAction<UserHomeFeature.Action>)
@@ -140,7 +150,21 @@ struct HomeFeature {
             case .onAppear:
                 // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
                 state.isGoalExpanded = false
-                return loadBoards(state)
+                let fetch = loadBoards(state)
+
+                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
+                guard isHomeTutorialPending, state.tutorialStep == nil else { return fetch }
+
+                state.tutorialStep = .goal
+                state.tutorialRecordType = .plogging
+                state.selectedType = .plogging
+                return .merge(
+                    fetch,
+                    .run { send in
+                        try await clock.sleep(for: HomeFeature.tutorialIntroDuration)
+                        await send(.tutorialIntroFinished, animation: .easeInOut(duration: 0.5))
+                    }
+                )
                 
             case let .boardsResponse(.success(boards), now):
                 state.now = now
@@ -294,6 +318,34 @@ struct HomeFeature {
                 state.sheet = nil
                 return .none
                 
+            case .tutorialAdvanced:
+                state.tutorialStep = state.tutorialStep?.next
+                return .none
+
+            case .tutorialActivitySwitched:
+                guard state.tutorialStep == .recordResult, state.tutorialRecordType == .plogging else { return .none }
+
+                state.tutorialRecordType = .plobbing
+                state.tutorialStep = .recordIntro
+                return .none
+
+            // 첫 안내는 잠깐 보여준 뒤 저절로 펼치기 안내로 넘어가요. 그 사이 눌러서 넘겼으면 그대로 둬요.
+            case .tutorialIntroFinished:
+                guard state.tutorialStep == .goal else { return .none }
+
+                state.tutorialStep = .goalToggle
+                return .none
+
+            case let .tutorialFrameChanged(target, frame):
+                state.tutorialFrames[target] = frame
+                return .none
+
+            case .tutorialFinished:
+                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
+                $isHomeTutorialPending.withLock { $0 = false }
+                state.tutorialStep = nil
+                return .none
+                
             case .recordDetail(.presented(.delegate(.closed))):
                 state.recordDetail = nil
                 return .none
@@ -344,6 +396,8 @@ extension HomeFeature {
     private static let scrollGuideDuration: Duration = .seconds(3)
     private static let sheetDismissDelay: Duration = .milliseconds(350)
     
+    static let tutorialIntroDuration: Duration = .seconds(3)
+
     private nonisolated enum CancelID: Hashable {
         case boards
         case scene(RecordType)
@@ -428,7 +482,8 @@ extension HomeFeature {
     
     private func showScrollGuideIfNeeded(_ state: inout State) -> Effect<Action> {
         // 모은 쓰레기가 0개면 내려가며 볼 기록이 없어서 안내하지 않아요
-        guard state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
+        guard state.tutorialStep == nil,
+              state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
               state.status?.isFinished == false,
               (state.board?.totalTrashCount ?? 0) > 0
         else {

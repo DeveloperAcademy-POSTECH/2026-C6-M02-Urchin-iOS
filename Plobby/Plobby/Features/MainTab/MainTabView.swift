@@ -47,6 +47,18 @@ struct MainTabView: View {
                 .toolbar(.hidden, for: .navigationBar)
         }
         .tint(.primary)
+        .overlay {
+            if let step = store.home.tutorialStep {
+                HomeTutorialOverlay(
+                    step: step,
+                    recordType: store.home.tutorialRecordType,
+                    frames: store.home.tutorialFrames,
+                    onAdvance: { store.send(.home(.tutorialAdvanced), animation: .easeInOut(duration: 0.25)) },
+                    onFinish: { store.send(.home(.tutorialFinished), animation: .easeInOut(duration: 0.25)) }
+                )
+                .transition(.opacity)
+            }
+        }
         .background {
             GuestTapInterceptor(isEnabled: isGuestTapIntercepted) {
                 store.send(.loginSheetPresentationChanged(true))

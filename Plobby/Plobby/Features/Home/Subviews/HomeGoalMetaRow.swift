@@ -41,6 +41,7 @@ struct HomeGoalMetaRow: View {
                     }
                     Text(text)
                         .plobbyFont(.helper)
+                        .underline()
                         .foregroundStyle(Color(.currentBrandText))
                 }
                 .frame(minHeight: 44.scaled)

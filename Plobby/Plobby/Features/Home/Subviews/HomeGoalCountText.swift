@@ -20,6 +20,7 @@ struct HomeGoalCountText: View {
             Text("\(collected)")
                 .plobbyFont(collectedStyle)
                 .foregroundStyle(collectedColor)
+                .contentTransition(.numericText(value: Double(collected)))
 
             Text("/ \(target)개")
                 .plobbyFont(.label)
