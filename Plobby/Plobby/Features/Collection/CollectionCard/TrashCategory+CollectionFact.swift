@@ -11,6 +11,15 @@ struct CollectionFact: Equatable {
     let source: String
 }
 
+extension CollectionFact {
+
+    static let onboarding = CollectionFact(
+        title: "바다거북 25마리를\n지키는 데 힘을 보탰어요!",
+        description: "바다거북은 비닐을 해파리로 착각할 수 있어요\n플라스틱을 주운 덕분에\n바다가 조금 더 안전해졌어요",
+        source: "출처: NOAA 해양쓰레기 프로그램"
+    )
+}
+
 extension TrashCategory {
 
     func collectionIllustrationName(isEmpty: Bool) -> String {
