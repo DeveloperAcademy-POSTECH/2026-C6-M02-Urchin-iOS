@@ -133,6 +133,8 @@ struct AppFeature {
                 return .none
 
             case let .signUp(.delegate(.completed(user))):
+                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
+                $isHomeTutorialPending.withLock { $0 = true }
                 updateMembershipStatus(.member(user))
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()

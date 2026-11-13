@@ -36,6 +36,7 @@ struct HomeFeature {
         var isTrashSummaryPresented = false
         var isActivityPickerPresented = false
         var isScrollGuideVisible = false
+        var tutorialStep: HomeTutorialStep?
         var now = Date.distantPast
         
         var board: HomeGoalBoard? {
@@ -100,6 +101,8 @@ struct HomeFeature {
         case userHomeOpened(GoalParticipant)
         case sheetDismissed
         case notificationButtonTapped
+        case tutorialAdvanced
+        case tutorialFinished
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
         case notification(PresentationAction<NotificationFeature.Action>)
         case goalList(PresentationAction<GoalListFeature.Action>)
@@ -129,6 +132,13 @@ struct HomeFeature {
             case .onAppear:
                 // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
                 state.isGoalExpanded = false
+
+                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
+                if isHomeTutorialPending, state.tutorialStep == nil {
+                    state.tutorialStep = .goal
+                    state.selectedType = .plogging
+                    state.hasSetInitialGoalExpansion = true
+                }
                 let now = now
                 return .run { send in
                     await send(.boardsResponse(Result { try await fetchBoards(now: now) }, now: now))
@@ -277,6 +287,23 @@ struct HomeFeature {
                 state.sheet = nil
                 return .none
                 
+            case .tutorialAdvanced:
+                guard let step = state.tutorialStep else { return .none }
+
+                switch step {
+                case .goalToggle: state.isGoalExpanded = true
+                case .goalPeriod: state.isGoalExpanded = false
+                default: break
+                }
+                state.tutorialStep = step.next
+                return .none
+
+            case .tutorialFinished:
+                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
+                $isHomeTutorialPending.withLock { $0 = false }
+                state.tutorialStep = nil
+                return .none
+
             case .notificationButtonTapped:
                 state.notification = NotificationFeature.State()
                 return .none
@@ -399,7 +426,8 @@ extension HomeFeature {
     
     private func showScrollGuideIfNeeded(_ state: inout State) -> Effect<Action> {
         // 모은 쓰레기가 0개면 내려가며 볼 기록이 없어서 안내하지 않아요
-        guard state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
+        guard state.tutorialStep == nil,
+              state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
               state.status?.isFinished == false,
               (state.board?.totalTrashCount ?? 0) > 0
         else {

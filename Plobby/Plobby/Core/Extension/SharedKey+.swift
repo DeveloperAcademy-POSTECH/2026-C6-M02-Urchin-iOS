@@ -44,6 +44,9 @@ extension SharedKey where Self == AppStorageKey<Bool>.Default {
 
     /// 이 기기에서 온보딩을 끝까지 본 적 있는지 여부. 본 적 있으면 다음 실행부터 로그인 화면을 보여줘요.
     static var hasSeenOnboarding: Self { Self[.appStorage("hasSeenOnboarding"), default: false] }
+
+    /// 이 기기에서 막 가입해서 홈 튜토리얼을 아직 끝까지 보지 않았는지 여부. 마지막 단계까지 보면 꺼져요.
+    static var isHomeTutorialPending: Self { Self[.appStorage("isHomeTutorialPending"), default: false] }
 }
 
 extension SharedKey where Self == InMemoryKey<[Beach]>.Default {
