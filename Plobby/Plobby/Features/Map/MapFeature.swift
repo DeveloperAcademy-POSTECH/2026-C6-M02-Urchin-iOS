@@ -195,18 +195,20 @@ struct MapFeature {
                 state.isShowingCurrentLocation = false
                 return .none
 
-            case .searchButtonTapped:
-                state.beachSheet = nil
-                state.path.append(.searchBeach(SearchBeachFeature.State()))
-                return .none
-
-            case .beachSheet(.presented(.delegate(.homeTapped))) where !state.isMember,
+            // 해변 시트가 떠 있으면 탭 가로채기가 꺼져 있어서, 비회원 검색은 여기서 시트를 닫고 로그인 시트로 보내요.
+            case .searchButtonTapped where !state.isMember,
+                 .beachSheet(.presented(.delegate(.homeTapped))) where !state.isMember,
                  .beachSheet(.presented(.delegate(.loginRequired))):
                 state.beachSheet = nil
                 return .run { send in
                     try await clock.sleep(for: Self.sheetDismissDelay)
                     await send(.delegate(.loginRequired))
                 }
+
+            case .searchButtonTapped:
+                state.beachSheet = nil
+                state.path.append(.searchBeach(SearchBeachFeature.State()))
+                return .none
 
             case let .beachSheet(.presented(.delegate(.homeTapped(beach)))):
                 state.beachSheet = nil

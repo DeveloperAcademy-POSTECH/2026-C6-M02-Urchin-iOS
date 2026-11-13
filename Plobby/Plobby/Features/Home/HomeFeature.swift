@@ -341,7 +341,7 @@ private extension HomeFeature.Action {
     
     var requiresLogin: Bool {
         switch self {
-        case .recordButtonTapped, .notificationButtonTapped, .participantTapped:
+        case .recordButtonTapped, .notificationButtonTapped, .participantTapped, .allGoalsButtonTapped:
             true
         default:
             false
