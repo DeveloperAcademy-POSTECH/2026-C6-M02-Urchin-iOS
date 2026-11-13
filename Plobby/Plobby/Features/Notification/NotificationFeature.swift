@@ -94,7 +94,7 @@ struct NotificationFeature {
                 let readEffect: Effect<Action> = notification.isRead ? .none : updateReadAt(notification)
 
                 guard !notification.canReturnHome else {
-                    return .merge(readEffect, .run { _ in await dismiss() })
+                    return .concatenate(readEffect, .run { _ in await dismiss() })
                 }
 
                 if notification.canOpenRecord, let recordID = notification.recordID {
