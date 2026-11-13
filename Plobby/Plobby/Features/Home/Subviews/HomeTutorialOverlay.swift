@@ -38,7 +38,6 @@ enum HomeTutorialStep: CaseIterable, Equatable {
         }
     }
 
-    /// 하루치 기록을 담은 뒤부터 날짜 옆에 개수 칩이 보여요.
     var showsCountChip: Bool {
         switch self {
         case .recordResult, .finish: true
@@ -46,7 +45,6 @@ enum HomeTutorialStep: CaseIterable, Equatable {
         }
     }
 
-    /// 기록 결과부터는 오른쪽 아래 전환 버튼과 "플로빙 보기" 라벨을 함께 보여줘요.
     var showsActivityToggle: Bool {
         self == .recordResult
     }
@@ -63,7 +61,6 @@ enum HomeTutorialStep: CaseIterable, Equatable {
 enum HomeTutorialTarget: Hashable {
     case goalCard
     case activityToggle
-    /// 장면 위의 날짜 칩과 개수 칩이에요. 장면을 비추는 단계에서 함께 밝게 보여줘요.
     case dayChip
     case countChip
     case scene
@@ -117,7 +114,6 @@ struct HomeTutorialOverlay: View {
                     )
 
                     if let message = step.message {
-                        // 문구가 바뀌면 이전 문구는 흐려지며 사라지고 새 문구가 나타나요.
                         caption(message, highlight: highlight, dayChip: dayChip)
                             .id(message)
                             .transition(.opacity)
@@ -129,7 +125,6 @@ struct HomeTutorialOverlay: View {
                     }
 
                     if let activityToggle {
-                        // 버튼과 가로 가운데를 맞추고, 버튼 위쪽에서 24 떨어진 곳에 라벨 아래쪽이 오도록 놓아요.
                         HomeTutorialBouncingLabel(text: "\((recordType == .plogging ? RecordType.plobbing : .plogging).name) 보기")
                             .position(
                                 x: activityToggle.midX,
@@ -145,7 +140,6 @@ struct HomeTutorialOverlay: View {
                 guard ![.goalToggle, .goalFill, .scroll, .finish].contains(step), !isSwitchable else { return }
                 onAdvance()
             }
-            // 스크롤 안내는 실제로 위로 쓸어 올려야 넘어가요.
             .simultaneousGesture(
                 DragGesture(minimumDistance: 10)
                     .onEnded { value in
@@ -162,7 +156,6 @@ struct HomeTutorialOverlay: View {
 
 private extension HomeTutorialOverlay {
 
-    /// 장면을 비추는 단계에서는 날짜 칩과 공통 목표 카드도 함께 밝게 둬요.
     func dimmedBackground(highlight: CGRect?, chips: [CGRect], goalCard: CGRect?, activityToggle: CGRect?) -> some View {
         Color(.neutralBlack)
             .opacity(0.6)
@@ -291,7 +284,6 @@ private extension HomeTutorialOverlay {
 /// 화면 가운데에서 아래에서 위로 올라가며 사라지는 손이에요. 사용자가 스크롤할 때까지 반복해요.
 private struct HomeTutorialScrollHint: View {
 
-    /// 아래에서 나타나 → 위로 올라가고 → 위에 닿으면 사라진 뒤 → 다시 아래로 돌아가요.
     enum Phase: CaseIterable {
         case start
         case visible
@@ -329,7 +321,6 @@ private struct HomeTutorialScrollHint: View {
 
 // MARK: - HomeTutorialBouncingLabel
 
-/// 위아래로 천천히 오가며 눈길을 끄는 라벨이에요.
 private struct HomeTutorialBouncingLabel: View {
 
     let text: String

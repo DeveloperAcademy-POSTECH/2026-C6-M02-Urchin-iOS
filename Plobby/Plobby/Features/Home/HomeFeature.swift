@@ -325,7 +325,6 @@ struct HomeFeature {
                 state.tutorialStep = state.tutorialStep?.next
                 return .none
 
-            // 플로깅 기록 결과에서 전환 버튼을 누르면 플로빙 기록 안내를 이어서 봐요.
             case .tutorialActivitySwitched:
                 guard state.tutorialStep == .recordResult, state.tutorialRecordType == .plogging else { return .none }
 

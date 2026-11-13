@@ -17,7 +17,6 @@ struct HomeTutorialView: View {
     let recordType: RecordType
     let onToggleTapped: () -> Void
     let onActivitySwitched: () -> Void
-    /// 정해진 시간이 지나 저절로 다음 단계로 넘어갈 때 불려요.
     let onAutoAdvance: () -> Void
     let onFrameChanged: (HomeTutorialTarget, CGRect) -> Void
 
@@ -175,7 +174,6 @@ private extension HomeTutorialView {
         }
     }
 
-    /// 카드가 펼쳐지면 50 → 150 → 200개로 차오르고, 다 차고 잠시 뒤 목표 기간 안내로 넘어가요.
     func fillGoal() async {
         filledGoalCount = Self.goalFillSteps[0]
         for count in Self.goalFillSteps.dropFirst() {
@@ -190,7 +188,6 @@ private extension HomeTutorialView {
         await advance(after: Self.goalFilledDelay)
     }
 
-    /// 안내를 정해진 시간 동안 보여준 뒤 저절로 다음 단계로 넘어가요.
     func advance(after duration: Duration) async {
         try? await Task.sleep(for: duration)
         guard !Task.isCancelled else { return }
@@ -251,7 +248,6 @@ private extension HomeTutorialView {
 
 private extension View {
 
-    /// 튜토리얼에서 밝게 비출 영역을 화면 좌표로 기록해요.
     func tutorialTarget(_ target: HomeTutorialTarget, onChange: @escaping (HomeTutorialTarget, CGRect) -> Void) -> some View {
         onGeometryChange(for: CGRect.self) { proxy in
             proxy.frame(in: .global)
