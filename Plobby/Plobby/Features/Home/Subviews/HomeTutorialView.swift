@@ -20,35 +20,40 @@ struct HomeTutorialView: View {
     let onFrameChanged: (HomeTutorialTarget, CGRect) -> Void
 
     @State private var filledGoalCount = Self.goalFillSteps[0]
+    @State private var cardHeight: CGFloat = 0
+    /// 지금 보이는 카드 높이예요. 카드를 펼치면 날짜 칩이 카드 아래로 따라 내려가요.
+    @State private var visibleCardHeight: CGFloat = 0
 
     // MARK: - Body
 
     var body: some View {
-        VStack(spacing: 0) {
-            header
-
-            HomeGoalCard(
-                goal: Self.goal(collectedCount: goalCollectedCount),
-                status: .inProgress(remainingDays: 7),
-                isExpanded: step == .goalFill || step == .goalPeriod,
-                onToggle: {
-                    guard step == .goalToggle else { return }
-                    onToggleTapped()
-                },
-                onRecordTapped: {},
-                onAllGoalsTapped: {},
-                highlightsToggle: step == .goalToggle,
-                showsAchievedLabel: goalCollectedCount >= Self.targetCount
-            )
-            .tutorialTarget(.goalCard, onChange: onFrameChanged)
-            .padding(.horizontal, 20.scaled)
-
-            activityTabs
-                .tutorialTarget(.activityTabs, onChange: onFrameChanged)
-                .padding(.top, 4.scaled)
-
+        ZStack(alignment: .top) {
             scene
-                .tutorialTarget(.scene, onChange: onFrameChanged)
+
+            goalCard(isExpanded: false)
+                .hidden()
+                .accessibilityHidden(true)
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.height
+                } action: { height in
+                    cardHeight = height
+                }
+                .padding(.horizontal, 20.scaled)
+
+            goalCard(isExpanded: step == .goalFill || step == .goalPeriod)
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.height
+                } action: { height in
+                    visibleCardHeight = height
+                }
+                .tutorialTarget(.goalCard, onChange: onFrameChanged)
+                .padding(.horizontal, 20.scaled)
+
+            activityToggleButton
+                .tutorialTarget(.activityToggle, onChange: onFrameChanged)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .padding(.trailing, 20.scaled)
+                .padding(.bottom, 8.scaled)
         }
         .background(Color(.gray0))
         .task(id: step) {
@@ -65,55 +70,33 @@ struct HomeTutorialView: View {
 
 private extension HomeTutorialView {
 
-    var header: some View {
-        HStack {
-            Image(.homeLogo)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 73.scaled, height: 23.scaled)
-
-            Spacer()
-
-            Image(.bell)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 24.scaled, height: 24.scaled)
-                .frame(width: 44.scaled, height: 44.scaled)
-        }
-        .padding(.leading, 20.scaled)
-        .padding(.trailing, 12.scaled)
-        .frame(height: 50.scaled)
-    }
-
-    var activityTabs: some View {
-        HStack(spacing: 0) {
-            activityTab(RecordType.plogging.name, isSelected: true)
-            activityTab(RecordType.plobbing.name, isSelected: false)
-        }
-        .padding(.bottom, 4.scaled)
-        .background(Color(.gray0))
-    }
-
-    func activityTab(_ title: String, isSelected: Bool) -> some View {
-        Text(title)
-            .plobbyFont(isSelected ? .actionLabel : .body)
-            .foregroundStyle(isSelected ? Color(.textPrimary) : Color(.textSecondary))
-            .frame(maxWidth: .infinity)
-            .frame(height: 48.scaled)
-            .overlay(alignment: .bottom) {
-                if isSelected {
-                    Rectangle()
-                        .fill(Color(.green500))
-                        .frame(height: 4.scaled)
-                        .offset(y: 4.scaled)
-                }
-            }
+    func goalCard(isExpanded: Bool) -> some View {
+        HomeGoalCard(
+            goal: Self.goal(collectedCount: goalCollectedCount),
+            status: .inProgress(remainingDays: 7),
+            isExpanded: isExpanded,
+            onToggle: {
+                guard step == .goalToggle else { return }
+                onToggleTapped()
+            },
+            onRecordTapped: {},
+            onAllGoalsTapped: {},
+            onNextGoalTapped: {},
+            onParticipantsTapped: {},
+            highlightsToggle: step == .goalToggle,
+            showsAchievedLabel: goalCollectedCount >= Self.targetCount
+        )
     }
 
     var scene: some View {
-        ZStack {
-            PloggingSceneView(days: [Self.day], stage: sceneStage, collectPulse: collectPulse, walkProgress: 0)
+        ZStack(alignment: .top) {
+            HomeSceneBackdrop(image: .homeSceneBeach)
+                .ignoresSafeArea()
+
+            PloggingSceneView(days: [Self.day], stage: sceneStage, collectPulse: collectPulse)
+                .padding(.top, cardHeight)
                 .ignoresSafeArea(edges: .bottom)
+                .tutorialTarget(.scene, onChange: onFrameChanged)
 
             HomeSceneOverlay(
                 recordType: .plogging,
@@ -122,21 +105,21 @@ private extension HomeTutorialView {
                 totalTrashCount: isTrashCollected ? Self.day.collectedCount : 0,
                 isGoalFinished: false,
                 isAtDay: true,
-                onParticipantsTapped: {},
                 onTrashSummaryTapped: {}
             )
-
-            Image(systemName: "plus")
-                .font(.system(size: 24.scaled, weight: .medium))
-                .foregroundStyle(Color(.currentBrandText))
-                .frame(width: 56.scaled, height: 56.scaled)
-                .background(Color(.gray0), in: Circle())
-                .shadow(color: .black.opacity(0.1), radius: 3, y: 2)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding(.trailing, 20.scaled)
-                .padding(.bottom, 8.scaled)
+            .padding(.top, max(visibleCardHeight, cardHeight))
+            .animation(.easeInOut(duration: 0.25), value: visibleCardHeight)
         }
         .frame(maxHeight: .infinity)
+    }
+
+    var activityToggleButton: some View {
+        Image(systemName: "figure.walk")
+            .font(.system(size: 24.scaled))
+            .foregroundStyle(Color(.currentBrandText))
+            .frame(width: 48.scaled, height: 48.scaled)
+            .background(Color(.gray0), in: Circle())
+            .shadow(color: Color(.neutralBlack).opacity(0.1), radius: 6.scaled, y: 2.scaled)
     }
 }
 

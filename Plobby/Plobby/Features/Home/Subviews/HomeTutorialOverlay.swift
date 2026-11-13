@@ -35,7 +35,7 @@ enum HomeTutorialStep: CaseIterable, Equatable {
         case .recordIntro: "기록이 쌓이면 어떻게 보일까요?"
         case .recordResult: "이렇게 기록하면 공통 목표에 포함돼요"
         case .scroll: "스크롤해 보세요"
-        case .activitySwitch: "플로빙 기록도 볼 수 있어요"
+        case .activitySwitch: nil
         case .finish: nil
         }
     }
@@ -44,7 +44,7 @@ enum HomeTutorialStep: CaseIterable, Equatable {
         switch self {
         case .goal, .goalToggle, .goalFill, .goalPeriod: .goalCard
         case .recordIntro, .recordResult, .scroll: .scene
-        case .activitySwitch: .activityTabs
+        case .activitySwitch: .activityToggle
         case .finish: nil
         }
     }
@@ -52,7 +52,7 @@ enum HomeTutorialStep: CaseIterable, Equatable {
 
 enum HomeTutorialTarget: Hashable {
     case goalCard
-    case activityTabs
+    case activityToggle
     case scene
 }
 
@@ -95,6 +95,15 @@ struct HomeTutorialOverlay: View {
                         HomeTutorialHand()
                             .position(Self.spotlightCenter(in: highlight))
                     }
+
+                    if step == .activitySwitch, let highlight {
+                        Text("\(RecordType.plobbing.name) 보기")
+                            .plobbyFont(.labelSelected)
+                            .foregroundStyle(Color(.gray0))
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(.trailing, proxy.size.width - highlight.maxX)
+                            .padding(.top, highlight.minY - 32.scaled)
+                    }
                 }
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
@@ -131,14 +140,23 @@ private extension HomeTutorialOverlay {
 
     @ViewBuilder
     func hole(_ rect: CGRect) -> some View {
-        if step.target == .scene {
+        switch step.target {
+        case .scene:
             let diameter = Self.spotlightDiameter.scaled
 
             Circle()
                 .frame(width: diameter, height: diameter)
                 .blur(radius: 24)
                 .position(Self.spotlightCenter(in: rect))
-        } else {
+
+        case .activityToggle:
+            let diameter = max(rect.width, rect.height) + 8.scaled
+
+            Circle()
+                .frame(width: diameter, height: diameter)
+                .position(x: rect.midX, y: rect.midY)
+
+        default:
             let padding = 4.scaled
             let padded = rect.insetBy(dx: -padding, dy: -padding)
 
