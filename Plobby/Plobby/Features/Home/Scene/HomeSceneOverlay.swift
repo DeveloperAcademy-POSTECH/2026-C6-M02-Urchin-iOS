@@ -16,8 +16,13 @@ struct HomeSceneOverlay: View {
     let isGoalFinished: Bool
     let isAtDay: Bool
     let onTrashSummaryTapped: () -> Void
-    /// 날짜 칩 영역을 화면 좌표로 알려줘요. 튜토리얼에서 칩을 밝게 비출 때 써요.
-    var onDayPillsFrameChanged: ((CGRect) -> Void)?
+    /// 날짜 칩과 개수 칩 영역을 화면 좌표로 알려줘요. 튜토리얼에서 칩을 밝게 비출 때 써요.
+    var onPillFrameChanged: ((Pill, CGRect) -> Void)?
+
+    enum Pill {
+        case date
+        case count
+    }
 
     var body: some View {
         topPills
@@ -50,6 +55,7 @@ private extension HomeSceneOverlay {
                     .frame(height: 32.scaled)
                     .background(Color(.gray0).opacity(0.95), in: Capsule())
                     .homeSceneShadow()
+                    .reportsFrame { onPillFrameChanged?(.date, $0) }
 
                 if stage.isCollected, isAtDay {
                     HomeCountUpText(count: day.collectedCount)
@@ -60,13 +66,9 @@ private extension HomeSceneOverlay {
                         .frame(height: 32.scaled)
                         .background(Color(.currentBrandSubtle), in: Capsule())
                         .homeSceneShadow()
+                        .reportsFrame { onPillFrameChanged?(.count, $0) }
                         .transition(.opacity.combined(with: .scale(scale: 0.6)))
                 }
-            }
-            .onGeometryChange(for: CGRect.self) { proxy in
-                proxy.frame(in: .global)
-            } action: { frame in
-                onDayPillsFrameChanged?(frame)
             }
         }
     }
@@ -135,5 +137,18 @@ private extension View {
 
     func homeSceneShadow() -> some View {
         shadow(color: Color(.neutralBlack).opacity(0.08), radius: 6.scaled, y: 2.scaled)
+    }
+}
+
+// MARK: - Frame
+
+private extension View {
+
+    func reportsFrame(_ action: @escaping (CGRect) -> Void) -> some View {
+        onGeometryChange(for: CGRect.self) { proxy in
+            proxy.frame(in: .global)
+        } action: { frame in
+            action(frame)
+        }
     }
 }

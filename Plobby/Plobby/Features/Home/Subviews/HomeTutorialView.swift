@@ -60,6 +60,7 @@ struct HomeTutorialView: View {
             switch step {
             case .goalFill: await fillGoal()
             case .goalPeriod: await advance(after: Self.goalPeriodDuration)
+            case .recordIntro: await advance(after: Self.recordIntroDuration)
             default: break
             }
         }
@@ -106,7 +107,9 @@ private extension HomeTutorialView {
                 isGoalFinished: false,
                 isAtDay: true,
                 onTrashSummaryTapped: {},
-                onDayPillsFrameChanged: { onFrameChanged(.dayChip, $0) }
+                onPillFrameChanged: { pill, frame in
+                    onFrameChanged(pill == .date ? .dayChip : .countChip, frame)
+                }
             )
             .padding(.top, max(visibleCardHeight, cardHeight))
             .animation(.easeInOut(duration: 0.25), value: visibleCardHeight)
@@ -131,8 +134,8 @@ private extension HomeTutorialView {
     /// 기록 안내 전에는 아직 아무도 기록하지 않은 상태로, 기록 결과부터는 하루치 기록이 더해진 상태로 보여줘요.
     var isTrashCollected: Bool {
         switch step {
-        case .goal, .goalToggle, .goalFill, .goalPeriod, .recordIntro: false
-        case .recordResult, .scroll, .activitySwitch, .finish: true
+        case .goal, .goalToggle, .goalFill, .goalPeriod, .recordIntro, .scroll: false
+        case .recordResult, .activitySwitch, .finish: true
         }
     }
 
@@ -160,7 +163,7 @@ private extension HomeTutorialView {
         await advance(after: Self.goalFilledDelay)
     }
 
-    /// 목표 기간 안내는 잠시 보여준 뒤 저절로 넘어가요. 다음 단계에서는 카드가 접혀요.
+    /// 안내를 정해진 시간 동안 보여준 뒤 저절로 다음 단계로 넘어가요.
     func advance(after duration: Duration) async {
         try? await Task.sleep(for: duration)
         guard !Task.isCancelled else { return }
@@ -186,6 +189,7 @@ private extension HomeTutorialView {
     static let goalFillInterval: Duration = .seconds(0.8)
     static let goalFilledDelay: Duration = .seconds(0.5)
     static let goalPeriodDuration: Duration = .seconds(3)
+    static let recordIntroDuration: Duration = .seconds(3)
 
     static let startDate: Date = {
         let calendar = Calendar.current

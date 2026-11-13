@@ -15,8 +15,8 @@ enum HomeTutorialStep: CaseIterable, Equatable {
     case goalFill
     case goalPeriod
     case recordIntro
-    case recordResult
     case scroll
+    case recordResult
     case activitySwitch
     case finish
 
@@ -40,6 +40,14 @@ enum HomeTutorialStep: CaseIterable, Equatable {
         }
     }
 
+    /// 하루치 기록을 담은 뒤부터 날짜 옆에 개수 칩이 보여요.
+    var showsCountChip: Bool {
+        switch self {
+        case .recordResult, .activitySwitch, .finish: true
+        default: false
+        }
+    }
+
     var target: HomeTutorialTarget? {
         switch self {
         case .goal, .goalToggle, .goalFill, .goalPeriod: .goalCard
@@ -53,8 +61,9 @@ enum HomeTutorialStep: CaseIterable, Equatable {
 enum HomeTutorialTarget: Hashable {
     case goalCard
     case activityToggle
-    /// 장면 위의 날짜 칩이에요. 장면을 비추는 단계에서 함께 밝게 보여줘요.
+    /// 장면 위의 날짜 칩과 개수 칩이에요. 장면을 비추는 단계에서 함께 밝게 보여줘요.
     case dayChip
+    case countChip
     case scene
 }
 
@@ -82,6 +91,9 @@ struct HomeTutorialOverlay: View {
             let dayChip = step.target == .scene
                 ? frames[.dayChip].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
                 : nil
+            let countChip = step.target == .scene && step.showsCountChip
+                ? frames[.countChip].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
+                : nil
             let goalCard = step.target == .scene
                 ? frames[.goalCard].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
                 : nil
@@ -90,7 +102,7 @@ struct HomeTutorialOverlay: View {
                 if step == .finish {
                     finishView
                 } else {
-                    dimmedBackground(highlight: highlight, dayChip: dayChip, goalCard: goalCard)
+                    dimmedBackground(highlight: highlight, chips: [dayChip, countChip].compactMap { $0 }, goalCard: goalCard)
 
                     if let message = step.message {
                         // 문구가 바뀌면 이전 문구는 흐려지며 사라지고 새 문구가 나타나요.
@@ -99,9 +111,9 @@ struct HomeTutorialOverlay: View {
                             .transition(.opacity)
                     }
 
-                    if step == .scroll, let highlight {
-                        HomeTutorialHand()
-                            .position(Self.spotlightCenter(in: highlight))
+                    if step == .scroll {
+                        HomeTutorialScrollHint()
+                            .position(x: proxy.size.width / 2, y: proxy.size.height / 2)
                     }
 
                     if step == .activitySwitch, let highlight {
@@ -118,9 +130,17 @@ struct HomeTutorialOverlay: View {
             // 펼치기 안내에서는 강조한 목표 카드만 눌리게 비워 두고, 나머지 영역은 눌러도 넘어가지 않아요.
             .contentShape(TapArea(hole: step == .goalToggle ? highlight : nil), eoFill: true)
             .onTapGesture {
-                guard ![.goalToggle, .goalFill, .finish].contains(step) else { return }
+                guard ![.goalToggle, .goalFill, .scroll, .finish].contains(step) else { return }
                 onAdvance()
             }
+            // 스크롤 안내는 실제로 위로 쓸어 올려야 넘어가요.
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 10)
+                    .onEnded { value in
+                        guard step == .scroll, value.translation.height < -Self.scrollThreshold.scaled else { return }
+                        onAdvance()
+                    }
+            )
         }
         .ignoresSafeArea()
     }
@@ -131,7 +151,7 @@ struct HomeTutorialOverlay: View {
 private extension HomeTutorialOverlay {
 
     /// 장면을 비추는 단계에서는 날짜 칩과 공통 목표 카드도 함께 밝게 둬요.
-    func dimmedBackground(highlight: CGRect?, dayChip: CGRect?, goalCard: CGRect?) -> some View {
+    func dimmedBackground(highlight: CGRect?, chips: [CGRect], goalCard: CGRect?) -> some View {
         Color(.neutralBlack)
             .opacity(0.6)
             .mask {
@@ -143,10 +163,10 @@ private extension HomeTutorialOverlay {
                             .blendMode(.destinationOut)
                     }
 
-                    if let dayChip {
+                    ForEach(chips.indices, id: \.self) { index in
                         Capsule()
-                            .frame(width: dayChip.width, height: dayChip.height)
-                            .position(x: dayChip.midX, y: dayChip.midY)
+                            .frame(width: chips[index].width, height: chips[index].height)
+                            .position(x: chips[index].midX, y: chips[index].midY)
                             .blendMode(.destinationOut)
                     }
 
@@ -217,6 +237,7 @@ private extension HomeTutorialOverlay {
     }
 
     static let spotlightDiameter: CGFloat = 260
+    static let scrollThreshold: CGFloat = 40
 }
 
 // MARK: - 마무리
@@ -245,30 +266,41 @@ private extension HomeTutorialOverlay {
     }
 }
 
-// MARK: - HomeTutorialHand
+// MARK: - HomeTutorialScrollHint
 
-/// 아래에서 위로 올라가며 사라지는 손가락이에요. 스크롤 방향을 보여줘요.
-private struct HomeTutorialHand: View {
+/// 화면 가운데에서 아래에서 위로 올라가며 사라지는 손이에요. 사용자가 스크롤할 때까지 반복해요.
+private struct HomeTutorialScrollHint: View {
 
+    /// 아래에서 나타나 → 위로 올라가고 → 위에 닿으면 사라진 뒤 → 다시 아래로 돌아가요.
     enum Phase: CaseIterable {
         case start
         case visible
         case up
+        case fade
+
+        var isAtTop: Bool {
+            self == .up || self == .fade
+        }
+
+        var isVisible: Bool {
+            self == .visible || self == .up
+        }
     }
 
     var body: some View {
-        Image(systemName: "hand.point.up.left.fill")
-            .font(.system(size: 40.scaled))
-            .foregroundStyle(Color(.gray0))
+        Image(.homeTutorialScroll)
+            .resizable()
+            .frame(width: 84.scaled, height: 124.scaled)
             .phaseAnimator(Phase.allCases) { content, phase in
                 content
-                    .offset(y: phase == .up ? -60.scaled : 30.scaled)
-                    .opacity(phase == .visible ? 1 : 0)
+                    .offset(y: phase.isAtTop ? -60.scaled : 30.scaled)
+                    .opacity(phase.isVisible ? 1 : 0)
             } animation: { phase in
                 switch phase {
-                case .start: .linear(duration: 0.2)
+                case .start: .linear(duration: 0.01)
                 case .visible: .easeOut(duration: 0.3)
                 case .up: .easeInOut(duration: 1)
+                case .fade: .easeOut(duration: 0.4)
                 }
             }
             .allowsHitTesting(false)
