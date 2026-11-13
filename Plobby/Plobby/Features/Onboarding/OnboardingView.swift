@@ -80,6 +80,7 @@ private extension OnboardingView {
                 .padding(.top, page.textTopPadding.scaled)
 
             Spacer(minLength: 24.scaled)
+                .layoutPriority(-1)
 
             pageIndicator(page)
 
@@ -202,12 +203,13 @@ private extension OnboardingView {
             Image(page.illustration(for: selectedActivity(on: page)))
                 .resizable()
                 .scaledToFit()
-                .frame(width: page.illustrationWidth.scaled)
+                .frame(maxWidth: page.illustrationWidth.scaled)
                 .accessibilityLabel(page.illustrationLabel)
             
         case .collection:
             CollectionCardView(store: store.scope(state: \.collectionCard, action: \.collectionCard), style: .onboarding)
-                .frame(width: 304.scaled, height: 424.scaled)
+                .aspectRatio(304 / 424, contentMode: .fit)
+                .frame(maxWidth: 304.scaled, maxHeight: 424.scaled)
         }
     }
 }
@@ -265,17 +267,17 @@ private extension OnboardingPage {
 
     var illustrationTopPadding: CGFloat {
         switch self {
-        case .goal, .record: 44 - 12
-        case .map: 48 - 12
+        case .goal, .record: 44 - 8
+        case .map: 48 - 8
         case .collection: 48
         }
     }
 
     var textTopPadding: CGFloat {
         switch self {
-        case .goal: 40 - 12
-        case .record: 52 - 12
-        case .map: 60 - 12
+        case .goal: 40 - 16
+        case .record: 52 - 16
+        case .map: 60 - 16
         case .collection: 44
         }
     }
