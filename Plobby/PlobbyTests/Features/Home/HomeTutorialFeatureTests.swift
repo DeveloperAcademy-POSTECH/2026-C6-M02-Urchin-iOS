@@ -13,6 +13,7 @@ import ComposableArchitecture
 
 /// 처음 가입한 사용자에게 한 번만 보여주는 홈 튜토리얼의 흐름을 확인해요.
 @MainActor
+@Suite(.serialized)
 struct HomeTutorialFeatureTests {
 
     // MARK: - 시작
@@ -21,7 +22,8 @@ struct HomeTutorialFeatureTests {
     func 대기_중이면_홈에_들어올_때_플로깅으로_튜토리얼을_시작한다() async {
         @Shared(.isHomeTutorialPending) var isHomeTutorialPending = false
         $isHomeTutorialPending.withLock { $0 = true }
-        let store = makeStore()
+        // ImmediateClock이면 3초 자동 전환이 바로 실행돼서, 시작 단계를 보려면 시간을 멈춰 둬요.
+        let store = makeStore(clock: TestClock())
 
         await store.send(.onAppear)
 
@@ -40,7 +42,6 @@ struct HomeTutorialFeatureTests {
         await store.send(.onAppear)
 
         #expect(store.state.tutorialStep == nil)
-        await store.skipInFlightEffects()
     }
 
     // MARK: - 첫 안내 자동 전환
@@ -124,7 +125,6 @@ struct HomeTutorialFeatureTests {
 
         await store.send(.onAppear)
         #expect(store.state.tutorialStep == nil)
-        await store.skipInFlightEffects()
     }
 }
 
