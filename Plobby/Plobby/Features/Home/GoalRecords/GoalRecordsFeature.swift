@@ -113,8 +113,7 @@ struct GoalRecordsFeature {
                 state.recordMenu = nil
                 return .send(.task)
 
-            case let .recordMenu(.presented(.delegate(.deleted(recordID)))),
-                 let .recordMenu(.presented(.delegate(.reported(recordID)))):
+            case let .recordMenu(.presented(.delegate(.deleted(recordID)))):
                 state.recordMenu = nil
                 state.records.removeAll { $0.id == recordID }
                 return .none

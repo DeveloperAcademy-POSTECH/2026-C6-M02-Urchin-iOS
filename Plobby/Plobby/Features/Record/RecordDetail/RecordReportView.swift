@@ -50,7 +50,7 @@ struct RecordReportView: View {
             isDetailFocused = false
         }
         .toolbar(.hidden, for: .navigationBar)
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
     }
 }
 

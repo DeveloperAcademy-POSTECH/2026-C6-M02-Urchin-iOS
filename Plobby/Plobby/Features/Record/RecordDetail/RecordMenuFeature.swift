@@ -18,6 +18,7 @@ struct RecordMenuFeature {
     struct State: Equatable {
         let record: RecordSummary
         @Presents var editForm: RecordFormFeature.State?
+        @Presents var report: RecordReportFeature.State?
         @Presents var alert: AlertState<Action.Alert>?
     }
 
@@ -36,9 +37,9 @@ struct RecordMenuFeature {
         case menuSelected(Menu)
         case recordResponse(Result<RecordDetail, any Error>)
         case deleteResponse(Result<Void, any Error>)
-        case reportResponse(Result<Void, any Error>)
         case blockResponse(Result<Void, any Error>)
         case editForm(PresentationAction<RecordFormFeature.Action>)
+        case report(PresentationAction<RecordReportFeature.Action>)
         case alert(PresentationAction<Alert>)
         case delegate(Delegate)
 
@@ -46,14 +47,12 @@ struct RecordMenuFeature {
             case confirmDeleteTapped
             case confirmBlockTapped
             case deletedConfirmTapped
-            case reportedConfirmTapped
             case blockedConfirmTapped
         }
 
         enum Delegate {
             case updated
             case deleted(UUID)
-            case reported(UUID)
             case blocked(userID: UUID)
         }
     }
@@ -112,21 +111,12 @@ struct RecordMenuFeature {
                 return .send(.delegate(.deleted(state.record.id)))
 
             case .menuSelected(.report):
-                return .run { [recordID = state.record.id] send in
-                    await send(.reportResponse(Result { try await recordClient.reportRecord(recordID) }))
-                }
-
-            case .reportResponse(.success):
-                state.alert = .make(.recordReported, confirm: .reportedConfirmTapped)
+                state.report = RecordReportFeature.State(recordID: state.record.id)
                 return .none
 
-            case let .reportResponse(.failure(error)):
-                PlobbyLogger.error(error)
-                state.alert = .make(.recordReportFailed)
+            case .report(.presented(.delegate(.reported))):
+                state.report = nil
                 return .none
-
-            case .alert(.presented(.reportedConfirmTapped)):
-                return .send(.delegate(.reported(state.record.id)))
 
             case .menuSelected(.block):
                 state.alert = .make(.userBlockConfirm, confirm: .confirmBlockTapped)
@@ -149,12 +139,15 @@ struct RecordMenuFeature {
             case .alert(.presented(.blockedConfirmTapped)):
                 return .send(.delegate(.blocked(userID: state.record.userID)))
 
-            case .editForm, .alert, .delegate:
+            case .editForm, .report, .alert, .delegate:
                 return .none
             }
         }
         .ifLet(\.$editForm, action: \.editForm) {
             RecordFormFeature()
+        }
+        .ifLet(\.$report, action: \.report) {
+            RecordReportFeature()
         }
         .ifLet(\.$alert, action: \.alert)
     }
@@ -220,6 +213,9 @@ private struct RecordMenuPresenter: View {
             .plobbyAlert(store: store, state: \.alert, action: \.alert)
             .fullScreenCover(item: $store.scope(state: \.editForm, action: \.editForm)) { store in
                 RecordFormView(store: store)
+            }
+            .navigationDestination(item: $store.scope(state: \.report, action: \.report)) { store in
+                RecordReportView(store: store)
             }
     }
 }
