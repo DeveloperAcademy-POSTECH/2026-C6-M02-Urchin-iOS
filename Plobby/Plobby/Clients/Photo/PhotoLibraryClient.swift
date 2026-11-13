@@ -194,13 +194,18 @@ nonisolated private enum PhotoLibrary {
 
 // MARK: - Change Observer
 
-nonisolated private final class PhotoLibraryChangeObserver: NSObject, PHPhotoLibraryChangeObserver, Sendable {
+nonisolated private final class PhotoLibraryChangeObserver: NSObject, Sendable {
 
     private let onChange: @Sendable () -> Void
 
     init(onChange: @escaping @Sendable () -> Void) {
         self.onChange = onChange
     }
+}
+
+// MARK: - PHPhotoLibraryChangeObserver
+
+nonisolated extension PhotoLibraryChangeObserver: PHPhotoLibraryChangeObserver {
 
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         onChange()
