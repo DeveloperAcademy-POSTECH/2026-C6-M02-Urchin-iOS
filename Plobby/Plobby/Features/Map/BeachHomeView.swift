@@ -327,11 +327,15 @@ private extension BeachHomeView {
 
                 FlowLayout(spacing: 8) {
                     ForEach(guardians) { guardian in
-                        guardianChip(nickname: guardian.nickname, url: guardian.profileImageURL)
+                        guardianChip(
+                            nickname: guardian.isBlocked ? "차단한 회원" : guardian.nickname,
+                            url: guardian.profileImageURL,
+                            isBlocked: guardian.isBlocked
+                        )
                     }
 
                     if summary.guardians.count > guardians.count {
-                        guardianChip(nickname: "외", url: nil)
+                        guardianChip(nickname: "외", url: nil, isBlocked: false)
                     }
                 }
             }
@@ -350,9 +354,17 @@ private extension BeachHomeView {
         }
     }
 
-    func guardianChip(nickname: String, url: URL?) -> some View {
+    func guardianChip(
+        nickname: String,
+        url: URL?,
+        isBlocked: Bool
+    ) -> some View {
         HStack(spacing: 8) {
-            ProfileAvatar(url: url, size: 24)
+            if isBlocked {
+                blockedAvatar
+            } else {
+                ProfileAvatar(url: url, size: 24)
+            }
 
             Text(nickname)
                 .plobbyFont(.label)
@@ -367,6 +379,15 @@ private extension BeachHomeView {
             Capsule()
                 .stroke(Color(.currentWarmBorder), lineWidth: 1)
         }
+    }
+
+    /// 차단한 회원은 홈의 함께한 사람처럼 프로필 사진 대신 차단 표시를 보여줘요.
+    var blockedAvatar: some View {
+        Image(systemName: "nosign")
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(Color(.gray400))
+            .frame(width: 24, height: 24)
+            .background(Color(.gray100), in: Circle())
     }
 }
 

@@ -19,7 +19,7 @@ nonisolated struct RecordClient {
     var like: @Sendable (_ recordID: UUID) async throws -> Void
     var unlike: @Sendable (_ recordID: UUID) async throws -> Void
     var removeRecord: @Sendable (_ recordID: UUID) async throws -> Void
-    var reportRecord: @Sendable (_ recordID: UUID) async throws -> Void
+    var reportRecord: @Sendable (_ recordID: UUID, _ reason: ReportReason, _ detail: String?) async throws -> Void
     var fetchTrashCounts: @Sendable (_ userID: UUID) async throws -> [TrashCategory: Int]
 }
 
@@ -159,14 +159,19 @@ nonisolated extension RecordClient: DependencyKey {
                     .eq("user_id", value: uid)
                     .is("deleted_at", value: nil)
                     .execute()
-            }, reportRecord: { recordID in
+            }, reportRecord: { recordID, reason, detail in
                 @Dependency(\.supabaseClient) var supabaseClient
                 
                 let uid = try await supabaseClient.currentUserID()
                 
                 try await supabaseClient
                     .from("record_reports")
-                    .insert(RecordReportInsertRequestDTO(recordID: recordID, reporterID: uid))
+                    .insert(RecordReportInsertRequestDTO(
+                        recordID: recordID,
+                        reporterID: uid,
+                        reason: reason.rawValue,
+                        reasonDetail: detail
+                    ))
                     .execute()
             }, fetchTrashCounts: { userID in
                 @Dependency(\.supabaseClient) var supabaseClient

@@ -12,7 +12,7 @@ import ComposableArchitecture
 @Reducer
 struct MyFeature {
 
-    // MARK: - State
+    // MARK: - State 
 
     @ObservableState
     struct State: Equatable {
@@ -209,8 +209,7 @@ struct MyFeature {
 
                 return fetchRecords(userID: user.id)
 
-            case let .recordMenu(.presented(.delegate(.deleted(recordID)))),
-                 let .recordMenu(.presented(.delegate(.reported(recordID)))):
+            case let .recordMenu(.presented(.delegate(.deleted(recordID)))):
                 state.recordMenu = nil
                 state.records.removeAll { $0.id == recordID }
                 return .none
@@ -271,11 +270,10 @@ struct MyFeature {
                 state.beachRecordDetail = nil
                 return .none
 
-            case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))),
-                 let .beachRecordDetail(.presented(.delegate(.reported(recordID)))):
+            case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.beachRecordDetail = nil
                 state.records.removeAll { $0.id == recordID }
-                return .send(.beachHome(.presented(.recordHidden(recordID))))
+                return .send(.beachHome(.presented(.recordRemoved(recordID))))
 
             case let .beachRecordDetail(.presented(.delegate(.blocked(userID)))):
                 state.beachRecordDetail = nil

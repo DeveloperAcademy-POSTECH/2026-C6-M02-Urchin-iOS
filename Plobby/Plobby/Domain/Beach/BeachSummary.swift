@@ -24,5 +24,7 @@ extension BeachSummary {
         let id: UUID
         let nickname: String
         let profileImageURL: URL?
+        /// 내가 차단한 회원이에요. 빼지 않고 "차단한 회원"으로 보여줘요.
+        var isBlocked = false
     }
 }

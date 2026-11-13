@@ -52,6 +52,11 @@ struct MainTabView: View {
                 .toolbar(.hidden, for: .navigationBar)
         }
         .tint(.primary)
+        .background {
+            GuestTapInterceptor(isEnabled: isGuestTapIntercepted) {
+                store.send(.loginSheetPresentationChanged(true))
+            }
+        }
         .overlay {
             if store.isLoginSheetPresented {
                 Color.black.opacity(0.2)
@@ -80,6 +85,13 @@ struct MainTabView: View {
 // MARK: - Subviews
 
 private extension MainTabView {
+
+    var isGuestTapIntercepted: Bool {
+        store.membershipStatus == .guest
+            && !store.isLoginSheetPresented
+            && !store.signIn.isSigningIn
+            && store.signIn.alert == nil
+    }
 
     var tabView: some View {
         TabView(selection: tabSelection) {
@@ -160,3 +172,4 @@ private extension MainTabView {
             }
     }
 }
+

@@ -10,11 +10,18 @@ import Foundation
 struct AppNotification: Identifiable, Equatable {
     let id: UUID
     let kind: Kind
-    let recordID: UUID
+    /// 기록과 상관없는 알림(목표 달성 등)은 비어 있어요.
+    let recordID: UUID?
     let beachName: String?
     let recordType: RecordType?
     var isRead: Bool
     let isRecordDeleted: Bool
+    /// 목표 달성 알림이 가리키는 목표예요.
+    let goalID: UUID?
+    /// 목표 달성 알림에 보여줄 목표 이름이에요.
+    let goalTitle: String?
+    /// 신고 삭제 알림에 보여줄 기록 날짜예요.
+    let recordStartedAt: Date?
     let createdAt: Date
 }
 
@@ -25,6 +32,25 @@ extension AppNotification {
         case like(likerNickname: String?, othersCount: Int)
         /// 관심 해변에 새 기록이 올라온 알림
         case newRecordAtFavoriteBeach(authorNickname: String?)
+        /// 신고가 접수돼 관리자가 내 기록을 삭제한 알림. 보낸 사람이 없어요.
+        case reportRemoved
+        /// 내가 참여한 공동 목표를 달성한 알림. 보낸 사람이 없어요.
+        case goalAchieved
+    }
+
+    /// 눌렀을 때 기록 상세로 갈 수 있는지예요. 삭제된 기록이나 기록이 없는 알림은 이동하지 않아요.
+    var canOpenRecord: Bool {
+        guard recordID != nil, !isRecordDeleted else { return false }
+
+        switch kind {
+        case .like, .newRecordAtFavoriteBeach: return true
+        case .reportRemoved, .goalAchieved: return false
+        }
+    }
+
+    /// 눌렀을 때 홈으로 돌아가서 달성한 공동 목표를 보여주는 알림이에요.
+    var canReturnHome: Bool {
+        kind == .goalAchieved
     }
 }
 
@@ -42,20 +68,45 @@ extension AppNotification {
 
         case .newRecordAtFavoriteBeach:
             return "\(beachName ?? "관심 해변")에 새 기록이 올라왔어요"
+
+        case .reportRemoved:
+            return "작성한 게시물이 신고로 인해 삭제되었어요"
+
+        case .goalAchieved:
+            return "공동목표를 달성했어요!"
         }
     }
 
     var subtitle: String {
         switch kind {
         case .like:
-            return [beachName, recordType?.name]
-                .compactMap { $0 }
-                .joined(separator: " ")
+            return recordName
+
+        case .reportRemoved:
+            guard let recordStartedAt else { return recordName }
+
+            return "\(recordName)(\(recordStartedAt.formatted(Self.recordDateStyle)))"
 
         case let .newRecordAtFavoriteBeach(authorNickname):
             let author = "\(authorNickname ?? "누군가")님"
             let recordName = recordType.map { "\($0.name) 기록" } ?? "기록"
             return "\(author)이 남긴 \(recordName)"
+
+        case .goalAchieved:
+            return goalTitle ?? ""
         }
     }
+
+    /// "칠포 해수욕장 플로깅"처럼 해변 이름과 활동을 이어 붙여요.
+    private var recordName: String {
+        [beachName, recordType?.name]
+            .compactMap { $0 }
+            .joined(separator: " ")
+    }
+
+    private static let recordDateStyle = Date.VerbatimFormatStyle(
+        format: "\(year: .defaultDigits).\(month: .twoDigits).\(day: .twoDigits)",
+        timeZone: .current,
+        calendar: .current
+    )
 }

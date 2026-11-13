@@ -103,9 +103,6 @@ private extension CollectionView {
     }
 }
 
-/// 컬렉션 상단 프로필 사진이에요.
-/// AsyncImage는 화면이 다시 그려지는 중에 불러오기가 취소되면 기본 이미지에 멈춰서, 직접 불러와요.
-/// 한 번 불러온 사진은 같은 주소를 다시 받아도 그대로 두고, 취소되면 다음에 다시 불러요.
 private struct CollectionProfileImage: View {
 
     let url: URL?
@@ -140,7 +137,6 @@ private struct CollectionProfileImage: View {
                 image = loaded
                 loadedURL = url
             } catch {
-                // 취소는 다음 표시 때 다시 불러요. 그 밖의 실패만 남겨요.
                 if !(error is CancellationError), (error as? URLError)?.code != .cancelled {
                     PlobbyLogger.error(error)
                 }
@@ -161,7 +157,8 @@ private extension CollectionView {
                 ForEach(store.scope(state: \.cards, action: \.cards), id: \.state.id) { cardStore in
                     CollectionCardView(
                         store: cardStore,
-                        isActive: store.isTrashCountsLoaded && cardStore.category == scrolledCategory
+                        isActive: store.isTrashCountsLoaded && cardStore.category == scrolledCategory,
+                        isGuest: store.membershipStatus == .guest
                     )
                         .containerRelativeFrame(.horizontal)
                         .scrollTransition(axis: .horizontal) { content, phase in
@@ -210,7 +207,10 @@ private extension CollectionView {
     var bottomButtons: some View {
         HStack(spacing: 8.scaled) {
             allCategoryButton
-            shareButton
+
+            if store.membershipStatus != .guest {
+                shareButton
+            }
         }
         .padding(.horizontal, 32.scaled)
         .padding(.bottom, 28.scaled)

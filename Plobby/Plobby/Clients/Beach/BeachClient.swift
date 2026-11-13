@@ -17,6 +17,7 @@ struct BeachClient {
     var removeFavoriteBeach: @Sendable (_ beachID: UUID) async throws -> Void
     var fetchRecordCounts: @Sendable () async throws -> [UUID: Int]
     var fetchBeachRecords: @Sendable (_ beachID: UUID, _ recordType: RecordType?) async throws -> [BeachRecord]
+    var fetchBeachSummary: @Sendable (_ beachID: UUID, _ photoLimit: Int) async throws -> BeachSummary
 }
 
 extension BeachClient: DependencyKey {
@@ -78,13 +79,10 @@ extension BeachClient: DependencyKey {
             fetchRecordCounts: {
                 @Dependency(\.supabaseClient) var supabase
 
-                let hiddenRecords = try await supabase.hiddenRecords()
-
                 let records: [BeachIDResponse] = try await supabase
                     .from("records")
                     .select("beach_id")
                     .is("deleted_at", value: nil)
-                    .excluding(hiddenRecords)
                     .execute()
                     .value
 
@@ -119,6 +117,28 @@ extension BeachClient: DependencyKey {
                         profileImageURL: supabase.profileImageURL
                     )
                 }
+            },
+            fetchBeachSummary: { beachID, photoLimit in
+                @Dependency(\.supabaseClient) var supabase
+
+                async let hiddenRecords = supabase.hiddenRecords()
+
+                let responseDTOs: [BeachRecordResponseDTO] = try await supabase
+                    .from("records")
+                    .select(BeachRecordResponseDTO.selectQuery)
+                    .eq("beach_id", value: beachID)
+                    .is("deleted_at", value: nil)
+                    .order("created_at", ascending: false)
+                    .execute()
+                    .value
+
+                let records = responseDTOs.compactMap {
+                    $0.toDomain(
+                        photoURL: supabase.recordPhotoURL,
+                        profileImageURL: supabase.profileImageURL
+                    )
+                }
+                return try await records.summary(photoLimit: photoLimit, hiding: hiddenRecords)
             }
         )
     }()

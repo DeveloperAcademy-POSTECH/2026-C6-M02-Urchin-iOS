@@ -224,6 +224,7 @@ private extension HomeView {
                 .shadow(color: Color(.neutralBlack).opacity(0.1), radius: 6.scaled, y: 2.scaled)
         }
         .buttonStyle(.plain)
+        .guestTapAllowed()
         .accessibilityLabel("\(next.name)로 바꾸기")
     }
 }

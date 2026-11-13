@@ -91,11 +91,16 @@ struct NotificationFeature {
                     state.notifications[index].isRead = true
                 }
 
-                if !notification.isRecordDeleted {
-                    state.recordDetail = RecordDetailFeature.State(recordID: notification.recordID)
+                let readEffect: Effect<Action> = notification.isRead ? .none : updateReadAt(notification)
+
+                guard !notification.canReturnHome else {
+                    return .concatenate(readEffect, .run { _ in await dismiss() })
                 }
 
-                return notification.isRead ? .none : updateReadAt(notification)
+                if notification.canOpenRecord, let recordID = notification.recordID {
+                    state.recordDetail = RecordDetailFeature.State(recordID: recordID)
+                }
+                return readEffect
 
             case let .notificationsResponse(.success(notifications)):
                 state.isLoading = false

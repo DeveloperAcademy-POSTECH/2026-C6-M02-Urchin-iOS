@@ -13,4 +13,8 @@ extension View {
         frame(width: rect.width, height: rect.height)
             .position(x: rect.midX, y: rect.midY)
     }
+    
+    func guestTapAllowed() -> some View {
+        modifier(GuestTapAllowedModifier())
+    }
 }
