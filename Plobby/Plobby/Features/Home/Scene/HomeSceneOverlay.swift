@@ -14,22 +14,13 @@ struct HomeSceneOverlay: View {
     let day: GoalDailyProgress?
     let totalTrashCount: Int
     let isGoalFinished: Bool
-    /// 날짜 지점에 서 있을 때만 그날 주운 개수를 보여줘요.
     let isAtDay: Bool
-    let onParticipantsTapped: () -> Void
     let onTrashSummaryTapped: () -> Void
 
     var body: some View {
-        ZStack {
-            topPills
-                .frame(maxHeight: .infinity, alignment: .top)
-                .padding(.top, 12.scaled)
-
-            participantsButton
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                .padding(.leading, 20.scaled)
-                .padding(.bottom, 14.scaled)
-        }
+        topPills
+            .frame(maxHeight: .infinity, alignment: .top)
+            .padding(.top, 12.scaled)
     }
 }
 
@@ -49,7 +40,7 @@ private extension HomeSceneOverlay {
         } else if let day {
             HStack(spacing: 8.scaled) {
                 Text(day.day.homeMonthDayText)
-                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 14.scaled))
+                    .plobbyFont(.labelSelected)
                     .foregroundStyle(Color(.textPrimary))
                     .contentTransition(.numericText(value: day.day.timeIntervalSince1970))
                     .animation(.snappy(duration: 0.35), value: day.day)
@@ -61,7 +52,7 @@ private extension HomeSceneOverlay {
                 if stage.isCollected, isAtDay {
                     HomeCountUpText(count: day.collectedCount)
                         .id(day.day)
-                        .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 13.scaled))
+                        .plobbyFont(.labelSelected)
                         .foregroundStyle(Color(.currentBrandText))
                         .padding(.horizontal, 8.scaled)
                         .frame(height: 32.scaled)
@@ -96,24 +87,6 @@ private extension HomeSceneOverlay {
         .buttonStyle(.plain)
     }
 
-    var participantsButton: some View {
-        Button(action: onParticipantsTapped) {
-            HStack(spacing: 8.scaled) {
-                Text("함께한 사람")
-                    .plobbyFont(.label)
-
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 12.scaled, weight: .semibold))
-            }
-            .foregroundStyle(Color(.textPrimary))
-            .padding(.horizontal, 16.scaled)
-            .frame(height: 44.scaled)
-            .background(Color(.gray0), in: Capsule())
-            .homeSceneShadow()
-        }
-        .buttonStyle(.plain)
-    }
-
     var isResult: Bool {
         stage == .finale(step: recordType.resultStep)
     }
@@ -121,7 +94,6 @@ private extension HomeSceneOverlay {
 
 // MARK: - HomeCountUpText
 
-/// 주운 개수가 0부터 차르륵 올라가요.
 private struct HomeCountUpText: View {
 
     let count: Int
@@ -155,6 +127,6 @@ private struct HomeCountUpText: View {
 private extension View {
 
     func homeSceneShadow() -> some View {
-        shadow(color: Color(.neutralBlack).opacity(0.08), radius: 6, y: 2)
+        shadow(color: Color(.neutralBlack).opacity(0.08), radius: 6.scaled, y: 2.scaled)
     }
 }

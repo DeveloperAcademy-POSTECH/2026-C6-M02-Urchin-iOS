@@ -80,7 +80,7 @@ private extension GoalRecordsView {
         .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 12.scaled))
         .overlay {
             RoundedRectangle(cornerRadius: 12.scaled)
-                .stroke(Color(.gray200), lineWidth: 1)
+                .stroke(Color(.gray200), lineWidth: 1.scaled)
         }
     }
 

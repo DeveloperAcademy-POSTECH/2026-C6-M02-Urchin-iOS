@@ -15,6 +15,7 @@ struct HomeGoalCard: View {
     let onToggle: () -> Void
     let onRecordTapped: () -> Void
     let onAllGoalsTapped: () -> Void
+    let onParticipantsTapped: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
@@ -22,7 +23,7 @@ struct HomeGoalCard: View {
 
             if showsExpanded {
                 Group {
-                    HomeGoalMetaRow(goal: goal)
+                    HomeGoalMetaRow(goal: goal, onParticipantsTapped: onParticipantsTapped)
                     progressRow
                     buttons
                 }
@@ -32,8 +33,8 @@ struct HomeGoalCard: View {
         }
         .padding(.leading, 12.scaled)
         .padding(.vertical, 8.scaled)
-        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
-        .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
+        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 16.scaled))
+        .clipShape(RoundedRectangle(cornerRadius: 16.scaled))
     }
 }
 

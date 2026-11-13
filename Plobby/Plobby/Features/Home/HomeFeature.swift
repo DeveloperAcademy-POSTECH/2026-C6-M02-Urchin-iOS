@@ -63,6 +63,15 @@ struct HomeFeature {
             statuses[selectedType]
         }
         
+        /// 플로깅·플로빙 참여자를 한 명씩만 모아 닉네임 가나다순으로 정렬했어요. 함께한 사람 시트에 써요.
+        var allParticipants: [GoalParticipant] {
+            var seen = Set<GoalParticipant.ID>()
+            return RecordType.allCases
+                .flatMap { boards[$0]?.participants ?? [] }
+                .filter { seen.insert($0.id).inserted }
+                .sorted { $0.nickname.localizedStandardCompare($1.nickname) == .orderedAscending }
+        }
+
         var currentUserID: UUID? {
             if case let .member(user) = membershipStatus { user.id } else { nil }
         }
@@ -251,8 +260,8 @@ struct HomeFeature {
                 return .none
                 
             case let .participantTapped(participantID):
-                guard let participant = state.board?.participants.first(
-                    where: { $0.id == participantID}
+                guard let participant = state.allParticipants.first(
+                    where: { $0.id == participantID }
                 ),
                       !participant.isBlocked
                 else { return .none }
