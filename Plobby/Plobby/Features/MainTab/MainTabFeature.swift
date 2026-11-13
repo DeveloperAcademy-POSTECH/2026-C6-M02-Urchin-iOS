@@ -96,12 +96,15 @@ struct MainTabFeature {
                 guard state.recordFlow == nil else { return .none }
 
                 state.map.path.removeAll()
-                state.collection.my = nil
+                state.home.recordDetail = nil
+                state.home.goalList = nil
+                state.home.userHome = nil
 
-                state.selectedTab = .home
-                state.home.notification = NotificationFeature.State(
-                    recordDetail: RecordDetailFeature.State(recordID: recordID)
-                )
+                var my = MyFeature.State()
+                my.notification = NotificationFeature.State(recordDetail: RecordDetailFeature.State(recordID: recordID))
+
+                state.selectedTab = .collection
+                state.collection.my = my
                 return .none
 
             case let .tabSelected(tab):
@@ -145,6 +148,11 @@ struct MainTabFeature {
             
             case .collection(.my(.presented(.delegate(.signedOut)))):
                 return .send(.delegate(.signedOut))
+
+            case .collection(.my(.presented(.delegate(.homeRequested)))):
+                state.collection.my = nil
+                state.selectedTab = .home
+                return .none
 
             case .collection, .recordFlow, .signIn, .delegate:
                 return .none

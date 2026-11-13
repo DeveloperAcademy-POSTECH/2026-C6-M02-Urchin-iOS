@@ -23,16 +23,11 @@ struct MyView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if store.isMember {
-                PlobbyNavigationBar(title: "마이") {
-                    dismiss()
-                } trailingAction: {
-                    store.send(.settingsButtonTapped)
-                } trailingLabel: {
-                    Image(systemName: "gearshape")
-                        .font(.system(size: 24.scaled, weight: .regular))
-                        .foregroundStyle(Color(.textPrimary))
-                        .accessibilityLabel("설정")
-                }
+                PlobbyNavigationBar(
+                    title: "마이",
+                    onBack: { dismiss() },
+                    trailingButtons: [notificationButton, settingsButton]
+                )
             } else {
                 PlobbyNavigationBar(title: "마이") {
                     dismiss()
@@ -64,6 +59,40 @@ struct MyView: View {
         .task(id: store.savedProfileImage) {
             savedProfileImage = store.savedProfileImage.flatMap(UIImage.init(data:))
         }
+    }
+}
+
+// MARK: - Navigation Bar
+
+private extension MyView {
+
+    var notificationButton: PlobbyNavigationBarConfiguration.TrailingButton {
+        PlobbyNavigationBarConfiguration.TrailingButton(
+            action: { store.send(.notificationButtonTapped) },
+            label: AnyView(
+                Image(.bell)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24.scaled, height: 24.scaled)
+                    .unreadDot(store.hasUnreadNotification, size: 6.scaled, inset: Self.unreadDotInset)
+                    .accessibilityLabel("알림")
+            )
+        )
+    }
+
+    /// 빨간 점 중심이 종 아이콘(24×24) 오른쪽 위 곡선의 45도 지점(약 16.8, 4.5)에 오도록 옮기는 값이에요.
+    static let unreadDotInset = CGSize(width: 4.scaled, height: CGFloat(1.5).scaled)
+
+    var settingsButton: PlobbyNavigationBarConfiguration.TrailingButton {
+        PlobbyNavigationBarConfiguration.TrailingButton(
+            action: { store.send(.settingsButtonTapped) },
+            label: AnyView(
+                Image(systemName: "gearshape")
+                    .font(.system(size: 24.scaled, weight: .regular))
+                    .foregroundStyle(Color(.textPrimary))
+                    .accessibilityLabel("설정")
+            )
+        )
     }
 }
 

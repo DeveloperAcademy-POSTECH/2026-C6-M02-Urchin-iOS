@@ -11,7 +11,16 @@ struct PlobbyNavigationBarConfiguration {
 
     let title: Title?
     let backButton: BackButton
-    let trailingButton: TrailingButton?
+    let trailingButtons: [TrailingButton]
+
+    /// 오른쪽 버튼들을 순서대로 붙여서 보여줘요.
+    var trailingButtonGroup: some View {
+        HStack(spacing: 0) {
+            ForEach(trailingButtons.indices, id: \.self) { index in
+                trailingButtons[index]
+            }
+        }
+    }
 
     struct Title: View {
 

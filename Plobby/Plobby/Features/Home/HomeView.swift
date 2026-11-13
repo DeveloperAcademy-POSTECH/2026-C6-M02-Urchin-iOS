@@ -77,17 +77,6 @@ private extension HomeView {
                 .accessibilityLabel("plobby")
             
             Spacer()
-            
-            Button {
-                store.send(.notificationButtonTapped)
-            } label: {
-                Image(.bell)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24.scaled, height: 24.scaled)
-                    .frame(width: 44.scaled, height: 44.scaled)
-            }
-            .accessibilityLabel("알림")
         }
         .padding(.leading, 20.scaled)
         .padding(.trailing, 12.scaled)
