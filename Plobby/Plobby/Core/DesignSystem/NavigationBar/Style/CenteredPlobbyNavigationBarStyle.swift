@@ -21,7 +21,7 @@ struct CenteredPlobbyNavigationBarStyle: PlobbyNavigationBarStyle {
 
                 Spacer(minLength: 0)
 
-                configuration.trailingButton
+                configuration.trailingButtonGroup
             }
             .padding(.horizontal, 12.scaled)
         }

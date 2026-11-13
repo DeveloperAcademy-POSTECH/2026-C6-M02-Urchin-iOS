@@ -23,9 +23,11 @@ struct MyFeature {
         var records: [RecordSummary] = []
         var recordFilter: RecordFilter = .all
         var removedFavoriteBeach: RemovedFavoriteBeach?
+        var hasUnreadNotification = false
         var toast = ToastFeature.State()
         @Presents var profileEdit: ProfileEditFeature.State?
         @Presents var settings: SettingsFeature.State?
+        @Presents var notification: NotificationFeature.State?
         @Presents var recordDetail: RecordDetailFeature.State?
         @Presents var recordMenu: RecordMenuFeature.State?
         @Presents var beachHome: BeachHomeFeature.State?
@@ -69,8 +71,10 @@ struct MyFeature {
         case profileResponse(Result<Profile?, any Error>)
         case favoriteBeachesResponse(Result<[Beach], any Error>)
         case recordsResponse(Result<[RecordSummary], any Error>)
+        case unreadNotificationResponse(Result<Bool, any Error>)
         case profileEditButtonTapped
         case settingsButtonTapped
+        case notificationButtonTapped
         case favoriteBeachAddButtonTapped
         case favoriteBeachTapped(Beach)
         case favoriteBeachUnfavoriteButtonTapped(Beach)
@@ -82,6 +86,7 @@ struct MyFeature {
         case recordStartButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
         case settings(PresentationAction<SettingsFeature.Action>)
+        case notification(PresentationAction<NotificationFeature.Action>)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
         case recordMenu(PresentationAction<RecordMenuFeature.Action>)
         case beachHome(PresentationAction<BeachHomeFeature.Action>)
@@ -93,6 +98,8 @@ struct MyFeature {
         enum Delegate {
             case loginRequired
             case signedOut
+            /// 목표 달성 알림을 눌러 홈으로 돌아가요.
+            case homeRequested
         }
     }
 
@@ -101,6 +108,7 @@ struct MyFeature {
     @Dependency(\.userClient) var userClient
     @Dependency(\.beachClient) var beachClient
     @Dependency(\.recordClient) var recordClient
+    @Dependency(\.notificationClient) var notificationClient
 
     // MARK: - Body
 
@@ -130,7 +138,8 @@ struct MyFeature {
                 return .merge(
                     fetchMyProfile(),
                     fetchFavoriteBeaches(),
-                    fetchRecords(userID: user.id)
+                    fetchRecords(userID: user.id),
+                    fetchHasUnreadNotification()
                 )
 
             case let .profileResponse(.success(profile)):
@@ -145,9 +154,14 @@ struct MyFeature {
                 state.records = records
                 return .none
 
+            case let .unreadNotificationResponse(.success(hasUnread)):
+                state.hasUnreadNotification = hasUnread
+                return .none
+
             case let .profileResponse(.failure(error)),
                  let .favoriteBeachesResponse(.failure(error)),
-                 let .recordsResponse(.failure(error)):
+                 let .recordsResponse(.failure(error)),
+                 let .unreadNotificationResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 return .none
 
@@ -235,6 +249,19 @@ struct MyFeature {
                 state.settings = SettingsFeature.State()
                 return .none
 
+            case .notificationButtonTapped:
+                state.notification = NotificationFeature.State()
+                return .none
+
+            case .notification(.presented(.delegate(.homeRequested))):
+                state.notification = nil
+                return .send(.delegate(.homeRequested))
+
+            case .notification(.presented(.delegate(.settingsRequested))):
+                state.notification = nil
+                state.settings = SettingsFeature.State()
+                return .none
+
             case .recordStartButtonTapped:
                 return .send(.delegate(.loginRequired))
 
@@ -279,8 +306,8 @@ struct MyFeature {
                 state.beachRecordDetail = nil
                 return .send(.beachHome(.presented(.userBlocked(userID))))
 
-            case .profileEdit, .settings, .recordDetail, .recordMenu, .beachHome, .beachRecordDetail, .favoriteBeachAdd, .toast,
-                 .delegate:
+            case .profileEdit, .settings, .notification, .recordDetail, .recordMenu, .beachHome, .beachRecordDetail,
+                 .favoriteBeachAdd, .toast, .delegate:
                 return .none
             }
         }
@@ -289,6 +316,9 @@ struct MyFeature {
         }
         .ifLet(\.$settings, action: \.settings) {
             SettingsFeature()
+        }
+        .ifLet(\.$notification, action: \.notification) {
+            NotificationFeature()
         }
         .ifLet(\.$recordDetail, action: \.recordDetail) {
             RecordDetailFeature()
@@ -318,6 +348,12 @@ extension MyFeature {
     private func fetchRecords(userID: UUID) -> Effect<Action> {
         .run { send in
             await send(.recordsResponse(Result { try await recordClient.fetchUserRecords(userID) }))
+        }
+    }
+
+    private func fetchHasUnreadNotification() -> Effect<Action> {
+        .run { send in
+            await send(.unreadNotificationResponse(Result { try await notificationClient.fetchHasUnread() }))
         }
     }
 

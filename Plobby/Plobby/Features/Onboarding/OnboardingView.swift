@@ -45,8 +45,6 @@ private extension OnboardingView {
         let isTop = page == store.currentPage
 
         return pageView(page)
-            .shadow(color: Color(.neutralBlack).opacity(isTop ? 0.12 : 0), radius: 16)
-            .offset(x: isTop ? dragOffset : 0)
             .zIndex(Double(page.rawValue))
             .transition(.blurFade)
             .gesture(backSwipe(from: page), isEnabled: isTop)
@@ -71,32 +69,31 @@ private extension OnboardingView {
     func pageView(_ page: OnboardingPage) -> some View {
         VStack(spacing: 0) {
             header(page)
-            titleSection(page)
 
             if page.showsActivityTabs {
                 activityTabs(page)
                     .animation(.easeInOut(duration: 0.2), value: selectedActivity(on: page))
             }
 
-            if page == .collection {
-                Spacer(minLength: 0)
+            illustration(page)
+                .padding(.top, page.illustrationTopPadding.scaled)
 
-                illustration(page)
-                    .padding(.bottom, 40.scaled)
-            } else {
-                illustration(page)
-                    .padding(.top, page.illustrationTopPadding.scaled)
+            textSection(page)
+                .padding(.top, page.textTopPadding.scaled)
 
-                Spacer(minLength: 0)
-            }
+            Spacer(minLength: 24.scaled)
+                .layoutPriority(-1)
+
+            pageIndicator(page)
 
             bottomButtons(page)
+                .padding(.top, 16.scaled)
         }
         .background(Color(.backgroundDefault))
     }
 }
 
-// MARK: - 상단 (헤더, 제목)
+// MARK: - 헤더
 
 private extension OnboardingView {
 
@@ -111,33 +108,43 @@ private extension OnboardingView {
                 .frame(height: 56.scaled)
         }
     }
+}
 
-    func titleSection(_ page: OnboardingPage) -> some View {
-        VStack(alignment: .leading, spacing: 8.scaled) {
-            HStack(alignment: .top, spacing: 16.scaled) {
-                Text(page.title)
-                    .plobbyFont(.metric)
-                    .foregroundStyle(Color(.textPrimary))
-                    .frame(maxWidth: .infinity, alignment: .leading)
+// MARK: - 설명, 페이지 표시
 
-                pageNumber(page)
-                    .padding(.top, 4.scaled)
-            }
+private extension OnboardingView {
 
-            Text(page.description)
+    func textSection(_ page: OnboardingPage) -> some View {
+        let isCardFlipped = store.collectionCard.isFlipped
+
+        return VStack(spacing: 8.scaled) {
+            Text(page.title(isCardFlipped: isCardFlipped))
+                .plobbyFont(.heading)
+                .foregroundStyle(Color(.textPrimary))
+
+            Text(page.description(isCardFlipped: isCardFlipped))
                 .plobbyFont(.body)
                 .foregroundStyle(Color(.textSecondary))
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.top, 8.scaled)
-        .padding(.bottom, 12.scaled)
-        .padding(.horizontal, 20.scaled)
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 24.scaled)
     }
 
-    func pageNumber(_ page: OnboardingPage) -> some View {
-        Text("\(Text("\(page.number)").foregroundStyle(Color(.textBrand))) / \(OnboardingPage.allCases.count)")
-            .plobbyFont(.labelSelected)
-            .foregroundStyle(Color(.textSecondary))
+    func pageIndicator(_ page: OnboardingPage) -> some View {
+        HStack(spacing: 0) {
+            ForEach(OnboardingPage.allCases, id: \.self) { dotPage in
+                let isCurrent = dotPage == page
+                let size: CGFloat = isCurrent ? 8 : 4
+
+                Circle()
+                    .fill(isCurrent ? Color(.primary500) : Color(.borderDefault))
+                    .frame(width: size.scaled, height: size.scaled)
+                    .frame(width: 14.scaled, height: 12.scaled)
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(OnboardingPage.allCases.count)쪽 중 \(page.rawValue + 1)쪽")
     }
 }
 
@@ -159,7 +166,6 @@ private extension OnboardingView {
                 .fill(Color(.borderDefault))
                 .frame(height: 1)
         }
-        .padding(.top, 16.scaled)
         .padding(.horizontal, 20.scaled)
     }
 
@@ -199,12 +205,13 @@ private extension OnboardingView {
             Image(page.illustration(for: selectedActivity(on: page)))
                 .resizable()
                 .scaledToFit()
-                .frame(width: page.illustrationWidth.scaled)
+                .frame(maxWidth: page.illustrationWidth.scaled)
                 .accessibilityLabel(page.illustrationLabel)
             
         case .collection:
             CollectionCardView(store: store.scope(state: \.collectionCard, action: \.collectionCard), style: .onboarding)
-                .frame(width: 280.scaled, height: 428.scaled)
+                .aspectRatio(304 / 424, contentMode: .fit)
+                .frame(maxWidth: 304.scaled, maxHeight: 424.scaled)
         }
     }
 }
@@ -262,13 +269,23 @@ private extension OnboardingPage {
 
     var illustrationTopPadding: CGFloat {
         switch self {
-        case .goal, .record, .collection: 16
-        case .map: 8
+        case .goal, .record: 44 - 8
+        case .map: 48 - 8
+        case .collection: 48
+        }
+    }
+
+    var textTopPadding: CGFloat {
+        switch self {
+        case .goal: 40 - 16
+        case .record: 52 - 16
+        case .map: 60 - 16
+        case .collection: 44
         }
     }
 
     var illustrationWidth: CGFloat {
-        self == .map ? 344 : 360
+        self == .goal ? 344 : 384
     }
 
     func illustration(for activity: RecordType) -> ImageResource {

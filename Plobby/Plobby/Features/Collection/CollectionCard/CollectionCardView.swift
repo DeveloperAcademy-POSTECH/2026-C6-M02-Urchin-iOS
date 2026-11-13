@@ -174,7 +174,9 @@ private extension CollectionCardView {
 private extension CollectionCardView {
     
     var back: some View {
-        let fact = store.category.collectionFact(count: store.collectedCount, nickname: store.nickname)
+        let fact = style == .onboarding
+            ? CollectionFact.onboarding
+            : store.category.collectionFact(count: store.collectedCount, nickname: store.nickname)
 
         return cardFace(
             VStack(spacing: 0) {

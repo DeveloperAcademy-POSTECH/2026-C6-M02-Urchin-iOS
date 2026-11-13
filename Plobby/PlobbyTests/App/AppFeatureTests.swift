@@ -267,6 +267,7 @@ private extension NotificationClient {
     static func mock(submitDeviceToken: @escaping @Sendable (String) async throws -> Void) -> Self {
         NotificationClient(
             fetchNotifications: { [] },
+            fetchHasUnread: { false },
             updateReadAt: { _ in },
             updateAllReadAt: {},
             submitDeviceToken: submitDeviceToken,

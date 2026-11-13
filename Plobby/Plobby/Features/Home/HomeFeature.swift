@@ -19,7 +19,6 @@ struct HomeFeature {
         @Shared(.membershipStatus) var membershipStatus
         @Shared(.dismissedGoalKeys) var dismissedGoalKeys
         @Presents var recordDetail: RecordDetailFeature.State?
-        @Presents var notification: NotificationFeature.State?
         @Presents var goalList: GoalListFeature.State?
         @Presents var userHome: UserHomeFeature.State?
         
@@ -113,9 +112,7 @@ struct HomeFeature {
         case participantTapped(GoalParticipant.ID)
         case userHomeOpened(GoalParticipant)
         case sheetDismissed
-        case notificationButtonTapped
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
-        case notification(PresentationAction<NotificationFeature.Action>)
         case goalList(PresentationAction<GoalListFeature.Action>)
         case userHome(PresentationAction<UserHomeFeature.Action>)
         case delegate(Delegate)
@@ -297,10 +294,6 @@ struct HomeFeature {
                 state.sheet = nil
                 return .none
                 
-            case .notificationButtonTapped:
-                state.notification = NotificationFeature.State()
-                return .none
-                
             case .recordDetail(.presented(.delegate(.closed))):
                 state.recordDetail = nil
                 return .none
@@ -323,7 +316,6 @@ struct HomeFeature {
                 return .send(.onAppear)
                 
             case .recordDetail,
-                    .notification,
                     .goalList,
                     .userHome,
                     .delegate:
@@ -332,9 +324,6 @@ struct HomeFeature {
         }
         .ifLet(\.$recordDetail, action: \.recordDetail) {
             RecordDetailFeature()
-        }
-        .ifLet(\.$notification, action: \.notification) {
-            NotificationFeature()
         }
         .ifLet(\.$goalList, action: \.goalList) {
             GoalListFeature()
