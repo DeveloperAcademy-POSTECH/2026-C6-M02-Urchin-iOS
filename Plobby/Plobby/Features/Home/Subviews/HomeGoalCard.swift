@@ -15,14 +15,16 @@ struct HomeGoalCard: View {
     let onToggle: () -> Void
     let onRecordTapped: () -> Void
     let onAllGoalsTapped: () -> Void
+    let onNextGoalTapped: () -> Void
+    let onParticipantsTapped: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
             header
 
-            if showsExpanded {
+            if isExpanded {
                 Group {
-                    HomeGoalMetaRow(goal: goal)
+                    HomeGoalMetaRow(goal: goal, onParticipantsTapped: onParticipantsTapped)
                     progressRow
                     buttons
                 }
@@ -32,8 +34,8 @@ struct HomeGoalCard: View {
         }
         .padding(.leading, 12.scaled)
         .padding(.vertical, 8.scaled)
-        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
-        .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
+        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 16.scaled))
+        .clipShape(RoundedRectangle(cornerRadius: 16.scaled))
     }
 }
 
@@ -41,23 +43,14 @@ struct HomeGoalCard: View {
 
 private extension HomeGoalCard {
 
-    var showsExpanded: Bool {
-        isExpanded || status.isFinished
-    }
-
-    @ViewBuilder
     var header: some View {
-        if status.isFinished {
+        Button(action: onToggle) {
             headerContent
-        } else {
-            Button(action: onToggle) {
-                headerContent
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(isExpanded ? "공통 목표 접기" : "공통 목표 펼치기")
-            .guestTapAllowed()
+                .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel(isExpanded ? "공통 목표 접기" : "공통 목표 펼치기")
+        .guestTapAllowed()
     }
 
     var headerContent: some View {
@@ -77,15 +70,12 @@ private extension HomeGoalCard {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !showsExpanded {
+            if !isExpanded {
                 HomeGoalCountText(collected: goal.collectedCount, target: goal.targetCount)
             }
 
-            if !status.isFinished {
-                toggleIcon
-            }
+            toggleIcon
         }
-        .padding(.trailing, status.isFinished ? 12.scaled : 0)
     }
 
     var progressRow: some View {
@@ -100,7 +90,7 @@ private extension HomeGoalCard {
     @ViewBuilder
     var buttons: some View {
         if status.isFinished {
-            PlobbyButton(text: "다음 목표 보기", action: onAllGoalsTapped)
+            PlobbyButton(text: "다음 목표 보기", action: onNextGoalTapped)
         } else {
             VStack(spacing: 0) {
                 PlobbyButton(text: "기록하기", action: onRecordTapped)

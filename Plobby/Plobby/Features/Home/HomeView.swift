@@ -15,7 +15,9 @@ struct HomeView: View {
     
     @Bindable var store: StoreOf<HomeFeature>
     
-    @Namespace private var tabUnderline
+    @State private var cardHeight: CGFloat = 0
+    /// 지금 보이는 카드 높이예요. 카드를 펼치면 날짜 칩이 카드 아래로 따라 내려가요.
+    @State private var visibleCardHeight: CGFloat = 0
     @State private var walkDragStart: (progress: Double, translation: CGFloat)?
     @State private var dragAxis: Axis?
     /// 드래그가 취소되면 onEnded가 불리지 않아서, 끝났는지는 이 값으로 알아요.
@@ -24,16 +26,32 @@ struct HomeView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(spacing: 0) {
-            header
-            
-            goalCard
-                .padding(.horizontal, 20.scaled)
-            
-            activityTabs
-                .padding(.top, 4.scaled)
-            
+        ZStack(alignment: .top) {
             scene
+
+            goalCard(isExpanded: false)
+                .hidden()
+                .accessibilityHidden(true)
+                .allowsHitTesting(false)
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.height
+                } action: { height in
+                    cardHeight = height
+                }
+                .padding(.horizontal, 20.scaled)
+
+            goalCard(isExpanded: store.isGoalExpanded)
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.height
+                } action: { height in
+                    visibleCardHeight = height
+                }
+                .padding(.horizontal, 20.scaled)
+
+            activityToggleButton
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .padding(.trailing, 20.scaled)
+                .padding(.bottom, 8.scaled)
         }
         .background(Color(.gray0))
         .sheet(item: sheetBinding) { sheet in
@@ -64,59 +82,6 @@ struct HomeView: View {
     }
 }
 
-// MARK: - 헤더
-
-private extension HomeView {
-    
-    var header: some View {
-        HStack {
-            Image(.homeLogo)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 73.scaled, height: 23.scaled)
-                .accessibilityLabel("plobby")
-            
-            Spacer()
-        }
-        .padding(.leading, 20.scaled)
-        .padding(.trailing, 12.scaled)
-        .frame(height: 50.scaled)
-    }
-    
-    var activityTabs: some View {
-        HStack(spacing: 0) {
-            ForEach(Self.tabs, id: \.self) { type in
-                let isSelected = store.selectedType == type
-                
-                Button {
-                    store.send(.activityTabSelected(type), animation: .smooth(duration: 0.3))
-                } label: {
-                    Text(type.name)
-                        .plobbyFont(isSelected ? .actionLabel : .body)
-                        .foregroundStyle(isSelected ? Color(.textPrimary) : Color(.textSecondary))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 48.scaled)
-                        .overlay(alignment: .bottom) {
-                            if isSelected {
-                                Rectangle()
-                                    .fill(Color(.green500))
-                                    .frame(height: 4.scaled)
-                                    .matchedGeometryEffect(id: "underline", in: tabUnderline)
-                                    .offset(y: 4.scaled)
-                            }
-                        }
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityAddTraits(isSelected ? .isSelected : [])
-            }
-        }
-        .guestTapAllowed()
-        .padding(.bottom, 4.scaled)
-        .background(Color(.gray0))
-    }
-}
-
 // MARK: - 장면
 
 private extension HomeView {
@@ -125,20 +90,32 @@ private extension HomeView {
         let type = store.selectedType
         let days = store.board?.days ?? []
         let pulse = store.collectPulses[type, default: 0]
-        
+
         return ZStack {
             switch type {
             case .plogging:
-                PloggingSceneView(days: days, stage: store.stage, collectPulse: pulse, walkProgress: store.walkProgress)
-                    .ignoresSafeArea(edges: .bottom)
-                    .transition(.opacity)
+                sceneLayer(backdrop: .homeSceneBeach) {
+                    PloggingSceneView(
+                        days: days,
+                        stage: store.stage,
+                        collectPulse: pulse,
+                        walkProgress: store.walkProgress
+                    )
+                }
+                .transition(.move(edge: .leading))
             case .plobbing:
-                PlobbingSceneView(days: days, stage: store.stage, collectPulse: pulse, walkProgress: store.walkProgress)
-                    .ignoresSafeArea(edges: .bottom)
-                    .transition(.opacity)
+                sceneLayer(backdrop: .homeSceneSky) {
+                    PlobbingSceneView(
+                        days: days,
+                        stage: store.stage,
+                        collectPulse: pulse,
+                        walkProgress: store.walkProgress
+                    )
+                }
+                .transition(.move(edge: .trailing))
             }
-            
-            if let status = store.status, status.isFinished {
+
+            if store.isCelebrationVisible, let status = store.status {
                 HomeGoalCelebration(isAchieved: status == .achieved)
                     .transition(.opacity)
             }
@@ -150,19 +127,15 @@ private extension HomeView {
                 totalTrashCount: store.board?.totalTrashCount ?? 0,
                 isGoalFinished: store.isGoalFinished,
                 isAtDay: store.walkProgress == store.walkProgress.rounded(),
-                onParticipantsTapped: { store.send(.participantsButtonTapped) },
                 onTrashSummaryTapped: { store.send(.trashSummaryButtonTapped, transaction: Self.noAnimation) }
             )
-            
+            .padding(.top, max(visibleCardHeight, cardHeight))
+            .animation(.easeInOut(duration: 0.25), value: visibleCardHeight)
+
             if store.isScrollGuideVisible {
                 HomeScrollGuideToast()
                     .transition(.opacity)
             }
-            
-            recordButton
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding(.trailing, 20.scaled)
-                .padding(.bottom, 8.scaled)
         }
         .frame(maxHeight: .infinity)
         .contentShape(Rectangle())
@@ -229,19 +202,38 @@ private extension HomeView {
         }
     }
     
-    var recordButton: some View {
-        Button {
-            store.send(.recordButtonTapped, transaction: Self.noAnimation)
+    func sceneLayer<Scene: View>(
+        backdrop: ImageResource,
+        @ViewBuilder scene: () -> Scene
+    ) -> some View {
+        ZStack(alignment: .top) {
+            HomeSceneBackdrop(image: backdrop)
+                .ignoresSafeArea()
+
+            scene()
+                .padding(.top, cardHeight)
+                .ignoresSafeArea(edges: .bottom)
+        }
+    }
+
+    var activityToggleButton: some View {
+        let type = store.selectedType
+        let next: RecordType = type == .plogging ? .plobbing : .plogging
+
+        return Button {
+            store.send(.activityTabSelected(next), animation: .smooth(duration: 0.35))
         } label: {
-            Image(systemName: "plus")
-                .font(.system(size: 24.scaled, weight: .medium))
+            Image(systemName: type == .plogging ? "figure.walk" : "figure.open.water.swim")
+                .font(.system(size: 24.scaled))
                 .foregroundStyle(Color(.currentBrandText))
-                .frame(width: 56.scaled, height: 56.scaled)
+                .contentTransition(.symbolEffect(.replace))
+                .frame(width: 48.scaled, height: 48.scaled)
                 .background(Color(.gray0), in: Circle())
-                .shadow(color: .black.opacity(0.1), radius: 3, y: 2)
+                .shadow(color: Color(.neutralBlack).opacity(0.1), radius: 6.scaled, y: 2.scaled)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("기록하기")
+        .guestTapAllowed()
+        .accessibilityLabel("\(next.name)로 바꾸기")
     }
 }
 
@@ -250,15 +242,17 @@ private extension HomeView {
 private extension HomeView {
     
     @ViewBuilder
-    var goalCard: some View {
+    func goalCard(isExpanded: Bool) -> some View {
         if let goal = store.board?.goal, let status = store.status {
             HomeGoalCard(
                 goal: goal,
                 status: status,
-                isExpanded: store.isGoalExpanded,
+                isExpanded: isExpanded,
                 onToggle: { store.send(.goalCardToggleTapped, animation: .easeInOut(duration: 0.25)) },
                 onRecordTapped: { store.send(.recordButtonTapped, transaction: Self.noAnimation) },
-                onAllGoalsTapped: { store.send(.allGoalsButtonTapped) }
+                onAllGoalsTapped: { store.send(.allGoalsButtonTapped) },
+                onNextGoalTapped: { store.send(.nextGoalButtonTapped, animation: .smooth(duration: 0.35)) },
+                onParticipantsTapped: { store.send(.participantsButtonTapped) }
             )
         }
     }
@@ -291,12 +285,12 @@ private extension HomeView {
     
     @ViewBuilder
     func sheetContent(_ sheet: HomeFeature.Sheet) -> some View {
-        if let board = store.board {
+        if let goal = store.board?.goal {
             switch sheet {
             case .participants:
                 HomeParticipantsSheet(
-                    board: board,
-                    now: store.now,
+                    goal: goal,
+                    participants: store.allParticipants,
                     onParticipantTapped: { store.send(.participantTapped($0)) },
                     onClose: { store.send(.sheetDismissed) }
                 )
