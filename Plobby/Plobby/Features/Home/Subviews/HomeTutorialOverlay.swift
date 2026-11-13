@@ -120,7 +120,13 @@ struct HomeTutorialOverlay: View {
                     }
 
                     if step == .scroll {
+                        // VoiceOver에서는 드래그가 전달되지 않을 수 있어서 활성화나 스크롤 동작으로도 넘어가요.
                         HomeTutorialScrollHint()
+                            .accessibilityElement()
+                            .accessibilityLabel("스크롤해 보세요")
+                            .accessibilityAddTraits(.isButton)
+                            .accessibilityAction { onAdvance() }
+                            .accessibilityScrollAction { _ in onAdvance() }
                             .position(x: proxy.size.width / 2, y: proxy.size.height / 2)
                     }
 
