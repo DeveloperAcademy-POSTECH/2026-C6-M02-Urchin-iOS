@@ -220,12 +220,9 @@ private extension HomeTutorialOverlay {
                 .position(x: rect.midX, y: rect.midY)
 
         default:
-            let padding = 4.scaled
-            let padded = rect.insetBy(dx: -padding, dy: -padding)
-
             RoundedRectangle(cornerRadius: 16.scaled)
-                .frame(width: padded.width, height: padded.height)
-                .position(x: padded.midX, y: padded.midY)
+                .frame(width: rect.width, height: rect.height)
+                .position(x: rect.midX, y: rect.midY)
         }
     }
 
