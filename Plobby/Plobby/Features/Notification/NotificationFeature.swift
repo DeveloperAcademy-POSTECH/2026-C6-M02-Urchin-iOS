@@ -49,9 +49,18 @@ struct NotificationFeature {
         case refreshed
         case backButtonTapped
         case markAllAsReadButtonTapped
+        case settingsButtonTapped
         case notificationTapped(AppNotification)
         case notificationsResponse(Result<[AppNotification], any Error>)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
+        case delegate(Delegate)
+
+        enum Delegate {
+            /// 목표 달성 알림을 눌러 홈에서 공동 목표를 보여줘요.
+            case homeRequested
+            /// 알림이 없을 때 알림 설정을 켜러 설정 화면으로 가요.
+            case settingsRequested
+        }
     }
 
     // MARK: - Dependency
@@ -72,6 +81,9 @@ struct NotificationFeature {
 
             case .refreshed:
                 return fetchNotifications()
+
+            case .settingsButtonTapped:
+                return .send(.delegate(.settingsRequested))
 
             case .backButtonTapped:
                 return .run { _ in
@@ -94,7 +106,7 @@ struct NotificationFeature {
                 let readEffect: Effect<Action> = notification.isRead ? .none : updateReadAt(notification)
 
                 guard !notification.canReturnHome else {
-                    return .concatenate(readEffect, .run { _ in await dismiss() })
+                    return .concatenate(readEffect, .send(.delegate(.homeRequested)))
                 }
 
                 if notification.canOpenRecord, let recordID = notification.recordID {
@@ -127,7 +139,7 @@ struct NotificationFeature {
                 state.recordDetail = nil
                 return fetchNotifications()
 
-            case .recordDetail:
+            case .recordDetail, .delegate:
                 return .none
             }
         }

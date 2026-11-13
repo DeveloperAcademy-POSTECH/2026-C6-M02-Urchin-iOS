@@ -12,6 +12,8 @@ import Supabase
 
 struct NotificationClient {
     var fetchNotifications: @Sendable () async throws -> [AppNotification]
+    /// 안 읽은 알림이 하나라도 있는지 확인해요.
+    var fetchHasUnread: @Sendable () async throws -> Bool
     /// 알림을 읽음 처리해요. 좋아요 알림은 같은 기록에 묶인 알림을 모두 읽음 처리해요.
     var updateReadAt: @Sendable (_ notification: AppNotification) async throws -> Void
     var updateAllReadAt: @Sendable () async throws -> Void
@@ -37,6 +39,22 @@ extension NotificationClient: DependencyKey {
                     .value
 
                 return notifications.map { $0.toDomain() }
+            },
+            fetchHasUnread: {
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                let userID = try await supabaseClient.currentUserID()
+
+                let unreadNotifications: [UnreadNotificationResponse] = try await supabaseClient
+                    .from("notification_list")
+                    .select("id")
+                    .eq("user_id", value: userID)
+                    .eq("is_read", value: false)
+                    .limit(1)
+                    .execute()
+                    .value
+
+                return !unreadNotifications.isEmpty
             },
             updateReadAt: { notification in
                 @Dependency(\.supabaseClient) var supabaseClient
@@ -101,4 +119,9 @@ private nonisolated extension AppNotification.Kind {
         case .goalAchieved: "goal_achieved"
         }
     }
+}
+
+private nonisolated struct UnreadNotificationResponse: Decodable, Sendable {
+
+    let id: UUID
 }

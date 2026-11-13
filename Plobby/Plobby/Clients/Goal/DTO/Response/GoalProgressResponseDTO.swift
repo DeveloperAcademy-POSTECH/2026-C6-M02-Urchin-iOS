@@ -40,6 +40,14 @@ nonisolated struct GoalProgressResponseDTO: Decodable, Sendable {
         case plobbingParticipantCount = "plobbing_participant_count"
     }
     
+    /// 달성한 목표는 달성한 순간의 개수보다 줄어들지 않게 보여줘요(달성 뒤 기록이 지워진 경우).
+    /// 달성과 거의 동시에 저장된 기록은 달성한 순간의 개수에 빠질 수 있어서, 더 큰 쪽(실제 합계)을 보여줘요.
+    var displayedCollectedCount: Int {
+        guard achievedAt != nil, let achievedCount else { return collectedCount }
+
+        return max(collectedCount, achievedCount)
+    }
+
     func toDomain() -> Goal {
         Goal(
             id: goalID,
@@ -48,7 +56,7 @@ nonisolated struct GoalProgressResponseDTO: Decodable, Sendable {
             startsAt: startsAt,
             endsAt: endsAt,
             achievedAt: achievedAt,
-            collectedCount: achievedAt != nil ? (achievedCount ?? collectedCount) : collectedCount,
+            collectedCount: displayedCollectedCount,
             ploggingCollectedCount: ploggingCollectedCount,
             plobbingCollectedCount: plobbingCollectedCount,
             participantCount: participantCount,

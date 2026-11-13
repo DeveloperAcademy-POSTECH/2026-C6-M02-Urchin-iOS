@@ -13,10 +13,18 @@ import Testing
 struct GoalProgressResponseDTOTests {
 
     @Test
-    func 달성하면_총_개수는_달성한_순간의_개수로_고정된다() {
-        let goal = makeDTO(achievedAt: GoalFixture.hours(-1), achievedCount: 1_000, collectedCount: 1_030).toDomain()
+    func 달성_뒤_기록이_지워져도_총_개수는_달성한_순간보다_줄지_않는다() {
+        let goal = makeDTO(achievedAt: GoalFixture.hours(-1), achievedCount: 1_000, collectedCount: 990).toDomain()
 
         #expect(goal.collectedCount == 1_000)
+    }
+
+    /// 두 사람이 동시에 저장하면 달성한 순간의 개수에는 늦게 저장된 기록이 빠져 있어요. 실제 합계를 보여줘요.
+    @Test
+    func 달성과_동시에_저장된_기록도_총_개수에_넣는다() {
+        let goal = makeDTO(achievedAt: GoalFixture.hours(-1), achievedCount: 1_055, collectedCount: 1_060).toDomain()
+
+        #expect(goal.collectedCount == 1_060)
     }
 
     @Test
@@ -33,21 +41,17 @@ struct GoalProgressResponseDTOTests {
         #expect(goal.collectedCount == 640)
     }
 
-    /// 달성 뒤에도 목표 기간 안의 기록은 계속 이 목표에 쌓여요.
-    /// 총 개수만 고정되고 플로깅·플로빙 개수는 계속 늘어서, 함께한 사람 시트와 결과 팝업의 숫자가 카드와 달라져요.
     @Test
     func 달성_후에도_활동별_개수의_합은_총_개수와_같다() {
         let goal = makeDTO(
             achievedAt: GoalFixture.hours(-1),
-            achievedCount: 1_000,
-            collectedCount: 1_030,
-            ploggingCollectedCount: 630,
+            achievedCount: 1_055,
+            collectedCount: 1_060,
+            ploggingCollectedCount: 660,
             plobbingCollectedCount: 400
         ).toDomain()
 
-        withKnownIssue("달성 후 활동별 개수는 고정되지 않아요") {
-            #expect(goal.ploggingCollectedCount + goal.plobbingCollectedCount == goal.collectedCount)
-        }
+        #expect(goal.ploggingCollectedCount + goal.plobbingCollectedCount == goal.collectedCount)
     }
 }
 

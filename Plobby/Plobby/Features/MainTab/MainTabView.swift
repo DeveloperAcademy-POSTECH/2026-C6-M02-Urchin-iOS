@@ -28,11 +28,6 @@ struct MainTabView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 }
                 .navigationDestination(
-                    item: $store.scope(state: \.home.notification, action: \.home.notification)
-                ) { store in
-                    NotificationView(store: store)
-                }
-                .navigationDestination(
                     item: $store.scope(state: \.home.goalList, action: \.home.goalList)
                 ) { store in
                     GoalListView(store: store)
@@ -163,6 +158,11 @@ private extension MainTabView {
                 item: $store.scope(state: \.settings, action: \.settings)
             ) { store in
                 SettingsView(store: store)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.notification, action: \.notification)
+            ) { store in
+                NotificationView(store: store)
             }
             .navigationDestination(
                 item: $store.scope(state: \.recordDetail, action: \.recordDetail)

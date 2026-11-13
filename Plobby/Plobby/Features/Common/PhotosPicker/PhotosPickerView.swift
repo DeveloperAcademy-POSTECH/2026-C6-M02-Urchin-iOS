@@ -13,7 +13,8 @@ struct PhotosPickerView: View {
 
     // MARK: - Properties
 
-    let store: StoreOf<PhotosPickerFeature>
+    @Bindable var store: StoreOf<PhotosPickerFeature>
+    @Environment(\.scenePhase) private var scenePhase
 
     private let columnCount = 3
     private let gridSpacing: CGFloat = 1
@@ -33,6 +34,12 @@ struct PhotosPickerView: View {
         .fullScreenCover(isPresented: cameraBinding) {
             cameraView
         }
+        .alert($store.scope(state: \.alert, action: \.alert))
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+
+            store.send(.sceneBecameActive)
+        }
     }
 
     @ViewBuilder
@@ -43,9 +50,7 @@ struct PhotosPickerView: View {
             deniedView
             bottomButton
         } else {
-            if store.purpose != .profile {
-                guideBanner
-            }
+            guideBanner
             assetGrid
             bottomButton
         }
@@ -58,7 +63,13 @@ private extension PhotosPickerView {
 
     var navigationBar: some View {
         ZStack {
-            albumToggleButton
+            if store.authorization.canReadLibrary {
+                albumToggleButton
+            } else {
+                Text("사진 선택")
+                    .plobbyFont(.cardTitle)
+                    .foregroundStyle(Color(.textPrimary))
+            }
             closeButton
         }
         .padding(.horizontal, 20.scaled)
@@ -122,22 +133,60 @@ private extension PhotosPickerView {
 
 private extension PhotosPickerView {
 
+    @ViewBuilder
     var guideBanner: some View {
+        switch store.authorization {
+        case .notDetermined:
+            banner(message: "기록을 저장하려면 사진이 필요해요.")
+
+        case .limited:
+            banner(message: "전체 접근을 허용하면\n모든 사진을 고를 수 있어요.") {
+                openSettingsLink
+            }
+
+        case .authorized where store.purpose != .profile:
+            banner(message: "최대 \(PhotoSelection.maxCount)장까지 추가할 수 있어요")
+
+        case .authorized, .denied:
+            EmptyView()
+        }
+    }
+
+    func banner(message: String) -> some View {
+        banner(message: message) { EmptyView() }
+    }
+
+    func banner<Trailing: View>(message: String, @ViewBuilder trailing: () -> Trailing) -> some View {
         HStack(spacing: 12.scaled) {
             Image(systemName: "plus.square.on.square")
                 .font(.system(size: 16.scaled))
                 .foregroundStyle(Color(.textPrimary))
                 .frame(width: 20.scaled, height: 20.scaled)
 
-            Text("최대 \(PhotoSelection.maxCount)장까지 추가할 수 있어요")
+            Text(message)
                 .plobbyFont(.notification)
                 .foregroundStyle(Color(.textPrimary))
 
             Spacer(minLength: 0)
+
+            trailing()
         }
         .padding(.horizontal, 20.scaled)
-        .frame(height: 56.scaled)
+        .padding(.vertical, 8.scaled)
+        .frame(minHeight: 56.scaled)
         .background(Color(.currentBrandSubtle))
+    }
+
+    var openSettingsLink: some View {
+        Button {
+            store.send(.openSettingsTapped)
+        } label: {
+            Text("권한 설정")
+                .plobbyFont(.actionLabel)
+                .underline()
+                .foregroundStyle(Color(.textPrimary))
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -265,7 +314,7 @@ private extension PhotosPickerView {
 private extension PhotosPickerView {
 
     var bottomButton: some View {
-        PlobbyButton(text: store.purpose == .profile ? "사진 추가" : "추가하기") {
+        PlobbyButton(text: "사진 추가") {
             store.send(.bottomButtonTapped)
         }
         .disabled(store.isSkip)
@@ -354,25 +403,24 @@ private extension PhotosPickerView {
 
 private extension PhotosPickerView {
 
-    // TODO: 권한 거부 화면 디자인이 나오면 교체
     var deniedView: some View {
         VStack(spacing: 16.scaled) {
-            Spacer()
             deniedMessage
             openSettingsButton
-            Spacer()
         }
+        .padding(.horizontal, 20.scaled)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     var deniedMessage: some View {
-        VStack(spacing: 16.scaled) {
-            Text("사진 접근 권한이 필요해요")
+        VStack(spacing: 12.scaled) {
+            Text("사진 접근이 꺼져 있어요")
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
 
-            Text("설정에서 사진 접근을 허용하면\n활동 사진을 기록에 추가할 수 있어요")
-                .plobbyFont(.label)
-                .foregroundStyle(Color(.textSecondary))
+            Text("설정에서 사진 접근을 허용하면\n기록에 사진을 추가할 수 있어요.")
+                .plobbyFont(.helper)
+                .foregroundStyle(Color(.textTertiary))
                 .multilineTextAlignment(.center)
         }
     }
@@ -381,11 +429,11 @@ private extension PhotosPickerView {
         Button {
             store.send(.openSettingsTapped)
         } label: {
-            Text("설정으로 이동")
-                .plobbyFont(.notification)
+            Text("사진 접근 허용하기")
+                .plobbyFont(.label)
                 .foregroundStyle(Color(.gray0))
-                .padding(.horizontal, 20.scaled)
-                .frame(height: 44.scaled)
+                .padding(.horizontal, 16.scaled)
+                .padding(.vertical, 8.scaled)
                 .background(Color(.green500), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .buttonStyle(.plain)
