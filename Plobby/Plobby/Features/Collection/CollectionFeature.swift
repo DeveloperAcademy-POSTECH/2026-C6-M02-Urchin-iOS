@@ -44,7 +44,6 @@ struct CollectionFeature {
         case delegate(Delegate)
 
         enum Delegate {
-            case loginRequired
             case recordStarted(RecordType)
         }
     }
@@ -58,10 +57,6 @@ struct CollectionFeature {
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
-            if case .guest = state.membershipStatus, action.isUserInteraction {
-                return .send(.delegate(.loginRequired))
-            }
-
             switch action {
             case .onAppear:
                 guard case let .member(user) = state.membershipStatus else {
@@ -129,9 +124,6 @@ struct CollectionFeature {
                 return .none
 
             case .cards(.element(_, .delegate(.recordStartRequested))):
-                guard case .member = state.membershipStatus else {
-                    return .send(.delegate(.loginRequired))
-                }
                 state.isActivityPickerPresented = true
                 return .none
 
@@ -172,19 +164,5 @@ extension CollectionFeature {
     private nonisolated enum CancelID {
         case profile
         case trashCounts
-    }
-}
-
-// MARK: - Action
-
-extension CollectionFeature.Action {
-
-    var isUserInteraction: Bool {
-        switch self {
-        case .allCategoryTapped, .shareButtonTapped:
-            true
-        default:
-            false
-        }
     }
 }

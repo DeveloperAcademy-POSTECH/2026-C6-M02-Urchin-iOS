@@ -56,6 +56,7 @@ private extension HomeGoalCard {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(isExpanded ? "공통 목표 접기" : "공통 목표 펼치기")
+            .guestTapAllowed()
         }
     }
 

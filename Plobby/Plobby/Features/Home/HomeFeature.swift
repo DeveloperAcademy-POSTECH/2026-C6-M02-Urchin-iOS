@@ -108,7 +108,6 @@ struct HomeFeature {
         
         enum Delegate {
             case recordStarted(RecordType)
-            case loginRequired
             case myProfileRequested
         }
     }
@@ -126,11 +125,6 @@ struct HomeFeature {
         Reduce {
             state,
             action in
-            if case .guest = state.membershipStatus,
-               action.requiresLogin {
-                return .send(.delegate(.loginRequired))
-            }
-            
             switch action {
             case .onAppear:
                 // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
@@ -300,9 +294,6 @@ struct HomeFeature {
                 state.goalList = nil
                 return .none
                 
-            case .goalList(.presented(.delegate(.loginRequired))):
-                return .send(.delegate(.loginRequired))
-                
             case .userHome(.presented(.delegate(.closed))):
                 state.userHome = nil
                 return .none
@@ -330,20 +321,6 @@ struct HomeFeature {
         }
         .ifLet(\.$userHome, action: \.userHome) {
             UserHomeFeature()
-        }
-    }
-}
-
-// MARK: - Action
-
-private extension HomeFeature.Action {
-    
-    var requiresLogin: Bool {
-        switch self {
-        case .recordButtonTapped, .notificationButtonTapped, .participantTapped:
-            true
-        default:
-            false
         }
     }
 }

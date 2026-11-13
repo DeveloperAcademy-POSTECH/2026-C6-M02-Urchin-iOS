@@ -224,6 +224,7 @@ private extension MapView {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("현재 위치로 이동")
+        .guestTapAllowed()
     }
 }
 

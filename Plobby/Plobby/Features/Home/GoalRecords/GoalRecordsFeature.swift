@@ -52,7 +52,6 @@ struct GoalRecordsFeature {
 
         enum Delegate {
             case closed
-            case loginRequired
         }
     }
 
@@ -83,9 +82,6 @@ struct GoalRecordsFeature {
 
             case .backButtonTapped:
                 return .send(.delegate(.closed))
-
-            case .recordTapped where state.membershipStatus == .guest:
-                return .send(.delegate(.loginRequired))
 
             case let .recordTapped(recordID):
                 state.recordDetail = RecordDetailFeature.State(recordID: recordID)
