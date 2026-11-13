@@ -96,14 +96,13 @@ extension BlockedUsersView {
         .clipShape(Circle())
     }
 
-    /// 차단 중이면 "차단 중", 이 화면에서 해제했으면 "차단하기"를 보여줘요.
     private func blockToggleButton(_ user: BlockedUser) -> some View {
         let isBlocked = store.state.isBlocked(user.id)
 
         return Button {
             store.send(.blockToggleTapped(user.id))
         } label: {
-            Text(isBlocked ? "차단 중" : "차단하기")
+            Text(isBlocked ? "차단 해제" : "차단하기")
                 .plobbyFont(.label)
                 .foregroundStyle(Color(.currentError))
                 .padding(.horizontal, 12)

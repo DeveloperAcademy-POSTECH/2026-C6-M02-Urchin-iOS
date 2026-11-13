@@ -9,7 +9,6 @@ import SwiftUI
 
 import ComposableArchitecture
 
-/// 디자인 시스템 Alert. `AlertState`의 버튼을 순서대로 그리고, 마지막 버튼을 주요 동작으로 강조해요.
 struct PlobbyAlert<Action>: View {
 
     // MARK: - Properties
@@ -57,7 +56,7 @@ struct PlobbyAlert<Action>: View {
                 .foregroundStyle(isPrimary ? Color(.gray0) : Color(.textPrimary))
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)
-                .background(isPrimary ? Color(.green600) : Color(.gray200), in: RoundedRectangle(cornerRadius: 8))
+                .background(isPrimary ? Color(.primary600) : Color(.gray200), in: RoundedRectangle(cornerRadius: 8))
         }
         .buttonStyle(.plain)
     }
@@ -67,21 +66,25 @@ struct PlobbyAlert<Action>: View {
 
 extension View {
 
-    /// 시스템 `.alert` 대신 화면을 어둡게 덮고 가운데에 `PlobbyAlert`를 띄워요.
-    func plobbyAlert<Action>(_ item: Binding<Store<AlertState<Action>, Action>?>) -> some View {
-        overlay {
-            if let store = item.wrappedValue {
+    func plobbyAlert<State: ObservableState, Action, AlertAction>(
+        store: Store<State, Action>,
+        state: KeyPath<State, AlertState<AlertAction>?>,
+        action: CaseKeyPath<Action, PresentationAction<AlertAction>>
+    ) -> some View {
+        let alert = store.state[keyPath: state]
+
+        return overlay {
+            if let alert {
                 ZStack {
                     Color.black.opacity(0.4)
                         .ignoresSafeArea()
 
-                    PlobbyAlert(state: store.withState { $0 }) { button in
-                        // 동작이 있으면 보내고(보낸 뒤 자동으로 닫혀요), 없으면 그냥 닫아요.
-                        button.withAction { action in
-                            if let action {
-                                store.send(action)
+                    PlobbyAlert(state: alert) { button in
+                        button.withAction { alertAction in
+                            if let alertAction {
+                                store.send(action(.presented(alertAction)))
                             } else {
-                                item.wrappedValue = nil
+                                store.send(action(.dismiss))
                             }
                         }
                     }
@@ -89,6 +92,6 @@ extension View {
                 .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.2), value: item.wrappedValue != nil)
+        .animation(.easeInOut(duration: 0.2), value: alert != nil)
     }
 }

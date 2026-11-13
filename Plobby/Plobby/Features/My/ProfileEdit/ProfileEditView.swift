@@ -49,8 +49,8 @@ struct ProfileEditView: View {
             isNicknameFocused = false
         }
         .toolbar(.hidden, for: .navigationBar)
-        .plobbyAlert($store.scope(state: \.profilePhoto.alert, action: \.profilePhoto.alert))
-        .plobbyAlert($store.scope(state: \.nicknameCheck.alert, action: \.nicknameCheck.alert))
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.profilePhoto.alert, action: \.profilePhoto.alert)
+        .plobbyAlert(store: store, state: \.nicknameCheck.alert, action: \.nicknameCheck.alert)
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
     }
 }

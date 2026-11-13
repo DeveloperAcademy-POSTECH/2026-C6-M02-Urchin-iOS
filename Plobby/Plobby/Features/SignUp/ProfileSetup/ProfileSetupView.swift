@@ -20,6 +20,10 @@ struct ProfileSetupView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            PlobbyNavigationBar(title: "회원가입") {
+                store.send(.backButtonTapped)
+            }
+
             progressBar
             titleSection
 
@@ -37,12 +41,13 @@ struct ProfileSetupView: View {
             
             nextButton
         }
+        .toolbar(.hidden, for: .navigationBar)
         .contentShape(Rectangle())
         .onTapGesture {
             isNicknameFocused = false
         }
-        .plobbyAlert($store.scope(state: \.profilePhoto.alert, action: \.profilePhoto.alert))
-        .plobbyAlert($store.scope(state: \.nicknameCheck.alert, action: \.nicknameCheck.alert))
+        .plobbyAlert(store: store, state: \.profilePhoto.alert, action: \.profilePhoto.alert)
+        .plobbyAlert(store: store, state: \.nicknameCheck.alert, action: \.nicknameCheck.alert)
     }
 }
 

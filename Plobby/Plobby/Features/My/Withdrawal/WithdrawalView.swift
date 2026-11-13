@@ -49,7 +49,7 @@ struct WithdrawalView: View {
             isDetailFocused = false
         }
         .toolbar(.hidden, for: .navigationBar)
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
     }
 }
 
@@ -104,6 +104,10 @@ extension WithdrawalView {
 
                         detailText = detail
                         store.send(.detailChanged(detail))
+                    }
+                    .onChange(of: store.detail) { _, detail in
+                        guard detailText != detail else { return }
+                        detailText = detail
                     }
                     .lineLimit(3...)
                     .focused($isDetailFocused)

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-/// 마이 화면과 타인 홈에서 함께 쓰는 활동 기록 목록이에요. 필터 칩, 개수, 기록 셀을 보여줘요.
-/// 기록이 없을 때 보여줄 화면은 `emptyContent`로 바꿀 수 있어요.
 struct RecordListSection<EmptyContent: View>: View {
 
     // MARK: - Properties
@@ -17,21 +15,28 @@ struct RecordListSection<EmptyContent: View>: View {
     let selectedFilter: RecordFilter
     let onFilterChanged: (RecordFilter) -> Void
     let onRecordTapped: (RecordSummary.ID) -> Void
+    let onMoreTapped: ((RecordSummary) -> Void)?
+    let menuRecordID: RecordSummary.ID?
     let emptyContent: EmptyContent
 
     private static var recentDayCount: Int { 7 }
+    private static var imageSize: CGFloat { 108 }
 
     init(
         records: [RecordSummary],
         selectedFilter: RecordFilter,
         onFilterChanged: @escaping (RecordFilter) -> Void,
         onRecordTapped: @escaping (RecordSummary.ID) -> Void,
+        onMoreTapped: ((RecordSummary) -> Void)? = nil,
+        menuRecordID: RecordSummary.ID? = nil,
         @ViewBuilder emptyContent: () -> EmptyContent
     ) {
         self.records = records
         self.selectedFilter = selectedFilter
         self.onFilterChanged = onFilterChanged
         self.onRecordTapped = onRecordTapped
+        self.onMoreTapped = onMoreTapped
+        self.menuRecordID = menuRecordID
         self.emptyContent = emptyContent()
     }
 
@@ -67,18 +72,21 @@ struct RecordListSection<EmptyContent: View>: View {
 
 extension RecordListSection where EmptyContent == RecordListEmptyMessage {
 
-    /// 기록이 없으면 "아직 활동 기록이 없어요"를 보여줘요.
     init(
         records: [RecordSummary],
         selectedFilter: RecordFilter,
         onFilterChanged: @escaping (RecordFilter) -> Void,
-        onRecordTapped: @escaping (RecordSummary.ID) -> Void
+        onRecordTapped: @escaping (RecordSummary.ID) -> Void,
+        onMoreTapped: ((RecordSummary) -> Void)? = nil,
+        menuRecordID: RecordSummary.ID? = nil
     ) {
         self.init(
             records: records,
             selectedFilter: selectedFilter,
             onFilterChanged: onFilterChanged,
-            onRecordTapped: onRecordTapped
+            onRecordTapped: onRecordTapped,
+            onMoreTapped: onMoreTapped,
+            menuRecordID: menuRecordID
         ) {
             RecordListEmptyMessage()
         }
@@ -99,29 +107,7 @@ struct RecordListEmptyMessage: View {
 extension RecordListSection {
 
     private var filterChips: some View {
-        HStack(alignment: .center, spacing: 8.scaled) {
-            ForEach(RecordFilter.allCases, id: \.self) { filter in
-                let isSelected = selectedFilter == filter
-
-                Button {
-                    onFilterChanged(filter)
-                } label: {
-                    Text(filter.title)
-                        .plobbyFont(.labelSelected)
-                        .foregroundStyle(isSelected ? Color(.gray0) : Color(.textPrimary))
-                        .padding(.horizontal, 16.scaled)
-                        .frame(height: 36.scaled)
-                        .background(isSelected ? Color(.gray800) : Color(.gray50), in: Capsule())
-                        .overlay {
-                            if !isSelected {
-                                Capsule()
-                                    .stroke(Color(.currentWarmBorder), lineWidth: 1)
-                            }
-                        }
-                }
-                .buttonStyle(.plain)
-            }
-        }
+        RecordFilterChips(selectedFilter: selectedFilter, onFilterChanged: onFilterChanged)
     }
 }
 
@@ -139,6 +125,15 @@ extension RecordListSection {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+                .overlay(alignment: .topTrailing) {
+                    if let onMoreTapped {
+                        RecordMoreButton(isMenuPresented: menuRecordID == record.id) {
+                            onMoreTapped(record)
+                        }
+                        .padding(.top, (16 - RecordMoreButton.tapInset).scaled)
+                        .padding(.trailing, (Self.imageSize + RecordMoreButton.imageSpacing).scaled)
+                    }
+                }
 
                 if record.id != records.last?.id {
                     Divider()
@@ -148,7 +143,7 @@ extension RecordListSection {
     }
 
     private func recordRow(_ record: RecordSummary) -> some View {
-        HStack(alignment: .top, spacing: 32.scaled) {
+        HStack(alignment: .top, spacing: RecordMoreButton.imageSpacing.scaled) {
             VStack(alignment: .leading, spacing: 0) {
                 Text(record.title)
                     .plobbyFont(.actionLabel)
@@ -171,6 +166,7 @@ extension RecordListSection {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .padding(.trailing, onMoreTapped == nil ? 0 : RecordMoreButton.width.scaled)
 
             AsyncImage(url: record.coverPhotoURL) { image in
                 image
@@ -179,10 +175,10 @@ extension RecordListSection {
             } placeholder: {
                 Color(.gray50)
             }
-            .frame(width: 108.scaled, height: 108.scaled)
+            .frame(width: Self.imageSize.scaled, height: Self.imageSize.scaled)
             .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
         }
-        .frame(height: 108.scaled)
+        .frame(height: Self.imageSize.scaled)
         .padding(.vertical, 16.scaled)
     }
 }
@@ -191,7 +187,6 @@ extension RecordListSection {
 
 extension RecordListSection {
 
-    /// 최근 7일 안의 기록은 "1일 전"처럼, 그보다 오래된 기록은 "2026.10.08"처럼 보여줘요.
     private func recordDate(_ date: Date) -> Text {
         let recentLimit = Calendar.current.date(byAdding: .day, value: -Self.recentDayCount, to: .now) ?? .now
         let dateFormat = Date.VerbatimFormatStyle(
@@ -203,5 +198,34 @@ extension RecordListSection {
         return date > recentLimit
             ? Text(date, format: .relative(presentation: .numeric))
             : Text(date, format: dateFormat)
+    }
+}
+
+// MARK: - RecordMoreButton
+
+struct RecordMoreButton: View {
+
+    let isMenuPresented: Bool
+    let action: () -> Void
+
+    static var width: CGFloat { 24 }
+    static var imageSpacing: CGFloat { 32 }
+    static var height: CGFloat { PlobbyTypography.actionLabel.lineHeight }
+    static var tapSize: CGFloat { 44 }
+    /// 터치 영역이 아이콘보다 위아래로 넓어진 만큼이에요. 위치를 잡을 때 이만큼 올려요.
+    static var tapInset: CGFloat { (tapSize - height) / 2 }
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: "ellipsis")
+                .font(.system(size: 13.scaled, weight: .semibold))
+                .foregroundStyle(Color(.gray600))
+                .frame(width: Self.width.scaled, height: Self.height.scaled, alignment: .trailing)
+                .plobbyDropdownAnchor(isPresented: isMenuPresented)
+                .frame(width: Self.tapSize.scaled, height: Self.tapSize.scaled, alignment: .trailing)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("기록 더보기")
     }
 }
