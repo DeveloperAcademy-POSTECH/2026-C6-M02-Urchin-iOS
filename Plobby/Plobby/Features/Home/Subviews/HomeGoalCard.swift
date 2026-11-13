@@ -37,7 +37,7 @@ struct HomeGoalCard: View {
             }
         }
         .padding(.leading, 12.scaled)
-        .padding(.vertical, 8.scaled)
+        .padding(.vertical, 12.scaled)
         .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 16.scaled))
         .clipShape(RoundedRectangle(cornerRadius: 16.scaled))
     }
