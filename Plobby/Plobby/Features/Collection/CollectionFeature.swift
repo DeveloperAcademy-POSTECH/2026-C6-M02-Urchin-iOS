@@ -22,6 +22,7 @@ struct CollectionFeature {
         var isCategorySheetPresented = false
         var isActivityPickerPresented = false
         var isTrashCountsLoaded = false
+        var hasUnreadNotification = false
         var shareRequestCount = 0
     }
 
@@ -31,6 +32,7 @@ struct CollectionFeature {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
         case trashCountsResponse(Result<[TrashCategory: Int], any Error>)
+        case unreadNotificationResponse(Result<Bool, any Error>)
         case profileTapped
         case allCategoryTapped
         case categorySheetPresentationChanged(Bool)
@@ -52,6 +54,7 @@ struct CollectionFeature {
 
     @Dependency(\.userClient) var userClient
     @Dependency(\.recordClient) var recordClient
+    @Dependency(\.notificationClient) var notificationClient
 
     // MARK: - Body
 
@@ -72,7 +75,8 @@ struct CollectionFeature {
                     .run { send in
                         await send(.trashCountsResponse(Result { try await recordClient.fetchTrashCounts(user.id) }))
                     }
-                    .cancellable(id: CancelID.trashCounts, cancelInFlight: true)
+                    .cancellable(id: CancelID.trashCounts, cancelInFlight: true),
+                    fetchHasUnreadNotification()
                 )
 
             case let .profileResponse(.success(profile)):
@@ -96,6 +100,14 @@ struct CollectionFeature {
             case let .trashCountsResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 state.isTrashCountsLoaded = true
+                return .none
+
+            case let .unreadNotificationResponse(.success(hasUnread)):
+                state.hasUnreadNotification = hasUnread
+                return .none
+
+            case let .unreadNotificationResponse(.failure(error)):
+                PlobbyLogger.error(error)
                 return .none
 
             case .profileTapped:
@@ -148,6 +160,18 @@ struct CollectionFeature {
     }
 }
 
+// MARK: - Functions
+
+extension CollectionFeature {
+
+    private func fetchHasUnreadNotification() -> Effect<Action> {
+        .run { send in
+            await send(.unreadNotificationResponse(Result { try await notificationClient.fetchHasUnread() }))
+        }
+        .cancellable(id: CancelID.unreadNotification, cancelInFlight: true)
+    }
+}
+
 // MARK: - Constants
 
 extension CollectionFeature {
@@ -164,5 +188,6 @@ extension CollectionFeature {
     private nonisolated enum CancelID {
         case profile
         case trashCounts
+        case unreadNotification
     }
 }

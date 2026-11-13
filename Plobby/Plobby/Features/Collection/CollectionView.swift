@@ -100,7 +100,19 @@ private extension CollectionView {
         CollectionProfileImage(url: store.profile?.profileImageURL)
             .frame(width: 36.scaled, height: 36.scaled)
             .clipShape(Circle())
+            .unreadDot(store.hasUnreadNotification, inset: Self.unreadDotInset)
     }
+}
+
+private extension CollectionView {
+
+    /// 빨간 점 중심이 프로필 원의 오른쪽 위 곡선(45도) 위에 오도록 안쪽으로 옮기는 값이에요.
+    static let unreadDotInset: CGSize = {
+        let profileRadius = 18.scaled
+        let dotRadius = 4.scaled
+        let inset = profileRadius * (1 - cos(.pi / 4)) - dotRadius
+        return CGSize(width: inset, height: inset)
+    }()
 }
 
 private struct CollectionProfileImage: View {
