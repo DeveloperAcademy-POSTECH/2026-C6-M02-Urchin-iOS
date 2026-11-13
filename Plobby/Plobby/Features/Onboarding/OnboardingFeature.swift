@@ -58,10 +58,12 @@ struct OnboardingFeature {
                 guard let next = state.currentPage.next else { return .none }
 
                 state.currentPage = next
+                state.selectedActivities[next] = nil
                 return .none
 
             case let .pageChanged(page):
                 state.currentPage = page
+                state.selectedActivities[page] = nil
                 return .none
 
             case .browseButtonTapped:
