@@ -16,6 +16,8 @@ struct HomeSceneOverlay: View {
     let isGoalFinished: Bool
     let isAtDay: Bool
     let onTrashSummaryTapped: () -> Void
+    /// 날짜 칩 영역을 화면 좌표로 알려줘요. 튜토리얼에서 칩을 밝게 비출 때 써요.
+    var onDayPillsFrameChanged: ((CGRect) -> Void)?
 
     var body: some View {
         topPills
@@ -60,6 +62,11 @@ private extension HomeSceneOverlay {
                         .homeSceneShadow()
                         .transition(.opacity.combined(with: .scale(scale: 0.6)))
                 }
+            }
+            .onGeometryChange(for: CGRect.self) { proxy in
+                proxy.frame(in: .global)
+            } action: { frame in
+                onDayPillsFrameChanged?(frame)
             }
         }
     }

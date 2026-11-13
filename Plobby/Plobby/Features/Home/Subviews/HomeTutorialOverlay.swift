@@ -53,6 +53,8 @@ enum HomeTutorialStep: CaseIterable, Equatable {
 enum HomeTutorialTarget: Hashable {
     case goalCard
     case activityToggle
+    /// 장면 위의 날짜 칩이에요. 장면을 비추는 단계에서 함께 밝게 보여줘요.
+    case dayChip
     case scene
 }
 
@@ -77,16 +79,22 @@ struct HomeTutorialOverlay: View {
             let highlight = step.target
                 .flatMap { frames[$0] }
                 .map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
+            let dayChip = step.target == .scene
+                ? frames[.dayChip].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
+                : nil
+            let goalCard = step.target == .scene
+                ? frames[.goalCard].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
+                : nil
 
             ZStack(alignment: .top) {
                 if step == .finish {
                     finishView
                 } else {
-                    dimmedBackground(highlight: highlight)
+                    dimmedBackground(highlight: highlight, dayChip: dayChip, goalCard: goalCard)
 
                     if let message = step.message {
                         // 문구가 바뀌면 이전 문구는 흐려지며 사라지고 새 문구가 나타나요.
-                        caption(message, highlight: highlight)
+                        caption(message, highlight: highlight, dayChip: dayChip)
                             .id(message)
                             .transition(.opacity)
                     }
@@ -122,7 +130,8 @@ struct HomeTutorialOverlay: View {
 
 private extension HomeTutorialOverlay {
 
-    func dimmedBackground(highlight: CGRect?) -> some View {
+    /// 장면을 비추는 단계에서는 날짜 칩과 공통 목표 카드도 함께 밝게 둬요.
+    func dimmedBackground(highlight: CGRect?, dayChip: CGRect?, goalCard: CGRect?) -> some View {
         Color(.neutralBlack)
             .opacity(0.6)
             .mask {
@@ -131,6 +140,20 @@ private extension HomeTutorialOverlay {
 
                     if let highlight {
                         hole(highlight)
+                            .blendMode(.destinationOut)
+                    }
+
+                    if let dayChip {
+                        Capsule()
+                            .frame(width: dayChip.width, height: dayChip.height)
+                            .position(x: dayChip.midX, y: dayChip.midY)
+                            .blendMode(.destinationOut)
+                    }
+
+                    if let goalCard {
+                        RoundedRectangle(cornerRadius: 16.scaled)
+                            .frame(width: goalCard.width, height: goalCard.height)
+                            .position(x: goalCard.midX, y: goalCard.midY)
                             .blendMode(.destinationOut)
                     }
                 }
@@ -166,17 +189,20 @@ private extension HomeTutorialOverlay {
         }
     }
 
-    func caption(_ message: String, highlight: CGRect?) -> some View {
+    func caption(_ message: String, highlight: CGRect?, dayChip: CGRect?) -> some View {
         Text(message)
             .plobbyFont(.actionLabel)
             .foregroundStyle(Color(.gray0))
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 24.scaled)
-            .padding(.top, captionTop(highlight: highlight))
+            .padding(.top, captionTop(highlight: highlight, dayChip: dayChip))
     }
 
-    func captionTop(highlight: CGRect?) -> CGFloat {
+    func captionTop(highlight: CGRect?, dayChip: CGRect?) -> CGFloat {
+        if let dayChip {
+            return dayChip.maxY + 12.scaled
+        }
         guard let highlight else { return 160.scaled }
 
         switch step.target {

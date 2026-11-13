@@ -105,7 +105,8 @@ private extension HomeTutorialView {
                 totalTrashCount: isTrashCollected ? Self.day.collectedCount : 0,
                 isGoalFinished: false,
                 isAtDay: true,
-                onTrashSummaryTapped: {}
+                onTrashSummaryTapped: {},
+                onDayPillsFrameChanged: { onFrameChanged(.dayChip, $0) }
             )
             .padding(.top, max(visibleCardHeight, cardHeight))
             .animation(.easeInOut(duration: 0.25), value: visibleCardHeight)
