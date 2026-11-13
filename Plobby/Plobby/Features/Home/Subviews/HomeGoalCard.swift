@@ -127,16 +127,37 @@ private extension HomeGoalCard {
             .rotationEffect(.degrees(isExpanded ? 180 : 0))
             .background {
                 if highlightsToggle {
-                    Circle()
-                        .fill(Color(.surfaceBrandSubtle))
-                        .overlay {
-                            Circle()
-                                .strokeBorder(Color(.textBrand), lineWidth: 1.25)
-                        }
-                        .frame(width: 40.scaled, height: 40.scaled)
+                    HomeGoalToggleHighlight()
                 }
             }
             .padding(.trailing, CGFloat(highlightsToggle ? 13 : 12 - 1.5).scaled)
             .frame(width: 44.scaled, height: 44.scaled, alignment: .trailing)
+    }
+}
+
+// MARK: - HomeGoalToggleHighlight
+
+/// 튜토리얼에서 펼치기 버튼을 감싸는 동그라미예요. 나타날 때 살짝 커졌다 작아지며 눈에 띄게 해요.
+private struct HomeGoalToggleHighlight: View {
+
+    @State private var hasAppeared = false
+
+    var body: some View {
+        Circle()
+            .fill(Color(.surfaceBrandSubtle))
+            .overlay {
+                Circle()
+                    .strokeBorder(Color(.textBrand), lineWidth: 1.25)
+            }
+            .frame(width: 40.scaled, height: 40.scaled)
+            .keyframeAnimator(initialValue: 1.0, trigger: hasAppeared) { content, scale in
+                content.scaleEffect(scale)
+            } keyframes: { _ in
+                SpringKeyframe(1.2, duration: 0.25)
+                SpringKeyframe(1.0, duration: 0.3)
+            }
+            .onAppear {
+                hasAppeared = true
+            }
     }
 }

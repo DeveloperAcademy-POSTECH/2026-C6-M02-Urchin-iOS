@@ -104,6 +104,7 @@ struct HomeFeature {
         case sheetDismissed
         case notificationButtonTapped
         case tutorialAdvanced
+        case tutorialIntroFinished
         case tutorialFrameChanged(HomeTutorialTarget, CGRect)
         case tutorialFinished
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
@@ -136,17 +137,25 @@ struct HomeFeature {
                 // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
                 state.isGoalExpanded = false
 
-                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
-                if isHomeTutorialPending, state.tutorialStep == nil {
-                    state.tutorialStep = .goal
-                    state.selectedType = .plogging
-                    state.hasSetInitialGoalExpansion = true
-                }
                 let now = now
-                return .run { send in
+                let fetch: Effect<Action> = .run { send in
                     await send(.boardsResponse(Result { try await fetchBoards(now: now) }, now: now))
                 }
                 .cancellable(id: CancelID.boards, cancelInFlight: true)
+
+                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
+                guard isHomeTutorialPending, state.tutorialStep == nil else { return fetch }
+
+                state.tutorialStep = .goal
+                state.selectedType = .plogging
+                state.hasSetInitialGoalExpansion = true
+                return .merge(
+                    fetch,
+                    .run { send in
+                        try await clock.sleep(for: HomeFeature.tutorialIntroDuration)
+                        await send(.tutorialIntroFinished, animation: .easeInOut(duration: 0.5))
+                    }
+                )
                 
             case let .boardsResponse(.success(boards), now):
                 state.now = now
@@ -294,6 +303,13 @@ struct HomeFeature {
                 state.tutorialStep = state.tutorialStep?.next
                 return .none
 
+            // 첫 안내는 잠깐 보여준 뒤 저절로 펼치기 안내로 넘어가요. 그 사이 눌러서 넘겼으면 그대로 둬요.
+            case .tutorialIntroFinished:
+                guard state.tutorialStep == .goal else { return .none }
+
+                state.tutorialStep = .goalToggle
+                return .none
+
             case let .tutorialFrameChanged(target, frame):
                 state.tutorialFrames[target] = frame
                 return .none
@@ -362,6 +378,8 @@ extension HomeFeature {
     private static let scrollGuideDuration: Duration = .seconds(3)
     private static let sheetDismissDelay: Duration = .milliseconds(350)
     
+    static let tutorialIntroDuration: Duration = .seconds(3)
+
     private nonisolated enum CancelID: Hashable {
         case boards
         case scene(RecordType)
