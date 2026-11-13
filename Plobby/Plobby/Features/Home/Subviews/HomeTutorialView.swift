@@ -14,7 +14,9 @@ struct HomeTutorialView: View {
     // MARK: - Properties
 
     let step: HomeTutorialStep
+    let recordType: RecordType
     let onToggleTapped: () -> Void
+    let onActivitySwitched: () -> Void
     /// 정해진 시간이 지나 저절로 다음 단계로 넘어갈 때 불려요.
     let onAutoAdvance: () -> Void
     let onFrameChanged: (HomeTutorialTarget, CGRect) -> Void
@@ -91,19 +93,24 @@ private extension HomeTutorialView {
 
     var scene: some View {
         ZStack(alignment: .top) {
-            HomeSceneBackdrop(image: .homeSceneBeach)
-                .ignoresSafeArea()
-
-            PloggingSceneView(days: [Self.day], stage: sceneStage, collectPulse: collectPulse)
-                .padding(.top, cardHeight)
-                .ignoresSafeArea(edges: .bottom)
-                .tutorialTarget(.scene, onChange: onFrameChanged)
+            switch recordType {
+            case .plogging:
+                sceneLayer(backdrop: .homeSceneBeach) {
+                    PloggingSceneView(days: [day], stage: sceneStage, collectPulse: collectPulse)
+                }
+                .transition(.move(edge: .leading))
+            case .plobbing:
+                sceneLayer(backdrop: .homeSceneSky) {
+                    PlobbingSceneView(days: [day], stage: sceneStage, collectPulse: collectPulse)
+                }
+                .transition(.move(edge: .trailing))
+            }
 
             HomeSceneOverlay(
-                recordType: .plogging,
+                recordType: recordType,
                 stage: sceneStage,
-                day: Self.day,
-                totalTrashCount: isTrashCollected ? Self.day.collectedCount : 0,
+                day: day,
+                totalTrashCount: isTrashCollected ? day.collectedCount : 0,
                 isGoalFinished: false,
                 isAtDay: true,
                 onTrashSummaryTapped: {},
@@ -117,13 +124,32 @@ private extension HomeTutorialView {
         .frame(maxHeight: .infinity)
     }
 
+    func sceneLayer<Scene: View>(backdrop: ImageResource, @ViewBuilder scene: () -> Scene) -> some View {
+        ZStack(alignment: .top) {
+            HomeSceneBackdrop(image: backdrop)
+                .ignoresSafeArea()
+
+            scene()
+                .padding(.top, cardHeight)
+                .ignoresSafeArea(edges: .bottom)
+                .tutorialTarget(.scene, onChange: onFrameChanged)
+        }
+    }
+
     var activityToggleButton: some View {
-        Image(systemName: "figure.walk")
-            .font(.system(size: 24.scaled))
-            .foregroundStyle(Color(.currentBrandText))
-            .frame(width: 48.scaled, height: 48.scaled)
-            .background(Color(.gray0), in: Circle())
-            .shadow(color: Color(.neutralBlack).opacity(0.1), radius: 6.scaled, y: 2.scaled)
+        Button {
+            guard step == .recordResult, recordType == .plogging else { return }
+            onActivitySwitched()
+        } label: {
+            Image(systemName: recordType == .plogging ? "figure.walk" : "figure.open.water.swim")
+                .font(.system(size: 24.scaled))
+                .foregroundStyle(Color(.currentBrandText))
+                .contentTransition(.symbolEffect(.replace))
+                .frame(width: 48.scaled, height: 48.scaled)
+                .background(Color(.gray0), in: Circle())
+                .shadow(color: Color(.neutralBlack).opacity(0.1), radius: 6.scaled, y: 2.scaled)
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -135,7 +161,7 @@ private extension HomeTutorialView {
     var isTrashCollected: Bool {
         switch step {
         case .goal, .goalToggle, .goalFill, .goalPeriod, .recordIntro, .scroll: false
-        case .recordResult, .activitySwitch, .finish: true
+        case .recordResult, .finish: true
         }
     }
 
@@ -144,7 +170,7 @@ private extension HomeTutorialView {
         case .goal, .goalToggle: 0
         case .goalFill: filledGoalCount
         case .goalPeriod: Self.targetCount
-        default: isTrashCollected ? Self.day.collectedCount : 0
+        default: isTrashCollected ? day.collectedCount : 0
         }
     }
 
@@ -197,7 +223,9 @@ private extension HomeTutorialView {
         return calendar.date(from: DateComponents(year: year, month: 11, day: 1)) ?? .now
     }()
 
-    static let day = GoalDailyProgress(day: startDate, collectedCount: 8, participantCount: 6)
+    var day: GoalDailyProgress {
+        GoalDailyProgress(day: Self.startDate, collectedCount: recordType == .plogging ? 8 : 50, participantCount: 6)
+    }
 
     static func goal(collectedCount: Int) -> Goal {
         Goal(

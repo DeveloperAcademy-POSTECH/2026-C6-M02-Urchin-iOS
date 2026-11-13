@@ -41,6 +41,8 @@ struct HomeFeature {
         var isActivityPickerPresented = false
         var isScrollGuideVisible = false
         var tutorialStep: HomeTutorialStep?
+        /// 튜토리얼에서 보고 있는 활동이에요. 플로깅을 다 본 뒤 전환 버튼을 누르면 플로빙 기록 안내를 한 번 더 봐요.
+        var tutorialRecordType: RecordType = .plogging
         /// 튜토리얼에서 밝게 비출 영역이에요. 탭바까지 덮는 안내 막은 메인 탭에서 그려서 여기 모아 둬요.
         var tutorialFrames: [HomeTutorialTarget: CGRect] = [:]
         var now = Date.distantPast
@@ -119,6 +121,7 @@ struct HomeFeature {
         case notificationButtonTapped
         case tutorialAdvanced
         case tutorialIntroFinished
+        case tutorialActivitySwitched
         case tutorialFrameChanged(HomeTutorialTarget, CGRect)
         case tutorialFinished
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
@@ -156,6 +159,7 @@ struct HomeFeature {
                 guard isHomeTutorialPending, state.tutorialStep == nil else { return fetch }
 
                 state.tutorialStep = .goal
+                state.tutorialRecordType = .plogging
                 state.selectedType = .plogging
                 return .merge(
                     fetch,
@@ -319,6 +323,14 @@ struct HomeFeature {
                 
             case .tutorialAdvanced:
                 state.tutorialStep = state.tutorialStep?.next
+                return .none
+
+            // 플로깅 기록 결과에서 전환 버튼을 누르면 플로빙 기록 안내를 이어서 봐요.
+            case .tutorialActivitySwitched:
+                guard state.tutorialStep == .recordResult, state.tutorialRecordType == .plogging else { return .none }
+
+                state.tutorialRecordType = .plobbing
+                state.tutorialStep = .recordIntro
                 return .none
 
             // 첫 안내는 잠깐 보여준 뒤 저절로 펼치기 안내로 넘어가요. 그 사이 눌러서 넘겼으면 그대로 둬요.

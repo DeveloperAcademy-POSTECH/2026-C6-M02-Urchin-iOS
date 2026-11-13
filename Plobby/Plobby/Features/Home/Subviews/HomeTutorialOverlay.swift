@@ -17,7 +17,6 @@ enum HomeTutorialStep: CaseIterable, Equatable {
     case recordIntro
     case scroll
     case recordResult
-    case activitySwitch
     case finish
 
     var next: Self? {
@@ -35,7 +34,6 @@ enum HomeTutorialStep: CaseIterable, Equatable {
         case .recordIntro: "기록이 쌓이면 어떻게 보일까요?"
         case .recordResult: "이렇게 기록하면 공통 목표에 포함돼요"
         case .scroll: "스크롤해 보세요"
-        case .activitySwitch: nil
         case .finish: nil
         }
     }
@@ -43,21 +41,20 @@ enum HomeTutorialStep: CaseIterable, Equatable {
     /// 하루치 기록을 담은 뒤부터 날짜 옆에 개수 칩이 보여요.
     var showsCountChip: Bool {
         switch self {
-        case .recordResult, .activitySwitch, .finish: true
+        case .recordResult, .finish: true
         default: false
         }
     }
 
     /// 기록 결과부터는 오른쪽 아래 전환 버튼과 "플로빙 보기" 라벨을 함께 보여줘요.
     var showsActivityToggle: Bool {
-        self == .recordResult || self == .activitySwitch
+        self == .recordResult
     }
 
     var target: HomeTutorialTarget? {
         switch self {
         case .goal, .goalToggle, .goalFill, .goalPeriod: .goalCard
         case .recordIntro, .recordResult, .scroll: .scene
-        case .activitySwitch: .activityToggle
         case .finish: nil
         }
     }
@@ -80,6 +77,7 @@ struct HomeTutorialOverlay: View {
     // MARK: - Properties
 
     let step: HomeTutorialStep
+    let recordType: RecordType
     /// 화면 좌표(global)로 잰 강조할 영역이에요.
     let frames: [HomeTutorialTarget: CGRect]
     let onAdvance: () -> Void
@@ -99,6 +97,7 @@ struct HomeTutorialOverlay: View {
             let countChip = step.target == .scene && step.showsCountChip
                 ? frames[.countChip].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
                 : nil
+            let isSwitchable = step == .recordResult && recordType == .plogging
             let activityToggle = step.showsActivityToggle
                 ? frames[.activityToggle].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
                 : nil
@@ -114,7 +113,7 @@ struct HomeTutorialOverlay: View {
                         highlight: highlight,
                         chips: [dayChip, countChip].compactMap { $0 },
                         goalCard: goalCard,
-                        activityToggle: step.target == .activityToggle ? nil : activityToggle
+                        activityToggle: activityToggle
                     )
 
                     if let message = step.message {
@@ -131,7 +130,7 @@ struct HomeTutorialOverlay: View {
 
                     if let activityToggle {
                         // 버튼과 가로 가운데를 맞추고, 버튼 위쪽에서 24 떨어진 곳에 라벨 아래쪽이 오도록 놓아요.
-                        HomeTutorialBouncingLabel(text: "\(RecordType.plobbing.name) 보기")
+                        HomeTutorialBouncingLabel(text: "\((recordType == .plogging ? RecordType.plobbing : .plogging).name) 보기")
                             .position(
                                 x: activityToggle.midX,
                                 y: activityToggle.minY - 24.scaled - PlobbyTypography.labelSelected.lineHeight.scaled / 2
@@ -140,10 +139,10 @@ struct HomeTutorialOverlay: View {
                 }
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
-            // 펼치기 안내에서는 강조한 목표 카드만 눌리게 비워 두고, 나머지 영역은 눌러도 넘어가지 않아요.
-            .contentShape(TapArea(hole: step == .goalToggle ? highlight : nil), eoFill: true)
+            // 펼치기 안내는 목표 카드만, 플로깅 기록 결과는 전환 버튼만 눌리게 비워 두고, 나머지 영역은 눌러도 넘어가지 않아요.
+            .contentShape(TapArea(hole: step == .goalToggle ? highlight : isSwitchable ? activityToggle : nil), eoFill: true)
             .onTapGesture {
-                guard ![.goalToggle, .goalFill, .scroll, .finish].contains(step) else { return }
+                guard ![.goalToggle, .goalFill, .scroll, .finish].contains(step), !isSwitchable else { return }
                 onAdvance()
             }
             // 스크롤 안내는 실제로 위로 쓸어 올려야 넘어가요.
@@ -211,13 +210,6 @@ private extension HomeTutorialOverlay {
                 .frame(width: diameter, height: diameter)
                 .blur(radius: 24)
                 .position(Self.spotlightCenter(in: rect))
-
-        case .activityToggle:
-            let diameter = max(rect.width, rect.height) + 8.scaled
-
-            Circle()
-                .frame(width: diameter, height: diameter)
-                .position(x: rect.midX, y: rect.midY)
 
         default:
             RoundedRectangle(cornerRadius: 16.scaled)
