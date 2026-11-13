@@ -17,6 +17,8 @@ struct HomeGoalCard: View {
     let onAllGoalsTapped: () -> Void
     /// 튜토리얼에서 펼치기 버튼을 눌러 보라고 동그라미로 강조해요.
     var highlightsToggle = false
+    /// 튜토리얼에서 목표를 다 채운 모습을 보여줄 때 라벨을 "공통 목표 달성"으로 바꿔요.
+    var showsAchievedLabel = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
@@ -66,7 +68,8 @@ private extension HomeGoalCard {
         HStack(spacing: 8.scaled) {
             VStack(alignment: .leading, spacing: 2.scaled) {
                 HStack(spacing: 8.scaled) {
-                    Text("공통 목표")
+                    Text(showsAchievedLabel ? "공통 목표 달성" : "공통 목표")
+                        .foregroundStyle(showsAchievedLabel ? Color(.textBrand) : Color(.textSecondary))
                     Text(status.chipText)
                 }
                 .plobbyFont(.helper)
