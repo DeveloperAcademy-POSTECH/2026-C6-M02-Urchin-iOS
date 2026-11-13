@@ -15,7 +15,8 @@ struct HomeTutorialView: View {
 
     let step: HomeTutorialStep
     let onToggleTapped: () -> Void
-    let onGoalFilled: () -> Void
+    /// 정해진 시간이 지나 저절로 다음 단계로 넘어갈 때 불려요.
+    let onAutoAdvance: () -> Void
     let onFrameChanged: (HomeTutorialTarget, CGRect) -> Void
 
     @State private var filledGoalCount = Self.goalFillSteps[0]
@@ -51,7 +52,11 @@ struct HomeTutorialView: View {
         }
         .background(Color(.gray0))
         .task(id: step) {
-            await fillGoalIfNeeded()
+            switch step {
+            case .goalFill: await fillGoal()
+            case .goalPeriod: await advance(after: Self.goalPeriodDuration)
+            default: break
+            }
         }
     }
 }
@@ -157,9 +162,7 @@ private extension HomeTutorialView {
     }
 
     /// 카드가 펼쳐지면 50 → 150 → 200개로 차오르고, 다 차고 잠시 뒤 목표 기간 안내로 넘어가요.
-    func fillGoalIfNeeded() async {
-        guard step == .goalFill else { return }
-
+    func fillGoal() async {
         filledGoalCount = Self.goalFillSteps[0]
         for count in Self.goalFillSteps.dropFirst() {
             try? await Task.sleep(for: Self.goalFillInterval)
@@ -170,10 +173,15 @@ private extension HomeTutorialView {
             }
         }
 
-        try? await Task.sleep(for: Self.goalFilledDelay)
+        await advance(after: Self.goalFilledDelay)
+    }
+
+    /// 목표 기간 안내는 잠시 보여준 뒤 저절로 넘어가요. 다음 단계에서는 카드가 접혀요.
+    func advance(after duration: Duration) async {
+        try? await Task.sleep(for: duration)
         guard !Task.isCancelled else { return }
 
-        onGoalFilled()
+        onAutoAdvance()
     }
 
     var sceneStage: HomeSceneStage {
@@ -193,6 +201,7 @@ private extension HomeTutorialView {
     static let goalFillSteps = [50, 150, 200]
     static let goalFillInterval: Duration = .seconds(0.8)
     static let goalFilledDelay: Duration = .seconds(0.5)
+    static let goalPeriodDuration: Duration = .seconds(3)
 
     static let startDate: Date = {
         let calendar = Calendar.current

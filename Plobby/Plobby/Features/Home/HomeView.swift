@@ -41,7 +41,7 @@ struct HomeView: View {
                 HomeTutorialView(
                     step: step,
                     onToggleTapped: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.25)) },
-                    onGoalFilled: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.5)) },
+                    onAutoAdvance: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.5)) },
                     onFrameChanged: { store.send(.tutorialFrameChanged($0, $1)) }
                 )
                 .transition(.opacity)
