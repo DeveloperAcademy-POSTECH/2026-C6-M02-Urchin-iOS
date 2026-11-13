@@ -28,6 +28,8 @@ struct PhotosPickerFeature {
         var isAlbumListExpanded = false
         var assets: IdentifiedArrayOf<PhotoAsset> = []
         var selection: PhotoSelection
+        /// 앨범 밖에서 이미 넣어 둔 사진 수예요. 수정 중인 기존 사진이 해당해요.
+        let alreadySelectedCount: Int
         var isCameraPresented = false
         var toast = ToastFeature.State()
         
@@ -36,6 +38,7 @@ struct PhotosPickerFeature {
         init(recordType: RecordType, selectedAssets: [PhotoAsset] = [], alreadySelectedCount: Int = 0) {
             self.purpose = .record(recordType)
             self.selection = PhotoSelection(selectedAssets, limit: PhotoSelection.maxCount - alreadySelectedCount)
+            self.alreadySelectedCount = alreadySelectedCount
         }
 
         static var profile: Self {
@@ -45,6 +48,7 @@ struct PhotosPickerFeature {
         private init(purpose: Purpose, selection: PhotoSelection) {
             self.purpose = purpose
             self.selection = selection
+            self.alreadySelectedCount = 0
         }
 
         var isSingleSelection: Bool {
@@ -55,8 +59,9 @@ struct PhotosPickerFeature {
             albums.first { $0.id == selectedAlbumID }
         }
         
+        /// 기존 사진이 남아 있으면 앨범에서 모두 해제해도 확정할 수 있어요.
         var isSkip: Bool {
-            selection.isEmpty
+            selection.isEmpty && alreadySelectedCount == 0
         }
     }
     

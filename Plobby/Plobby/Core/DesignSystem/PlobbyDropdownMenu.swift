@@ -19,6 +19,13 @@ struct PlobbyDropdownMenu: View {
 
     static var width: CGFloat { 184 }
 
+    static func height(itemCount: Int) -> CGFloat {
+        let rowHeight: CGFloat = 44
+        let spacing: CGFloat = 4
+        let padding: CGFloat = 8
+        return CGFloat(itemCount) * rowHeight + CGFloat(max(itemCount - 1, 0)) * spacing + padding * 2
+    }
+
     // MARK: - Body
 
     var body: some View {
@@ -147,6 +154,10 @@ extension View {
             GeometryReader { proxy in
                 if isPresented.wrappedValue, let anchor {
                     let buttonFrame = proxy[anchor]
+                    let menuHeight = PlobbyDropdownMenu.height(itemCount: items.count).scaled
+                    let gap = 4.scaled
+                    // 아래 공간이 모자라면 버튼 위로 펼쳐요.
+                    let opensUpward = buttonFrame.maxY + gap + menuHeight > proxy.size.height
 
                     ZStack(alignment: .topLeading) {
                         // 메뉴 밖을 누르면 닫혀요.
@@ -162,9 +173,9 @@ extension View {
                         }
                         .offset(
                             x: buttonFrame.maxX - PlobbyDropdownMenu.width.scaled,
-                            y: buttonFrame.maxY + 4.scaled
+                            y: opensUpward ? buttonFrame.minY - gap - menuHeight : buttonFrame.maxY + gap
                         )
-                        .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .topTrailing)))
+                        .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: opensUpward ? .bottomTrailing : .topTrailing)))
                     }
                 }
             }

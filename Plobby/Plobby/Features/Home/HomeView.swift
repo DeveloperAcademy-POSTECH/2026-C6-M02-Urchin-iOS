@@ -18,6 +18,8 @@ struct HomeView: View {
     @Namespace private var tabUnderline
     @State private var walkDragStart: (progress: Double, translation: CGFloat)?
     @State private var dragAxis: Axis?
+    /// 드래그가 취소되면 onEnded가 불리지 않아서, 끝났는지는 이 값으로 알아요.
+    @GestureState private var isDragging = false
     
     // MARK: - Body
     
@@ -175,11 +177,20 @@ private extension HomeView {
         .frame(maxHeight: .infinity)
         .contentShape(Rectangle())
         .gesture(walkGesture)
+        .onChange(of: isDragging) { _, isDragging in
+            guard !isDragging else { return }
+
+            walkDragStart = nil
+            dragAxis = nil
+        }
         .animation(.easeInOut(duration: 0.2), value: store.isScrollGuideVisible)
     }
 
     var walkGesture: some Gesture {
         DragGesture(minimumDistance: 4)
+            .updating($isDragging) { _, isDragging, _ in
+                isDragging = true
+            }
             .onChanged { value in
                 let axis = dragAxis ?? (abs(value.translation.width) > abs(value.translation.height) ? .horizontal : .vertical)
                 dragAxis = axis

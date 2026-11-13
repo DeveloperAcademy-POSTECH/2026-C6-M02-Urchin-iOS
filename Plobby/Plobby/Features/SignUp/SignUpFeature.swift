@@ -106,6 +106,9 @@ struct SignUpFeature {
 
             case let .path(.element(id: id, action: .profileSetup(.backButtonTapped))),
                  let .path(.element(id: id, action: .favoriteBeachSetup(.backButtonTapped))):
+                // 가입 요청 중에 화면을 빼면 요청이 끝난 뒤 수정 전 프로필로 완료 화면이 붙어요.
+                guard !state.isSigningUp else { return .none }
+
                 state.path.pop(from: id)
                 return .none
 

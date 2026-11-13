@@ -130,7 +130,7 @@ extension RecordListSection {
                         RecordMoreButton(isMenuPresented: menuRecordID == record.id) {
                             onMoreTapped(record)
                         }
-                        .padding(.top, 16.scaled)
+                        .padding(.top, (16 - RecordMoreButton.tapInset).scaled)
                         .padding(.trailing, (Self.imageSize + RecordMoreButton.imageSpacing).scaled)
                     }
                 }
@@ -211,6 +211,9 @@ struct RecordMoreButton: View {
     static var width: CGFloat { 24 }
     static var imageSpacing: CGFloat { 32 }
     static var height: CGFloat { PlobbyTypography.actionLabel.lineHeight }
+    static var tapSize: CGFloat { 44 }
+    /// 터치 영역이 아이콘보다 위아래로 넓어진 만큼이에요. 위치를 잡을 때 이만큼 올려요.
+    static var tapInset: CGFloat { (tapSize - height) / 2 }
 
     var body: some View {
         Button(action: action) {
@@ -218,10 +221,11 @@ struct RecordMoreButton: View {
                 .font(.system(size: 13.scaled, weight: .semibold))
                 .foregroundStyle(Color(.gray600))
                 .frame(width: Self.width.scaled, height: Self.height.scaled, alignment: .trailing)
+                .plobbyDropdownAnchor(isPresented: isMenuPresented)
+                .frame(width: Self.tapSize.scaled, height: Self.tapSize.scaled, alignment: .trailing)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel("기록 더보기")
-        .plobbyDropdownAnchor(isPresented: isMenuPresented)
     }
 }
