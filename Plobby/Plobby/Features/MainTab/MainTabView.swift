@@ -73,7 +73,7 @@ struct MainTabView: View {
                 onBrowse: { store.send(.loginSheetPresentationChanged(false)) }
             )
         }
-        .plobbyAlert($store.scope(state: \.signIn.alert, action: \.signIn.alert))
+        .plobbyAlert(store: store, state: \.signIn.alert, action: \.signIn.alert)
     }
 }
 
@@ -103,8 +103,6 @@ private extension MainTabView {
         }
     }
 
-    /// 탭을 바꾸면 이전 탭 화면이 뒤에 그대로 남아서, 지도 검색창 키보드가 새 탭에 잠깐 떠 있다가 느리게 내려가요.
-    /// 탭을 바꾸는 순간 키보드를 애니메이션 없이 바로 내려요.
     var tabSelection: Binding<MainTab> {
         Binding(
             get: { store.selectedTab },

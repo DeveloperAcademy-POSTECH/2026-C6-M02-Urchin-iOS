@@ -29,7 +29,7 @@ struct OnboardingView: View {
             }
         }
         .animation(Self.pageAnimation, value: store.currentPage)
-        .plobbyAlert($store.scope(state: \.signIn.alert, action: \.signIn.alert))
+        .plobbyAlert(store: store, state: \.signIn.alert, action: \.signIn.alert)
     }
 }
 
@@ -64,9 +64,7 @@ private extension OnboardingView {
                       value.predictedEndTranslation.width > Self.backSwipeThreshold
                 else { return }
 
-                withAnimation(Self.pageAnimation) {
-                    store.send(.pageChanged(previous))
-                }
+                store.send(.pageChanged(previous), animation: Self.pageAnimation)
             }
     }
 

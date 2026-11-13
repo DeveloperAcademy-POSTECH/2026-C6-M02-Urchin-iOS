@@ -27,8 +27,8 @@ struct MyFeature {
         @Presents var profileEdit: ProfileEditFeature.State?
         @Presents var settings: SettingsFeature.State?
         @Presents var recordDetail: RecordDetailFeature.State?
+        @Presents var recordMenu: RecordMenuFeature.State?
         @Presents var beachHome: BeachHomeFeature.State?
-        /// 해변 홈에서 연 기록 상세예요. 마이 목록에서 연 상세와 화면 단계가 달라서 따로 둬요.
         @Presents var beachRecordDetail: RecordDetailFeature.State?
         @Presents var favoriteBeachAdd: FavoriteBeachAddFeature.State?
 
@@ -57,7 +57,6 @@ struct MyFeature {
         }
     }
 
-    /// 되돌리기를 누르면 원래 자리로 돌려놓기 위해 해제한 위치를 함께 둬요.
     struct RemovedFavoriteBeach: Equatable {
         let beach: Beach
         let index: Int
@@ -79,10 +78,12 @@ struct MyFeature {
         case favoriteBeachRequestFailed(Beach, isFavorite: Bool)
         case recordFilterChanged(RecordFilter)
         case recordTapped(RecordSummary.ID)
+        case recordMenuSelected(RecordSummary, RecordMenuFeature.Menu)
         case recordStartButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
         case settings(PresentationAction<SettingsFeature.Action>)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
+        case recordMenu(PresentationAction<RecordMenuFeature.Action>)
         case beachHome(PresentationAction<BeachHomeFeature.Action>)
         case beachRecordDetail(PresentationAction<RecordDetailFeature.Action>)
         case favoriteBeachAdd(PresentationAction<FavoriteBeachAddFeature.Action>)
@@ -108,6 +109,19 @@ struct MyFeature {
             ToastFeature()
         }
 
+        core
+            .ifLet(\.$beachHome, action: \.beachHome) {
+                BeachHomeFeature()
+            }
+            .ifLet(\.$beachRecordDetail, action: \.beachRecordDetail) {
+                RecordDetailFeature()
+            }
+            .ifLet(\.$favoriteBeachAdd, action: \.favoriteBeachAdd) {
+                FavoriteBeachAddFeature()
+            }
+    }
+
+    private var core: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -184,6 +198,26 @@ struct MyFeature {
                 state.recordDetail = RecordDetailFeature.State(recordID: recordID)
                 return .none
 
+            case let .recordMenuSelected(record, menu):
+                state.recordMenu = RecordMenuFeature.State(record: record)
+                return .send(.recordMenu(.presented(.menuSelected(menu))))
+
+            case .recordMenu(.presented(.delegate(.updated))):
+                state.recordMenu = nil
+
+                guard case let .member(user) = state.membershipStatus else { return .none }
+
+                return fetchRecords(userID: user.id)
+
+            case let .recordMenu(.presented(.delegate(.deleted(recordID)))):
+                state.recordMenu = nil
+                state.records.removeAll { $0.id == recordID }
+                return .none
+
+            case .recordMenu(.presented(.delegate(.blocked))):
+                state.recordMenu = nil
+                return .none
+
             case .profileEditButtonTapped:
                 guard case .member = state.membershipStatus else {
                     return .send(.delegate(.loginRequired))
@@ -201,7 +235,6 @@ struct MyFeature {
                 state.settings = SettingsFeature.State()
                 return .none
 
-            // 비회원에게만 보이는 버튼이라 로그인 시트를 띄워요
             case .recordStartButtonTapped:
                 return .send(.delegate(.loginRequired))
 
@@ -237,7 +270,6 @@ struct MyFeature {
                 state.beachRecordDetail = nil
                 return .none
 
-            // 지운 기록은 해변 홈 목록에서 빼고, 정화 횟수·수거량을 다시 불러와요.
             case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.beachRecordDetail = nil
                 state.records.removeAll { $0.id == recordID }
@@ -247,7 +279,7 @@ struct MyFeature {
                 state.beachRecordDetail = nil
                 return .send(.beachHome(.presented(.userBlocked(userID))))
 
-            case .profileEdit, .settings, .recordDetail, .beachHome, .beachRecordDetail, .favoriteBeachAdd, .toast,
+            case .profileEdit, .settings, .recordDetail, .recordMenu, .beachHome, .beachRecordDetail, .favoriteBeachAdd, .toast,
                  .delegate:
                 return .none
             }
@@ -261,14 +293,8 @@ struct MyFeature {
         .ifLet(\.$recordDetail, action: \.recordDetail) {
             RecordDetailFeature()
         }
-        .ifLet(\.$beachHome, action: \.beachHome) {
-            BeachHomeFeature()
-        }
-        .ifLet(\.$beachRecordDetail, action: \.beachRecordDetail) {
-            RecordDetailFeature()
-        }
-        .ifLet(\.$favoriteBeachAdd, action: \.favoriteBeachAdd) {
-            FavoriteBeachAddFeature()
+        .ifLet(\.$recordMenu, action: \.recordMenu) {
+            RecordMenuFeature()
         }
     }
 }

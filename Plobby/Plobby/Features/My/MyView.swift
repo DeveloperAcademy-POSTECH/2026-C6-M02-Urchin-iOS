@@ -15,6 +15,7 @@ struct MyView: View {
 
     @Bindable var store: StoreOf<MyFeature>
     @State private var savedProfileImage: UIImage?
+    @State private var menuRecord: RecordSummary?
     @Environment(\.dismiss) private var dismiss
 
     // MARK: - Body
@@ -41,6 +42,10 @@ struct MyView: View {
             content
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .recordMoreMenu(record: $menuRecord, isMine: { _ in true }) { record, menu in
+            store.send(.recordMenuSelected(record, menu))
+        }
+        .recordMenu(store: store.scope(state: \.recordMenu, action: \.recordMenu.presented))
         .plobbyToast(store.toast.toastType) {
             store.send(.favoriteBeachUndoButtonTapped, animation: Self.favoriteBeachAnimation)
         }
@@ -66,7 +71,6 @@ struct MyView: View {
 
 extension MyView {
 
-    /// 비회원도 회원과 같은 구성으로 보여주고, 값만 비워둬요.
     private var content: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
@@ -86,7 +90,9 @@ extension MyView {
                     records: store.filteredRecords,
                     selectedFilter: store.recordFilter,
                     onFilterChanged: { store.send(.recordFilterChanged($0)) },
-                    onRecordTapped: { store.send(.recordTapped($0)) }
+                    onRecordTapped: { store.send(.recordTapped($0)) },
+                    onMoreTapped: { menuRecord = $0 },
+                    menuRecordID: menuRecord?.id
                 ) {
                     if store.isMember {
                         RecordListEmptyMessage()
@@ -184,7 +190,6 @@ extension MyView {
         }
     }
 
-    /// 비회원은 숫자 대신 "-"를 보여줘요.
     private func memberValue(_ value: String) -> String {
         store.isMember ? value : "-"
     }
@@ -291,7 +296,6 @@ extension MyView {
         }
     }
 
-    /// 관심 해변이 최대 개수만큼 있으면 더 추가할 수 없어서 흐리게 보여줘요.
     private var favoriteBeachAddButton: some View {
         Button {
             store.send(.favoriteBeachAddButtonTapped)

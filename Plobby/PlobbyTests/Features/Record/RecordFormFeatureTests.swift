@@ -51,6 +51,22 @@ struct RecordFormFeatureTests {
             $0.photos = [self.photos[1], self.photos[2]]
         }
     }
+
+    @Test
+    func 사진을_모두_지우면_필수_안내가_뜬다() async {
+        let store = makeStore()
+
+        await store.send(.photoDeleteTapped(photos[0].id)) {
+            $0.photos = [self.photos[1], self.photos[2]]
+        }
+        await store.send(.photoDeleteTapped(photos[1].id)) {
+            $0.photos = [self.photos[2]]
+        }
+        await store.send(.photoDeleteTapped(photos[2].id)) {
+            $0.photos = []
+            $0.isPhotoErrorVisible = true
+        }
+    }
 }
 
 // MARK: - Helpers

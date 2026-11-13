@@ -265,21 +265,10 @@ private extension PhotosPickerView {
 private extension PhotosPickerView {
 
     var bottomButton: some View {
-        Group {
-            if store.purpose == .profile {
-                PlobbyButton(text: "사진 추가") {
-                    store.send(.bottomButtonTapped)
-                }
-                .disabled(store.isSkip)
-            } else {
-                PlobbyButton(
-                    text: store.isSkip ? "나중에 추가" : "다음",
-                    style: store.isSkip ? .alternative : .default
-                ) {
-                    store.send(.bottomButtonTapped)
-                }
-            }
+        PlobbyButton(text: store.purpose == .profile ? "사진 추가" : "추가하기") {
+            store.send(.bottomButtonTapped)
         }
+        .disabled(store.isSkip)
         .padding(.horizontal, 20.scaled)
         .padding(.vertical, 24.scaled)
         .background(Color(.gray0))
