@@ -62,6 +62,9 @@
 		7B3C1A61309D0000004C5301 /* RecordCollectingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */; };
 		7B3C1A63309D0000004C5301 /* RecordCollectingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */; };
 		7B3C1A71A1B2C3D4E5F60001 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A70A1B2C3D4E5F60001 /* UINavigationController+.swift */; };
+		7B3C1A81A1B2C3D4E5F60001 /* RecordFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A80A1B2C3D4E5F60001 /* RecordFilter.swift */; };
+		7B3C1A83A1B2C3D4E5F60001 /* RecordFilterChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A82A1B2C3D4E5F60001 /* RecordFilterChips.swift */; };
+		7B3C1A91A1B2C3D4E5F60001 /* RecordMenuFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A90A1B2C3D4E5F60001 /* RecordMenuFeature.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
@@ -232,6 +235,7 @@
 		EC196749309C58BA00BC4C19 /* PlobbyTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC196748309C58BA00BC4C19 /* PlobbyTypography.swift */; };
 		EC19674C309CE77F00BC4C19 /* CollectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC19674B309CE77F00BC4C19 /* CollectionCardView.swift */; };
 		EC19674E309CE78F00BC4C19 /* CollectionCardFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */; };
+		EC20D3EC30A6132C00F7B62F /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC20D3EB30A6132C00F7B62F /* SplashView.swift */; };
 		ECD3271130A064E800C1E655 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271030A064E800C1E655 /* CollectionView.swift */; };
 		ECD3271330A064F000C1E655 /* CollectionFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3271230A064F000C1E655 /* CollectionFeature.swift */; };
 		ECDDDAB4309AC1F800FB04D5 /* BeachPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDDDAB2309AC1F800FB04D5 /* BeachPickerView.swift */; };
@@ -251,7 +255,6 @@
 		ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28F3098338400C4916C /* PlobbyLogger.swift */; };
 		ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */; };
 		ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2923098338400C4916C /* PlobbyButton.swift */; };
-		7B3C1A83A1B2C3D4E5F60001 /* RecordFilterChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A82A1B2C3D4E5F60001 /* RecordFilterChips.swift */; };
 		ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2943098338400C4916C /* AlertType.swift */; };
 		ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2953098338400C4916C /* Secrets.swift */; };
 		ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2973098338400C4916C /* AlertState+.swift */; };
@@ -270,7 +273,6 @@
 		ECE6F2ED3098338400C4916C /* RecordMemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AD3098338400C4916C /* RecordMemo.swift */; };
 		ECE6F2EE3098338400C4916C /* TrashTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AE3098338400C4916C /* TrashTypeName.swift */; };
 		ECE6F2EF3098338400C4916C /* WaterDepth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2AF3098338400C4916C /* WaterDepth.swift */; };
-		7B3C1A81A1B2C3D4E5F60001 /* RecordFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A80A1B2C3D4E5F60001 /* RecordFilter.swift */; };
 		ECE6F2F33098338400C4916C /* AppleLoginLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */; };
 		ECE6F2F53098338400C4916C /* OnboardingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2B93098338400C4916C /* OnboardingFeature.swift */; };
 		ECE6F2F63098338400C4916C /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2BA3098338400C4916C /* OnboardingPage.swift */; };
@@ -359,6 +361,9 @@
 		7B3C1A60309D0000004C5301 /* RecordCollectingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectingView.swift; sourceTree = "<group>"; };
 		7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectingFeature.swift; sourceTree = "<group>"; };
 		7B3C1A70A1B2C3D4E5F60001 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
+		7B3C1A80A1B2C3D4E5F60001 /* RecordFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilter.swift; sourceTree = "<group>"; };
+		7B3C1A82A1B2C3D4E5F60001 /* RecordFilterChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterChips.swift; sourceTree = "<group>"; };
+		7B3C1A90A1B2C3D4E5F60001 /* RecordMenuFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMenuFeature.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -534,6 +539,7 @@
 		EC196748309C58BA00BC4C19 /* PlobbyTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyTypography.swift; sourceTree = "<group>"; };
 		EC19674B309CE77F00BC4C19 /* CollectionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCardView.swift; sourceTree = "<group>"; };
 		EC19674D309CE78F00BC4C19 /* CollectionCardFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCardFeature.swift; sourceTree = "<group>"; };
+		EC20D3EB30A6132C00F7B62F /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		ECD3271030A064E800C1E655 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		ECD3271230A064F000C1E655 /* CollectionFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionFeature.swift; sourceTree = "<group>"; };
 		ECDDDAB2309AC1F800FB04D5 /* BeachPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachPickerView.swift; sourceTree = "<group>"; };
@@ -553,7 +559,6 @@
 		ECE6F28F3098338400C4916C /* PlobbyLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyLogger.swift; sourceTree = "<group>"; };
 		ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageCompressor.swift; sourceTree = "<group>"; };
 		ECE6F2923098338400C4916C /* PlobbyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyButton.swift; sourceTree = "<group>"; };
-		7B3C1A82A1B2C3D4E5F60001 /* RecordFilterChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterChips.swift; sourceTree = "<group>"; };
 		ECE6F2943098338400C4916C /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		ECE6F2953098338400C4916C /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		ECE6F2973098338400C4916C /* AlertState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertState+.swift"; sourceTree = "<group>"; };
@@ -573,7 +578,6 @@
 		ECE6F2AD3098338400C4916C /* RecordMemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordMemo.swift; sourceTree = "<group>"; };
 		ECE6F2AE3098338400C4916C /* TrashTypeName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashTypeName.swift; sourceTree = "<group>"; };
 		ECE6F2AF3098338400C4916C /* WaterDepth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDepth.swift; sourceTree = "<group>"; };
-		7B3C1A80A1B2C3D4E5F60001 /* RecordFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilter.swift; sourceTree = "<group>"; };
 		ECE6F2B63098338400C4916C /* AppleLoginLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginLabel.swift; sourceTree = "<group>"; };
 		ECE6F2B93098338400C4916C /* OnboardingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeature.swift; sourceTree = "<group>"; };
 		ECE6F2BA3098338400C4916C /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
@@ -1231,6 +1235,7 @@
 			children = (
 				DA688DD63099F0F20064A2F4 /* RecordDetailView.swift */,
 				DA688DCC3099CFC70064A2F4 /* RecordDetailFeature.swift */,
+				7B3C1A90A1B2C3D4E5F60001 /* RecordMenuFeature.swift */,
 			);
 			path = RecordDetail;
 			sourceTree = "<group>";
@@ -1368,6 +1373,7 @@
 				ECE6F27E3098338400C4916C /* AppFeature.swift */,
 				ECE6F27F3098338400C4916C /* ContentView.swift */,
 				ECE6F2803098338400C4916C /* PlobbyApp.swift */,
+				EC20D3EB30A6132C00F7B62F /* SplashView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -1933,6 +1939,7 @@
 				DA71D23030A2AF1900E00CD1 /* PlobbyNavigationBarConfiguration.swift in Sources */,
 				6C58EF6B7AEFD90EBE7571E4 /* ProfileResponseDTO.swift in Sources */,
 				DA688DCD3099CFC70064A2F4 /* RecordDetailFeature.swift in Sources */,
+				7B3C1A91A1B2C3D4E5F60001 /* RecordMenuFeature.swift in Sources */,
 				34FBF121843E575A8727FBCF /* BlockedUserResponseDTO.swift in Sources */,
 				EC19674E309CE78F00BC4C19 /* CollectionCardFeature.swift in Sources */,
 				ECE6F2CD3098338400C4916C /* AppDelegate.swift in Sources */,
@@ -2053,6 +2060,7 @@
 				DA688DD13099F0490064A2F4 /* PhotosPickerView.swift in Sources */,
 				AC79ACD85403DD13EBC9ACCD /* CameraPicker.swift in Sources */,
 				EC0D4B7E3098AFE5000E7BB7 /* DesignScale.swift in Sources */,
+				EC20D3EC30A6132C00F7B62F /* SplashView.swift in Sources */,
 				ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */,
 				ECE6F2DF3098338400C4916C /* AlertState+.swift in Sources */,
 				ECE6F2E03098338400C4916C /* ButtonState+.swift in Sources */,

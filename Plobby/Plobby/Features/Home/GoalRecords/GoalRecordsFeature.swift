@@ -18,6 +18,7 @@ struct GoalRecordsFeature {
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
         @Presents var recordDetail: RecordDetailFeature.State?
+        @Presents var recordMenu: RecordMenuFeature.State?
 
         let goal: Goal
         var records: [RecordSummary] = []
@@ -29,6 +30,11 @@ struct GoalRecordsFeature {
             guard let recordType = recordFilter.recordType else { return records }
             return records.filter { $0.recordType == recordType }
         }
+
+        var memberID: UUID? {
+            guard case let .member(user) = membershipStatus else { return nil }
+            return user.id
+        }
     }
 
     // MARK: - Action
@@ -39,7 +45,9 @@ struct GoalRecordsFeature {
         case recordFilterChanged(RecordFilter)
         case backButtonTapped
         case recordTapped(RecordSummary.ID)
+        case recordMenuSelected(RecordSummary, RecordMenuFeature.Menu)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
+        case recordMenu(PresentationAction<RecordMenuFeature.Action>)
         case delegate(Delegate)
 
         enum Delegate {
@@ -98,16 +106,38 @@ struct GoalRecordsFeature {
                 state.records.removeAll { $0.userID == userID }
                 return .none
 
+            case let .recordMenuSelected(record, menu):
+                state.recordMenu = RecordMenuFeature.State(record: record)
+                return .send(.recordMenu(.presented(.menuSelected(menu))))
+
+            case .recordMenu(.presented(.delegate(.updated))):
+                state.recordMenu = nil
+                return .send(.task)
+
+            case let .recordMenu(.presented(.delegate(.deleted(recordID)))),
+                 let .recordMenu(.presented(.delegate(.reported(recordID)))):
+                state.recordMenu = nil
+                state.records.removeAll { $0.id == recordID }
+                return .none
+
+            case let .recordMenu(.presented(.delegate(.blocked(userID)))):
+                state.recordMenu = nil
+                state.records.removeAll { $0.userID == userID }
+                return .none
+
             case let .recordFilterChanged(filter):
                 state.recordFilter = filter
                 return .none
 
-            case .recordDetail, .delegate:
+            case .recordDetail, .recordMenu, .delegate:
                 return .none
             }
         }
         .ifLet(\.$recordDetail, action: \.recordDetail) {
             RecordDetailFeature()
+        }
+        .ifLet(\.$recordMenu, action: \.recordMenu) {
+            RecordMenuFeature()
         }
     }
 }

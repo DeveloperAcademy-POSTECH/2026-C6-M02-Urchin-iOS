@@ -38,6 +38,7 @@ struct RecordFilterChips: View {
                         }
                 }
                 .buttonStyle(.plain)
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
             }
         }
     }

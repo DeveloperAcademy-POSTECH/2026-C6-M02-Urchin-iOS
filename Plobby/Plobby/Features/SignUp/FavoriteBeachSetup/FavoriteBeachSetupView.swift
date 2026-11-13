@@ -86,86 +86,13 @@ private extension FavoriteBeachSetupView {
 private extension FavoriteBeachSetupView {
 
     var bottomSection: some View {
-        VStack(alignment: .leading, spacing: 8.scaled) {
-            selectionSection
-            signUpButton
-        }
-        .padding(.top, 16.scaled)
-        .padding(.horizontal, 20.scaled)
-        .padding(.bottom, 14.scaled)
-        .background(Color(.backgroundDefault))
-    }
-
-    @ViewBuilder
-    var selectionSection: some View {
-        if store.picker.selectedBeaches.isEmpty {
-            infoLabel
-        } else {
-            VStack(alignment: .leading, spacing: 0) {
-                if store.picker.isSelectionFull {
-                    selectionLimitLabel
-                }
-
-                selectedBeachChips
-            }
-        }
-    }
-
-    var infoLabel: some View {
-        Text("해변을 선택하면 가입할 수 있어요")
-            .plobbyFont(.helper)
-            .foregroundStyle(Color(.textSecondary))
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8.scaled)
-    }
-
-    var selectionLimitLabel: some View {
-        Text("관심 해변은 \(Beach.maximumFavoriteCount)개까지만 고를 수 있어요")
-            .plobbyFont(.helper)
-            .foregroundStyle(Color(.textSecondary))
-            .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    var selectedBeachChips: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 4.scaled) {
-                ForEach(store.picker.selectedBeaches) { beach in
-                    selectedBeachChip(beach)
-                }
-            }
-        }
-        .scrollIndicators(.hidden)
-        .frame(height: 44.scaled)
-    }
-
-    func selectedBeachChip(_ beach: Beach) -> some View {
-        Button {
-            store.send(.picker(.beachTapped(beach.id)))
-        } label: {
-            HStack(spacing: 0) {
-                Text(beach.name)
-                    .plobbyFont(.label)
-                    .lineLimit(1)
-
-                Image(systemName: "xmark")
-                    .font(.system(size: 12.scaled))
-                    .frame(width: 28.scaled, height: 32.scaled)
-            }
-            .foregroundStyle(Color(.textBrand))
-            .padding(.leading, 12.scaled)
-            .frame(height: 32.scaled)
-            .background(Color(.surfaceBrandSubtle), in: Capsule())
-            .frame(height: 44.scaled)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("\(beach.name) 선택 해제")
-    }
-    
-    var signUpButton: some View {
-        PlobbyButton(text: "가입하기") {
+        BeachPickerBottomBar(
+            store: store.scope(state: \.picker, action: \.picker),
+            emptyMessage: "해변을 선택하면 가입할 수 있어요",
+            buttonTitle: "가입하기",
+            isButtonDisabled: store.picker.selectedBeachIDs.isEmpty
+        ) {
             store.send(.signUpButtonTapped)
         }
-        .disabled(store.picker.selectedBeachIDs.isEmpty)
     }
 }

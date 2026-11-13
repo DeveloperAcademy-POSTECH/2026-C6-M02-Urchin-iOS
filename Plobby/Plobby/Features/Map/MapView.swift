@@ -29,7 +29,6 @@ struct MapView: View {
         mapContent
             .sheet(item: $store.scope(state: \.beachSheet, action: \.beachSheet)) { store in
                 BeachSheetView(store: store)
-                    // 시안 높이(357)에 하단 안전 영역까지 포함돼 있어서 콘텐츠를 안전 영역까지 내려요
                     .ignoresSafeArea(.container, edges: .bottom)
                     .presentationDetents([.height(Self.sheetHeight)])
                     .presentationBackgroundInteraction(.enabled(upThrough: .height(Self.sheetHeight)))
@@ -79,10 +78,7 @@ private extension MapView {
             mapSize: mapSize
         )
 
-        // 마커 탭은 MapKit 선택으로 받아요. 주석 안에 탭 제스처를 다는 것보다 MapKit이 직접 처리해서 더 안정적이에요.
         return Map(position: $cameraPosition, selection: $tappedMarkerID) {
-            // 화면 근처에서 보이는 핀과 클러스터만 지도에 올려요.
-            // MapKit은 주석 뷰의 크기로 탭을 판정해서, 뷰 크기를 그려지는 모양에 딱 맞춰요.
             ForEach(markers.filter { layout.pinIDs.contains($0.id) }) { marker in
                 Annotation(marker.beach.name, coordinate: marker.beach.coordinate.location, anchor: .bottom) {
                     BeachPinView(
@@ -93,7 +89,6 @@ private extension MapView {
                 .tag(marker.id)
             }
 
-            // 겹친 해변은 기록 수를 더한 숫자 원 하나로 묶어요. 이름은 보여주지 않아요.
             ForEach(layout.clusters) { cluster in
                 Annotation("", coordinate: cluster.coordinate.location, anchor: .center) {
                     BeachClusterView(recordCount: cluster.recordCount)
@@ -106,9 +101,7 @@ private extension MapView {
                 UserAnnotation()
             }
         }
-        // 확대/축소나 이동이 끝난 뒤에만 마커 규칙을 적용해요. 움직이는 중에 다시 그리면 마커가 많을수록 버벅여요.
         .onMapCameraChange(frequency: .onEnd) { context in
-            // 영역이 그대로면 마커를 다시 그리지 않아요. 마커 탭과 다시 그리기가 겹치지 않게 해요.
             guard !MarkerLayout.isSameRegion(visibleRegion, context.region) else { return }
             visibleRegion = context.region
 
@@ -169,7 +162,6 @@ private extension MapView {
         .buttonStyle(.plain)
     }
 
-    /// 관심 해변 칩. 시트가 열린 해변의 칩만 선택된 모양이에요.
     var favoriteChips: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8.scaled) {
@@ -185,7 +177,6 @@ private extension MapView {
                     .buttonStyle(.plain)
                 }
             }
-            // 칩 테두리가 잘리지 않게 위아래로 여유를 둬요.
             .padding(.vertical, 1)
         }
         .scrollIndicators(.hidden)
@@ -225,8 +216,11 @@ private extension MapView {
                 }
             }
             .frame(width: 44, height: 44)
-            .background(Color(.gray0), in: Circle())
-            .shadow(color: .black.opacity(0.25), radius: 1, y: 1)
+            .background {
+                Circle()
+                    .fill(Color(.gray0))
+                    .shadow(color: .black.opacity(0.25), radius: 1, y: 1)
+            }
         }
         .buttonStyle(.plain)
         .accessibilityLabel("현재 위치로 이동")
@@ -237,7 +231,6 @@ private extension MapView {
 
 private extension MapView {
 
-    /// 현위치가 화면 가운데 근처(보이는 범위의 10% 안)에 있으면 현위치를 보고 있다고 봐요.
     static func isLooking(at location: Coordinate?, in region: MKCoordinateRegion) -> Bool {
         guard let location else { return false }
         return abs(region.center.latitude - location.latitude) < region.span.latitudeDelta * 0.1
@@ -248,7 +241,6 @@ private extension MapView {
         .region(region(for: command))
     }
 
-    /// 지도가 아직 위치를 알려주기 전에는 옮기려던 영역을 기준으로 마커를 계산해요.
     static func region(for command: CameraCommand) -> MKCoordinateRegion {
         switch command {
         case let .region(center, meters):
@@ -263,18 +255,12 @@ private extension MapView {
 
 // MARK: - MarkerLayout
 
-/// 화면에서 서로 겹치는 해변을 하나의 클러스터로 묶어요. 선택한 해변, 기록이 많은 해변 순서로 자리를 먼저 차지하고,
-/// 그 자리에 겹치는 해변들이 뒤따라 묶여요. 혼자 남은 해변은 핀, 둘 이상 묶이면 숫자 원으로 보여줘요.
 private struct MarkerLayout {
 
-    /// 핀(배지 포함)이 차지하는 크기. 핀은 좌표 위쪽으로 그려져요.
     static let pinSize = CGSize(width: 68.scaled, height: 76.scaled)
-    /// 클러스터 원의 지름
     static let clusterSize: CGFloat = 52.scaled
 
-    /// 여러 해변을 묶은 클러스터예요. 가장 먼저 자리를 차지한 해변 위치에 그려요.
     struct Cluster: Identifiable {
-        /// 맨 앞 해변의 ID를 그대로 써요. MapKit 선택 태그로도 써요.
         let id: UUID
         let coordinate: Coordinate
         let markers: [BeachMarker]
@@ -301,13 +287,11 @@ private struct MarkerLayout {
     }
 
     init(markers: [BeachMarker], selectedID: UUID?, region: MKCoordinateRegion, mapSize: CGSize) {
-        // 지도 크기를 알기 전에는 아무것도 그리지 않아요.
         guard mapSize.width > 0, mapSize.height > 0 else { return }
 
         let pointsPerLongitude = mapSize.width / region.span.longitudeDelta
         let pointsPerLatitude = mapSize.height / region.span.latitudeDelta
 
-        // 화면 밖 해변은 계산에서 빼요. 움직일 때 미리 그려 두도록 화면 크기만큼 여유를 둬요.
         let latitudeRange = (region.center.latitude - region.span.latitudeDelta)...(region.center.latitude + region.span.latitudeDelta)
         let longitudeRange = (region.center.longitude - region.span.longitudeDelta)...(region.center.longitude + region.span.longitudeDelta)
 
@@ -323,11 +307,9 @@ private struct MarkerLayout {
                 ))
             }
 
-        // 자리를 차지한 해변(그룹의 기준점)과 그 자리에 묶인 해변들
         var groups: [(anchor: CGPoint, markers: [BeachMarker], isSelected: Bool)] = []
 
         for (marker, point) in ordered {
-            // 선택한 해변은 늘 핀으로 따로 보여줘요.
             if marker.id == selectedID {
                 groups.append((point, [marker], true))
                 continue
@@ -360,14 +342,11 @@ private struct MarkerLayout {
 
 // MARK: - BeachPinView
 
-/// 꼬리가 달린 해변 핀. 기록이 없으면 물결, 있으면 쓰레기 봉투와 기록 수 배지를 보여줘요.
-/// 선택하면 초록 배경에 흰 아이콘으로 바뀌어요.
 private struct BeachPinView: View {
 
     let recordCount: Int
     let isSelected: Bool
 
-    /// 원(52) + 꼬리(9) - 겹치는 부분(3)
     static let height: CGFloat = 58.scaled
 
     private var background: Color { isSelected ? Color(.green500) : Color(.gray0) }
@@ -418,7 +397,6 @@ private struct BeachPinView: View {
 
 // MARK: - BeachClusterView
 
-/// 겹친 해변들을 묶은 원. 묶인 해변의 기록 수 합을 보여주고, 기록이 없으면 물결을 보여줘요.
 private struct BeachClusterView: View {
 
     let recordCount: Int
