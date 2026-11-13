@@ -48,6 +48,11 @@ enum HomeTutorialStep: CaseIterable, Equatable {
         }
     }
 
+    /// 기록 결과부터는 오른쪽 아래 전환 버튼과 "플로빙 보기" 라벨을 함께 보여줘요.
+    var showsActivityToggle: Bool {
+        self == .recordResult || self == .activitySwitch
+    }
+
     var target: HomeTutorialTarget? {
         switch self {
         case .goal, .goalToggle, .goalFill, .goalPeriod: .goalCard
@@ -94,6 +99,9 @@ struct HomeTutorialOverlay: View {
             let countChip = step.target == .scene && step.showsCountChip
                 ? frames[.countChip].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
                 : nil
+            let activityToggle = step.showsActivityToggle
+                ? frames[.activityToggle].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
+                : nil
             let goalCard = step.target == .scene
                 ? frames[.goalCard].map { $0.offsetBy(dx: -origin.x, dy: -origin.y) }
                 : nil
@@ -102,7 +110,12 @@ struct HomeTutorialOverlay: View {
                 if step == .finish {
                     finishView
                 } else {
-                    dimmedBackground(highlight: highlight, chips: [dayChip, countChip].compactMap { $0 }, goalCard: goalCard)
+                    dimmedBackground(
+                        highlight: highlight,
+                        chips: [dayChip, countChip].compactMap { $0 },
+                        goalCard: goalCard,
+                        activityToggle: step.target == .activityToggle ? nil : activityToggle
+                    )
 
                     if let message = step.message {
                         // 문구가 바뀌면 이전 문구는 흐려지며 사라지고 새 문구가 나타나요.
@@ -116,13 +129,13 @@ struct HomeTutorialOverlay: View {
                             .position(x: proxy.size.width / 2, y: proxy.size.height / 2)
                     }
 
-                    if step == .activitySwitch, let highlight {
-                        Text("\(RecordType.plobbing.name) 보기")
-                            .plobbyFont(.labelSelected)
-                            .foregroundStyle(Color(.gray0))
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .padding(.trailing, proxy.size.width - highlight.maxX)
-                            .padding(.top, highlight.minY - 32.scaled)
+                    if let activityToggle {
+                        // 버튼과 가로 가운데를 맞추고, 버튼 위쪽에서 24 떨어진 곳에 라벨 아래쪽이 오도록 놓아요.
+                        HomeTutorialBouncingLabel(text: "\(RecordType.plobbing.name) 보기")
+                            .position(
+                                x: activityToggle.midX,
+                                y: activityToggle.minY - 24.scaled - PlobbyTypography.labelSelected.lineHeight.scaled / 2
+                            )
                     }
                 }
             }
@@ -151,7 +164,7 @@ struct HomeTutorialOverlay: View {
 private extension HomeTutorialOverlay {
 
     /// 장면을 비추는 단계에서는 날짜 칩과 공통 목표 카드도 함께 밝게 둬요.
-    func dimmedBackground(highlight: CGRect?, chips: [CGRect], goalCard: CGRect?) -> some View {
+    func dimmedBackground(highlight: CGRect?, chips: [CGRect], goalCard: CGRect?, activityToggle: CGRect?) -> some View {
         Color(.neutralBlack)
             .opacity(0.6)
             .mask {
@@ -174,6 +187,13 @@ private extension HomeTutorialOverlay {
                         RoundedRectangle(cornerRadius: 16.scaled)
                             .frame(width: goalCard.width, height: goalCard.height)
                             .position(x: goalCard.midX, y: goalCard.midY)
+                            .blendMode(.destinationOut)
+                    }
+
+                    if let activityToggle {
+                        Circle()
+                            .frame(width: activityToggle.width, height: activityToggle.height)
+                            .position(x: activityToggle.midX, y: activityToggle.midY)
                             .blendMode(.destinationOut)
                     }
                 }
@@ -302,6 +322,27 @@ private struct HomeTutorialScrollHint: View {
                 case .up: .easeInOut(duration: 1)
                 case .fade: .easeOut(duration: 0.4)
                 }
+            }
+            .allowsHitTesting(false)
+    }
+}
+
+// MARK: - HomeTutorialBouncingLabel
+
+/// 위아래로 천천히 오가며 눈길을 끄는 라벨이에요.
+private struct HomeTutorialBouncingLabel: View {
+
+    let text: String
+
+    var body: some View {
+        Text(text)
+            .plobbyFont(.labelSelected)
+            .foregroundStyle(Color(.gray0))
+            .fixedSize()
+            .phaseAnimator([false, true]) { content, isUp in
+                content.offset(y: isUp ? -6.scaled : 0)
+            } animation: { _ in
+                .easeInOut(duration: 0.6)
             }
             .allowsHitTesting(false)
     }
