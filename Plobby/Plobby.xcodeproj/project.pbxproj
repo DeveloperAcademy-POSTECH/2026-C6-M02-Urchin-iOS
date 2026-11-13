@@ -79,6 +79,7 @@
 		A11400000000000000000113 /* PlobbingSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000112 /* PlobbingSceneView.swift */; };
 		A11400000000000000000116 /* HomeGoalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000115 /* HomeGoalCard.swift */; };
 		7B3C1A95A1B2C3D4E5F60001 /* HomeTutorialOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A94A1B2C3D4E5F60001 /* HomeTutorialOverlay.swift */; };
+		7B3C1A97A1B2C3D4E5F60001 /* HomeTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A96A1B2C3D4E5F60001 /* HomeTutorialView.swift */; };
 		A11400000000000000000118 /* HomeGoalCelebration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000117 /* HomeGoalCelebration.swift */; };
 		A1140000000000000000011A /* HomeParticipantsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11400000000000000000119 /* HomeParticipantsSheet.swift */; };
 		A1140000000000000000011C /* HomeTrashSummaryPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1140000000000000000011B /* HomeTrashSummaryPopup.swift */; };
@@ -385,6 +386,7 @@
 		A11400000000000000000112 /* PlobbingSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbingSceneView.swift; sourceTree = "<group>"; };
 		A11400000000000000000115 /* HomeGoalCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGoalCard.swift; sourceTree = "<group>"; };
 		7B3C1A94A1B2C3D4E5F60001 /* HomeTutorialOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTutorialOverlay.swift; sourceTree = "<group>"; };
+		7B3C1A96A1B2C3D4E5F60001 /* HomeTutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTutorialView.swift; sourceTree = "<group>"; };
 		A11400000000000000000117 /* HomeGoalCelebration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGoalCelebration.swift; sourceTree = "<group>"; };
 		A11400000000000000000119 /* HomeParticipantsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeParticipantsSheet.swift; sourceTree = "<group>"; };
 		A1140000000000000000011B /* HomeTrashSummaryPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTrashSummaryPopup.swift; sourceTree = "<group>"; };
@@ -789,6 +791,7 @@
 			children = (
 				A11400000000000000000115 /* HomeGoalCard.swift */,
 				7B3C1A94A1B2C3D4E5F60001 /* HomeTutorialOverlay.swift */,
+				7B3C1A96A1B2C3D4E5F60001 /* HomeTutorialView.swift */,
 				A11400000000000000000117 /* HomeGoalCelebration.swift */,
 				A11400000000000000000119 /* HomeParticipantsSheet.swift */,
 				A1140000000000000000011B /* HomeTrashSummaryPopup.swift */,
@@ -2148,6 +2151,7 @@
 				A11400000000000000000113 /* PlobbingSceneView.swift in Sources */,
 				A11400000000000000000116 /* HomeGoalCard.swift in Sources */,
 				7B3C1A95A1B2C3D4E5F60001 /* HomeTutorialOverlay.swift in Sources */,
+				7B3C1A97A1B2C3D4E5F60001 /* HomeTutorialView.swift in Sources */,
 				A1220000000000000000030D /* HomeSceneTrash.swift in Sources */,
 				A1220000000000000000030B /* HomeSheetCloseButton.swift in Sources */,
 				A12200000000000000000309 /* HomeScrollGuideToast.swift in Sources */,

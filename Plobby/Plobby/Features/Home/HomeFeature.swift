@@ -37,6 +37,8 @@ struct HomeFeature {
         var isActivityPickerPresented = false
         var isScrollGuideVisible = false
         var tutorialStep: HomeTutorialStep?
+        /// 튜토리얼에서 밝게 비출 영역이에요. 탭바까지 덮는 안내 막은 메인 탭에서 그려서 여기 모아 둬요.
+        var tutorialFrames: [HomeTutorialTarget: CGRect] = [:]
         var now = Date.distantPast
         
         var board: HomeGoalBoard? {
@@ -102,6 +104,7 @@ struct HomeFeature {
         case sheetDismissed
         case notificationButtonTapped
         case tutorialAdvanced
+        case tutorialFrameChanged(HomeTutorialTarget, CGRect)
         case tutorialFinished
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
         case notification(PresentationAction<NotificationFeature.Action>)
@@ -288,14 +291,11 @@ struct HomeFeature {
                 return .none
                 
             case .tutorialAdvanced:
-                guard let step = state.tutorialStep else { return .none }
+                state.tutorialStep = state.tutorialStep?.next
+                return .none
 
-                switch step {
-                case .goalToggle: state.isGoalExpanded = true
-                case .goalPeriod: state.isGoalExpanded = false
-                default: break
-                }
-                state.tutorialStep = step.next
+            case let .tutorialFrameChanged(target, frame):
+                state.tutorialFrames[target] = frame
                 return .none
 
             case .tutorialFinished:

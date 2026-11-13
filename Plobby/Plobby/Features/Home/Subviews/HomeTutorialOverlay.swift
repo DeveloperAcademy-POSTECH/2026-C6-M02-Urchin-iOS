@@ -93,9 +93,10 @@ struct HomeTutorialOverlay: View {
                 }
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
-            .contentShape(Rectangle())
+            // 펼치기 안내에서는 강조한 목표 카드만 눌리게 비워 두고, 나머지 영역은 눌러도 넘어가지 않아요.
+            .contentShape(TapArea(hole: step == .goalToggle ? highlight : nil), eoFill: true)
             .onTapGesture {
-                guard step != .finish else { return }
+                guard step != .finish, step != .goalToggle else { return }
                 onAdvance()
             }
         }
@@ -222,5 +223,21 @@ private struct HomeTutorialHand: View {
                 }
             }
             .allowsHitTesting(false)
+    }
+}
+
+// MARK: - TapArea
+
+/// 화면 전체에서 `hole`만 뺀 영역이에요. 구멍 안의 터치는 아래 화면으로 내려가요.
+private struct TapArea: Shape {
+
+    let hole: CGRect?
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path(rect)
+        if let hole {
+            path.addRect(hole)
+        }
+        return path
     }
 }

@@ -15,6 +15,8 @@ struct HomeGoalCard: View {
     let onToggle: () -> Void
     let onRecordTapped: () -> Void
     let onAllGoalsTapped: () -> Void
+    /// 튜토리얼에서 펼치기 버튼을 눌러 보라고 동그라미로 강조해요.
+    var highlightsToggle = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
@@ -123,7 +125,18 @@ private extension HomeGoalCard {
             .font(.system(size: 14.scaled))
             .foregroundStyle(Color(.textSecondary))
             .rotationEffect(.degrees(isExpanded ? 180 : 0))
-            .padding(.trailing, CGFloat(12 - 1.5).scaled)
+            .background {
+                if highlightsToggle {
+                    Circle()
+                        .fill(Color(.surfaceBrandSubtle))
+                        .overlay {
+                            Circle()
+                                .strokeBorder(Color(.textBrand), lineWidth: 1.25)
+                        }
+                        .frame(width: 40.scaled, height: 40.scaled)
+                }
+            }
+            .padding(.trailing, CGFloat(highlightsToggle ? 13 : 12 - 1.5).scaled)
             .frame(width: 44.scaled, height: 44.scaled, alignment: .trailing)
     }
 }

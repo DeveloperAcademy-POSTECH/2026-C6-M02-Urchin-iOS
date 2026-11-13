@@ -20,7 +20,6 @@ struct HomeView: View {
     @State private var dragAxis: Axis?
     /// 드래그가 취소되면 onEnded가 불리지 않아서, 끝났는지는 이 값으로 알아요.
     @GestureState private var isDragging = false
-    @State private var tutorialFrames: [HomeTutorialTarget: CGRect] = [:]
     
     // MARK: - Body
     
@@ -29,29 +28,24 @@ struct HomeView: View {
             header
             
             goalCard
-                .tutorialTarget(.goalCard, in: $tutorialFrames)
                 .padding(.horizontal, 20.scaled)
             
             activityTabs
-                .tutorialTarget(.activityTabs, in: $tutorialFrames)
                 .padding(.top, 4.scaled)
             
             scene
-                .tutorialTarget(.scene, in: $tutorialFrames)
         }
         .background(Color(.gray0))
         .overlay {
             if let step = store.tutorialStep {
-                HomeTutorialOverlay(
+                HomeTutorialView(
                     step: step,
-                    frames: tutorialFrames,
-                    onAdvance: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.25)) },
-                    onFinish: { store.send(.tutorialFinished, animation: .easeInOut(duration: 0.25)) }
+                    onToggleTapped: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.25)) },
+                    onFrameChanged: { store.send(.tutorialFrameChanged($0, $1)) }
                 )
                 .transition(.opacity)
             }
         }
-        .toolbar(store.tutorialStep == nil ? .visible : .hidden, for: .tabBar)
         .sheet(item: sheetBinding) { sheet in
             sheetContent(sheet)
         }
@@ -343,19 +337,5 @@ private extension HomeView {
         var transaction = Transaction()
         transaction.disablesAnimations = true
         return transaction
-    }
-}
-
-// MARK: - 튜토리얼
-
-private extension View {
-
-    /// 튜토리얼에서 밝게 비출 영역을 화면 좌표로 기록해요.
-    func tutorialTarget(_ target: HomeTutorialTarget, in frames: Binding<[HomeTutorialTarget: CGRect]>) -> some View {
-        onGeometryChange(for: CGRect.self) { proxy in
-            proxy.frame(in: .global)
-        } action: { frame in
-            frames.wrappedValue[target] = frame
-        }
     }
 }
