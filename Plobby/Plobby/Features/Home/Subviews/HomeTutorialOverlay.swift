@@ -83,7 +83,10 @@ struct HomeTutorialOverlay: View {
                     dimmedBackground(highlight: highlight)
 
                     if let message = step.message {
+                        // 문구가 바뀌면 이전 문구는 흐려지며 사라지고 새 문구가 나타나요.
                         caption(message, highlight: highlight)
+                            .id(message)
+                            .transition(.opacity)
                     }
 
                     if step == .scroll, let highlight {
