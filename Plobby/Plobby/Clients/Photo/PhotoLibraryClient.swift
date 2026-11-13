@@ -5,6 +5,7 @@
 //  Created by 더스틴 on 11/4/26.
 //
 
+import AVFoundation
 import Photos
 import UIKit
 
@@ -14,11 +15,15 @@ struct PhotoLibraryClient {
     
     var authorizationStatus: @Sendable () -> PhotoAuthorization
     var requestAuthorization: @Sendable () async -> PhotoAuthorization
+    /// 카메라 권한을 확인해요. 아직 묻지 않았으면 iOS 권한 팝업을 띄워요.
+    var requestCameraAuthorization: @Sendable () async -> Bool
     var fetchAlbums: @Sendable () async -> [PhotoAlbum]
     var fetchAssets: @Sendable (_ albumID: PhotoAlbum.ID) async -> [PhotoAsset]
     var thumbnail: @Sendable (_ assetID: PhotoAsset.ID, _ targetSize: CGSize) async -> UIImage?
     var imageData: @Sendable (_ assetID: PhotoAsset.ID) async throws -> Data
     var saveImage: @Sendable (_ imageData: Data) async throws -> PhotoAsset
+    /// 사진 보관함이 바뀔 때마다 알려줘요. 일부 접근에서 사진을 더 고르면 목록을 다시 불러오려고 써요.
+    var libraryChanges: @Sendable () -> AsyncStream<Void>
 }
 
 extension PhotoLibraryClient: DependencyKey {
@@ -29,6 +34,13 @@ extension PhotoLibraryClient: DependencyKey {
             },
             requestAuthorization: {
                 PhotoAuthorization(await PHPhotoLibrary.requestAuthorization(for: .readWrite))
+            },
+            requestCameraAuthorization: {
+                switch AVCaptureDevice.authorizationStatus(for: .video) {
+                case .authorized: true
+                case .notDetermined: await AVCaptureDevice.requestAccess(for: .video)
+                default: false
+                }
             },
             fetchAlbums: {
                 PhotoLibrary.albumCollections().compactMap { collection in
@@ -109,6 +121,15 @@ extension PhotoLibraryClient: DependencyKey {
                     throw PhotoLibraryError.saveFailed
                 }
                 return PhotoAsset(id: assetID)
+            },
+            libraryChanges: {
+                AsyncStream { continuation in
+                    let observer = PhotoLibraryChangeObserver { continuation.yield() }
+                    PHPhotoLibrary.shared().register(observer)
+                    continuation.onTermination = { _ in
+                        PHPhotoLibrary.shared().unregisterChangeObserver(observer)
+                    }
+                }
             }
         )
     }()
@@ -116,11 +137,13 @@ extension PhotoLibraryClient: DependencyKey {
     static let testValue = PhotoLibraryClient(
         authorizationStatus: unimplemented("PhotoLibraryClient.authorizationStatus", placeholder: .notDetermined),
         requestAuthorization: unimplemented("PhotoLibraryClient.requestAuthorization", placeholder: .notDetermined),
+        requestCameraAuthorization: unimplemented("PhotoLibraryClient.requestCameraAuthorization", placeholder: false),
         fetchAlbums: unimplemented("PhotoLibraryClient.fetchAlbums", placeholder: []),
         fetchAssets: unimplemented("PhotoLibraryClient.fetchAssets", placeholder: []),
         thumbnail: unimplemented("PhotoLibraryClient.thumbnail", placeholder: nil),
         imageData: unimplemented("PhotoLibraryClient.imageData"),
-        saveImage: unimplemented("PhotoLibraryClient.saveImage")
+        saveImage: unimplemented("PhotoLibraryClient.saveImage"),
+        libraryChanges: unimplemented("PhotoLibraryClient.libraryChanges", placeholder: .finished)
     )
 }
 
@@ -166,6 +189,21 @@ nonisolated private enum PhotoLibrary {
 
     static func asset(for id: PhotoAsset.ID) -> PHAsset? {
         PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).firstObject
+    }
+}
+
+// MARK: - Change Observer
+
+nonisolated private final class PhotoLibraryChangeObserver: NSObject, PHPhotoLibraryChangeObserver, Sendable {
+
+    private let onChange: @Sendable () -> Void
+
+    init(onChange: @escaping @Sendable () -> Void) {
+        self.onChange = onChange
+    }
+
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        onChange()
     }
 }
 

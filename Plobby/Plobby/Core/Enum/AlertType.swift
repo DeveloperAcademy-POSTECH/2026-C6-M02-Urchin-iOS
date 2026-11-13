@@ -32,6 +32,7 @@ enum AlertType {
     case userBlocked
     case userBlockFailed
     case recordLoadFailed
+    case cameraAccessDenied
 }
 
 extension AlertType {
@@ -61,6 +62,7 @@ extension AlertType {
         case .userBlocked: "차단이 완료되었습니다"
         case .userBlockFailed: "차단하지 못했어요"
         case .recordLoadFailed: "기록을 불러오지 못했어요"
+        case .cameraAccessDenied: "카메라 접근이 꺼져 있어요"
         }
     }
     
@@ -78,13 +80,14 @@ extension AlertType {
         case .favoriteBeachLimit: "관심 해변은 최대 \(Beach.maximumFavoriteCount)개까지 등록할 수 있어요."
         case .userBlocked: "차단한 사용자의 기록은 더 이상 보이지 않아요."
         case .recordReported: "확인 후 운영 정책에 따라 조치할게요."
+        case .cameraAccessDenied: "설정에서 카메라 접근을 허용하면\n바로 촬영해서 기록에 추가할 수 있어요."
         }
     }
     
     var buttonType: ButtonType {
         switch self {
         case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm, .recordExitConfirm,
-             .logoutConfirm, .withdrawalConfirm: .cancelConfirm
+             .logoutConfirm, .withdrawalConfirm, .cameraAccessDenied: .cancelConfirm
         case .signInFailed, .signUpFailed, .profileImageTooLarge, .profileImageLoadFailed, .nicknameCheckFailed, .recordDeleted, .recordDeleteFailed,
              .profileUpdateFailed, .logoutFailed, .withdrawalCompleted, .withdrawalFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed, .recordLoadFailed: .confirm
         }
@@ -100,6 +103,7 @@ extension AlertType {
         case .logoutConfirm: "로그아웃"
         case .withdrawalConfirm: "계속 사용하기"
         case .withdrawalCompleted: "확인"
+        case .cameraAccessDenied: "설정으로 이동"
         }
     }
     
