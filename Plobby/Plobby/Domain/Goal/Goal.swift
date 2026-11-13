@@ -50,6 +50,7 @@ nonisolated extension Goal {
     
     var progress: Double {
         guard targetCount > 0 else { return 0 }
+        
         return min(Double(collectedCount) / Double(targetCount), 1)
     }
     
