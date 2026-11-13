@@ -17,6 +17,7 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
+        @Shared(.dismissedGoalKeys) var dismissedGoalKeys
         @Presents var recordDetail: RecordDetailFeature.State?
         @Presents var notification: NotificationFeature.State?
         @Presents var goalList: GoalListFeature.State?
@@ -29,7 +30,10 @@ struct HomeFeature {
         var walkProgresses: [RecordType: Double] = [:]
         var todayDays: [RecordType: Int] = [:]
         var isGoalExpanded = false
-        var hasSetInitialGoalExpansion = false
+        /// 카드 펼침을 정한 목표예요. 목표가 바뀌면 쓰레기가 0개인지, 끝났는지 보고 다시 정해요.
+        var expansionGoalID: Goal.ID?
+        /// 끝난 목표에서 "다음 목표 보기"를 누르기 전까지 켜져 있어요.
+        var isCelebrationVisible = false
         var collectPulses: [RecordType: Int] = [:]
         var transitioningTypes: Set<RecordType> = []
         var sheet: Sheet?
@@ -102,6 +106,7 @@ struct HomeFeature {
         case activityPicked(RecordType)
         case activityPickerDismissed
         case allGoalsButtonTapped
+        case nextGoalButtonTapped
         case participantsButtonTapped
         case trashSummaryButtonTapped
         case trashSummaryDismissed
@@ -138,11 +143,7 @@ struct HomeFeature {
             case .onAppear:
                 // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
                 state.isGoalExpanded = false
-                let now = now
-                return .run { send in
-                    await send(.boardsResponse(Result { try await fetchBoards(now: now) }, now: now))
-                }
-                .cancellable(id: CancelID.boards, cancelInFlight: true)
+                return loadBoards(state)
                 
             case let .boardsResponse(.success(boards), now):
                 state.now = now
@@ -159,10 +160,12 @@ struct HomeFeature {
                     state.stages[type] = status.isFinished ? .finale(step: type.resultStep) : .arrived(day: today)
                     state.walkProgresses[type] = status.isFinished ? Double(board.days.count) : Double(today)
                 }
-                if !state.hasSetInitialGoalExpansion, let goal = boards.first?.goal {
-                    state.hasSetInitialGoalExpansion = true
-                    state.isGoalExpanded = goal.collectedCount == 0
+                if let goal = boards.first?.goal, state.expansionGoalID != goal.id {
+                    state.expansionGoalID = goal.id
+                    // 쓰레기가 0개면 기록하기를, 끝난 목표면 다음 목표 보기를 바로 보이게 펼쳐요.
+                    state.isGoalExpanded = goal.collectedCount == 0 || goal.homeStatus(at: now).isFinished
                 }
+                updateCelebration(goal: boards.first?.goal, now: now, state: &state)
                 return .merge(
                     .merge(RecordType.allCases.map { .cancel(id: CancelID.scene($0)) }),
                     showScrollGuideIfNeeded(&state)
@@ -174,7 +177,7 @@ struct HomeFeature {
                 
             case let .activityTabSelected(type):
                 state.selectedType = type
-                state.hasSetInitialGoalExpansion = true
+                state.expansionGoalID = state.board?.goal.id
                 state.isGoalExpanded = false
                 return showScrollGuideIfNeeded(&state)
                 
@@ -221,7 +224,7 @@ struct HomeFeature {
                 return .none
                 
             case .goalCardToggleTapped:
-                state.hasSetInitialGoalExpansion = true
+                state.expansionGoalID = state.board?.goal.id
                 state.isGoalExpanded.toggle()
                 return .none
                 
@@ -240,6 +243,14 @@ struct HomeFeature {
             case .allGoalsButtonTapped:
                 state.goalList = GoalListFeature.State(now: state.now)
                 return .none
+
+            case .nextGoalButtonTapped:
+                // 끝난 목표를 넘긴 목표로 저장하고, 다음 목표(진행 중이거나 시작 전)를 다시 불러와요.
+                guard state.isGoalFinished, let goal = state.board?.goal else { return .none }
+
+                state.$dismissedGoalKeys.withLock { _ = $0.insert(goal.dismissalKey) }
+                state.isCelebrationVisible = false
+                return loadBoards(state)
                 
             case .participantsButtonTapped:
                 state.sheet = .participants
@@ -373,14 +384,34 @@ extension HomeFeature {
         }
     }
     
-    private func fetchBoards(now: Date) async throws -> [HomeGoalBoard] {
-        let currentGoal = try await goalClient.fetchCurrentGoal(now)
-        let goal: Goal? = if let currentGoal {
-            currentGoal
-        } else {
-            try await goalClient.fetchGoals(now).first
+    private func loadBoards(_ state: State) -> Effect<Action> {
+        let now = now
+        let skippedKeys = state.dismissedGoalKeys
+        return .run { send in
+            await send(.boardsResponse(
+                Result { try await fetchBoards(now: now, skipping: skippedKeys) },
+                now: now
+            ))
         }
-        guard let goal else { return [] }
+        .cancellable(id: CancelID.boards, cancelInFlight: true)
+    }
+
+    /// 끝난 목표는 "다음 목표 보기"를 누르기 전까지 계속 축하해요.
+    private func updateCelebration(goal: Goal?, now: Date, state: inout State) {
+        guard let goal, goal.homeStatus(at: now).isFinished else {
+            state.isCelebrationVisible = false
+            return
+        }
+
+        state.isCelebrationVisible = !state.dismissedGoalKeys.contains(goal.dismissalKey)
+    }
+
+    private func fetchBoards(now: Date, skipping skippedKeys: Set<String>) async throws -> [HomeGoalBoard] {
+        async let goals = goalClient.fetchGoals(now)
+        async let upcoming = goalClient.fetchUpcomingGoal(now)
+        guard let goal = try await Goal.homeGoal(in: goals, upcoming: upcoming, skipping: skippedKeys, at: now) else {
+            return []
+        }
         
         async let plogging = fetchBoard(goal: goal, recordType: .plogging)
         async let plobbing = fetchBoard(goal: goal, recordType: .plobbing)

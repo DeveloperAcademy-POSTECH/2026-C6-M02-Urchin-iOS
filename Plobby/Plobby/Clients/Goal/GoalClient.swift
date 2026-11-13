@@ -13,6 +13,7 @@ import Supabase
 struct GoalClient {
     var fetchCurrentGoal: @Sendable (_ now: Date) async throws -> Goal?
     var fetchGoals: @Sendable (_ now: Date) async throws -> [Goal]
+    var fetchUpcomingGoal: @Sendable (_ now: Date) async throws -> Goal?
     var fetchDailyProgresses: @Sendable (_ goalID: UUID, _ recordType: RecordType) async throws -> [GoalDailyProgress]
     var fetchTrashSummaries: @Sendable (_ goalID: UUID, _ recordType: RecordType) async throws -> [GoalTrashSummary]
     var fetchParticipants: @Sendable (_ goalID: UUID, _ recordType: RecordType) async throws -> [GoalParticipant]
@@ -48,6 +49,20 @@ extension GoalClient: DependencyKey {
                     .value
 
                 return responseDTOs.map { $0.toDomain() }
+            },
+            fetchUpcomingGoal: { now in
+                @Dependency(\.supabaseClient) var supabase
+
+                let responseDTOs: [GoalProgressResponseDTO] = try await supabase
+                    .from("goal_progress")
+                    .select()
+                    .gt("starts_at", value: now.ISO8601Format())
+                    .order("starts_at", ascending: true)
+                    .limit(1)
+                    .execute()
+                    .value
+
+                return responseDTOs.first?.toDomain()
             },
             fetchDailyProgresses: { goalID, recordType in
                 @Dependency(\.supabaseClient) var supabase

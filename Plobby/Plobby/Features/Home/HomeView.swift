@@ -16,6 +16,8 @@ struct HomeView: View {
     @Bindable var store: StoreOf<HomeFeature>
     
     @State private var cardHeight: CGFloat = 0
+    /// 지금 보이는 카드 높이예요. 카드를 펼치면 날짜 칩이 카드 아래로 따라 내려가요.
+    @State private var visibleCardHeight: CGFloat = 0
     @State private var walkDragStart: (progress: Double, translation: CGFloat)?
     @State private var dragAxis: Axis?
     /// 드래그가 취소되면 onEnded가 불리지 않아서, 끝났는지는 이 값으로 알아요.
@@ -39,6 +41,11 @@ struct HomeView: View {
                 .padding(.horizontal, 20.scaled)
 
             goalCard(isExpanded: store.isGoalExpanded)
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.height
+                } action: { height in
+                    visibleCardHeight = height
+                }
                 .padding(.horizontal, 20.scaled)
 
             activityToggleButton
@@ -108,7 +115,7 @@ private extension HomeView {
                 .transition(.move(edge: .trailing))
             }
 
-            if let status = store.status, status.isFinished {
+            if store.isCelebrationVisible, let status = store.status {
                 HomeGoalCelebration(isAchieved: status == .achieved)
                     .transition(.opacity)
             }
@@ -122,7 +129,8 @@ private extension HomeView {
                 isAtDay: store.walkProgress == store.walkProgress.rounded(),
                 onTrashSummaryTapped: { store.send(.trashSummaryButtonTapped, transaction: Self.noAnimation) }
             )
-            .padding(.top, cardHeight)
+            .padding(.top, max(visibleCardHeight, cardHeight))
+            .animation(.easeInOut(duration: 0.25), value: visibleCardHeight)
 
             if store.isScrollGuideVisible {
                 HomeScrollGuideToast()
@@ -243,6 +251,7 @@ private extension HomeView {
                 onToggle: { store.send(.goalCardToggleTapped, animation: .easeInOut(duration: 0.25)) },
                 onRecordTapped: { store.send(.recordButtonTapped, transaction: Self.noAnimation) },
                 onAllGoalsTapped: { store.send(.allGoalsButtonTapped) },
+                onNextGoalTapped: { store.send(.nextGoalButtonTapped, animation: .smooth(duration: 0.35)) },
                 onParticipantsTapped: { store.send(.participantsButtonTapped) }
             )
         }

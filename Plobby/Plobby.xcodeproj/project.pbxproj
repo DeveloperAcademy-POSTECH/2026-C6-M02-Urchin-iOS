@@ -298,6 +298,11 @@
 		ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F30B309833A900C4916C /* WaterDepthTests.swift */; };
 		ECE6F31B309833AE00C4916C /* PlobbyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F318309833AE00C4916C /* PlobbyUITests.swift */; };
 		ECE6F31C309833AE00C4916C /* PlobbyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F319309833AE00C4916C /* PlobbyUITestsLaunchTests.swift */; };
+		5C448A0B62010E42AC4A5A70 /* Goal+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D161FFE024ED1BFBF63C936D /* Goal+Fixture.swift */; };
+		557157056AC946144CE427FB /* GoalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5065290F5E68F90E10B575 /* GoalTests.swift */; };
+		19E4832C3D96A086D9E7CFA9 /* GoalProgressResponseDTOTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A06800F443C07BE5BF3C744 /* GoalProgressResponseDTOTests.swift */; };
+		141214772660EF8FBD85C337 /* HomeFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A05330B9E52B6A4C89AED2C /* HomeFeatureTests.swift */; };
+		0FC12212AABB5BEF5C65F89B /* GoalListFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68FA7013036EDED2048F1CC /* GoalListFeatureTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -611,6 +616,11 @@
 		F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSheetView.swift; sourceTree = "<group>"; };
 		F19A17AE77CD8BC3C4A1148B /* BlockedUserResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserResponseDTO.swift; sourceTree = "<group>"; };
 		FD3A87D8A38D9FE4A0D9A304 /* BeachSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachSummary.swift; sourceTree = "<group>"; };
+		D161FFE024ED1BFBF63C936D /* Goal+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal+Fixture.swift"; sourceTree = "<group>"; };
+		3B5065290F5E68F90E10B575 /* GoalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoalTests.swift"; sourceTree = "<group>"; };
+		1A06800F443C07BE5BF3C744 /* GoalProgressResponseDTOTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoalProgressResponseDTOTests.swift"; sourceTree = "<group>"; };
+		9A05330B9E52B6A4C89AED2C /* HomeFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeFeatureTests.swift"; sourceTree = "<group>"; };
+		F68FA7013036EDED2048F1CC /* GoalListFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoalListFeatureTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -952,6 +962,7 @@
 		C5EBA3F73C437547E4DE6366 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				C7DD5EC6BB385CE28E65E478 /* Home */,
 				F6CC0869FBFC561A2BB5CAC8 /* Common */,
 				E117113459A087098044178D /* Record */,
 			);
@@ -1737,6 +1748,7 @@
 		ECE6F30E309833A900C4916C /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				EDA9014F6A8EF6245DF420DB /* Goal */,
 				ECE6F305309833A900C4916C /* Common */,
 				ECE6F307309833A900C4916C /* Member */,
 				ECE6F30D309833A900C4916C /* Record */,
@@ -1747,6 +1759,7 @@
 		ECE6F30F309833A900C4916C /* PlobbyTests */ = {
 			isa = PBXGroup;
 			children = (
+				C13E2B19D17797B50F7AA23D /* Clients */,
 				7B3C1A07309D0000004C5301 /* App */,
 				ECE6F30E309833A900C4916C /* Domain */,
 				C5EBA3F73C437547E4DE6366 /* Features */,
@@ -1770,6 +1783,40 @@
 				CAD1A7B6CA79FFE65F47C0C2 /* ToastFeatureTests.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		EDA9014F6A8EF6245DF420DB /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				D161FFE024ED1BFBF63C936D /* Goal+Fixture.swift */,
+				3B5065290F5E68F90E10B575 /* GoalTests.swift */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		55201B79622B19BC40C4748D /* Goal */ = {
+			isa = PBXGroup;
+			children = (
+				1A06800F443C07BE5BF3C744 /* GoalProgressResponseDTOTests.swift */,
+			);
+			path = Goal;
+			sourceTree = "<group>";
+		};
+		C13E2B19D17797B50F7AA23D /* Clients */ = {
+			isa = PBXGroup;
+			children = (
+				55201B79622B19BC40C4748D /* Goal */,
+			);
+			path = Clients;
+			sourceTree = "<group>";
+		};
+		C7DD5EC6BB385CE28E65E478 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				9A05330B9E52B6A4C89AED2C /* HomeFeatureTests.swift */,
+				F68FA7013036EDED2048F1CC /* GoalListFeatureTests.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2201,6 +2248,11 @@
 				ECE6F314309833A900C4916C /* RecordMemoTests.swift in Sources */,
 				ECE6F315309833A900C4916C /* TrashTypeNameTests.swift in Sources */,
 				ECE6F316309833A900C4916C /* WaterDepthTests.swift in Sources */,
+				5C448A0B62010E42AC4A5A70 /* Goal+Fixture.swift in Sources */,
+				557157056AC946144CE427FB /* GoalTests.swift in Sources */,
+				19E4832C3D96A086D9E7CFA9 /* GoalProgressResponseDTOTests.swift in Sources */,
+				141214772660EF8FBD85C337 /* HomeFeatureTests.swift in Sources */,
+				0FC12212AABB5BEF5C65F89B /* GoalListFeatureTests.swift in Sources */,
 				68350E629D1E88A97ADFF1E0 /* RecordFlowFeatureTests.swift in Sources */,
 				49F2AD2B51D9C51ADD05E239 /* ToastFeatureTests.swift in Sources */,
 				7B3C1A06309D0000004C5301 /* AppFeatureTests.swift in Sources */,

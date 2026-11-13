@@ -66,3 +66,12 @@ extension SharedKey where Self == FileStorageKey<[Beach]>.Default {
         ]
     }
 }
+
+extension SharedKey where Self == FileStorageKey<Set<String>>.Default {
+
+    /// 이 기기에서 "다음 목표 보기"를 눌러 넘긴 공통 목표예요. 값은 `Goal.dismissalKey`예요.
+    /// 넘긴 목표는 축하(또는 아쉬움) 이모지를 다시 띄우지 않고, 다음 목표가 있으면 홈에서 건너뛰어요.
+    static var dismissedGoalKeys: Self {
+        Self[.fileStorage(.applicationSupportDirectory.appending(component: "dismissed-goals.json")), default: []]
+    }
+}
