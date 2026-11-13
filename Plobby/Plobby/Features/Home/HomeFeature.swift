@@ -292,7 +292,6 @@ struct HomeFeature {
                 return .none
                 
             case .recordDetail(.presented(.delegate(.deleted))),
-                    .recordDetail(.presented(.delegate(.reported))),
                     .recordDetail(.presented(.delegate(.blocked))):
                 state.recordDetail = nil
                 return .none

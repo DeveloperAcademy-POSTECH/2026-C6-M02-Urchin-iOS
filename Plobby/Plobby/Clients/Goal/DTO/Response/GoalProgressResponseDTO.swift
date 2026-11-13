@@ -15,6 +15,8 @@ nonisolated struct GoalProgressResponseDTO: Decodable, Sendable {
     let startsAt: Date
     let endsAt: Date
     let achievedAt: Date?
+    /// 달성한 순간의 개수예요. 달성 후 기록이 지워져도 이 값은 그대로예요.
+    let achievedCount: Int?
     let collectedCount: Int
     let ploggingCollectedCount: Int
     let plobbingCollectedCount: Int
@@ -29,6 +31,7 @@ nonisolated struct GoalProgressResponseDTO: Decodable, Sendable {
         case startsAt = "starts_at"
         case endsAt = "ends_at"
         case achievedAt = "achieved_at"
+        case achievedCount = "achieved_count"
         case collectedCount = "collected_count"
         case ploggingCollectedCount = "plogging_collected_count"
         case plobbingCollectedCount = "plobbing_collected_count"
@@ -45,7 +48,7 @@ nonisolated struct GoalProgressResponseDTO: Decodable, Sendable {
             startsAt: startsAt,
             endsAt: endsAt,
             achievedAt: achievedAt,
-            collectedCount: collectedCount,
+            collectedCount: achievedAt != nil ? (achievedCount ?? collectedCount) : collectedCount,
             ploggingCollectedCount: ploggingCollectedCount,
             plobbingCollectedCount: plobbingCollectedCount,
             participantCount: participantCount,

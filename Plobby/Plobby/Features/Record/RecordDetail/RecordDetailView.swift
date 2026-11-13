@@ -49,6 +49,9 @@ struct RecordDetailView: View {
         .fullScreenCover(item: $store.scope(state: \.editForm, action: \.editForm)) { store in
             RecordFormView(store: store)
         }
+        .navigationDestination(item: $store.scope(state: \.report, action: \.report)) { store in
+            RecordReportView(store: store)
+        }
         .navigationDestination(item: $store.scope(state: \.userHome, action: \.userHome)) { store in
             UserHomeView(store: store)
         }

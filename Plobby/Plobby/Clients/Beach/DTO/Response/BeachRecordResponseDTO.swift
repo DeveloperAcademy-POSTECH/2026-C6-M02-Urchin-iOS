@@ -81,16 +81,22 @@ nonisolated extension BeachRecordResponseDTO {
 nonisolated extension [BeachRecord] {
 
     /// 해변 요약을 계산해요. 기록은 최신순이어야 해요.
-    func summary(photoLimit: Int) -> BeachSummary {
+    /// 정화 활동·참여 인원·쓰레기 수는 차단과 상관없이 모든 기록으로 세서, 누가 봐도 같은 값이에요.
+    /// 해변을 지키는 사람들은 차단한 회원도 빼지 않고 "차단한 회원"으로 보여주고, 사진에서는 빼요.
+    func summary(photoLimit: Int, hiding hidden: HiddenRecords) -> BeachSummary {
         var recordCounts: [UUID: Int] = [:]
         var guardians: [UUID: BeachSummary.Guardian] = [:]
+        let blockedUserIDs = Set(hidden.userIDs)
+        let photoRecords = filter { !blockedUserIDs.contains($0.userID) }
 
         for record in self {
+            let isBlocked = blockedUserIDs.contains(record.userID)
             recordCounts[record.userID, default: 0] += 1
             guardians[record.userID] = guardians[record.userID] ?? BeachSummary.Guardian(
                 id: record.userID,
                 nickname: record.nickname,
-                profileImageURL: record.profileImageURL
+                profileImageURL: isBlocked ? nil : record.profileImageURL,
+                isBlocked: isBlocked
             )
         }
 
@@ -98,7 +104,7 @@ nonisolated extension [BeachRecord] {
             recordCount: count,
             participantCount: recordCounts.count,
             totalTrashCount: reduce(0) { $0 + $1.trashCount },
-            photoURLs: [URL](compactMap(\.coverPhotoURL).prefix(photoLimit)),
+            photoURLs: [URL](photoRecords.compactMap(\.coverPhotoURL).prefix(photoLimit)),
             guardians: guardians.values.sorted {
                 (recordCounts[$0.id] ?? 0, $1.nickname) > (recordCounts[$1.id] ?? 0, $0.nickname)
             }

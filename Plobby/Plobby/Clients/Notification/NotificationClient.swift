@@ -43,14 +43,18 @@ extension NotificationClient: DependencyKey {
 
                 let userID = try await supabaseClient.currentUserID()
 
-                try await supabaseClient
+                var query = try supabaseClient
                     .from("notifications")
                     .update(ReadAtUpdateRequestDTO(readAt: .now), returning: .minimal)
                     .eq("user_id", value: userID)
-                    .eq("record_id", value: notification.recordID)
                     .eq("type", value: notification.kind.serverType)
                     .is("read_at", value: nil)
-                    .execute()
+
+                query = notification.recordID != nil
+                    ? query.eq("record_id", value: notification.recordID)
+                    : query.eq("id", value: notification.id)
+
+                try await query.execute()
             },
             updateAllReadAt: {
                 @Dependency(\.supabaseClient) var supabaseClient
@@ -86,13 +90,15 @@ extension NotificationClient: DependencyKey {
 
 // MARK: - AppNotification.Kind+
 
-private extension AppNotification.Kind {
+private nonisolated extension AppNotification.Kind {
 
     /// `notifications.type` 칼럼 값
     var serverType: String {
         switch self {
         case .like: "like"
         case .newRecordAtFavoriteBeach: "beach_record"
+        case .reportRemoved: "report_removed"
+        case .goalAchieved: "goal_achieved"
         }
     }
 }

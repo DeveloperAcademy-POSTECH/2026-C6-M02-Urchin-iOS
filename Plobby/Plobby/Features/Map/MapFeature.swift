@@ -235,11 +235,10 @@ struct MapFeature {
                 state.path.pop(from: id)
                 return .none
 
-            // 지운 기록도 신고한 기록처럼 해변 홈 목록에서 빼고, 정화 횟수·수거량을 다시 불러와요.
-            case let .path(.element(id, .recordDetail(.delegate(.deleted(recordID))))),
-                 let .path(.element(id, .recordDetail(.delegate(.reported(recordID))))):
+            // 지운 기록은 해변 홈 목록에서 빼고, 정화 횟수·수거량을 다시 불러와요.
+            case let .path(.element(id, .recordDetail(.delegate(.deleted(recordID))))):
                 state.path.pop(from: id)
-                return hideInBeachHomes(.recordHidden(recordID), state: state)
+                return hideInBeachHomes(.recordRemoved(recordID), state: state)
 
             case let .path(.element(id, .recordDetail(.delegate(.blocked(userID))))):
                 state.path.pop(from: id)

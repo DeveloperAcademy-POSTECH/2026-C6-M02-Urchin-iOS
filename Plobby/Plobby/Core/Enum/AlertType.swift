@@ -53,7 +53,7 @@ extension AlertType {
         case .logoutConfirm: "로그아웃하시겠습니까?"
         case .logoutFailed: "로그아웃하지 못했어요"
         case .withdrawalConfirm: "정말 탈퇴하시겠습니까?"
-        case .withdrawalCompleted: "탈퇴가 완료됐어요"
+        case .withdrawalCompleted: "탈퇴가 완료되었습니다"
         case .withdrawalFailed: "탈퇴하지 못했어요"
         case .favoriteBeachLimit: "관심 해변을 더 추가할 수 없어요"
         case .recordReported: "신고가 완료되었습니다"
@@ -76,8 +76,8 @@ extension AlertType {
         case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요."
         case .withdrawalConfirm: "탈퇴하면 게시글, 좋아요 등 모든 활동 기록들이 삭제되어 복구되지 않습니다."
         case .favoriteBeachLimit: "관심 해변은 최대 \(Beach.maximumFavoriteCount)개까지 등록할 수 있어요."
-        case .recordReported: "신고한 기록은 더 이상 보이지 않아요."
         case .userBlocked: "차단한 사용자의 기록은 더 이상 보이지 않아요."
+        case .recordReported: "확인 후 운영 정책에 따라 조치할게요."
         }
     }
     
