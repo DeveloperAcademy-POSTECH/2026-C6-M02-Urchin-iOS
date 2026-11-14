@@ -104,7 +104,11 @@ nonisolated extension [BeachRecord] {
             recordCount: count,
             participantCount: recordCounts.count,
             totalTrashCount: reduce(0) { $0 + $1.trashCount },
-            photoURLs: [URL](photoRecords.compactMap(\.coverPhotoURL).prefix(photoLimit)),
+            photos: [BeachSummary.Photo](
+                photoRecords
+                    .compactMap { record in record.coverPhotoURL.map { BeachSummary.Photo(recordID: record.id, url: $0) } }
+                    .prefix(photoLimit)
+            ),
             guardians: guardians.values.sorted {
                 (recordCounts[$0.id] ?? 0, $1.nickname) > (recordCounts[$1.id] ?? 0, $0.nickname)
             }

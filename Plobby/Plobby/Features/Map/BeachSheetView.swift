@@ -207,19 +207,26 @@ private extension BeachSheetView {
                 .frame(maxWidth: .infinity)
                 .frame(height: Self.photoSize.scaled)
 
-        case let .received(summary) where !summary.photoURLs.isEmpty:
+        case let .received(summary) where !summary.photos.isEmpty:
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8.scaled) {
-                    ForEach(summary.photoURLs, id: \.self) { url in
-                        AsyncImage(url: url) { image in
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        } placeholder: {
-                            Color(.gray50)
+                    ForEach(summary.photos) { photo in
+                        Button {
+                            store.send(.photoTapped(recordID: photo.recordID))
+                        } label: {
+                            AsyncImage(url: photo.url) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            } placeholder: {
+                                Color(.gray50)
+                            }
+                            .frame(width: Self.photoSize.scaled, height: Self.photoSize.scaled)
+                            .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
+                            .contentShape(RoundedRectangle(cornerRadius: 12.scaled))
                         }
-                        .frame(width: Self.photoSize.scaled, height: Self.photoSize.scaled)
-                        .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("기록 보기")
                     }
                 }
                 .padding(.horizontal, 20.scaled)

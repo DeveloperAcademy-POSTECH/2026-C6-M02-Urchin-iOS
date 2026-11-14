@@ -215,6 +215,15 @@ struct MapFeature {
                 state.path.append(.beachHome(BeachHomeFeature.State(beach: beach)))
                 return .none
 
+            // 시트 사진으로 연 기록은 해변 홈 위에 쌓아서, 뒤로가면 그 해변 홈이 보여요.
+            case let .beachSheet(.presented(.delegate(.recordSelected(recordID)))):
+                if let beach = state.beachSheet?.beach {
+                    state.path.append(.beachHome(BeachHomeFeature.State(beach: beach)))
+                }
+                state.beachSheet = nil
+                state.path.append(.recordDetail(RecordDetailFeature.State(recordID: recordID)))
+                return .none
+
             case .beachSheet(.presented(.delegate(.closed))):
                 state.beachSheet = nil
                 return .none
