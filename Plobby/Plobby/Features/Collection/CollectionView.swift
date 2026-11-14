@@ -5,6 +5,7 @@
 //  Created by 이은지 on 11/8/26.
 //
 
+import LinkPresentation
 import SwiftUI
 
 import ComposableArchitecture
@@ -282,7 +283,10 @@ private extension CollectionView {
             window.drawHierarchy(in: window.bounds, afterScreenUpdates: false)
         }
 
-        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(
+            activityItems: [CardShareItemSource(image: image)],
+            applicationActivities: nil
+        )
         activityViewController.popoverPresentationController?.sourceView = window
         activityViewController.popoverPresentationController?.sourceRect = cardFrame
 
@@ -291,5 +295,49 @@ private extension CollectionView {
             topViewController = presented
         }
         topViewController?.present(activityViewController, animated: true)
+    }
+}
+
+// MARK: - CardShareItemSource
+
+/// 공유 시트 헤더에 앱 아이콘과 앱 이름을 표시하기 위한 공유 아이템
+private final class CardShareItemSource: NSObject, UIActivityItemSource {
+
+    private let image: UIImage
+
+    init(image: UIImage) {
+        self.image = image
+    }
+
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        image
+    }
+
+    func activityViewController(
+        _ activityViewController: UIActivityViewController,
+        itemForActivityType activityType: UIActivity.ActivityType?
+    ) -> Any? {
+        image
+    }
+
+    func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        let metadata = LPLinkMetadata()
+        metadata.title = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+
+        if let appIcon {
+            metadata.iconProvider = NSItemProvider(object: appIcon)
+        }
+        return metadata
+    }
+
+    private var appIcon: UIImage? {
+        guard
+            let icons = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any],
+            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
+            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
+            let iconName = iconFiles.last
+        else { return nil }
+
+        return UIImage(named: iconName)
     }
 }
