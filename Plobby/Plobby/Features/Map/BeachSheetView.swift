@@ -180,7 +180,9 @@ private extension BeachSheetView {
 
     /// "기록 보기"와 "기록하기"가 함께 쓰는 초록 버튼이에요. 아이콘과 문구만 달라요.
     func actionButton(systemName: String, title: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button {
+            action()
+        } label: {
             HStack(spacing: 4.scaled) {
                 Image(systemName: systemName)
                     .font(.system(size: 14.scaled, weight: .semibold))

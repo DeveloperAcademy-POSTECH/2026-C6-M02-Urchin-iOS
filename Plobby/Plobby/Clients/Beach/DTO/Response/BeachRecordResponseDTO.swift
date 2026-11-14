@@ -106,7 +106,9 @@ nonisolated extension [BeachRecord] {
             totalTrashCount: reduce(0) { $0 + $1.trashCount },
             photos: [BeachSummary.Photo](
                 photoRecords
-                    .compactMap { record in record.coverPhotoURL.map { BeachSummary.Photo(recordID: record.id, url: $0) } }
+                    .compactMap { record in
+                        record.coverPhotoURL.map { BeachSummary.Photo(recordID: record.id, url: $0) }
+                    }
                     .prefix(photoLimit)
             ),
             guardians: guardians.values.sorted {
