@@ -28,11 +28,6 @@ struct MainTabView: View {
                         .toolbar(.hidden, for: .navigationBar)
                 }
                 .navigationDestination(
-                    item: $store.scope(state: \.home.notification, action: \.home.notification)
-                ) { store in
-                    NotificationView(store: store)
-                }
-                .navigationDestination(
                     item: $store.scope(state: \.home.goalList, action: \.home.goalList)
                 ) { store in
                     GoalListView(store: store)
@@ -52,6 +47,23 @@ struct MainTabView: View {
                 .toolbar(.hidden, for: .navigationBar)
         }
         .tint(.primary)
+        .overlay {
+            if let step = store.home.tutorialStep {
+                HomeTutorialOverlay(
+                    step: step,
+                    recordType: store.home.tutorialRecordType,
+                    frames: store.home.tutorialFrames,
+                    onAdvance: { store.send(.home(.tutorialAdvanced), animation: .easeInOut(duration: 0.25)) },
+                    onFinish: { store.send(.home(.tutorialFinished), animation: .easeInOut(duration: 0.25)) }
+                )
+                .transition(.opacity)
+            }
+        }
+        .background {
+            GuestTapInterceptor(isEnabled: isGuestTapIntercepted) {
+                store.send(.loginSheetPresentationChanged(true))
+            }
+        }
         .overlay {
             if store.isLoginSheetPresented {
                 Color.black.opacity(0.2)
@@ -73,7 +85,7 @@ struct MainTabView: View {
                 onBrowse: { store.send(.loginSheetPresentationChanged(false)) }
             )
         }
-        .plobbyAlert($store.scope(state: \.signIn.alert, action: \.signIn.alert))
+        .plobbyAlert(store: store, state: \.signIn.alert, action: \.signIn.alert)
     }
 }
 
@@ -81,8 +93,15 @@ struct MainTabView: View {
 
 private extension MainTabView {
 
+    var isGuestTapIntercepted: Bool {
+        store.membershipStatus == .guest
+            && !store.isLoginSheetPresented
+            && !store.signIn.isSigningIn
+            && store.signIn.alert == nil
+    }
+
     var tabView: some View {
-        TabView(selection: $store.selectedTab.sending(\.tabSelected)) {
+        TabView(selection: tabSelection) {
             Tab(value: .home) {
                 HomeView(store: store.scope(state: \.home, action: \.home))
             } label: {
@@ -101,6 +120,23 @@ private extension MainTabView {
                 tabLabel("컬렉션", icon: "books.vertical", tab: .collection)
             }
         }
+    }
+
+    var tabSelection: Binding<MainTab> {
+        Binding(
+            get: { store.selectedTab },
+            set: { tab in
+                UIView.performWithoutAnimation {
+                    UIApplication.shared.sendAction(
+                        #selector(UIResponder.resignFirstResponder),
+                        to: nil,
+                        from: nil,
+                        for: nil
+                    )
+                }
+                store.send(.tabSelected(tab))
+            }
+        )
     }
 
     func tabLabel(_ title: String, icon: String, tab: MainTab) -> some View {
@@ -124,6 +160,11 @@ private extension MainTabView {
                 SettingsView(store: store)
             }
             .navigationDestination(
+                item: $store.scope(state: \.notification, action: \.notification)
+            ) { store in
+                NotificationView(store: store)
+            }
+            .navigationDestination(
                 item: $store.scope(state: \.recordDetail, action: \.recordDetail)
             ) { store in
                 RecordDetailView(store: store)
@@ -143,3 +184,4 @@ private extension MainTabView {
             }
     }
 }
+

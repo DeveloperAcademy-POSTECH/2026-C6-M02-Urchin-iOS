@@ -133,9 +133,19 @@ struct AppFeature {
                 return .none
 
             case let .signUp(.delegate(.completed(user))):
+                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
+                $isHomeTutorialPending.withLock { $0 = true }
                 updateMembershipStatus(.member(user))
                 state = .mainTab(MainTabFeature.State(home: HomeFeature.State()))
                 return submitCurrentDeviceToken()
+
+            // 가입을 그만두면 로그인 화면으로 돌아가고, 남은 로그인 정보도 지워서 다음에 다시 가입 화면으로 오지 않게 해요.
+            case .signUp(.delegate(.cancelled)):
+                updateMembershipStatus(.guest)
+                state = .login(LoginFeature.State())
+                return .run { [authClient] _ in
+                    try? await authClient.signOut(nil)
+                }
 
             case .mainTab(.delegate(.signedOut)):
                 updateMembershipStatus(.guest)

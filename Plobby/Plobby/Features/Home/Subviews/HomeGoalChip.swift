@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// 목표 상태 칩이에요. (공동 목표, D-7, 목표 달성, 기간 종료)
 struct HomeGoalChip: View {
 
     enum Style {

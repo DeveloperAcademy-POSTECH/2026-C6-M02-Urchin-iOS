@@ -47,6 +47,7 @@ struct SignUpFeature {
 
         enum Delegate {
             case completed(AuthUser)
+            case cancelled
         }
     }
 
@@ -63,6 +64,9 @@ struct SignUpFeature {
 
         Reduce { state, action in
             switch action {
+            case .termsAgreement(.backButtonTapped):
+                return .send(.delegate(.cancelled))
+
             case .termsAgreement(.nextButtonTapped):
                 guard state.termsAgreement.isAllAgreed else { return .none }
 
@@ -98,6 +102,14 @@ struct SignUpFeature {
             case .signUpResponse(.failure):
                 state.isSigningUp = false
                 state.alert = .make(.signUpFailed)
+                return .none
+
+            case let .path(.element(id: id, action: .profileSetup(.backButtonTapped))),
+                 let .path(.element(id: id, action: .favoriteBeachSetup(.backButtonTapped))):
+                // 가입 요청 중에 화면을 빼면 요청이 끝난 뒤 수정 전 프로필로 완료 화면이 붙어요.
+                guard !state.isSigningUp else { return .none }
+
+                state.path.pop(from: id)
                 return .none
 
             case .path(.element(id: _, action: .complete(.completeButtonTapped))):

@@ -19,7 +19,7 @@ struct GoalListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            PlobbyNavigationBar(title: "공동 목표") {
+            PlobbyNavigationBar(title: "공통 목표") {
                 store.send(.backButtonTapped)
             }
 
@@ -133,7 +133,7 @@ private extension GoalListView {
         .background(Color(.gray0), in: RoundedRectangle(cornerRadius: 12.scaled))
         .overlay {
             RoundedRectangle(cornerRadius: 12.scaled)
-                .stroke(Color(.gray200), lineWidth: 1)
+                .stroke(Color(.gray200), lineWidth: 1.scaled)
         }
     }
 

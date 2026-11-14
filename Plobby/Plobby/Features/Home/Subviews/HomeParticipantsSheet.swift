@@ -7,29 +7,42 @@
 
 import SwiftUI
 
-/// 해당 활동을 함께한 사람을 수거량 순으로 보여주는 시트예요.
-/// 처음에는 상위 몇 명만 보여주고, "전체 보기"를 누르면 시트가 커지며 모두 보여줘요.
 struct HomeParticipantsSheet: View {
 
-    let board: HomeGoalBoard
-    let now: Date
+    let goal: Goal
+    let participants: [GoalParticipant]
     let onParticipantTapped: (GoalParticipant.ID) -> Void
     let onClose: () -> Void
 
-    @State private var detent: PresentationDetent = Self.collapsedDetent
+    @State private var isExpanded = false
+    @State private var collapsedHeight: CGFloat?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             header
             summary
-            participantList
+
+            if isExpanded {
+                participantList
+            } else {
+                avatarStack
+            }
+
             toggleButton
         }
         .padding(.horizontal, 20.scaled)
-        .padding(.top, 28.scaled)
+        .padding(.top, 20.scaled)
         .padding(.bottom, 24.scaled)
+        .onGeometryChange(for: CGFloat.self) { proxy in
+            proxy.size.height
+        } action: { height in
+            if !isExpanded {
+                collapsedHeight = height
+            }
+        }
         .frame(maxHeight: .infinity, alignment: .top)
-        .presentationDetents([Self.collapsedDetent, Self.expandedDetent], selection: $detent)
+        .presentationDetents([collapsedDetent, Self.expandedDetent], selection: detentBinding)
+        .presentationDragIndicator(.visible)
         .presentationCornerRadius(24.scaled)
         .presentationBackground(Color(.gray0))
     }
@@ -39,85 +52,106 @@ struct HomeParticipantsSheet: View {
 
 private extension HomeParticipantsSheet {
 
-    var isExpanded: Bool {
-        detent == Self.expandedDetent
+    var collapsedDetent: PresentationDetent {
+        .height(collapsedHeight ?? Self.defaultCollapsedHeight.scaled)
+    }
+
+    var detentBinding: Binding<PresentationDetent> {
+        Binding(
+            get: { isExpanded ? Self.expandedDetent : collapsedDetent },
+            set: { isExpanded = $0 == Self.expandedDetent }
+        )
     }
 
     var header: some View {
         HStack(spacing: 8.scaled) {
-            Text("\(board.recordType.name)에 함께한 사람")
-                .plobbyFont(.heading)
-                .foregroundStyle(Color(.textPrimary))
-                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack(alignment: .firstTextBaseline, spacing: 8.scaled) {
+                Text("함께한 사람")
+                    .plobbyFont(.heading)
+                    .foregroundStyle(Color(.textPrimary))
+
+                Text("\(participants.count)명")
+                    .plobbyFont(.actionLabel)
+                    .foregroundStyle(Color(.currentBrandText))
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             HomeSheetCloseButton(action: onClose)
         }
     }
 
     var summary: some View {
-        VStack(alignment: .leading, spacing: 8.scaled) {
-            Text(periodText)
+        VStack(alignment: .leading, spacing: 0) {
+            Text(goal.periodText)
                 .plobbyFont(.label)
                 .foregroundStyle(Color(.textSecondary))
+                .padding(.bottom, 16.scaled)
 
-            HStack(spacing: 18.scaled) {
-                statistic(
-                    value: "\(board.participantCount)명",
-                    title: "참여",
-                    valueColor: Color(.textPrimary)
-                )
-                statistic(
-                    value: "\(board.participantCollectedCount)개",
-                    title: "누적 수거",
-                    valueColor: Color(.currentBrandText)
-                )
+            HStack(spacing: 8.scaled) {
+                VStack(alignment: .leading, spacing: 4.scaled) {
+                    Text("함께 모은 쓰레기")
+                        .plobbyFont(.actionLabel)
+                        .foregroundStyle(Color(.textPrimary))
+
+                    Text("플로깅, 플로빙 합산")
+                        .plobbyFont(.label)
+                        .foregroundStyle(Color(.textSecondary))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("\(goal.collectedCount)개")
+                    .plobbyFont(.metric)
+                    .foregroundStyle(Color(.currentBrandText))
             }
-            .padding(.vertical, 15.scaled)
+            .padding(.horizontal, 16.scaled)
+            .padding(.vertical, 12.scaled)
+            .background(
+                Color(.currentBrandSubtle),
+                in: RoundedRectangle(cornerRadius: 12.scaled)
+            )
         }
     }
 
-    func statistic(value: String, title: String, valueColor: Color) -> some View {
-        VStack(alignment: .leading, spacing: 2.scaled) {
-            Text(value)
-                .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 28.scaled))
-                .foregroundStyle(valueColor)
+    /// 목록 앞에서부터 몇 명의 프로필 사진과 나머지 인원 수예요.
+    var avatarStack: some View {
+        HStack(spacing: 8.scaled) {
+            ForEach(participants.prefix(Self.previewCount)) { participant in
+                HomeParticipantAvatar(participant: participant)
+            }
 
-            Text(title)
-                .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 13.scaled))
-                .foregroundStyle(Color(.textSecondary))
+            if participants.count > Self.previewCount {
+                Text("+\(participants.count - Self.previewCount)")
+                    .plobbyFont(.labelSelected)
+                    .foregroundStyle(Color(.textPrimary))
+                    .frame(width: 36.scaled, height: 36.scaled)
+                    .background(Color(.gray50), in: Circle())
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.top, 16.scaled)
+        .padding(.bottom, 4.scaled)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("함께한 사람 \(participants.count)명")
     }
 
-    @ViewBuilder
     var participantList: some View {
-        let participants = board.rankedParticipants
-
-        if isExpanded {
-            ScrollView {
-                rows(participants)
-            }
-            .scrollIndicators(.hidden)
-        } else {
-            rows(Array(participants.prefix(Self.collapsedCount)))
-        }
-    }
-
-    func rows(_ participants: [HomeRankedParticipant]) -> some View {
-        VStack(spacing: 0) {
-            ForEach(participants) { ranked in
-                HomeParticipantRow(ranked: ranked) {
-                    onParticipantTapped(ranked.participant.id)
+        ScrollView {
+            VStack(spacing: 0) {
+                ForEach(participants) { participant in
+                    HomeParticipantRow(participant: participant, showsDivider: participant.id != participants.last?.id) {
+                        onParticipantTapped(participant.id)
+                    }
                 }
             }
+            .padding(.top, 8.scaled)
         }
+        .scrollIndicators(.hidden)
     }
 
     var toggleButton: some View {
         Button {
-            detent = isExpanded ? Self.collapsedDetent : Self.expandedDetent
+            isExpanded.toggle()
         } label: {
-            Text(isExpanded ? "간단히 보기" : "전체 보기")
+            Text(isExpanded ? "간단히 보기" : "참여자 모두 보기")
                 .plobbyFont(.labelSelected)
                 .foregroundStyle(Color(.textPrimary))
                 .frame(maxWidth: .infinity)
@@ -125,17 +159,7 @@ private extension HomeParticipantsSheet {
                 .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .buttonStyle(.plain)
-        .padding(.top, 8.scaled)
-    }
-
-    /// "11월 1일~10일"처럼 목표 시작일부터 오늘(또는 종료일)까지예요.
-    var periodText: String {
-        let goal = board.goal
-        let end = min(now, goal.lastDay)
-        let calendar = Calendar(identifier: .gregorian)
-        let sameMonth = calendar.component(.month, from: goal.startsAt) == calendar.component(.month, from: end)
-        let endText = sameMonth ? "\(calendar.component(.day, from: end))일" : end.homeMonthDayText
-        return "\(goal.startsAt.homeMonthDayText)~\(endText)"
+        .padding(.top, 12.scaled)
     }
 }
 
@@ -143,105 +167,75 @@ private extension HomeParticipantsSheet {
 
 private extension HomeParticipantsSheet {
 
-    /// 접었을 때 보여줄 사람 수예요.
-    static let collapsedCount = 4
-    /// 피그마 시트 높이(458, 662)에서 홈 인디케이터 영역을 뺀 높이예요.
-    static let collapsedDetent = PresentationDetent.height(424.scaled)
-    static let expandedDetent = PresentationDetent.height(628.scaled)
+    static let previewCount = 3
+    static let expandedDetent = PresentationDetent.height(668.scaled)
+    static let defaultCollapsedHeight: CGFloat = 308
 }
 
 // MARK: - Row
 
-/// 순위·프로필·닉네임·수거량 한 줄이에요. 차단한 사용자는 가려서 보여주고 누를 수 없어요.
 struct HomeParticipantRow: View {
 
-    let ranked: HomeRankedParticipant
+    let participant: GoalParticipant
+    var showsDivider = true
     let onTap: () -> Void
-
-    private var participant: GoalParticipant { ranked.participant }
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 8.scaled) {
-                HStack(spacing: 12.scaled) {
-                    avatar
+            HStack(spacing: 12.scaled) {
+                HomeParticipantAvatar(participant: participant)
 
-                    Text(participant.isBlocked ? "차단한 회원" : participant.nickname)
-                        .plobbyFont(.body)
-                        .foregroundStyle(Color(.textPrimary))
-                        .lineLimit(1)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-
-                Text("\(participant.collectedCount)개")
-                    .plobbyFont(.labelSelected)
+                Text(participant.isBlocked ? "차단한 회원" : participant.nickname)
+                    .plobbyFont(.body)
                     .foregroundStyle(Color(.textPrimary))
+                    .lineLimit(1)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.vertical, 8.scaled)
             .overlay(alignment: .bottom) {
-                Capsule()
-                    .fill(Color(.gray200))
-                    .frame(height: 1.scaled)
+                if showsDivider {
+                    Rectangle()
+                        .fill(Color(.gray200))
+                        .frame(height: 1.scaled)
+                }
             }
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        // 차단한 사용자는 흐리게 바꾸지 않고 누르기만 막아요.
         .allowsHitTesting(!participant.isBlocked)
-        .accessibilityLabel(accessibilityText)
+        .accessibilityLabel(participant.isBlocked ? "차단한 회원" : participant.nickname)
     }
+}
 
-    private var avatar: some View {
-        ZStack(alignment: .bottomTrailing) {
-            Group {
-                if participant.isBlocked {
-                    Image(systemName: "nosign")
-                        .font(.system(size: 20.scaled, weight: .medium))
+// MARK: - Avatar
+
+struct HomeParticipantAvatar: View {
+
+    let participant: GoalParticipant
+
+    var body: some View {
+        Group {
+            if participant.isBlocked {
+                Image(systemName: "nosign")
+                    .font(.system(size: 20.scaled, weight: .medium))
+                    .foregroundStyle(Color(.gray400))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(.gray100))
+            } else {
+                AsyncImage(url: participant.profileImageURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Image(systemName: "person.fill")
+                        .font(.system(size: 20.scaled, weight: .bold))
                         .foregroundStyle(Color(.gray400))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(Color(.gray100))
-                } else {
-                    AsyncImage(url: participant.profileImageURL) { image in
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    } placeholder: {
-                        Image(systemName: "person.fill")
-                            .font(.system(size: 16.scaled))
-                            .foregroundStyle(Color(.gray400))
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color(.gray100))
-                    }
                 }
             }
-            .frame(width: 34.scaled, height: 34.scaled)
-            .clipShape(Circle())
-
-            if showsRankBadge {
-                Text("\(ranked.rank)위")
-                    .plobbyFont(.metadata)
-                    .foregroundStyle(Color(.currentBrandText))
-                    .padding(.horizontal, 4.scaled)
-                    .frame(height: 16.scaled)
-                    .background(Color(.gray50), in: Capsule())
-                    .overlay {
-                        Capsule()
-                            .stroke(Color(.gray0), lineWidth: 1)
-                    }
-                    .fixedSize()
-                    .offset(x: 8.scaled, y: 4.scaled)
-            }
         }
-        .frame(width: 34.scaled, height: 34.scaled)
-    }
-
-    /// 1~3위만 순위 배지를 달아요.
-    private var showsRankBadge: Bool {
-        ranked.rank <= 3 && !participant.isBlocked
-    }
-
-    private var accessibilityText: String {
-        let name = participant.isBlocked ? "차단한 회원" : participant.nickname
-        return "\(ranked.rank)위 \(name), \(participant.collectedCount)개"
+        .frame(width: 36.scaled, height: 36.scaled)
+        .clipShape(Circle())
     }
 }

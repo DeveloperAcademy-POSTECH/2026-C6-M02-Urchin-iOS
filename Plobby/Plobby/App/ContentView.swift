@@ -21,8 +21,20 @@ struct ContentView: View {
 
     // MARK: - Body
     
+    @State private var isSplashVisible = true
+
     var body: some View {
         content
+            .overlay {
+                if isSplashVisible {
+                    SplashView {
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            isSplashVisible = false
+                        }
+                    }
+                    .transition(.opacity)
+                }
+            }
             .task {
                 await store.send(.task).finish()
             }

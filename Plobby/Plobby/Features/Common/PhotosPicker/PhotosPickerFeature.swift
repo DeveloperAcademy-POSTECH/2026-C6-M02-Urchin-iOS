@@ -28,12 +28,18 @@ struct PhotosPickerFeature {
         var isAlbumListExpanded = false
         var assets: IdentifiedArrayOf<PhotoAsset> = []
         var selection: PhotoSelection
+        /// 앨범 밖에서 이미 넣어 둔 사진 수예요. 수정 중인 기존 사진이 해당해요.
+        let alreadySelectedCount: Int
         var isCameraPresented = false
         var toast = ToastFeature.State()
+        @Presents var alert: AlertState<Action.Alert>?
         
-        init(recordType: RecordType, alreadySelectedCount: Int = 0) {
+        /// 기록 양식에 이미 넣은 사진은 선택된 채로 열어요.
+        /// 앨범에서 다시 고를 수 없는 사진(수정 중인 기존 사진)은 그 장수만큼 한도에서 빼요.
+        init(recordType: RecordType, selectedAssets: [PhotoAsset] = [], alreadySelectedCount: Int = 0) {
             self.purpose = .record(recordType)
-            self.selection = PhotoSelection(limit: PhotoSelection.maxCount - alreadySelectedCount)
+            self.selection = PhotoSelection(selectedAssets, limit: PhotoSelection.maxCount - alreadySelectedCount)
+            self.alreadySelectedCount = alreadySelectedCount
         }
 
         static var profile: Self {
@@ -43,6 +49,7 @@ struct PhotosPickerFeature {
         private init(purpose: Purpose, selection: PhotoSelection) {
             self.purpose = purpose
             self.selection = selection
+            self.alreadySelectedCount = 0
         }
 
         var isSingleSelection: Bool {
@@ -53,8 +60,9 @@ struct PhotosPickerFeature {
             albums.first { $0.id == selectedAlbumID }
         }
         
+        /// 기존 사진이 남아 있으면 앨범에서 모두 해제해도 확정할 수 있어요.
         var isSkip: Bool {
-            selection.isEmpty
+            selection.isEmpty && alreadySelectedCount == 0
         }
     }
     
@@ -62,13 +70,18 @@ struct PhotosPickerFeature {
     
     enum Action {
         case task
+        /// 설정 앱에서 권한을 바꾸고 돌아오면 권한을 다시 확인해요.
+        case sceneBecameActive
         case authorizationResponse(PhotoAuthorization)
         case albumsResponse([PhotoAlbum])
+        /// 사진 보관함이 바뀌면 앨범과 사진을 다시 불러와요.
+        case libraryChanged
         case assetsResponse([PhotoAsset])
         case albumToggleTapped
         case albumSelected(PhotoAlbum.ID)
         case assetTapped(PhotoAsset.ID)
         case cameraTapped
+        case cameraAuthorizationResponse(Bool)
         case cameraDismissed
         case cameraImageCaptured(Data)
         case cameraCaptured(PhotoAsset)
@@ -77,7 +90,12 @@ struct PhotosPickerFeature {
         case bottomButtonTapped
         case closeTapped
         case toast(ToastFeature.Action)
+        case alert(PresentationAction<Alert>)
         case delegate(Delegate)
+
+        enum Alert {
+            case openSettingsTapped
+        }
         
         @CasePathable
         enum Delegate {
@@ -103,6 +121,13 @@ struct PhotosPickerFeature {
             case .task:
                 let status = photoLibraryClient.authorizationStatus()
                 return handlePhotoAuthorization(currentStatus: status)
+
+            case .sceneBecameActive:
+                let status = photoLibraryClient.authorizationStatus()
+
+                guard state.authorization != .notDetermined, status != state.authorization else { return .none }
+
+                return .send(.authorizationResponse(status))
                 
             case let .authorizationResponse(authorization):
                 state.authorization = authorization
@@ -110,11 +135,16 @@ struct PhotosPickerFeature {
                     return .none
                 }
                 
+                return .merge(fetchAlbums(), observeLibraryChanges())
+
+            case .libraryChanged:
                 return fetchAlbums()
                 
             case let .albumsResponse(albums):
                 state.albums = albums
-                guard let album = albums.first else {
+                let selectedAlbum = albums.first { $0.id == state.selectedAlbumID } ?? albums.first
+
+                guard let album = selectedAlbum else {
                     state.selectedAlbumID = nil
                     state.assets = []
                     return .none
@@ -165,8 +195,21 @@ struct PhotosPickerFeature {
                     return .send(.toast(.show(.photoLimitExceeded)))
                 }
                 
+                return .run { send in
+                    await send(.cameraAuthorizationResponse(await photoLibraryClient.requestCameraAuthorization()))
+                }
+
+            case let .cameraAuthorizationResponse(isAuthorized):
+                guard isAuthorized else {
+                    state.alert = .make(.cameraAccessDenied, confirm: .openSettingsTapped)
+                    return .none
+                }
+
                 state.isCameraPresented = true
                 return .none
+
+            case .alert(.presented(.openSettingsTapped)):
+                return .send(.openSettingsTapped)
                 
             case .cameraDismissed:
                 state.isCameraPresented = false
@@ -205,10 +248,11 @@ struct PhotosPickerFeature {
             case .closeTapped:
                 return .send(.delegate(.cancelled))
                 
-            case .toast, .delegate:
+            case .toast, .alert, .delegate:
                 return .none
             }
         }
+        .ifLet(\.$alert, action: \.alert)
     }
 }
 
@@ -219,6 +263,7 @@ private extension PhotosPickerFeature {
     
     nonisolated private enum CancelID {
         case fetchAssets
+        case libraryChanges
     }
     
     func handlePhotoAuthorization(currentStatus: PhotoAuthorization) -> Effect<Action> {
@@ -238,6 +283,15 @@ private extension PhotosPickerFeature {
         }
     }
     
+    func observeLibraryChanges() -> Effect<Action> {
+        .run { send in
+            for await _ in photoLibraryClient.libraryChanges() {
+                await send(.libraryChanged)
+            }
+        }
+        .cancellable(id: CancelID.libraryChanges, cancelInFlight: true)
+    }
+
     func saveImageInGallery(source imageData: Data) -> Effect<Action> {
         return .run { send in
             do {

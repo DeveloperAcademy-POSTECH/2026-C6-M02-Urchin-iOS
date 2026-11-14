@@ -20,6 +20,7 @@ struct RecordFormFeature {
         let mode: Mode
         private(set) var initialInputs: Inputs
         var photos: IdentifiedArrayOf<RecordPhoto>
+        var isPhotoErrorVisible: Bool = false
         var beach: Beach?
         var isLocationErrorVisible: Bool = false
         var period: ActivityPeriod
@@ -27,6 +28,7 @@ struct RecordFormFeature {
         var maxDepthText: String
         var maxDepthError: String?
         var trash: TrashSelection
+        var isTrashErrorVisible: Bool = false
         var totalWeightText: String
         var totalWeightError: String?
         var memo: String
@@ -72,12 +74,15 @@ struct RecordFormFeature {
             max(RecordFormFeature.maxPhotoCount - photos.count, 0)
         }
 
+        var canOpenPhotoPicker: Bool {
+            remainingPhotoCount > 0 || photos.contains { if case .local = $0 { true } else { false } }
+        }
+
         var hasInput: Bool {
-            var current = inputs
-            if mode == .create {
-                current.photoIDs = initialInputs.photoIDs
+            if mode == .create, !photos.isEmpty {
+                return true
             }
-            return current != initialInputs
+            return inputs != initialInputs
         }
         
         private var inputs: Inputs {
@@ -223,18 +228,24 @@ struct RecordFormFeature {
                 return .none
                 
             case .cameraTapped:
-                guard state.remainingPhotoCount > 0 else {
+                guard state.canOpenPhotoPicker else {
                     return .none
                 }
                 
+                let localAssets = state.photos.compactMap { photo -> PhotoAsset? in
+                    guard case let .local(asset) = photo else { return nil }
+                    return asset
+                }
                 state.destination = .photoPicker(PhotosPickerFeature.State(
                     recordType: state.recordType,
-                    alreadySelectedCount: state.photos.count
+                    selectedAssets: localAssets,
+                    alreadySelectedCount: state.photos.count - localAssets.count
                 ))
                 return .none
                 
             case let .photoDeleteTapped(id):
                 state.photos.remove(id: id)
+                state.isPhotoErrorVisible = state.photos.isEmpty
                 return .none
                 
             case let .photoMoved(sourceID, targetID):
@@ -334,14 +345,22 @@ struct RecordFormFeature {
                 ))
                 return .none
                 
+            // 앨범에서 고른 그대로 바꿔요. 선택을 푼 사진은 빼고, 계속 고른 사진은 자리를 지키고, 새 사진은 뒤에 붙여요.
             case let .destination(.presented(.photoPicker(.delegate(.finished(photos))))):
-                for photo in photos.prefix(state.remainingPhotoCount) {
+                let selectedIDs = Set(photos.map { RecordPhoto.local($0).id })
+                state.photos.removeAll { photo in
+                    guard case .local = photo else { return false }
+                    return !selectedIDs.contains(photo.id)
+                }
+                for photo in photos where state.photos.count < RecordFormFeature.maxPhotoCount {
                     state.photos.updateOrAppend(.local(photo))
                 }
+                state.isPhotoErrorVisible = state.photos.isEmpty
                 state.destination = nil
                 return .none
                 
             case .destination(.presented(.photoPicker(.delegate(.cancelled)))):
+                state.isPhotoErrorVisible = state.photos.isEmpty
                 state.destination = nil
                 return .none
                 
@@ -365,10 +384,12 @@ struct RecordFormFeature {
                 
             case let .destination(.presented(.trashPicker(.delegate(.confirmed(selection))))):
                 state.trash = selection
+                state.isTrashErrorVisible = selection.isEmpty
                 state.destination = nil
                 return .none
 
             case .destination(.presented(.trashPicker(.delegate(.cancelled)))):
+                state.isTrashErrorVisible = state.trash.isEmpty
                 state.destination = nil
                 return .none
 
@@ -380,6 +401,10 @@ struct RecordFormFeature {
                 
             case .destination(.dismiss):
                 switch state.destination {
+                case .photoPicker:
+                    state.isPhotoErrorVisible = state.photos.isEmpty
+                case .trashPicker:
+                    state.isTrashErrorVisible = state.trash.isEmpty
                 case .locationPicker:
                     state.isLocationErrorVisible = state.beach == nil
                 case .datePicker, .timePicker:
@@ -409,9 +434,11 @@ struct RecordFormFeature {
 extension RecordFormFeature {
 
     private func validate(_ state: inout State) -> Bool {
+        state.isPhotoErrorVisible = state.photos.isEmpty
         state.isLocationErrorVisible = state.beach == nil
         state.periodError = periodError(for: state.period)
         state.maxDepthError = maxDepthError(for: state.maxDepthText)
+        state.isTrashErrorVisible = state.trash.isEmpty
         state.totalWeightError = totalWeightError(for: state.totalWeightText)
         state.isMemoErrorVisible = InputText.isBlank(state.memo)
 
@@ -426,7 +453,8 @@ extension RecordFormFeature {
               maxDepthError(for: state.maxDepthText) == nil,
               !state.trash.isEmpty,
               totalWeightError(for: state.totalWeightText) == nil,
-              !InputText.isBlank(state.memo)
+              !InputText.isBlank(state.memo),
+              !state.isMemoOverLimit
         else { return false }
 
         return true
@@ -434,7 +462,7 @@ extension RecordFormFeature {
 
     private func periodError(for period: ActivityPeriod) -> String? {
         guard period.isComplete else {
-            return "활동 날짜와 시간을 입력해주세요."
+            return "활동 날짜와 시간을 입력해 주세요."
         }
 
         guard period.isValid else {

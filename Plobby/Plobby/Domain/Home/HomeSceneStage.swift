@@ -24,6 +24,15 @@ nonisolated extension HomeSceneStage {
         }
     }
     
+    /// 쓰레기를 다 주운 마지막 날이에요. 아직 하나도 줍지 않았으면 -1, 마지막 도착점까지 갔으면 lastDay + 1이에요.
+    func collectedThrough(lastDay: Int) -> Int {
+        switch self {
+        case let .arrived(day): day - 1
+        case let .collecting(day), let .collected(day): day
+        case .finale: lastDay + 1
+        }
+    }
+
     var isCollected: Bool {
         if case .collected = self {
             return true

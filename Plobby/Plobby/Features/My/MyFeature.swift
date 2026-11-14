@@ -12,7 +12,7 @@ import ComposableArchitecture
 @Reducer
 struct MyFeature {
 
-    // MARK: - State
+    // MARK: - State 
 
     @ObservableState
     struct State: Equatable {
@@ -23,12 +23,14 @@ struct MyFeature {
         var records: [RecordSummary] = []
         var recordFilter: RecordFilter = .all
         var removedFavoriteBeach: RemovedFavoriteBeach?
+        var hasUnreadNotification = false
         var toast = ToastFeature.State()
         @Presents var profileEdit: ProfileEditFeature.State?
         @Presents var settings: SettingsFeature.State?
+        @Presents var notification: NotificationFeature.State?
         @Presents var recordDetail: RecordDetailFeature.State?
+        @Presents var recordMenu: RecordMenuFeature.State?
         @Presents var beachHome: BeachHomeFeature.State?
-        /// 해변 홈에서 연 기록 상세예요. 마이 목록에서 연 상세와 화면 단계가 달라서 따로 둬요.
         @Presents var beachRecordDetail: RecordDetailFeature.State?
         @Presents var favoriteBeachAdd: FavoriteBeachAddFeature.State?
 
@@ -57,7 +59,6 @@ struct MyFeature {
         }
     }
 
-    /// 되돌리기를 누르면 원래 자리로 돌려놓기 위해 해제한 위치를 함께 둬요.
     struct RemovedFavoriteBeach: Equatable {
         let beach: Beach
         let index: Int
@@ -70,8 +71,10 @@ struct MyFeature {
         case profileResponse(Result<Profile?, any Error>)
         case favoriteBeachesResponse(Result<[Beach], any Error>)
         case recordsResponse(Result<[RecordSummary], any Error>)
+        case unreadNotificationResponse(Result<Bool, any Error>)
         case profileEditButtonTapped
         case settingsButtonTapped
+        case notificationButtonTapped
         case favoriteBeachAddButtonTapped
         case favoriteBeachTapped(Beach)
         case favoriteBeachUnfavoriteButtonTapped(Beach)
@@ -79,10 +82,13 @@ struct MyFeature {
         case favoriteBeachRequestFailed(Beach, isFavorite: Bool)
         case recordFilterChanged(RecordFilter)
         case recordTapped(RecordSummary.ID)
+        case recordMenuSelected(RecordSummary, RecordMenuFeature.Menu)
         case recordStartButtonTapped
         case profileEdit(PresentationAction<ProfileEditFeature.Action>)
         case settings(PresentationAction<SettingsFeature.Action>)
+        case notification(PresentationAction<NotificationFeature.Action>)
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
+        case recordMenu(PresentationAction<RecordMenuFeature.Action>)
         case beachHome(PresentationAction<BeachHomeFeature.Action>)
         case beachRecordDetail(PresentationAction<RecordDetailFeature.Action>)
         case favoriteBeachAdd(PresentationAction<FavoriteBeachAddFeature.Action>)
@@ -92,6 +98,8 @@ struct MyFeature {
         enum Delegate {
             case loginRequired
             case signedOut
+            /// 목표 달성 알림을 눌러 홈으로 돌아가요.
+            case homeRequested
         }
     }
 
@@ -100,6 +108,7 @@ struct MyFeature {
     @Dependency(\.userClient) var userClient
     @Dependency(\.beachClient) var beachClient
     @Dependency(\.recordClient) var recordClient
+    @Dependency(\.notificationClient) var notificationClient
 
     // MARK: - Body
 
@@ -108,6 +117,19 @@ struct MyFeature {
             ToastFeature()
         }
 
+        core
+            .ifLet(\.$beachHome, action: \.beachHome) {
+                BeachHomeFeature()
+            }
+            .ifLet(\.$beachRecordDetail, action: \.beachRecordDetail) {
+                RecordDetailFeature()
+            }
+            .ifLet(\.$favoriteBeachAdd, action: \.favoriteBeachAdd) {
+                FavoriteBeachAddFeature()
+            }
+    }
+
+    private var core: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .onAppear:
@@ -116,7 +138,8 @@ struct MyFeature {
                 return .merge(
                     fetchMyProfile(),
                     fetchFavoriteBeaches(),
-                    fetchRecords(userID: user.id)
+                    fetchRecords(userID: user.id),
+                    fetchHasUnreadNotification()
                 )
 
             case let .profileResponse(.success(profile)):
@@ -131,9 +154,14 @@ struct MyFeature {
                 state.records = records
                 return .none
 
+            case let .unreadNotificationResponse(.success(hasUnread)):
+                state.hasUnreadNotification = hasUnread
+                return .none
+
             case let .profileResponse(.failure(error)),
                  let .favoriteBeachesResponse(.failure(error)),
-                 let .recordsResponse(.failure(error)):
+                 let .recordsResponse(.failure(error)),
+                 let .unreadNotificationResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 return .none
 
@@ -184,6 +212,26 @@ struct MyFeature {
                 state.recordDetail = RecordDetailFeature.State(recordID: recordID)
                 return .none
 
+            case let .recordMenuSelected(record, menu):
+                state.recordMenu = RecordMenuFeature.State(record: record)
+                return .send(.recordMenu(.presented(.menuSelected(menu))))
+
+            case .recordMenu(.presented(.delegate(.updated))):
+                state.recordMenu = nil
+
+                guard case let .member(user) = state.membershipStatus else { return .none }
+
+                return fetchRecords(userID: user.id)
+
+            case let .recordMenu(.presented(.delegate(.deleted(recordID)))):
+                state.recordMenu = nil
+                state.records.removeAll { $0.id == recordID }
+                return .none
+
+            case .recordMenu(.presented(.delegate(.blocked))):
+                state.recordMenu = nil
+                return .none
+
             case .profileEditButtonTapped:
                 guard case .member = state.membershipStatus else {
                     return .send(.delegate(.loginRequired))
@@ -201,7 +249,19 @@ struct MyFeature {
                 state.settings = SettingsFeature.State()
                 return .none
 
-            // 비회원에게만 보이는 버튼이라 로그인 시트를 띄워요
+            case .notificationButtonTapped:
+                state.notification = NotificationFeature.State()
+                return .none
+
+            case .notification(.presented(.delegate(.homeRequested))):
+                state.notification = nil
+                return .send(.delegate(.homeRequested))
+
+            case .notification(.presented(.delegate(.settingsRequested))):
+                state.notification = nil
+                state.settings = SettingsFeature.State()
+                return .none
+
             case .recordStartButtonTapped:
                 return .send(.delegate(.loginRequired))
 
@@ -233,21 +293,21 @@ struct MyFeature {
                 state.beachRecordDetail = RecordDetailFeature.State(recordID: record.id)
                 return .none
 
-            case .beachRecordDetail(.presented(.delegate(.closed))),
-                 .beachRecordDetail(.presented(.delegate(.deleted))):
+            case .beachRecordDetail(.presented(.delegate(.closed))):
                 state.beachRecordDetail = nil
                 return .none
 
-            case let .beachRecordDetail(.presented(.delegate(.reported(recordID)))):
+            case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.beachRecordDetail = nil
-                return .send(.beachHome(.presented(.recordHidden(recordID))))
+                state.records.removeAll { $0.id == recordID }
+                return .send(.beachHome(.presented(.recordRemoved(recordID))))
 
             case let .beachRecordDetail(.presented(.delegate(.blocked(userID)))):
                 state.beachRecordDetail = nil
                 return .send(.beachHome(.presented(.userBlocked(userID))))
 
-            case .profileEdit, .settings, .recordDetail, .beachHome, .beachRecordDetail, .favoriteBeachAdd, .toast,
-                 .delegate:
+            case .profileEdit, .settings, .notification, .recordDetail, .recordMenu, .beachHome, .beachRecordDetail,
+                 .favoriteBeachAdd, .toast, .delegate:
                 return .none
             }
         }
@@ -257,17 +317,14 @@ struct MyFeature {
         .ifLet(\.$settings, action: \.settings) {
             SettingsFeature()
         }
+        .ifLet(\.$notification, action: \.notification) {
+            NotificationFeature()
+        }
         .ifLet(\.$recordDetail, action: \.recordDetail) {
             RecordDetailFeature()
         }
-        .ifLet(\.$beachHome, action: \.beachHome) {
-            BeachHomeFeature()
-        }
-        .ifLet(\.$beachRecordDetail, action: \.beachRecordDetail) {
-            RecordDetailFeature()
-        }
-        .ifLet(\.$favoriteBeachAdd, action: \.favoriteBeachAdd) {
-            FavoriteBeachAddFeature()
+        .ifLet(\.$recordMenu, action: \.recordMenu) {
+            RecordMenuFeature()
         }
     }
 }
@@ -291,6 +348,12 @@ extension MyFeature {
     private func fetchRecords(userID: UUID) -> Effect<Action> {
         .run { send in
             await send(.recordsResponse(Result { try await recordClient.fetchUserRecords(userID) }))
+        }
+    }
+
+    private func fetchHasUnreadNotification() -> Effect<Action> {
+        .run { send in
+            await send(.unreadNotificationResponse(Result { try await notificationClient.fetchHasUnread() }))
         }
     }
 

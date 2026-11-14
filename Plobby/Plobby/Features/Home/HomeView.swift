@@ -15,23 +15,58 @@ struct HomeView: View {
     
     @Bindable var store: StoreOf<HomeFeature>
     
-    @Namespace private var tabUnderline
+    @State private var cardHeight: CGFloat = 0
+    /// 지금 보이는 카드 높이예요. 카드를 펼치면 날짜 칩이 카드 아래로 따라 내려가요.
+    @State private var visibleCardHeight: CGFloat = 0
+    @State private var walkDragStart: (progress: Double, translation: CGFloat)?
+    @State private var dragAxis: Axis?
+    /// 드래그가 취소되면 onEnded가 불리지 않아서, 끝났는지는 이 값으로 알아요.
+    @GestureState private var isDragging = false
     
     // MARK: - Body
     
     var body: some View {
-        VStack(spacing: 0) {
-            header
-            
-            goalCard
-                .padding(.horizontal, 20.scaled)
-            
-            activityTabs
-                .padding(.top, 4.scaled)
-            
+        ZStack(alignment: .top) {
             scene
+
+            goalCard(isExpanded: false)
+                .hidden()
+                .accessibilityHidden(true)
+                .allowsHitTesting(false)
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.height
+                } action: { height in
+                    cardHeight = height
+                }
+                .padding(.horizontal, 20.scaled)
+
+            goalCard(isExpanded: store.isGoalExpanded)
+                .onGeometryChange(for: CGFloat.self) { proxy in
+                    proxy.size.height
+                } action: { height in
+                    visibleCardHeight = height
+                }
+                .padding(.horizontal, 20.scaled)
+
+            activityToggleButton
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .padding(.trailing, 20.scaled)
+                .padding(.bottom, 8.scaled)
         }
         .background(Color(.gray0))
+        .overlay {
+            if let step = store.tutorialStep {
+                HomeTutorialView(
+                    step: step,
+                    recordType: store.tutorialRecordType,
+                    onToggleTapped: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.25)) },
+                    onActivitySwitched: { store.send(.tutorialActivitySwitched, animation: .smooth(duration: 0.35)) },
+                    onAutoAdvance: { store.send(.tutorialAdvanced, animation: .easeInOut(duration: 0.5)) },
+                    onFrameChanged: { store.send(.tutorialFrameChanged($0, $1)) }
+                )
+                .transition(.opacity)
+            }
+        }
         .sheet(item: sheetBinding) { sheet in
             sheetContent(sheet)
         }
@@ -60,69 +95,6 @@ struct HomeView: View {
     }
 }
 
-// MARK: - 헤더
-
-private extension HomeView {
-    
-    var header: some View {
-        HStack {
-            Image(.homeLogo)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 73.scaled, height: 23.scaled)
-                .accessibilityLabel("plobby")
-            
-            Spacer()
-            
-            Button {
-                store.send(.notificationButtonTapped)
-            } label: {
-                Image(.bell)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24.scaled, height: 24.scaled)
-                    .frame(width: 44.scaled, height: 44.scaled)
-            }
-            .accessibilityLabel("알림")
-        }
-        .padding(.leading, 20.scaled)
-        .padding(.trailing, 12.scaled)
-        .frame(height: 50.scaled)
-    }
-    
-    var activityTabs: some View {
-        HStack(spacing: 0) {
-            ForEach(Self.tabs, id: \.self) { type in
-                let isSelected = store.selectedType == type
-                
-                Button {
-                    store.send(.activityTabSelected(type), animation: .smooth(duration: 0.3))
-                } label: {
-                    Text(type.name)
-                        .plobbyFont(isSelected ? .actionLabel : .body)
-                        .foregroundStyle(isSelected ? Color(.textPrimary) : Color(.textSecondary))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 48.scaled)
-                        .overlay(alignment: .bottom) {
-                            if isSelected {
-                                Rectangle()
-                                    .fill(Color(.green500))
-                                    .frame(height: 4.scaled)
-                                    .matchedGeometryEffect(id: "underline", in: tabUnderline)
-                                    .offset(y: 4.scaled)
-                            }
-                        }
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityAddTraits(isSelected ? .isSelected : [])
-            }
-        }
-        .padding(.bottom, 4.scaled)
-        .background(Color(.gray0))
-    }
-}
-
 // MARK: - 장면
 
 private extension HomeView {
@@ -131,20 +103,32 @@ private extension HomeView {
         let type = store.selectedType
         let days = store.board?.days ?? []
         let pulse = store.collectPulses[type, default: 0]
-        
+
         return ZStack {
             switch type {
             case .plogging:
-                PloggingSceneView(days: days, stage: store.stage, collectPulse: pulse)
-                    .ignoresSafeArea(edges: .bottom)
-                    .transition(.opacity)
+                sceneLayer(backdrop: .homeSceneBeach) {
+                    PloggingSceneView(
+                        days: days,
+                        stage: store.stage,
+                        collectPulse: pulse,
+                        walkProgress: store.walkProgress
+                    )
+                }
+                .transition(.move(edge: .leading))
             case .plobbing:
-                PlobbingSceneView(days: days, stage: store.stage, collectPulse: pulse)
-                    .ignoresSafeArea(edges: .bottom)
-                    .transition(.opacity)
+                sceneLayer(backdrop: .homeSceneSky) {
+                    PlobbingSceneView(
+                        days: days,
+                        stage: store.stage,
+                        collectPulse: pulse,
+                        walkProgress: store.walkProgress
+                    )
+                }
+                .transition(.move(edge: .trailing))
             }
-            
-            if let status = store.status, status.isFinished {
+
+            if store.isCelebrationVisible, let status = store.status {
                 HomeGoalCelebration(isAchieved: status == .achieved)
                     .transition(.opacity)
             }
@@ -155,66 +139,133 @@ private extension HomeView {
                 day: store.currentDay,
                 totalTrashCount: store.board?.totalTrashCount ?? 0,
                 isGoalFinished: store.isGoalFinished,
-                onParticipantsTapped: { store.send(.participantsButtonTapped) },
+                isAtDay: store.walkProgress == store.walkProgress.rounded(),
                 onTrashSummaryTapped: { store.send(.trashSummaryButtonTapped, transaction: Self.noAnimation) }
             )
-            
+            .padding(.top, max(visibleCardHeight, cardHeight))
+            .animation(.easeInOut(duration: 0.25), value: visibleCardHeight)
+
             if store.isScrollGuideVisible {
                 HomeScrollGuideToast()
                     .transition(.opacity)
             }
-            
-            recordButton
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding(.trailing, 20.scaled)
-                .padding(.bottom, 8.scaled)
         }
         .frame(maxHeight: .infinity)
         .contentShape(Rectangle())
-        .gesture(swipeGesture)
+        .gesture(walkGesture)
+        .onChange(of: isDragging) { _, isDragging in
+            guard !isDragging else { return }
+
+            walkDragStart = nil
+            dragAxis = nil
+        }
         .animation(.easeInOut(duration: 0.2), value: store.isScrollGuideVisible)
     }
-    
-    var swipeGesture: some Gesture {
-        DragGesture(minimumDistance: 20)
-            .onEnded { value in
-                let dy = value.translation.height
-                guard abs(dy) > 40, abs(dy) > abs(value.translation.width) else { return }
+
+    var walkGesture: some Gesture {
+        DragGesture(minimumDistance: 4)
+            .updating($isDragging) { _, isDragging, _ in
+                isDragging = true
+            }
+            .onChanged { value in
+                let axis = dragAxis ?? (abs(value.translation.width) > abs(value.translation.height) ? .horizontal : .vertical)
+                dragAxis = axis
+                guard axis == .vertical else { return }
+
+                guard !store.isWalkLocked else {
+                    walkDragStart = nil
+                    return
+                }
                 
-                store.send(.sceneSwiped(forward: dy < 0), animation: HomeFeature.transitionAnimation)
+                let translation = value.translation.height
+                let start = walkDragStart ?? (store.walkProgress, translation)
+                walkDragStart = start
+                
+                let progress = walkPath.progress(from: start.progress, moving: start.translation - translation)
+                store.send(.sceneWalked(to: progress), animation: .easeInOut(duration: 0.3))
+            }
+            .onEnded { value in
+                defer {
+                    walkDragStart = nil
+                    dragAxis = nil
+                }
+                guard dragAxis == .horizontal else { return }
+
+                switchTab(by: value.predictedEndTranslation.width)
             }
     }
+
+    func switchTab(by translation: CGFloat) {
+        guard abs(translation) > Self.tabSwipeThreshold,
+              let index = Self.tabs.firstIndex(of: store.selectedType)
+        else { return }
+
+        let nextIndex = index + (translation < 0 ? 1 : -1)
+        guard Self.tabs.indices.contains(nextIndex) else { return }
+
+        store.send(.activityTabSelected(Self.tabs[nextIndex]), animation: .smooth(duration: 0.3))
+    }
     
-    var recordButton: some View {
-        Button {
-            store.send(.recordButtonTapped, transaction: Self.noAnimation)
+    var walkPath: HomeWalkPath {
+        let lastDay = max((store.board?.days.count ?? 1) - 1, 0)
+        
+        switch store.selectedType {
+        case .plogging: return PloggingSceneView.walkPath(lastDay: lastDay)
+        case .plobbing: return PlobbingSceneView.walkPath(lastDay: lastDay, stage: store.stage)
+        }
+    }
+    
+    func sceneLayer<Scene: View>(
+        backdrop: ImageResource,
+        @ViewBuilder scene: () -> Scene
+    ) -> some View {
+        ZStack(alignment: .top) {
+            HomeSceneBackdrop(image: backdrop)
+                .ignoresSafeArea()
+
+            scene()
+                .padding(.top, cardHeight)
+                .ignoresSafeArea(edges: .bottom)
+        }
+    }
+
+    var activityToggleButton: some View {
+        let type = store.selectedType
+        let next: RecordType = type == .plogging ? .plobbing : .plogging
+
+        return Button {
+            store.send(.activityTabSelected(next), animation: .smooth(duration: 0.35))
         } label: {
-            Image(systemName: "plus")
-                .font(.system(size: 24.scaled, weight: .medium))
+            Image(systemName: type == .plogging ? "figure.walk" : "figure.open.water.swim")
+                .font(.system(size: 24.scaled))
                 .foregroundStyle(Color(.currentBrandText))
-                .frame(width: 56.scaled, height: 56.scaled)
+                .contentTransition(.symbolEffect(.replace))
+                .frame(width: 48.scaled, height: 48.scaled)
                 .background(Color(.gray0), in: Circle())
-                .shadow(color: .black.opacity(0.1), radius: 3, y: 2)
+                .shadow(color: Color(.neutralBlack).opacity(0.1), radius: 6.scaled, y: 2.scaled)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("기록하기")
+        .guestTapAllowed()
+        .accessibilityLabel("\(next.name)로 바꾸기")
     }
 }
 
-// MARK: - 공동 목표
+// MARK: - 공통 목표
 
 private extension HomeView {
     
     @ViewBuilder
-    var goalCard: some View {
+    func goalCard(isExpanded: Bool) -> some View {
         if let goal = store.board?.goal, let status = store.status {
             HomeGoalCard(
                 goal: goal,
                 status: status,
-                isExpanded: store.isGoalExpanded,
+                isExpanded: isExpanded,
                 onToggle: { store.send(.goalCardToggleTapped, animation: .easeInOut(duration: 0.25)) },
                 onRecordTapped: { store.send(.recordButtonTapped, transaction: Self.noAnimation) },
-                onAllGoalsTapped: { store.send(.allGoalsButtonTapped) }
+                onAllGoalsTapped: { store.send(.allGoalsButtonTapped) },
+                onNextGoalTapped: { store.send(.nextGoalButtonTapped, animation: .smooth(duration: 0.35)) },
+                onParticipantsTapped: { store.send(.participantsButtonTapped) }
             )
         }
     }
@@ -247,12 +298,12 @@ private extension HomeView {
     
     @ViewBuilder
     func sheetContent(_ sheet: HomeFeature.Sheet) -> some View {
-        if let board = store.board {
+        if let goal = store.board?.goal {
             switch sheet {
             case .participants:
                 HomeParticipantsSheet(
-                    board: board,
-                    now: store.now,
+                    goal: goal,
+                    participants: store.allParticipants,
                     onParticipantTapped: { store.send(.participantTapped($0)) },
                     onClose: { store.send(.sheetDismissed) }
                 )
@@ -266,6 +317,7 @@ private extension HomeView {
 private extension HomeView {
     
     static let tabs: [RecordType] = [.plogging, .plobbing]
+    static let tabSwipeThreshold: CGFloat = 60
     
     static var noAnimation: Transaction {
         var transaction = Transaction()

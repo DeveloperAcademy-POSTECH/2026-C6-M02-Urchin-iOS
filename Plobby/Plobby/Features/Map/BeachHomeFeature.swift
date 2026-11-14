@@ -71,8 +71,8 @@ struct BeachHomeFeature {
         case moreRecordsTapped
         case showAllTapped
         case recordTapped(BeachRecord)
-        /// 신고한 기록을 목록에서 빼요.
-        case recordHidden(UUID)
+        /// 지운 기록을 목록에서 빼요.
+        case recordRemoved(UUID)
         /// 차단한 사용자의 기록을 목록에서 모두 빼요.
         case userBlocked(UUID)
         case backTapped
@@ -178,8 +178,8 @@ struct BeachHomeFeature {
             case let .recordTapped(record):
                 return .send(.delegate(.recordSelected(record)))
 
-            // 목록에서 바로 빼고, 요약은 숨긴 기록을 뺀 기준으로 다시 불러와요.
-            case let .recordHidden(recordID):
+            // 목록에서 바로 빼고, 요약을 다시 불러와요.
+            case let .recordRemoved(recordID):
                 return removeRecords(where: { $0.id == recordID }, state: &state)
 
             case let .userBlocked(userID):
@@ -211,7 +211,7 @@ extension BeachHomeFeature {
     private func fetchSummary(beachID: UUID) -> Effect<Action> {
         .run { send in
             await send(.summaryResponse(Result {
-                try await beachClient.fetchBeachRecords(beachID, nil).summary(photoLimit: 0)
+                try await beachClient.fetchBeachSummary(beachID, 0)
             }))
         }
     }
@@ -233,28 +233,6 @@ enum LoadState<Value: Equatable>: Equatable {
     case loaded(Value)
     case empty
     case failed
-}
-
-enum RecordFilter: Equatable, CaseIterable {
-    case all
-    case plobbing
-    case plogging
-
-    var title: String {
-        switch self {
-        case .all: "전체"
-        case .plobbing: RecordType.plobbing.name
-        case .plogging: RecordType.plogging.name
-        }
-    }
-
-    var recordType: RecordType? {
-        switch self {
-        case .all: nil
-        case .plobbing: .plobbing
-        case .plogging: .plogging
-        }
-    }
 }
 
 enum SortOption: Equatable, CaseIterable {

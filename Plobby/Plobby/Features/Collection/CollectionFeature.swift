@@ -22,6 +22,7 @@ struct CollectionFeature {
         var isCategorySheetPresented = false
         var isActivityPickerPresented = false
         var isTrashCountsLoaded = false
+        var hasUnreadNotification = false
         var shareRequestCount = 0
     }
 
@@ -31,6 +32,7 @@ struct CollectionFeature {
         case onAppear
         case profileResponse(Result<Profile?, any Error>)
         case trashCountsResponse(Result<[TrashCategory: Int], any Error>)
+        case unreadNotificationResponse(Result<Bool, any Error>)
         case profileTapped
         case allCategoryTapped
         case categorySheetPresentationChanged(Bool)
@@ -44,7 +46,6 @@ struct CollectionFeature {
         case delegate(Delegate)
 
         enum Delegate {
-            case loginRequired
             case recordStarted(RecordType)
         }
     }
@@ -53,15 +54,12 @@ struct CollectionFeature {
 
     @Dependency(\.userClient) var userClient
     @Dependency(\.recordClient) var recordClient
+    @Dependency(\.notificationClient) var notificationClient
 
     // MARK: - Body
 
     var body: some Reducer<State, Action> {
         Reduce { state, action in
-            if case .guest = state.membershipStatus, action.isUserInteraction {
-                return .send(.delegate(.loginRequired))
-            }
-
             switch action {
             case .onAppear:
                 guard case let .member(user) = state.membershipStatus else {
@@ -77,7 +75,8 @@ struct CollectionFeature {
                     .run { send in
                         await send(.trashCountsResponse(Result { try await recordClient.fetchTrashCounts(user.id) }))
                     }
-                    .cancellable(id: CancelID.trashCounts, cancelInFlight: true)
+                    .cancellable(id: CancelID.trashCounts, cancelInFlight: true),
+                    fetchHasUnreadNotification()
                 )
 
             case let .profileResponse(.success(profile)):
@@ -101,6 +100,14 @@ struct CollectionFeature {
             case let .trashCountsResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 state.isTrashCountsLoaded = true
+                return .none
+
+            case let .unreadNotificationResponse(.success(hasUnread)):
+                state.hasUnreadNotification = hasUnread
+                return .none
+
+            case let .unreadNotificationResponse(.failure(error)):
+                PlobbyLogger.error(error)
                 return .none
 
             case .profileTapped:
@@ -129,9 +136,6 @@ struct CollectionFeature {
                 return .none
 
             case .cards(.element(_, .delegate(.recordStartRequested))):
-                guard case .member = state.membershipStatus else {
-                    return .send(.delegate(.loginRequired))
-                }
                 state.isActivityPickerPresented = true
                 return .none
 
@@ -156,6 +160,18 @@ struct CollectionFeature {
     }
 }
 
+// MARK: - Functions
+
+extension CollectionFeature {
+
+    private func fetchHasUnreadNotification() -> Effect<Action> {
+        .run { send in
+            await send(.unreadNotificationResponse(Result { try await notificationClient.fetchHasUnread() }))
+        }
+        .cancellable(id: CancelID.unreadNotification, cancelInFlight: true)
+    }
+}
+
 // MARK: - Constants
 
 extension CollectionFeature {
@@ -172,19 +188,6 @@ extension CollectionFeature {
     private nonisolated enum CancelID {
         case profile
         case trashCounts
-    }
-}
-
-// MARK: - Action
-
-extension CollectionFeature.Action {
-
-    var isUserInteraction: Bool {
-        switch self {
-        case .allCategoryTapped, .shareButtonTapped:
-            true
-        default:
-            false
-        }
+        case unreadNotification
     }
 }

@@ -31,7 +31,8 @@ enum AlertType {
     case recordReportFailed
     case userBlocked
     case userBlockFailed
-    
+    case recordLoadFailed
+    case cameraAccessDenied
 }
 
 extension AlertType {
@@ -53,19 +54,21 @@ extension AlertType {
         case .logoutConfirm: "로그아웃하시겠습니까?"
         case .logoutFailed: "로그아웃하지 못했어요"
         case .withdrawalConfirm: "정말 탈퇴하시겠습니까?"
-        case .withdrawalCompleted: "탈퇴가 완료됐어요"
+        case .withdrawalCompleted: "탈퇴가 완료되었습니다"
         case .withdrawalFailed: "탈퇴하지 못했어요"
         case .favoriteBeachLimit: "관심 해변을 더 추가할 수 없어요"
         case .recordReported: "신고가 완료되었습니다"
         case .recordReportFailed: "신고하지 못했어요"
         case .userBlocked: "차단이 완료되었습니다"
         case .userBlockFailed: "차단하지 못했어요"
+        case .recordLoadFailed: "기록을 불러오지 못했어요"
+        case .cameraAccessDenied: "카메라 접근이 꺼져 있어요"
         }
     }
     
     var message: String? {
         switch self {
-        case .signInFailed, .signUpFailed, .nicknameCheckFailed, .recordSubmitFailed, .recordDeleteFailed, .profileUpdateFailed, .recordReportFailed, .userBlockFailed, .logoutFailed, .withdrawalFailed: "잠시 후 다시 시도해 주세요."
+        case .signInFailed, .signUpFailed, .nicknameCheckFailed, .recordSubmitFailed, .recordDeleteFailed, .profileUpdateFailed, .recordReportFailed, .userBlockFailed, .logoutFailed, .withdrawalFailed, .recordLoadFailed: "잠시 후 다시 시도해 주세요."
         case .profileImageTooLarge: "2MB 미만의 사진을 선택해 주세요."
         case .profileImageLoadFailed: "다른 사진을 선택하거나 잠시 후 다시 시도해 주세요."
         case .recordDeleteConfirm: "삭제한 기록은 복구할 수 없어요."
@@ -75,23 +78,24 @@ extension AlertType {
         case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요."
         case .withdrawalConfirm: "탈퇴하면 게시글, 좋아요 등 모든 활동 기록들이 삭제되어 복구되지 않습니다."
         case .favoriteBeachLimit: "관심 해변은 최대 \(Beach.maximumFavoriteCount)개까지 등록할 수 있어요."
-        case .recordReported: "신고한 기록은 더 이상 보이지 않아요."
         case .userBlocked: "차단한 사용자의 기록은 더 이상 보이지 않아요."
+        case .recordReported: "확인 후 운영 정책에 따라 조치할게요."
+        case .cameraAccessDenied: "설정에서 카메라 접근을 허용하면\n바로 촬영해서 기록에 추가할 수 있어요."
         }
     }
     
     var buttonType: ButtonType {
         switch self {
         case .recordSubmitFailed, .recordDeleteConfirm, .userBlockConfirm, .recordExitConfirm,
-             .logoutConfirm, .withdrawalConfirm: .cancelConfirm
+             .logoutConfirm, .withdrawalConfirm, .cameraAccessDenied: .cancelConfirm
         case .signInFailed, .signUpFailed, .profileImageTooLarge, .profileImageLoadFailed, .nicknameCheckFailed, .recordDeleted, .recordDeleteFailed,
-             .profileUpdateFailed, .logoutFailed, .withdrawalCompleted, .withdrawalFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed: .confirm
+             .profileUpdateFailed, .logoutFailed, .withdrawalCompleted, .withdrawalFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed, .recordLoadFailed: .confirm
         }
     }
     
     var confirmTitle: String {
         switch self {
-        case .signInFailed, .signUpFailed, .profileImageTooLarge, .profileImageLoadFailed, .nicknameCheckFailed, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .logoutFailed, .withdrawalFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed: "확인"
+        case .signInFailed, .signUpFailed, .profileImageTooLarge, .profileImageLoadFailed, .nicknameCheckFailed, .recordDeleted, .recordDeleteFailed, .profileUpdateFailed, .logoutFailed, .withdrawalFailed, .favoriteBeachLimit, .recordReported, .recordReportFailed, .userBlocked, .userBlockFailed, .recordLoadFailed: "확인"
         case .recordSubmitFailed: "다시 시도"
         case .recordDeleteConfirm: "삭제"
         case .userBlockConfirm: "차단"
@@ -99,6 +103,7 @@ extension AlertType {
         case .logoutConfirm: "로그아웃"
         case .withdrawalConfirm: "계속 사용하기"
         case .withdrawalCompleted: "확인"
+        case .cameraAccessDenied: "설정으로 이동"
         }
     }
     

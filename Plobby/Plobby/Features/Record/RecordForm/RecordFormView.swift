@@ -39,7 +39,7 @@ struct RecordFormView: View {
                     .presentationDragIndicator(.visible)
                     .presentationCornerRadius(20)
             }
-            .plobbyAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+            .plobbyAlert(store: store, state: \.destination?.alert, action: \.destination.alert)
     }
 }
 
@@ -208,6 +208,11 @@ private extension RecordFormView {
                 }
             }
             .scrollClipDisabled()
+
+            if store.isPhotoErrorVisible {
+                errorText("사진을 1장 이상 추가해 주세요.")
+                    .padding(.top, -8.scaled)
+            }
         }
     }
 
@@ -231,7 +236,7 @@ private extension RecordFormView {
             .frame(width: 100.scaled, height: 100.scaled)
             .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
-        .disabled(store.photos.count >= maxPhotoCount)
+        .disabled(!store.canOpenPhotoPicker)
         .accessibilityLabel("사진 추가, \(store.photos.count)/\(maxPhotoCount)")
     }
 
@@ -241,20 +246,27 @@ private extension RecordFormView {
     }
 
     func photoThumbnail(_ photo: RecordPhoto, isRepresentative: Bool) -> some View {
+        photoCard(photo, isRepresentative: isRepresentative)
+            .overlay(alignment: .topTrailing) {
+                photoDeleteButton(photo.id)
+            }
+            // X 버튼은 사진 밖으로 걸쳐 있어서 끌 때 잘려 보여요. 끄는 동안에는 사진만 보여줘요.
+            .onDrag {
+                NSItemProvider(object: photo.id as NSString)
+            } preview: {
+                photoCard(photo, isRepresentative: isRepresentative)
+            }
+            .onDrop(of: [.text], delegate: PhotoDropDelegate { sourceID in
+                store.send(.photoMoved(sourceID, to: photo.id), animation: .default)
+            })
+    }
+
+    func photoCard(_ photo: RecordPhoto, isRepresentative: Bool) -> some View {
         photoImage(photo)
             .overlay(alignment: .bottom) {
                 representativeLabel(isRepresentative: isRepresentative)
             }
             .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
-            .overlay(alignment: .topTrailing) {
-                photoDeleteButton(photo.id)
-            }
-            .onDrag {
-                NSItemProvider(object: photo.id as NSString)
-            }
-            .onDrop(of: [.text], delegate: PhotoDropDelegate { sourceID in
-                store.send(.photoMoved(sourceID, to: photo.id), animation: .default)
-            })
     }
 
     @ViewBuilder
@@ -374,7 +386,7 @@ private extension RecordFormView {
             .buttonStyle(.plain)
 
             if store.isLocationErrorVisible {
-                errorText("활동한 해변을 선택해주세요.")
+                errorText("활동한 해변을 선택해 주세요.")
                     .padding(.top, -8.scaled)
             }
         }
@@ -500,7 +512,10 @@ private extension RecordFormView {
                 totalWeightRow
             }
 
-            if let error = store.totalWeightError {
+            if store.isTrashErrorVisible {
+                errorText("주운 쓰레기를 선택해 주세요.")
+                    .padding(.top, -12.scaled)
+            } else if let error = store.totalWeightError {
                 errorText(error)
                     .padding(.top, -12.scaled)
             }
@@ -572,7 +587,7 @@ private extension RecordFormView {
             .formFieldBorder(isError: store.isMemoErrorVisible || store.isMemoOverLimit)
 
             if store.isMemoErrorVisible {
-                errorText("활동 메모를 입력해 주세요")
+                errorText("활동 메모를 입력해 주세요.")
                     .padding(.top, -12.scaled)
             } else if store.isMemoOverLimit {
                 errorText("메모는 \(RecordMemo.maximumLength)자까지 입력할 수 있어요.")

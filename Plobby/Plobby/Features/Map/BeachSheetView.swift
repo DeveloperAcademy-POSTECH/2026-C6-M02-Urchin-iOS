@@ -64,7 +64,7 @@ struct BeachSheetView: View {
             )
             .presentationBackground(.clear)
         }
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
     }
 }
 

@@ -52,7 +52,7 @@ struct SettingsView: View {
         .navigationDestination(item: $store.scope(state: \.blockedUsers, action: \.blockedUsers)) { store in
             BlockedUsersView(store: store)
         }
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
     }
 }
 

@@ -23,6 +23,7 @@ struct FavoriteBeachSetupFeature {
 
     enum Action {
         case picker(BeachPickerFeature.Action)
+        case backButtonTapped
         case signUpButtonTapped
     }
 
@@ -35,7 +36,7 @@ struct FavoriteBeachSetupFeature {
 
         Reduce { _, action in
             switch action {
-            case .picker, .signUpButtonTapped:
+            case .picker, .backButtonTapped, .signUpButtonTapped:
                 return .none
             }
         }

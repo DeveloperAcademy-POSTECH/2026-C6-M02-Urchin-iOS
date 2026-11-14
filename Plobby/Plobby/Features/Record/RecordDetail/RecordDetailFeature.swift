@@ -19,11 +19,13 @@ struct RecordDetailFeature {
         let recordID: UUID
         var loadState: LoadState = .loading
         var currentPhotoIndex = 0
+        var isPhotoViewerPresented = false
         var isLikeUpdating = false
         /// 타인 홈에서 연 상세는 작성자 홈을 또 열지 않아요.
         var opensAuthorHome = true
         @Presents var editForm: RecordFormFeature.State?
         @Presents var userHome: UserHomeFeature.State?
+        @Presents var report: RecordReportFeature.State?
         @Presents var alert: AlertState<Action.Alert>?
         
         init(recordID: UUID) {
@@ -68,6 +70,7 @@ struct RecordDetailFeature {
         case task
         case recordResponse(Result<RecordDetail, any Error>)
         case photoPageChanged(Int)
+        case photoViewerPresentationChanged(Bool)
         case likeTapped
         case likeResponse(Result<Void, any Error>)
         case backTapped
@@ -75,9 +78,9 @@ struct RecordDetailFeature {
         case moreMenuSelected(MoreMenu)
         case editForm(PresentationAction<RecordFormFeature.Action>)
         case userHome(PresentationAction<UserHomeFeature.Action>)
+        case report(PresentationAction<RecordReportFeature.Action>)
         case alert(PresentationAction<Alert>)
         case deleteResponse(Result<Void, any Error>)
-        case reportResponse(Result<Void, any Error>)
         case blockResponse(Result<Void, any Error>, userID: UUID)
         case delegate(Delegate)
         
@@ -92,15 +95,12 @@ struct RecordDetailFeature {
             case confirmDeleteTapped
             case confirmBlockTapped
             case deletedConfirmTapped
-            case reportedConfirmTapped
             case blockedConfirmTapped(userID: UUID)
         }
         
         @CasePathable
         enum Delegate {
             case closed
-            /// 신고를 마쳤어요. 부모는 상세를 닫고 목록에서 이 기록을 빼요.
-            case reported(UUID)
             /// 작성자를 차단했어요. 부모는 상세를 닫고 그 사용자의 기록을 모두 빼요.
             case blocked(userID: UUID)
             case deleted(UUID)
@@ -137,6 +137,11 @@ struct RecordDetailFeature {
                 
             case let .photoPageChanged(index):
                 state.currentPhotoIndex = index
+                return .none
+                
+            // 사진을 누르면 크게 보여주고, 넘긴 사진은 상세 화면과 같은 순서를 따라가요.
+            case let .photoViewerPresentationChanged(isPresented):
+                state.isPhotoViewerPresented = isPresented
                 return .none
                 
             case .likeTapped:
@@ -207,21 +212,12 @@ struct RecordDetailFeature {
                 return .none
                 
             case .moreMenuSelected(.reportTapped):
-                return .run { [recordID = state.recordID] send in
-                    await send(.reportResponse(Result { try await recordClient.reportRecord(recordID) }))
-                }
-                
-            case .reportResponse(.success):
-                state.alert = .make(.recordReported, confirm: .reportedConfirmTapped)
+                state.report = RecordReportFeature.State(recordID: state.recordID)
                 return .none
                 
-            case let .reportResponse(.failure(error)):
-                PlobbyLogger.error(error)
-                state.alert = .make(.recordReportFailed)
+            case .report(.presented(.delegate(.reported))):
+                state.report = nil
                 return .none
-                
-            case .alert(.presented(.reportedConfirmTapped)):
-                return .send(.delegate(.reported(state.recordID)))
                 
             case .moreMenuSelected(.blockTapped):
                 state.alert = .make(.userBlockConfirm, confirm: .confirmBlockTapped)
@@ -275,10 +271,14 @@ struct RecordDetailFeature {
                 
             case .editForm,
                     .userHome,
+                    .report,
                     .alert,
                     .delegate:
                 return .none
             }
+        }
+        .ifLet(\.$report, action: \.report) {
+            RecordReportFeature()
         }
         .ifLet(\.$editForm, action: \.editForm) {
             RecordFormFeature()

@@ -23,33 +23,36 @@ struct BeachHomeView: View {
                 store.send(.backTapped)
             }
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    header
-                        .padding(.horizontal, 20)
-                        .padding(.top, 16)
+            GeometryReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        header
+                            .padding(.horizontal, 20)
+                            .padding(.top, 16)
 
-                    Rectangle()
-                        .fill(Color(.gray200))
-                        .frame(height: 1)
-                        .padding(.horizontal, 8)
-                        .padding(.top, 24)
+                        Rectangle()
+                            .fill(Color(.gray200))
+                            .frame(height: 1)
+                            .padding(.horizontal, 8)
+                            .padding(.top, 24)
 
-                    recordSection
-                        .padding(.horizontal, 20)
-                        .padding(.top, 32)
+                        recordSection
+                            .padding(.horizontal, 20)
+                            .padding(.top, 32)
 
-                    guardianSection
-                        .padding(.top, 16)
+                        guardianSection(bottomInset: proxy.safeAreaInsets.bottom)
+                            .padding(.top, 16)
+                    }
+                    .frame(minHeight: proxy.size.height + proxy.safeAreaInsets.bottom, alignment: .top)
                 }
-                .padding(.bottom, 40)
+                .ignoresSafeArea(edges: .bottom)
             }
         }
         .background(Color(.gray0))
         .task {
             await store.send(.task).finish()
         }
-        .plobbyAlert($store.scope(state: \.alert, action: \.alert))
+        .plobbyAlert(store: store, state: \.alert, action: \.alert)
     }
 }
 
@@ -151,13 +154,6 @@ private extension BeachHomeView {
                 }
 
                 Spacer()
-
-                // FIXME: 전체보기 동작이 정해지면 다시 표시 (심사 시 동작 없는 버튼으로 보이지 않게 숨김)
-                // Button("전체보기") {
-                //     store.send(.showAllTapped)
-                // }
-                // .plobbyFont(.helper)
-                // .foregroundStyle(Color(.textSecondary))
             }
 
             records
@@ -314,7 +310,7 @@ private extension BeachHomeView {
 private extension BeachHomeView {
 
     @ViewBuilder
-    var guardianSection: some View {
+    func guardianSection(bottomInset: CGFloat) -> some View {
         if case let .loaded(summary) = store.summary, !summary.guardians.isEmpty {
             let guardians = summary.guardians.prefix(BeachHomeFeature.guardianLimit)
 
@@ -331,24 +327,44 @@ private extension BeachHomeView {
 
                 FlowLayout(spacing: 8) {
                     ForEach(guardians) { guardian in
-                        guardianChip(nickname: guardian.nickname, url: guardian.profileImageURL)
+                        guardianChip(
+                            nickname: guardian.isBlocked ? "차단한 회원" : guardian.nickname,
+                            url: guardian.profileImageURL,
+                            isBlocked: guardian.isBlocked
+                        )
                     }
 
                     if summary.guardians.count > guardians.count {
-                        guardianChip(nickname: "외", url: nil)
+                        guardianChip(nickname: "외", url: nil, isBlocked: false)
                     }
                 }
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 24)
-            .padding(.vertical, 32)
-            .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 24))
+            .padding(.top, 32)
+            .padding(.bottom, 32 + bottomInset)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .background(
+                Color(.gray50),
+                in: UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24)
+            )
+        } else {
+            Color.clear
+                .frame(height: 24 + bottomInset)
         }
     }
 
-    func guardianChip(nickname: String, url: URL?) -> some View {
+    func guardianChip(
+        nickname: String,
+        url: URL?,
+        isBlocked: Bool
+    ) -> some View {
         HStack(spacing: 8) {
-            ProfileAvatar(url: url, size: 24)
+            if isBlocked {
+                blockedAvatar
+            } else {
+                ProfileAvatar(url: url, size: 24)
+            }
 
             Text(nickname)
                 .plobbyFont(.label)
@@ -363,6 +379,15 @@ private extension BeachHomeView {
             Capsule()
                 .stroke(Color(.currentWarmBorder), lineWidth: 1)
         }
+    }
+
+    /// 차단한 회원은 홈의 함께한 사람처럼 프로필 사진 대신 차단 표시를 보여줘요.
+    var blockedAvatar: some View {
+        Image(systemName: "nosign")
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(Color(.gray400))
+            .frame(width: 24, height: 24)
+            .background(Color(.gray100), in: Circle())
     }
 }
 
@@ -392,7 +417,6 @@ private struct ProfileAvatar: View {
 
 // MARK: - FlowLayout
 
-/// 가로로 채우다가 넘치면 다음 줄로 넘기는 칩 레이아웃
 private struct FlowLayout: Layout {
 
     let spacing: CGFloat

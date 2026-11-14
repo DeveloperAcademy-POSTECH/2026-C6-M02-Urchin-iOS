@@ -14,20 +14,20 @@ struct HomeSceneOverlay: View {
     let day: GoalDailyProgress?
     let totalTrashCount: Int
     let isGoalFinished: Bool
-    let onParticipantsTapped: () -> Void
+    let isAtDay: Bool
     let onTrashSummaryTapped: () -> Void
+    /// 날짜 칩과 개수 칩 영역을 화면 좌표로 알려줘요. 튜토리얼에서 칩을 밝게 비출 때 써요.
+    var onPillFrameChanged: ((Pill, CGRect) -> Void)?
+
+    enum Pill {
+        case date
+        case count
+    }
 
     var body: some View {
-        ZStack {
-            topPills
-                .frame(maxHeight: .infinity, alignment: .top)
-                .padding(.top, 12.scaled)
-
-            participantsButton
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-                .padding(.leading, 20.scaled)
-                .padding(.bottom, 14.scaled)
-        }
+        topPills
+            .frame(maxHeight: .infinity, alignment: .top)
+            .padding(.top, 12.scaled)
     }
 }
 
@@ -47,22 +47,26 @@ private extension HomeSceneOverlay {
         } else if let day {
             HStack(spacing: 8.scaled) {
                 Text(day.day.homeMonthDayText)
-                    .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 14.scaled))
+                    .plobbyFont(.labelSelected)
                     .foregroundStyle(Color(.textPrimary))
-                    .contentTransition(.numericText())
+                    .contentTransition(.numericText(value: day.day.timeIntervalSince1970))
+                    .animation(.snappy(duration: 0.35), value: day.day)
                     .padding(.horizontal, 16.scaled)
                     .frame(height: 32.scaled)
                     .background(Color(.gray0).opacity(0.95), in: Capsule())
                     .homeSceneShadow()
+                    .reportsFrame { onPillFrameChanged?(.date, $0) }
 
-                if stage.isCollected {
-                    Text("+\(day.collectedCount)개")
-                        .font(.custom(PretendardWeight.semiBold.rawValue, fixedSize: 13.scaled))
+                if stage.isCollected, isAtDay {
+                    HomeCountUpText(count: day.collectedCount)
+                        .id(day.day)
+                        .plobbyFont(.labelSelected)
                         .foregroundStyle(Color(.currentBrandText))
                         .padding(.horizontal, 8.scaled)
                         .frame(height: 32.scaled)
                         .background(Color(.currentBrandSubtle), in: Capsule())
                         .homeSceneShadow()
+                        .reportsFrame { onPillFrameChanged?(.count, $0) }
                         .transition(.opacity.combined(with: .scale(scale: 0.6)))
                 }
             }
@@ -92,32 +96,59 @@ private extension HomeSceneOverlay {
         .buttonStyle(.plain)
     }
 
-    var participantsButton: some View {
-        Button(action: onParticipantsTapped) {
-            HStack(spacing: 8.scaled) {
-                Text("함께한 사람")
-                    .plobbyFont(.label)
-
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 12.scaled, weight: .semibold))
-            }
-            .foregroundStyle(Color(.textPrimary))
-            .padding(.horizontal, 16.scaled)
-            .frame(height: 44.scaled)
-            .background(Color(.gray0), in: Capsule())
-            .homeSceneShadow()
-        }
-        .buttonStyle(.plain)
-    }
-
     var isResult: Bool {
         stage == .finale(step: recordType.resultStep)
+    }
+}
+
+// MARK: - HomeCountUpText
+
+private struct HomeCountUpText: View {
+
+    let count: Int
+    @State private var shownCount = 0.0
+
+    var body: some View {
+        CountText(value: shownCount)
+            .onAppear {
+                withAnimation(.easeOut(duration: 0.6).delay(0.1)) {
+                    shownCount = Double(count)
+                }
+            }
+    }
+
+    private struct CountText: View, Animatable {
+
+        var value: Double
+
+        var animatableData: Double {
+            get { value }
+            set { value = newValue }
+        }
+
+        var body: some View {
+            Text("+\(Int(value.rounded()))개")
+                .monospacedDigit()
+        }
     }
 }
 
 private extension View {
 
     func homeSceneShadow() -> some View {
-        shadow(color: Color(.neutralBlack).opacity(0.08), radius: 6, y: 2)
+        shadow(color: Color(.neutralBlack).opacity(0.08), radius: 6.scaled, y: 2.scaled)
+    }
+}
+
+// MARK: - Frame
+
+private extension View {
+
+    func reportsFrame(_ action: @escaping (CGRect) -> Void) -> some View {
+        onGeometryChange(for: CGRect.self) { proxy in
+            proxy.frame(in: .global)
+        } action: { frame in
+            action(frame)
+        }
     }
 }

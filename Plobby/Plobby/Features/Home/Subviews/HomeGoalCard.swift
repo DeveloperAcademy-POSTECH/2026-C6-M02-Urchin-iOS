@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-/// 홈 상단 공동 목표 카드예요. 펼치면 기간·참여 인원·진행률·기록하기를, 접으면 제목과 수거량만 보여줘요.
-/// 목표가 끝나면 펼친 모양으로 "다음 목표 보기" 버튼을 보여줘요.
 struct HomeGoalCard: View {
 
     let goal: Goal
@@ -17,14 +15,20 @@ struct HomeGoalCard: View {
     let onToggle: () -> Void
     let onRecordTapped: () -> Void
     let onAllGoalsTapped: () -> Void
+    let onNextGoalTapped: () -> Void
+    let onParticipantsTapped: () -> Void
+    /// 튜토리얼에서 펼치기 버튼을 눌러 보라고 동그라미로 강조해요.
+    var highlightsToggle = false
+    /// 튜토리얼에서 목표를 다 채운 모습을 보여줄 때 라벨을 "공통 목표 달성"으로 바꿔요.
+    var showsAchievedLabel = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
             header
 
-            if showsExpanded {
+            if isExpanded {
                 Group {
-                    HomeGoalMetaRow(goal: goal)
+                    HomeGoalMetaRow(goal: goal, onParticipantsTapped: onParticipantsTapped)
                     progressRow
                     buttons
                 }
@@ -33,9 +37,9 @@ struct HomeGoalCard: View {
             }
         }
         .padding(.leading, 12.scaled)
-        .padding(.vertical, 8.scaled)
-        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
-        .clipShape(RoundedRectangle(cornerRadius: 8.scaled))
+        .padding(.vertical, 12.scaled)
+        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 16.scaled))
+        .clipShape(RoundedRectangle(cornerRadius: 16.scaled))
     }
 }
 
@@ -43,31 +47,22 @@ struct HomeGoalCard: View {
 
 private extension HomeGoalCard {
 
-    var showsExpanded: Bool {
-        isExpanded || status.isFinished
-    }
-
-    /// 진행 중인 목표는 제목 줄 어디를 눌러도 펼치고 접혀요. 끝난 목표는 늘 펼쳐져 있어서 누를 수 없어요.
-    @ViewBuilder
     var header: some View {
-        if status.isFinished {
+        Button(action: onToggle) {
             headerContent
-        } else {
-            Button(action: onToggle) {
-                headerContent
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(isExpanded ? "공동 목표 접기" : "공동 목표 펼치기")
+                .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel(isExpanded ? "공통 목표 접기" : "공통 목표 펼치기")
+        .guestTapAllowed()
     }
 
-    /// 펼치기 아이콘은 카드 오른쪽 끝에 붙어요. 끝난 목표는 아이콘이 없어서 오른쪽 여백을 둬요.
     var headerContent: some View {
         HStack(spacing: 8.scaled) {
             VStack(alignment: .leading, spacing: 2.scaled) {
                 HStack(spacing: 8.scaled) {
-                    Text("공동 목표")
+                    Text(showsAchievedLabel ? "공통 목표 달성" : "공통 목표")
+                        .foregroundStyle(showsAchievedLabel ? Color(.textBrand) : Color(.textSecondary))
                     Text(status.chipText)
                 }
                 .plobbyFont(.helper)
@@ -80,15 +75,12 @@ private extension HomeGoalCard {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !showsExpanded {
+            if !isExpanded {
                 HomeGoalCountText(collected: goal.collectedCount, target: goal.targetCount)
             }
 
-            if !status.isFinished {
-                toggleIcon
-            }
+            toggleIcon
         }
-        .padding(.trailing, status.isFinished ? 12.scaled : 0)
     }
 
     var progressRow: some View {
@@ -103,7 +95,7 @@ private extension HomeGoalCard {
     @ViewBuilder
     var buttons: some View {
         if status.isFinished {
-            PlobbyButton(text: "다음 목표 보기", action: onAllGoalsTapped)
+            PlobbyButton(text: "다음 목표 보기", action: onNextGoalTapped)
         } else {
             VStack(spacing: 0) {
                 PlobbyButton(text: "기록하기", action: onRecordTapped)
@@ -121,12 +113,44 @@ private extension HomeGoalCard {
         }
     }
 
-    /// 펼치고 접을 때 화살표가 돌아가요.
     var toggleIcon: some View {
         Image(systemName: "chevron.down")
             .font(.system(size: 14.scaled))
             .foregroundStyle(Color(.textSecondary))
             .rotationEffect(.degrees(isExpanded ? 180 : 0))
-            .frame(width: 44.scaled, height: 44.scaled)
+            .background {
+                if highlightsToggle {
+                    HomeGoalToggleHighlight()
+                }
+            }
+            .padding(.trailing, CGFloat(highlightsToggle ? 13 : 12 - 1.5).scaled)
+            .frame(width: 44.scaled, height: 44.scaled, alignment: .trailing)
+    }
+}
+
+// MARK: - HomeGoalToggleHighlight
+
+/// 튜토리얼에서 펼치기 버튼을 감싸는 동그라미예요. 나타날 때 살짝 커졌다 작아지며 눈에 띄게 해요.
+private struct HomeGoalToggleHighlight: View {
+
+    @State private var hasAppeared = false
+
+    var body: some View {
+        Circle()
+            .fill(Color(.surfaceBrandSubtle))
+            .overlay {
+                Circle()
+                    .strokeBorder(Color(.textBrand), lineWidth: 1.25)
+            }
+            .frame(width: 40.scaled, height: 40.scaled)
+            .keyframeAnimator(initialValue: 1.0, trigger: hasAppeared) { content, scale in
+                content.scaleEffect(scale)
+            } keyframes: { _ in
+                SpringKeyframe(1.2, duration: 0.25)
+                SpringKeyframe(1.0, duration: 0.3)
+            }
+            .onAppear {
+                hasAppeared = true
+            }
     }
 }

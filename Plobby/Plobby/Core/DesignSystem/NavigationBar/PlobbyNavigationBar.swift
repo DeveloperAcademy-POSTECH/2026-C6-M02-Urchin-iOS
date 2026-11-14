@@ -15,7 +15,7 @@ struct PlobbyNavigationBar<Style: PlobbyNavigationBarStyle, TrailingLabel: View>
     let style: Style
     let onBack: () -> Void
     let isBackEnabled: Bool
-    let trailingButton: PlobbyNavigationBarConfiguration.TrailingButton?
+    let trailingButtons: [PlobbyNavigationBarConfiguration.TrailingButton]
 
     init(
         title: String? = nil,
@@ -30,11 +30,13 @@ struct PlobbyNavigationBar<Style: PlobbyNavigationBarStyle, TrailingLabel: View>
         self.style = style
         self.onBack = onBack
         self.isBackEnabled = isBackEnabled
-        self.trailingButton = PlobbyNavigationBarConfiguration.TrailingButton(
-            action: trailingAction,
-            label: AnyView(trailingLabel()),
-            isEnabled: isTrailingEnabled
-        )
+        self.trailingButtons = [
+            PlobbyNavigationBarConfiguration.TrailingButton(
+                action: trailingAction,
+                label: AnyView(trailingLabel()),
+                isEnabled: isTrailingEnabled
+            )
+        ]
     }
 
     // MARK: - Body
@@ -46,7 +48,7 @@ struct PlobbyNavigationBar<Style: PlobbyNavigationBarStyle, TrailingLabel: View>
                     PlobbyNavigationBarConfiguration.Title(text: $0)
                 },
                 backButton: PlobbyNavigationBarConfiguration.BackButton(action: onBack, isEnabled: isBackEnabled),
-                trailingButton: trailingButton
+                trailingButtons: trailingButtons
             )
         )
         .frame(height: 56.scaled)
@@ -67,7 +69,22 @@ extension PlobbyNavigationBar where TrailingLabel == EmptyView {
         self.style = style
         self.onBack = onBack
         self.isBackEnabled = isBackEnabled
-        self.trailingButton = nil
+        self.trailingButtons = []
+    }
+
+    /// 오른쪽에 버튼을 여러 개 둘 때 써요.
+    init(
+        title: String? = nil,
+        style: Style,
+        isBackEnabled: Bool = true,
+        onBack: @escaping () -> Void,
+        trailingButtons: [PlobbyNavigationBarConfiguration.TrailingButton]
+    ) {
+        self.title = title
+        self.style = style
+        self.onBack = onBack
+        self.isBackEnabled = isBackEnabled
+        self.trailingButtons = trailingButtons
     }
 }
 
@@ -105,6 +122,21 @@ extension PlobbyNavigationBar where Style == CenteredPlobbyNavigationBarStyle, T
             style: .centered,
             isBackEnabled: isBackEnabled,
             onBack: onBack
+        )
+    }
+
+    init(
+        title: String? = nil,
+        isBackEnabled: Bool = true,
+        onBack: @escaping () -> Void,
+        trailingButtons: [PlobbyNavigationBarConfiguration.TrailingButton]
+    ) {
+        self.init(
+            title: title,
+            style: .centered,
+            isBackEnabled: isBackEnabled,
+            onBack: onBack,
+            trailingButtons: trailingButtons
         )
     }
 }

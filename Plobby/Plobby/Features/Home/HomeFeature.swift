@@ -17,8 +17,8 @@ struct HomeFeature {
     @ObservableState
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
+        @Shared(.dismissedGoalKeys) var dismissedGoalKeys
         @Presents var recordDetail: RecordDetailFeature.State?
-        @Presents var notification: NotificationFeature.State?
         @Presents var goalList: GoalListFeature.State?
         @Presents var userHome: UserHomeFeature.State?
         
@@ -26,14 +26,24 @@ struct HomeFeature {
         var boards: [RecordType: HomeGoalBoard] = [:]
         var statuses: [RecordType: HomeGoalStatus] = [:]
         var stages: [RecordType: HomeSceneStage] = [:]
+        var walkProgresses: [RecordType: Double] = [:]
         var todayDays: [RecordType: Int] = [:]
         var isGoalExpanded = false
+        /// 카드 펼침을 정한 목표예요. 목표가 바뀌면 쓰레기가 0개인지, 끝났는지 보고 다시 정해요.
+        var expansionGoalID: Goal.ID?
+        /// 끝난 목표에서 "다음 목표 보기"를 누르기 전까지 켜져 있어요.
+        var isCelebrationVisible = false
         var collectPulses: [RecordType: Int] = [:]
         var transitioningTypes: Set<RecordType> = []
         var sheet: Sheet?
         var isTrashSummaryPresented = false
         var isActivityPickerPresented = false
         var isScrollGuideVisible = false
+        var tutorialStep: HomeTutorialStep?
+        /// 튜토리얼에서 보고 있는 활동이에요. 플로깅을 다 본 뒤 전환 버튼을 누르면 플로빙 기록 안내를 한 번 더 봐요.
+        var tutorialRecordType: RecordType = .plogging
+        /// 튜토리얼에서 밝게 비출 영역이에요. 탭바까지 덮는 안내 막은 메인 탭에서 그려서 여기 모아 둬요.
+        var tutorialFrames: [HomeTutorialTarget: CGRect] = [:]
         var now = Date.distantPast
         
         var board: HomeGoalBoard? {
@@ -49,10 +59,27 @@ struct HomeFeature {
             return days[min(stage.day(lastDay: days.count - 1), days.count - 1)]
         }
         
+        var walkProgress: Double {
+            walkProgresses[selectedType] ?? 0
+        }
+        
+        var isWalkLocked: Bool {
+            transitioningTypes.contains(selectedType) || isGoalFinished
+        }
+        
         var status: HomeGoalStatus? {
             statuses[selectedType]
         }
         
+        /// 플로깅·플로빙 참여자를 한 명씩만 모아 닉네임 가나다순으로 정렬했어요. 함께한 사람 시트에 써요.
+        var allParticipants: [GoalParticipant] {
+            var seen = Set<GoalParticipant.ID>()
+            return RecordType.allCases
+                .flatMap { boards[$0]?.participants ?? [] }
+                .filter { seen.insert($0.id).inserted }
+                .sorted { $0.nickname.localizedStandardCompare($1.nickname) == .orderedAscending }
+        }
+
         var currentUserID: UUID? {
             if case let .member(user) = membershipStatus { user.id } else { nil }
         }
@@ -74,7 +101,7 @@ struct HomeFeature {
         case onAppear
         case boardsResponse(Result<[HomeGoalBoard], any Error>, now: Date)
         case activityTabSelected(RecordType)
-        case sceneSwiped(forward: Bool)
+        case sceneWalked(to: Double)
         case sceneStageAdvanced(RecordType, HomeSceneStage)
         case sceneTransitionFinished(RecordType)
         case scrollGuideHidden
@@ -83,22 +110,26 @@ struct HomeFeature {
         case activityPicked(RecordType)
         case activityPickerDismissed
         case allGoalsButtonTapped
+        case nextGoalButtonTapped
         case participantsButtonTapped
         case trashSummaryButtonTapped
         case trashSummaryDismissed
         case participantTapped(GoalParticipant.ID)
         case userHomeOpened(GoalParticipant)
         case sheetDismissed
-        case notificationButtonTapped
+        case tutorialAdvanced
+        case tutorialIntroFinished
+        case tutorialActivitySwitched
+        case tutorialFrameChanged(HomeTutorialTarget, CGRect)
+        case tutorialFinished
         case recordDetail(PresentationAction<RecordDetailFeature.Action>)
-        case notification(PresentationAction<NotificationFeature.Action>)
         case goalList(PresentationAction<GoalListFeature.Action>)
         case userHome(PresentationAction<UserHomeFeature.Action>)
         case delegate(Delegate)
         
         enum Delegate {
             case recordStarted(RecordType)
-            case loginRequired
+            case myProfileRequested
         }
     }
     
@@ -115,18 +146,25 @@ struct HomeFeature {
         Reduce {
             state,
             action in
-            if case .guest = state.membershipStatus,
-               action.requiresLogin {
-                return .send(.delegate(.loginRequired))
-            }
-            
             switch action {
             case .onAppear:
-                let now = now
-                return .run { send in
-                    await send(.boardsResponse(Result { try await fetchBoards(now: now) }, now: now))
-                }
-                .cancellable(id: CancelID.boards, cancelInFlight: true)
+                // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
+                state.isGoalExpanded = false
+                let fetch = loadBoards(state)
+
+                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
+                guard isHomeTutorialPending, state.tutorialStep == nil else { return fetch }
+
+                state.tutorialStep = .goal
+                state.tutorialRecordType = .plogging
+                state.selectedType = .plogging
+                return .merge(
+                    fetch,
+                    .run { send in
+                        try await clock.sleep(for: HomeFeature.tutorialIntroDuration)
+                        await send(.tutorialIntroFinished, animation: .easeInOut(duration: 0.5))
+                    }
+                )
                 
             case let .boardsResponse(.success(boards), now):
                 state.now = now
@@ -141,7 +179,14 @@ struct HomeFeature {
                     state.statuses[type] = status
                     state.todayDays[type] = today
                     state.stages[type] = status.isFinished ? .finale(step: type.resultStep) : .arrived(day: today)
+                    state.walkProgresses[type] = status.isFinished ? Double(board.days.count) : Double(today)
                 }
+                if let goal = boards.first?.goal, state.expansionGoalID != goal.id {
+                    state.expansionGoalID = goal.id
+                    // 쓰레기가 0개면 기록하기를, 끝난 목표면 다음 목표 보기를 바로 보이게 펼쳐요.
+                    state.isGoalExpanded = goal.collectedCount == 0 || goal.homeStatus(at: now).isFinished
+                }
+                updateCelebration(goal: boards.first?.goal, now: now, state: &state)
                 return .merge(
                     .merge(RecordType.allCases.map { .cancel(id: CancelID.scene($0)) }),
                     showScrollGuideIfNeeded(&state)
@@ -153,9 +198,11 @@ struct HomeFeature {
                 
             case let .activityTabSelected(type):
                 state.selectedType = type
+                state.expansionGoalID = state.board?.goal.id
+                state.isGoalExpanded = false
                 return showScrollGuideIfNeeded(&state)
                 
-            case let .sceneSwiped(forward):
+            case let .sceneWalked(target):
                 let type = state.selectedType
                 guard let board = state.boards[type],
                       !board.days.isEmpty,
@@ -165,24 +212,25 @@ struct HomeFeature {
                 
                 let lastDay = board.days.count - 1
                 let stage = state.stages[type] ?? .arrived(day: 0)
-                let stages = forward
-                ? type.forwardStages(from: stage, lastDay: lastDay)
-                : type.backwardStages(from: stage, lastDay: lastDay)
-                guard let first = stages.first else { return .none }
-                
+                let collectedThrough = stage.collectedThrough(lastDay: lastDay)
+                let current = state.walkProgresses[type] ?? 0
+                let progress = min(max(target, -1), Double(lastDay + 1))
+                let nextStop = collectedThrough + 1
                 state.isScrollGuideVisible = false
-                state.transitioningTypes.insert(type)
-                apply(first, to: type, state: &state)
                 
-                return .run { send in
-                    for next in stages.dropFirst() {
-                        try await clock.sleep(for: HomeFeature.transitionDuration + HomeFeature.autoAdvanceDelay)
-                        await send(.sceneStageAdvanced(type, next), animation: HomeFeature.transitionAnimation)
-                    }
-                    try await clock.sleep(for: HomeFeature.transitionDuration)
-                    await send(.sceneTransitionFinished(type))
+                if progress > current, progress >= Double(nextStop) {
+                    state.walkProgresses[type] = Double(nextStop)
+                    return collect(at: nextStop, type: type, lastDay: lastDay, state: &state)
                 }
-                .cancellable(id: CancelID.scene(type), cancelInFlight: true)
+                
+                state.walkProgresses[type] = progress
+                let day = min(max(Int(progress.rounded()), 0), lastDay)
+                let collected = min(collectedThrough, Int(progress.rounded(.down)))
+                let walkingStage: HomeSceneStage = collected >= day ? .collected(day: day) : .arrived(day: day)
+                if walkingStage != stage {
+                    state.stages[type] = walkingStage
+                }
+                return .none
                 
             case let .sceneStageAdvanced(type, stage):
                 apply(stage, to: type, state: &state)
@@ -197,6 +245,7 @@ struct HomeFeature {
                 return .none
                 
             case .goalCardToggleTapped:
+                state.expansionGoalID = state.board?.goal.id
                 state.isGoalExpanded.toggle()
                 return .none
                 
@@ -215,6 +264,14 @@ struct HomeFeature {
             case .allGoalsButtonTapped:
                 state.goalList = GoalListFeature.State(now: state.now)
                 return .none
+
+            case .nextGoalButtonTapped:
+                // 끝난 목표를 넘긴 목표로 저장하고, 다음 목표(진행 중이거나 시작 전)를 다시 불러와요.
+                guard state.isGoalFinished, let goal = state.board?.goal else { return .none }
+
+                state.$dismissedGoalKeys.withLock { _ = $0.insert(goal.dismissalKey) }
+                state.isCelebrationVisible = false
+                return loadBoards(state)
                 
             case .participantsButtonTapped:
                 state.sheet = .participants
@@ -228,16 +285,22 @@ struct HomeFeature {
                 state.isTrashSummaryPresented = false
                 return .none
                 
-                // 함께한 사람 시트를 닫은 뒤 그 사람의 홈으로 이동해요. 나와 차단한 사람은 열지 않아요.
             case let .participantTapped(participantID):
-                guard let participant = state.board?.participants.first(
-                    where: { $0.id == participantID}
+                guard let participant = state.allParticipants.first(
+                    where: { $0.id == participantID }
                 ),
-                      !participant.isBlocked,
-                      participant.id != state.currentUserID
+                      !participant.isBlocked
                 else { return .none }
                 
                 state.sheet = nil
+
+                if participant.id == state.currentUserID {
+                    return .run { send in
+                        try await clock.sleep(for: Self.sheetDismissDelay)
+                        await send(.delegate(.myProfileRequested))
+                    }
+                }
+
                 return .run { send in
                     try await clock.sleep(for: Self.sheetDismissDelay)
                     await send(.userHomeOpened(participant))
@@ -255,8 +318,32 @@ struct HomeFeature {
                 state.sheet = nil
                 return .none
                 
-            case .notificationButtonTapped:
-                state.notification = NotificationFeature.State()
+            case .tutorialAdvanced:
+                state.tutorialStep = state.tutorialStep?.next
+                return .none
+
+            case .tutorialActivitySwitched:
+                guard state.tutorialStep == .recordResult, state.tutorialRecordType == .plogging else { return .none }
+
+                state.tutorialRecordType = .plobbing
+                state.tutorialStep = .recordIntro
+                return .none
+
+            // 첫 안내는 잠깐 보여준 뒤 저절로 펼치기 안내로 넘어가요. 그 사이 눌러서 넘겼으면 그대로 둬요.
+            case .tutorialIntroFinished:
+                guard state.tutorialStep == .goal else { return .none }
+
+                state.tutorialStep = .goalToggle
+                return .none
+
+            case let .tutorialFrameChanged(target, frame):
+                state.tutorialFrames[target] = frame
+                return .none
+
+            case .tutorialFinished:
+                @Shared(.isHomeTutorialPending) var isHomeTutorialPending
+                $isHomeTutorialPending.withLock { $0 = false }
+                state.tutorialStep = nil
                 return .none
                 
             case .recordDetail(.presented(.delegate(.closed))):
@@ -264,7 +351,6 @@ struct HomeFeature {
                 return .none
                 
             case .recordDetail(.presented(.delegate(.deleted))),
-                    .recordDetail(.presented(.delegate(.reported))),
                     .recordDetail(.presented(.delegate(.blocked))):
                 state.recordDetail = nil
                 return .none
@@ -273,20 +359,15 @@ struct HomeFeature {
                 state.goalList = nil
                 return .none
                 
-            case .goalList(.presented(.delegate(.loginRequired))):
-                return .send(.delegate(.loginRequired))
-                
             case .userHome(.presented(.delegate(.closed))):
                 state.userHome = nil
                 return .none
                 
-                // 차단한 사람은 함께한 사람 목록에서 가려 보여야 해서 다시 불러와요.
             case .userHome(.presented(.delegate(.blocked))):
                 state.userHome = nil
                 return .send(.onAppear)
                 
             case .recordDetail,
-                    .notification,
                     .goalList,
                     .userHome,
                     .delegate:
@@ -296,28 +377,11 @@ struct HomeFeature {
         .ifLet(\.$recordDetail, action: \.recordDetail) {
             RecordDetailFeature()
         }
-        .ifLet(\.$notification, action: \.notification) {
-            NotificationFeature()
-        }
         .ifLet(\.$goalList, action: \.goalList) {
             GoalListFeature()
         }
         .ifLet(\.$userHome, action: \.userHome) {
             UserHomeFeature()
-        }
-    }
-}
-
-// MARK: - Action
-
-private extension HomeFeature.Action {
-    
-    var requiresLogin: Bool {
-        switch self {
-        case .recordButtonTapped, .notificationButtonTapped, .participantTapped:
-            true
-        default:
-            false
         }
     }
 }
@@ -332,10 +396,28 @@ extension HomeFeature {
     private static let scrollGuideDuration: Duration = .seconds(3)
     private static let sheetDismissDelay: Duration = .milliseconds(350)
     
+    static let tutorialIntroDuration: Duration = .seconds(3)
+
     private nonisolated enum CancelID: Hashable {
         case boards
         case scene(RecordType)
         case scrollGuide
+    }
+    
+    private func collect(at stop: Int, type: RecordType, lastDay: Int, state: inout State) -> Effect<Action> {
+        let stages: [HomeSceneStage] = stop > lastDay
+        ? (0...type.resultStep).map { .finale(step: $0) }
+        : [.collecting(day: stop), .collected(day: stop)]
+        
+        state.transitioningTypes.insert(type)
+        return .run { send in
+            for stage in stages {
+                await send(.sceneStageAdvanced(type, stage), animation: HomeFeature.transitionAnimation)
+                try await clock.sleep(for: HomeFeature.transitionDuration + HomeFeature.autoAdvanceDelay)
+            }
+            await send(.sceneTransitionFinished(type))
+        }
+        .cancellable(id: CancelID.scene(type), cancelInFlight: true)
     }
     
     private func apply(_ stage: HomeSceneStage, to type: RecordType, state: inout State) {
@@ -345,15 +427,34 @@ extension HomeFeature {
         }
     }
     
-    /// 진행 중인 목표가 없으면 가장 최근 목표(끝난 목표)를 보여줘요. 목표가 하나도 없으면 빈 배열이에요.
-    private func fetchBoards(now: Date) async throws -> [HomeGoalBoard] {
-        let currentGoal = try await goalClient.fetchCurrentGoal(now)
-        let goal: Goal? = if let currentGoal {
-            currentGoal
-        } else {
-            try await goalClient.fetchGoals(now).first
+    private func loadBoards(_ state: State) -> Effect<Action> {
+        let now = now
+        let skippedKeys = state.dismissedGoalKeys
+        return .run { send in
+            await send(.boardsResponse(
+                Result { try await fetchBoards(now: now, skipping: skippedKeys) },
+                now: now
+            ))
         }
-        guard let goal else { return [] }
+        .cancellable(id: CancelID.boards, cancelInFlight: true)
+    }
+
+    /// 끝난 목표는 "다음 목표 보기"를 누르기 전까지 계속 축하해요.
+    private func updateCelebration(goal: Goal?, now: Date, state: inout State) {
+        guard let goal, goal.homeStatus(at: now).isFinished else {
+            state.isCelebrationVisible = false
+            return
+        }
+
+        state.isCelebrationVisible = !state.dismissedGoalKeys.contains(goal.dismissalKey)
+    }
+
+    private func fetchBoards(now: Date, skipping skippedKeys: Set<String>) async throws -> [HomeGoalBoard] {
+        async let goals = goalClient.fetchGoals(now)
+        async let upcoming = goalClient.fetchUpcomingGoal(now)
+        guard let goal = try await Goal.homeGoal(in: goals, upcoming: upcoming, skipping: skippedKeys, at: now) else {
+            return []
+        }
         
         async let plogging = fetchBoard(goal: goal, recordType: .plogging)
         async let plobbing = fetchBoard(goal: goal, recordType: .plobbing)
@@ -380,8 +481,11 @@ extension HomeFeature {
     }
     
     private func showScrollGuideIfNeeded(_ state: inout State) -> Effect<Action> {
-        guard state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
-              state.status?.isFinished == false
+        // 모은 쓰레기가 0개면 내려가며 볼 기록이 없어서 안내하지 않아요
+        guard state.tutorialStep == nil,
+              state.stage == .arrived(day: state.todayDays[state.selectedType] ?? 0),
+              state.status?.isFinished == false,
+              (state.board?.totalTrashCount ?? 0) > 0
         else {
             state.isScrollGuideVisible = false
             return .cancel(id: CancelID.scrollGuide)

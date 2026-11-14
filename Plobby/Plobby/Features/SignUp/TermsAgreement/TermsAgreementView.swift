@@ -19,6 +19,24 @@ struct TermsAgreementView: View {
     // MARK: - Body
 
     var body: some View {
+        VStack(spacing: 0) {
+            PlobbyNavigationBar(title: "이용약관") {
+                store.send(.backButtonTapped)
+            }
+
+            content
+        }
+        .toolbar(.hidden, for: .navigationBar)
+        .contentShape(Rectangle())
+        .gesture(swipeBackGesture)
+    }
+}
+
+// MARK: - Subviews
+
+private extension TermsAgreementView {
+
+    var content: some View {
         VStack(alignment: .leading, spacing: 0) {
             title
             allAgreementRow
@@ -56,11 +74,21 @@ struct TermsAgreementView: View {
         }
         .padding(.horizontal, 20.scaled)
     }
-}
 
-// MARK: - Subviews
+    /// 가입 첫 화면이라 시스템 뒤로가기 제스처가 없어요. 왼쪽 끝에서 오른쪽으로 밀면 뒤로가기 버튼처럼 로그인 화면으로 가요.
+    var swipeBackGesture: some Gesture {
+        DragGesture(minimumDistance: 20)
+            .onEnded { value in
+                let isFromLeftEdge = value.startLocation.x < Self.swipeBackEdgeWidth
+                let isHorizontal = abs(value.translation.width) > abs(value.translation.height)
+                guard isFromLeftEdge, isHorizontal, value.translation.width > Self.swipeBackDistance else { return }
 
-private extension TermsAgreementView {
+                store.send(.backButtonTapped)
+            }
+    }
+
+    static var swipeBackEdgeWidth: CGFloat { 30 }
+    static var swipeBackDistance: CGFloat { 80 }
 
     var title: some View {
         Text("서비스 이용을 위해\n약관에 동의해주세요")

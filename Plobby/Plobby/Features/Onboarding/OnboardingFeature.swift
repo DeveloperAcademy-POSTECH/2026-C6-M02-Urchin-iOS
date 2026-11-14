@@ -17,7 +17,7 @@ struct OnboardingFeature {
     @ObservableState
     struct State: Equatable {
         var currentPage: OnboardingPage = .goal
-        var selectedActivity: RecordType = .plogging
+        var selectedActivities: [OnboardingPage: RecordType] = [:]
         var collectionCard = CollectionCardFeature.State(category: .plastic, collectedCount: 128)
         var signIn = SignInFeature.State()
     }
@@ -51,17 +51,19 @@ struct OnboardingFeature {
         Reduce { state, action in
             switch action {
             case let .activityTabSelected(activity):
-                state.selectedActivity = activity
+                state.selectedActivities[state.currentPage] = activity
                 return .none
 
             case .nextButtonTapped:
                 guard let next = state.currentPage.next else { return .none }
 
                 state.currentPage = next
+                state.selectedActivities[next] = nil
                 return .none
 
             case let .pageChanged(page):
                 state.currentPage = page
+                state.selectedActivities[page] = nil
                 return .none
 
             case .browseButtonTapped:

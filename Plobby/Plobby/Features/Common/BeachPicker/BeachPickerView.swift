@@ -14,7 +14,6 @@ struct BeachPickerView: View {
     // MARK: - Properties
 
     @Bindable var store: StoreOf<BeachPickerFeature>
-    /// 지역·해변 영역 높이예요. nil이면 남은 공간을 모두 채우고, 해변 목록은 그 안에서 스크롤돼요.
     var regionSectionHeight: CGFloat? = 272.scaled
 
     // MARK: - Body
@@ -51,7 +50,6 @@ private extension BeachPickerView {
 
 private extension BeachPickerView {
 
-    /// 기본 높이는 지역 5개(높이 48 × 5 + 간격 8 × 4)가 딱 들어가는 높이예요. 해변이 많으면 오른쪽 목록만 스크롤돼요
     var regionSection: some View {
         HStack(spacing: 0) {
             regionList
@@ -122,7 +120,7 @@ private extension BeachPickerView {
                 }
             }
         }
-        .scrollIndicators(.hidden)
+        .scrollDismissesKeyboard(.immediately)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.leading, 7.scaled)
     }
@@ -147,5 +145,92 @@ private extension BeachPickerView {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+// MARK: - BeachPickerBottomBar
+
+struct BeachPickerBottomBar: View {
+
+    // MARK: - Properties
+
+    let store: StoreOf<BeachPickerFeature>
+    let emptyMessage: String
+    let buttonTitle: String
+    var isButtonDisabled = false
+    let onButtonTapped: () -> Void
+
+    // MARK: - Body
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8.scaled) {
+            selectionSection
+
+            PlobbyButton(text: buttonTitle, action: onButtonTapped)
+                .disabled(isButtonDisabled)
+        }
+        .padding(.top, 16.scaled)
+        .padding(.horizontal, 20.scaled)
+        .padding(.bottom, 14.scaled)
+        .background(Color(.backgroundDefault))
+    }
+}
+
+// MARK: - 고른 해변
+
+private extension BeachPickerBottomBar {
+
+    @ViewBuilder
+    var selectionSection: some View {
+        if store.selectedBeaches.isEmpty {
+            Text(emptyMessage)
+                .plobbyFont(.helper)
+                .foregroundStyle(Color(.textSecondary))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8.scaled)
+        } else {
+            VStack(alignment: .leading, spacing: 0) {
+                if store.isSelectionFull {
+                    Text("관심 해변은 \(Beach.maximumFavoriteCount)개까지만 고를 수 있어요")
+                        .plobbyFont(.helper)
+                        .foregroundStyle(Color(.textSecondary))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+
+                ScrollView(.horizontal) {
+                    HStack(spacing: 4.scaled) {
+                        ForEach(store.selectedBeaches) { beach in
+                            selectedBeachChip(beach)
+                        }
+                    }
+                }
+                .scrollIndicators(.hidden)
+                .frame(height: 44.scaled)
+            }
+        }
+    }
+
+    func selectedBeachChip(_ beach: Beach) -> some View {
+        Button {
+            store.send(.beachTapped(beach.id))
+        } label: {
+            HStack(spacing: 0) {
+                Text(beach.name)
+                    .plobbyFont(.label)
+                    .lineLimit(1)
+
+                Image(systemName: "xmark")
+                    .font(.system(size: 12.scaled))
+                    .frame(width: 28.scaled, height: 32.scaled)
+            }
+            .foregroundStyle(Color(.textBrand))
+            .padding(.leading, 12.scaled)
+            .frame(height: 32.scaled)
+            .background(Color(.surfaceBrandSubtle), in: Capsule())
+            .frame(height: 44.scaled)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(beach.name) 선택 해제")
     }
 }

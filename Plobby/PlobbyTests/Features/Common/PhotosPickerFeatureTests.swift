@@ -27,6 +27,7 @@ struct PhotosPickerFeatureTests {
             client.requestAuthorization = { .authorized }
             client.fetchAlbums = { [recents, favorites] }
             client.fetchAssets = { _ in Array(photos.prefix(3)) }
+            client.libraryChanges = { .finished }
         }
 
         await store.send(.task)
@@ -137,10 +138,12 @@ struct PhotosPickerFeatureTests {
     func 촬영한_사진은_저장한_뒤_맨_앞에_넣고_선택한다() async {
         let captured = PhotoAsset(id: "captured")
         let store = makeStore(state: loadedState()) { client in
+            client.requestCameraAuthorization = { true }
             client.saveImage = { _ in captured }
         }
 
-        await store.send(.cameraTapped) {
+        await store.send(.cameraTapped)
+        await store.receive(\.cameraAuthorizationResponse) {
             $0.isCameraPresented = true
         }
         await store.send(.cameraImageCaptured(Data())) {
@@ -150,6 +153,19 @@ struct PhotosPickerFeatureTests {
             $0.assets.insert(captured, at: 0)
             $0.selection = PhotoSelection([captured])
         }
+    }
+
+    @Test
+    func 카메라_권한이_없으면_설정으로_안내한다() async {
+        let store = makeStore(state: loadedState()) { client in
+            client.requestCameraAuthorization = { false }
+        }
+
+        await store.send(.cameraTapped)
+        await store.receive(\.cameraAuthorizationResponse) {
+            $0.alert = .make(.cameraAccessDenied, confirm: .openSettingsTapped)
+        }
+        #expect(!store.state.isCameraPresented)
     }
 
     // MARK: - 완료와 닫기

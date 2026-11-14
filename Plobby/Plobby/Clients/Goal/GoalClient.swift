@@ -13,6 +13,7 @@ import Supabase
 struct GoalClient {
     var fetchCurrentGoal: @Sendable (_ now: Date) async throws -> Goal?
     var fetchGoals: @Sendable (_ now: Date) async throws -> [Goal]
+    var fetchUpcomingGoal: @Sendable (_ now: Date) async throws -> Goal?
     var fetchDailyProgresses: @Sendable (_ goalID: UUID, _ recordType: RecordType) async throws -> [GoalDailyProgress]
     var fetchTrashSummaries: @Sendable (_ goalID: UUID, _ recordType: RecordType) async throws -> [GoalTrashSummary]
     var fetchParticipants: @Sendable (_ goalID: UUID, _ recordType: RecordType) async throws -> [GoalParticipant]
@@ -48,6 +49,20 @@ extension GoalClient: DependencyKey {
                     .value
 
                 return responseDTOs.map { $0.toDomain() }
+            },
+            fetchUpcomingGoal: { now in
+                @Dependency(\.supabaseClient) var supabase
+
+                let responseDTOs: [GoalProgressResponseDTO] = try await supabase
+                    .from("goal_progress")
+                    .select()
+                    .gt("starts_at", value: now.ISO8601Format())
+                    .order("starts_at", ascending: true)
+                    .limit(1)
+                    .execute()
+                    .value
+
+                return responseDTOs.first?.toDomain()
             },
             fetchDailyProgresses: { goalID, recordType in
                 @Dependency(\.supabaseClient) var supabase
@@ -107,12 +122,13 @@ extension GoalClient: DependencyKey {
                 async let hiddenRecordsTask = supabase.hiddenRecords()
                 let (currentUserID, hiddenRecords) = try await (currentUserIDTask, hiddenRecordsTask)
 
-                // 활동을 시작한 시각이 목표 기간 안에 있는 기록이에요. 끝 시각은 기간에 포함되지 않아요.
+                // 활동을 끝낸 시각이 목표 기간 안에 있는 기록이에요. 목표의 끝 시각은 기간에 포함되지 않아요.
+                // 서버의 goal_trash 뷰와 같은 기준이에요.
                 var query = supabase
                     .from("records")
                     .select(RecordSummaryResponseDTO.selectQuery)
-                    .gte("started_at", value: goal.startsAt.ISO8601Format())
-                    .lt("started_at", value: goal.endsAt.ISO8601Format())
+                    .gte("ended_at", value: goal.startsAt.ISO8601Format())
+                    .lt("ended_at", value: goal.endsAt.ISO8601Format())
                     .is("deleted_at", value: nil)
                     .excluding(hiddenRecords)
 

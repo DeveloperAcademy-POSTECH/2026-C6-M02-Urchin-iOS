@@ -100,12 +100,21 @@ private extension CollectionView {
         CollectionProfileImage(url: store.profile?.profileImageURL)
             .frame(width: 36.scaled, height: 36.scaled)
             .clipShape(Circle())
+            .unreadDot(store.hasUnreadNotification, inset: Self.unreadDotInset)
     }
 }
 
-/// 컬렉션 상단 프로필 사진이에요.
-/// AsyncImage는 화면이 다시 그려지는 중에 불러오기가 취소되면 기본 이미지에 멈춰서, 직접 불러와요.
-/// 한 번 불러온 사진은 같은 주소를 다시 받아도 그대로 두고, 취소되면 다음에 다시 불러요.
+private extension CollectionView {
+
+    /// 빨간 점 중심이 프로필 원의 오른쪽 위 곡선(45도) 위에 오도록 안쪽으로 옮기는 값이에요.
+    static let unreadDotInset: CGSize = {
+        let profileRadius = 18.scaled
+        let dotRadius = 4.scaled
+        let inset = profileRadius * (1 - cos(.pi / 4)) - dotRadius
+        return CGSize(width: inset, height: inset)
+    }()
+}
+
 private struct CollectionProfileImage: View {
 
     let url: URL?
@@ -140,7 +149,6 @@ private struct CollectionProfileImage: View {
                 image = loaded
                 loadedURL = url
             } catch {
-                // 취소는 다음 표시 때 다시 불러요. 그 밖의 실패만 남겨요.
                 if !(error is CancellationError), (error as? URLError)?.code != .cancelled {
                     PlobbyLogger.error(error)
                 }
@@ -161,7 +169,8 @@ private extension CollectionView {
                 ForEach(store.scope(state: \.cards, action: \.cards), id: \.state.id) { cardStore in
                     CollectionCardView(
                         store: cardStore,
-                        isActive: store.isTrashCountsLoaded && cardStore.category == scrolledCategory
+                        isActive: store.isTrashCountsLoaded && cardStore.category == scrolledCategory,
+                        isGuest: store.membershipStatus == .guest
                     )
                         .containerRelativeFrame(.horizontal)
                         .scrollTransition(axis: .horizontal) { content, phase in
@@ -210,7 +219,10 @@ private extension CollectionView {
     var bottomButtons: some View {
         HStack(spacing: 8.scaled) {
             allCategoryButton
-            shareButton
+
+            if store.membershipStatus != .guest {
+                shareButton
+            }
         }
         .padding(.horizontal, 32.scaled)
         .padding(.bottom, 28.scaled)

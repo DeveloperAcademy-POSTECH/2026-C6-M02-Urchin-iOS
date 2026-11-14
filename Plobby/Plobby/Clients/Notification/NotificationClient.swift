@@ -12,6 +12,8 @@ import Supabase
 
 struct NotificationClient {
     var fetchNotifications: @Sendable () async throws -> [AppNotification]
+    /// 안 읽은 알림이 하나라도 있는지 확인해요.
+    var fetchHasUnread: @Sendable () async throws -> Bool
     /// 알림을 읽음 처리해요. 좋아요 알림은 같은 기록에 묶인 알림을 모두 읽음 처리해요.
     var updateReadAt: @Sendable (_ notification: AppNotification) async throws -> Void
     var updateAllReadAt: @Sendable () async throws -> Void
@@ -38,19 +40,39 @@ extension NotificationClient: DependencyKey {
 
                 return notifications.map { $0.toDomain() }
             },
+            fetchHasUnread: {
+                @Dependency(\.supabaseClient) var supabaseClient
+
+                let userID = try await supabaseClient.currentUserID()
+
+                let unreadNotifications: [UnreadNotificationResponse] = try await supabaseClient
+                    .from("notification_list")
+                    .select("id")
+                    .eq("user_id", value: userID)
+                    .eq("is_read", value: false)
+                    .limit(1)
+                    .execute()
+                    .value
+
+                return !unreadNotifications.isEmpty
+            },
             updateReadAt: { notification in
                 @Dependency(\.supabaseClient) var supabaseClient
 
                 let userID = try await supabaseClient.currentUserID()
 
-                try await supabaseClient
+                var query = try supabaseClient
                     .from("notifications")
                     .update(ReadAtUpdateRequestDTO(readAt: .now), returning: .minimal)
                     .eq("user_id", value: userID)
-                    .eq("record_id", value: notification.recordID)
                     .eq("type", value: notification.kind.serverType)
                     .is("read_at", value: nil)
-                    .execute()
+
+                query = notification.recordID != nil
+                    ? query.eq("record_id", value: notification.recordID)
+                    : query.eq("id", value: notification.id)
+
+                try await query.execute()
             },
             updateAllReadAt: {
                 @Dependency(\.supabaseClient) var supabaseClient
@@ -86,13 +108,20 @@ extension NotificationClient: DependencyKey {
 
 // MARK: - AppNotification.Kind+
 
-private extension AppNotification.Kind {
+private nonisolated extension AppNotification.Kind {
 
     /// `notifications.type` 칼럼 값
     var serverType: String {
         switch self {
         case .like: "like"
         case .newRecordAtFavoriteBeach: "beach_record"
+        case .reportRemoved: "report_removed"
+        case .goalAchieved: "goal_achieved"
         }
     }
+}
+
+private nonisolated struct UnreadNotificationResponse: Decodable, Sendable {
+
+    let id: UUID
 }

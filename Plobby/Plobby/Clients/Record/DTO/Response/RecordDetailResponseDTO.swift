@@ -102,19 +102,31 @@ nonisolated extension RecordDetailResponseDTO {
                         )
                     }
                 },
-            trash: trash.map {
-                RecordDetail.Trash(
-                    trashCode: $0.trashCode,
-                    name: $0.trashType?.nameKo ?? $0.trashCode,
-                    customName: $0.customName,
-                    quantity: $0.quantity
-                )
-            },
+            // 기록하기의 쓰레기 선택, 홈의 수거대 팝업과 같은 이름·순서로 보여줘요
+            trash: trash
+                .sorted { $0.categoryOrder < $1.categoryOrder }
+                .map {
+                    RecordDetail.Trash(
+                        trashCode: $0.trashCode,
+                        name: TrashCategory(code: $0.trashCode)?.name ?? $0.trashType?.nameKo ?? $0.trashCode,
+                        customName: $0.customName,
+                        quantity: $0.quantity
+                    )
+                },
             nickname: user.profile?.nickname ?? "",
             profileImageURL: user.profile?.profileImageKey.flatMap(profileImageURL),
             isMine: userID == currentUserID,
             likeCount: likes.first?.count ?? 0,
             likedByMe: currentUserID.map { id in myLike.contains { $0.userID == id } } ?? false
         )
+    }
+}
+
+private nonisolated extension RecordTrashResponseDTO {
+
+    /// 쓰레기 선택 화면과 같은 순서(TrashCategory 선언 순서)로 정렬할 때 써요. 모르는 종류는 맨 뒤로 보내요.
+    var categoryOrder: Int {
+        TrashCategory(code: trashCode)
+            .flatMap { TrashCategory.allCases.firstIndex(of: $0) } ?? TrashCategory.allCases.count
     }
 }

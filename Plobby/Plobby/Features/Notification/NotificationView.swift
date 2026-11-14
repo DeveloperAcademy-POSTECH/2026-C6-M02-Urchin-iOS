@@ -48,10 +48,7 @@ extension NotificationView {
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if store.isEmpty {
-            Text("아직 받은 알림이 없어요")
-                .plobbyFont(.cardTitle)
-                .foregroundStyle(Color(.textPrimary))
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            emptyView
         } else {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
@@ -71,6 +68,42 @@ extension NotificationView {
                 await store.send(.refreshed).finish()
             }
         }
+    }
+
+    private var emptyView: some View {
+        VStack(spacing: 16.scaled) {
+            VStack(spacing: 12.scaled) {
+                Text("새로운 알림이 없습니다")
+                    .plobbyFont(.cardTitle)
+                    .foregroundStyle(Color(.textPrimary))
+
+                Text("내 기록에 받은 좋아요와 관심 바다의 새 기록을\n여기서 알려드려요. 알림 설정을 켜보세요")
+                    .plobbyFont(.helper)
+                    .foregroundStyle(Color(.textTertiary))
+                    .multilineTextAlignment(.center)
+            }
+
+            settingsButton
+        }
+        .padding(.horizontal, 20.scaled)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var settingsButton: some View {
+        Button {
+            store.send(.settingsButtonTapped)
+        } label: {
+            Text("알림 설정")
+                .plobbyFont(.label)
+                .foregroundStyle(Color(.green500))
+                .padding(.horizontal, 16.scaled)
+                .padding(.vertical, 8.scaled)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 10.scaled)
+                        .stroke(Color(.green500), lineWidth: 1)
+                }
+        }
+        .buttonStyle(.plain)
     }
 
     private var markAllAsReadButton: some View {
@@ -174,6 +207,8 @@ private extension AppNotification.Kind {
         switch self {
         case .like: "heart.fill"
         case .newRecordAtFavoriteBeach: "water.waves"
+        case .reportRemoved: "light.beacon.max.fill"
+        case .goalAchieved: "flag.fill"
         }
     }
 }

@@ -61,10 +61,10 @@ extension SupabaseClient {
 
 // MARK: - 나에게 숨기는 기록
 
-/// 로그인한 사용자에게만 보이지 않게 할 기록. 신고한 기록과 차단한 사용자의 기록이에요.
+/// 로그인한 사용자에게만 보이지 않게 할 기록. 내가 차단한 사용자의 기록이에요.
+/// 신고한 기록은 숨기지 않아요.
 nonisolated struct HiddenRecords: Sendable {
 
-    var recordIDs: [UUID] = []
     var userIDs: [UUID] = []
 }
 
@@ -74,22 +74,13 @@ extension SupabaseClient {
     func hiddenRecords() async throws -> HiddenRecords {
         guard let userID = try? await currentUserID() else { return HiddenRecords() }
 
-        async let reported: [ReportedRecordResponse] = from("record_reports")
-            .select("record_id")
-            .eq("reporter_id", value: userID)
-            .execute()
-            .value
-
-        async let blocked: [BlockedUserIDResponse] = from("user_blocks")
+        let blocked: [BlockedUserIDResponse] = try await from("user_blocks")
             .select("blocked_id")
             .eq("blocker_id", value: userID)
             .execute()
             .value
 
-        return try await HiddenRecords(
-            recordIDs: reported.map(\.recordID),
-            userIDs: blocked.map(\.blockedID)
-        )
+        return HiddenRecords(userIDs: blocked.map(\.blockedID))
     }
 }
 
@@ -97,24 +88,9 @@ nonisolated extension PostgrestFilterBuilder {
 
     /// 숨길 기록은 그 사용자에게만 빼요. 다른 사용자에게는 그대로 보여요.
     func excluding(_ hidden: HiddenRecords) -> PostgrestFilterBuilder {
-        var query = self
+        guard !hidden.userIDs.isEmpty else { return self }
 
-        if !hidden.recordIDs.isEmpty {
-            query = query.notIn("id", values: hidden.recordIDs.map(\.uuidString))
-        }
-        if !hidden.userIDs.isEmpty {
-            query = query.notIn("user_id", values: hidden.userIDs.map(\.uuidString))
-        }
-        return query
-    }
-}
-
-private nonisolated struct ReportedRecordResponse: Decodable, Sendable {
-
-    let recordID: UUID
-
-    enum CodingKeys: String, CodingKey {
-        case recordID = "record_id"
+        return notIn("user_id", values: hidden.userIDs.map(\.uuidString))
     }
 }
 

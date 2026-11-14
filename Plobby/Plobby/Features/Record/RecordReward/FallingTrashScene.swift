@@ -120,15 +120,16 @@ extension FallingTrashScene {
     }
 
     private func startDropping() {
-        let shuffled = trash.dropImageNames.shuffled()
+        let shuffled = trash.dropImageNames(count: Self.dropCount(for: trash.totalCount)).shuffled()
         let items = shuffled.filter { !isNet($0) }
         let ordered = ["_L", "_M", "_S"].flatMap { suffix in items.filter { $0.hasSuffix(suffix) } }
             + shuffled.filter(isNet)
 
         let interval = min(dropInterval, maxDropDuration / Double(max(ordered.count, 1)))
         let wait = SKAction.wait(forDuration: interval)
+        // 앞 화면의 구멍이 화면을 덮자마자 이어지도록, 첫 쓰레기는 기다리지 않고 바로 떨어뜨려요
         let drops = ordered.flatMap { name in
-            [wait, SKAction.run { [weak self] in self?.dropItem(name) }]
+            [SKAction.run { [weak self] in self?.dropItem(name) }, wait]
         }
 
         run(.sequence(
@@ -145,7 +146,7 @@ extension FallingTrashScene {
         let isNet = isNet(name)
         let texture = SKTexture(imageNamed: name)
         let node = SKSpriteNode(texture: texture)
-        node.setScale(DesignScale.fitRatio(for: size) * trashScale)
+        node.setScale(DesignScale.fitRatio(for: size) * trashScale * Self.sizeRatio(for: trash.totalCount))
 
         let halfWidth = node.size.width / 2
 
@@ -188,14 +189,32 @@ extension FallingTrashScene {
     }
 }
 
+// MARK: - Drop Count
+
+private extension FallingTrashScene {
+
+    static let baseDropCount = 50
+    static let dropCountCeiling = 120
+
+    static func dropCount(for totalCount: Int) -> Int {
+        guard totalCount > baseDropCount else { return totalCount }
+
+        let extra = 20 * log2(Double(totalCount) / Double(baseDropCount))
+        return min(baseDropCount + Int(extra.rounded()), dropCountCeiling)
+    }
+
+    static func sizeRatio(for totalCount: Int) -> CGFloat {
+        let dropCount = max(dropCount(for: totalCount), baseDropCount)
+        return CGFloat((Double(baseDropCount) / Double(dropCount)).squareRoot())
+    }
+}
+
 // MARK: - TrashSelection
 
 private extension TrashSelection {
     
-    static let maximumDropCount = 50
-
-    var dropImageNames: [String] {
-        let scale = min(1, Double(Self.maximumDropCount) / Double(max(totalCount, 1)))
+    func dropImageNames(count dropCount: Int) -> [String] {
+        let scale = min(1, Double(dropCount) / Double(max(totalCount, 1)))
 
         return counts.flatMap { category, count in
             let dropCount = max(1, Int((Double(count) * scale).rounded()))

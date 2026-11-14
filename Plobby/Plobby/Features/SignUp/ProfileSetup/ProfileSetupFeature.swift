@@ -37,6 +37,7 @@ struct ProfileSetupFeature {
     enum Action {
         case profilePhoto(ProfilePhotoFeature.Action)
         case nicknameCheck(NicknameCheckFeature.Action)
+        case backButtonTapped
         case nextButtonTapped
     }
 

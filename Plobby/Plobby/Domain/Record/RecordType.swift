@@ -41,36 +41,4 @@ nonisolated extension RecordType {
         case .plobbing: 2
         }
     }
-
-    func forwardStages(from stage: HomeSceneStage, lastDay: Int) -> [HomeSceneStage] {
-        switch (self, stage) {
-        case let (_, .arrived(day)):
-            [.collecting(day: day), .collected(day: day)]
-        case (_, .collecting):
-            []
-        case let (_, .collected(day)) where day < lastDay:
-            [.arrived(day: day + 1)]
-        case (.plogging, .collected):
-            [.finale(step: 0), .finale(step: 1)]
-        case (.plobbing, .collected):
-            [.finale(step: 0)]
-        case (.plobbing, .finale(step: 0)):
-            [.finale(step: 1), .finale(step: 2)]
-        case (_, .finale):
-            []
-        }
-    }
-
-    func backwardStages(from stage: HomeSceneStage, lastDay: Int) -> [HomeSceneStage] {
-        switch stage {
-        case let .arrived(day) where day > 0:
-            [.collected(day: day - 1)]
-        case .arrived, .collecting:
-            []
-        case let .collected(day):
-            [.arrived(day: day)]
-        case .finale:
-            [.collected(day: lastDay)]
-        }
-    }
 }
