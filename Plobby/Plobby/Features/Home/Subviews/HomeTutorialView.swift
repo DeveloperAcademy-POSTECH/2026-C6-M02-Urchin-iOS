@@ -97,12 +97,12 @@ private extension HomeTutorialView {
                 sceneLayer(backdrop: .homeSceneBeach) {
                     PloggingSceneView(days: [day], stage: sceneStage, collectPulse: collectPulse)
                 }
-                .transition(.move(edge: .leading))
+                .transition(.move(edge: .trailing))
             case .plobbing:
                 sceneLayer(backdrop: .homeSceneSky) {
                     PlobbingSceneView(days: [day], stage: sceneStage, collectPulse: collectPulse)
                 }
-                .transition(.move(edge: .trailing))
+                .transition(.move(edge: .leading))
             }
 
             HomeSceneOverlay(
