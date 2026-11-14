@@ -39,9 +39,12 @@ struct BeachSheetView: View {
                         .padding(.horizontal, 20.scaled)
                         .padding(.bottom, 20.scaled)
 
-                    homeButton
-                        .padding(.horizontal, 20.scaled)
-                        .padding(.bottom, 8.scaled)
+                    HStack(spacing: 12.scaled) {
+                        homeButton
+                        recordButton
+                    }
+                    .padding(.horizontal, 20.scaled)
+                    .padding(.bottom, 8.scaled)
 
                     photos
                 }
@@ -164,20 +167,33 @@ private extension BeachSheetView {
     }
 
     var homeButton: some View {
-        Button {
+        actionButton(systemName: "newspaper.fill", title: "기록 보기") {
             store.send(.homeTapped)
-        } label: {
+        }
+    }
+
+    var recordButton: some View {
+        actionButton(systemName: "plus", title: "기록하기") {
+            store.send(.recordStartTapped, transaction: store.isMember ? Self.noAnimation : Transaction())
+        }
+    }
+
+    /// "기록 보기"와 "기록하기"가 함께 쓰는 초록 버튼이에요. 아이콘과 문구만 달라요.
+    func actionButton(systemName: String, title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
             HStack(spacing: 4.scaled) {
-                Image(systemName: "newspaper.fill")
-                    .font(.system(size: 14.scaled))
+                Image(systemName: systemName)
+                    .font(.system(size: 14.scaled, weight: .semibold))
                     .frame(width: 20.scaled, height: 20.scaled)
 
-                Text("기록 보기")
+                Text(title)
                     .plobbyFont(.actionLabel)
             }
+            .frame(height: 20.scaled)
             .foregroundStyle(Color(.gray0))
-            .padding(.horizontal, 16.scaled)
-            .frame(height: 36.scaled)
+            .padding(.leading, 14.scaled)
+            .padding(.trailing, 16.scaled)
+            .padding(.vertical, 10.scaled)
             .background(Color(.green600), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .buttonStyle(.plain)
