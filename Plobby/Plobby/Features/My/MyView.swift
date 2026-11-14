@@ -70,26 +70,30 @@ private extension MyView {
         PlobbyNavigationBarConfiguration.TrailingButton(
             action: { store.send(.notificationButtonTapped) },
             label: AnyView(
-                Image(.bell)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24.scaled, height: 24.scaled)
+                Image(systemName: "bell")
+                    .font(.system(size: Self.iconSize, weight: .regular))
+                    .foregroundStyle(Color(.textPrimary))
+                    .frame(width: Self.iconFrameSize, height: Self.iconFrameSize)
                     .unreadDot(store.hasUnreadNotification, size: 6.scaled, inset: Self.unreadDotInset)
                     .accessibilityLabel("알림")
             )
         )
     }
 
-    /// 빨간 점 중심이 종 아이콘(24×24) 오른쪽 위 곡선의 45도 지점(약 16.8, 4.5)에 오도록 옮기는 값이에요.
-    static let unreadDotInset = CGSize(width: 4.scaled, height: CGFloat(1.5).scaled)
+    static let iconSize: CGFloat = 19.scaled
+    static let iconFrameSize: CGFloat = 24.scaled
+
+    /// 빨간 점 중심이 종 아이콘(24×24) 오른쪽 위 곡선의 45도 지점(약 16.4, 5)에 오도록 옮기는 값이에요.
+    static let unreadDotInset = CGSize(width: CGFloat(4.5).scaled, height: 2.scaled)
 
     var settingsButton: PlobbyNavigationBarConfiguration.TrailingButton {
         PlobbyNavigationBarConfiguration.TrailingButton(
             action: { store.send(.settingsButtonTapped) },
             label: AnyView(
                 Image(systemName: "gearshape")
-                    .font(.system(size: 24.scaled, weight: .regular))
+                    .font(.system(size: Self.iconSize, weight: .regular))
                     .foregroundStyle(Color(.textPrimary))
+                    .frame(width: Self.iconFrameSize, height: Self.iconFrameSize)
                     .accessibilityLabel("설정")
             )
         )
