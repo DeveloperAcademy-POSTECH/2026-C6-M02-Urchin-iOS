@@ -286,7 +286,7 @@ private extension BeachClient {
         fetchRecordCounts: { [:] },
         fetchBeachRecords: { _, _ in [] },
         fetchBeachSummary: { _, _ in
-            BeachSummary(recordCount: 0, participantCount: 0, totalTrashCount: 0, photoURLs: [], guardians: [])
+            BeachSummary(recordCount: 0, participantCount: 0, totalTrashCount: 0, photos: [], guardians: [])
         }
     )
 }

@@ -39,9 +39,12 @@ struct BeachSheetView: View {
                         .padding(.horizontal, 20.scaled)
                         .padding(.bottom, 20.scaled)
 
-                    homeButton
-                        .padding(.horizontal, 20.scaled)
-                        .padding(.bottom, 8.scaled)
+                    HStack(spacing: 12.scaled) {
+                        homeButton
+                        recordButton
+                    }
+                    .padding(.horizontal, 20.scaled)
+                    .padding(.bottom, 8.scaled)
 
                     photos
                 }
@@ -164,20 +167,35 @@ private extension BeachSheetView {
     }
 
     var homeButton: some View {
-        Button {
+        actionButton(systemName: "newspaper.fill", title: "기록 보기") {
             store.send(.homeTapped)
+        }
+    }
+
+    var recordButton: some View {
+        actionButton(systemName: "plus", title: "기록하기") {
+            store.send(.recordStartTapped, transaction: store.isMember ? Self.noAnimation : Transaction())
+        }
+    }
+
+    /// "기록 보기"와 "기록하기"가 함께 쓰는 초록 버튼이에요. 아이콘과 문구만 달라요.
+    func actionButton(systemName: String, title: String, action: @escaping () -> Void) -> some View {
+        Button {
+            action()
         } label: {
             HStack(spacing: 4.scaled) {
-                Image(systemName: "newspaper.fill")
-                    .font(.system(size: 14.scaled))
+                Image(systemName: systemName)
+                    .font(.system(size: 14.scaled, weight: .semibold))
                     .frame(width: 20.scaled, height: 20.scaled)
 
-                Text("기록 보기")
+                Text(title)
                     .plobbyFont(.actionLabel)
             }
+            .frame(height: 20.scaled)
             .foregroundStyle(Color(.gray0))
-            .padding(.horizontal, 16.scaled)
-            .frame(height: 36.scaled)
+            .padding(.leading, 14.scaled)
+            .padding(.trailing, 16.scaled)
+            .padding(.vertical, 10.scaled)
             .background(Color(.green600), in: RoundedRectangle(cornerRadius: 8.scaled))
         }
         .buttonStyle(.plain)
@@ -191,19 +209,26 @@ private extension BeachSheetView {
                 .frame(maxWidth: .infinity)
                 .frame(height: Self.photoSize.scaled)
 
-        case let .received(summary) where !summary.photoURLs.isEmpty:
+        case let .received(summary) where !summary.photos.isEmpty:
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8.scaled) {
-                    ForEach(summary.photoURLs, id: \.self) { url in
-                        AsyncImage(url: url) { image in
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        } placeholder: {
-                            Color(.gray50)
+                    ForEach(summary.photos) { photo in
+                        Button {
+                            store.send(.photoTapped(recordID: photo.recordID))
+                        } label: {
+                            AsyncImage(url: photo.url) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            } placeholder: {
+                                Color(.gray50)
+                            }
+                            .frame(width: Self.photoSize.scaled, height: Self.photoSize.scaled)
+                            .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
+                            .contentShape(RoundedRectangle(cornerRadius: 12.scaled))
                         }
-                        .frame(width: Self.photoSize.scaled, height: Self.photoSize.scaled)
-                        .clipShape(RoundedRectangle(cornerRadius: 12.scaled))
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("기록 보기")
                     }
                 }
                 .padding(.horizontal, 20.scaled)

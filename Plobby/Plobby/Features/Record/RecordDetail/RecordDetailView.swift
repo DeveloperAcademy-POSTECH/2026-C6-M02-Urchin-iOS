@@ -15,6 +15,8 @@ struct RecordDetailView: View {
 
     @Bindable var store: StoreOf<RecordDetailFeature>
     @State private var isMoreMenuPresented = false
+    @State private var isPhotoZoomed = false
+    @Namespace private var photoTransition
 
     private static let photoHeight: CGFloat = 224.scaled
 
@@ -208,6 +210,9 @@ private extension RecordDetailView {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .clipped()
                         .contentShape(Rectangle())
+                        .matchedTransitionSource(id: index, in: photoTransition) { source in
+                            source.clipShape(RoundedRectangle(cornerRadius: 12.scaled))
+                        }
                         .onTapGesture {
                             store.send(.photoViewerPresentationChanged(true))
                         }
@@ -243,6 +248,8 @@ private extension RecordDetailView {
         }
     }
 
+    /// 사진 앱처럼 누른 사진에서 커지며 열리고, 아래로 끌어내리면 그 사진 자리로 줄어들며 닫혀요.
+    /// 확대한 상태에서는 사진을 둘러봐야 하니 끌어서 닫히지 않게 막아요.
     func photoViewer(_ photos: [RecordDetail.Photo]) -> some View {
         ZStack(alignment: .top) {
             Color(.neutralBlack)
@@ -250,42 +257,44 @@ private extension RecordDetailView {
 
             TabView(selection: $store.currentPhotoIndex.sending(\.photoPageChanged)) {
                 ForEach(Array(photos.enumerated()), id: \.offset) { index, photo in
-                    AsyncImage(url: photo.url) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                    } placeholder: {
-                        ProgressView()
-                            .tint(Color(.gray0))
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .tag(index)
+                    ZoomablePhoto(url: photo.url, isZoomed: $isPhotoZoomed)
+                        .tag(index)
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
+            .scrollDisabled(isPhotoZoomed)
             .ignoresSafeArea()
 
-            HStack(spacing: 0) {
-                Button {
-                    store.send(.photoViewerPresentationChanged(false))
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 20.scaled, weight: .medium))
-                        .foregroundStyle(Color(.gray0))
-                        .frame(width: 44.scaled, height: 44.scaled)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel("닫기")
-
-                Spacer(minLength: 0)
-
-                Text("\(store.currentPhotoIndex + 1)/\(photos.count)")
-                    .plobbyFont(.helper)
-                    .foregroundStyle(Color(.gray0))
-            }
-            .padding(.horizontal, 20.scaled)
+            photoViewerHeader(photos)
         }
+        .navigationTransition(.zoom(sourceID: store.currentPhotoIndex, in: photoTransition))
+        .interactiveDismissDisabled(isPhotoZoomed)
+        .onAppear {
+            isPhotoZoomed = false
+        }
+    }
+
+    func photoViewerHeader(_ photos: [RecordDetail.Photo]) -> some View {
+        HStack(spacing: 0) {
+            Button {
+                store.send(.photoViewerPresentationChanged(false))
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 20.scaled, weight: .medium))
+                    .foregroundStyle(Color(.gray0))
+                    .frame(width: 44.scaled, height: 44.scaled)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("닫기")
+
+            Spacer(minLength: 0)
+
+            Text("\(store.currentPhotoIndex + 1)/\(photos.count)")
+                .plobbyFont(.helper)
+                .foregroundStyle(Color(.gray0))
+        }
+        .padding(.horizontal, 20.scaled)
     }
 
     func likeButton(_ record: RecordDetail, isOnPhoto: Bool) -> some View {
@@ -517,4 +526,127 @@ private extension RecordDetailView {
         timeZone: .current,
         calendar: .current
     )
+}
+
+// MARK: - ZoomablePhoto
+
+/// 사진 자세히 보기의 한 장이에요. 두 손가락으로 확대하고, 확대한 상태에서는 끌어서 둘러봐요.
+private struct ZoomablePhoto: View {
+
+    // MARK: - Properties
+
+    let url: URL?
+    @Binding var isZoomed: Bool
+
+    @State private var scale: CGFloat = 1
+    @State private var lastScale: CGFloat = 1
+    @State private var offset: CGSize = .zero
+    @State private var lastOffset: CGSize = .zero
+
+    private static let maxScale: CGFloat = 4
+    private static let doubleTapScale: CGFloat = 2.5
+
+    // MARK: - Body
+
+    var body: some View {
+        GeometryReader { proxy in
+            AsyncImage(url: url) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+            } placeholder: {
+                ProgressView()
+                    .tint(Color(.gray0))
+            }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .scaleEffect(scale)
+            .offset(offset)
+            .contentShape(Rectangle())
+            .onTapGesture(count: 2) {
+                toggleZoom()
+            }
+            .gesture(magnifyGesture(in: proxy.size))
+            .gesture(panGesture(in: proxy.size), including: isZoomed ? .all : .subviews)
+        }
+        .onDisappear {
+            reset()
+        }
+    }
+}
+
+// MARK: - Gestures
+
+private extension ZoomablePhoto {
+
+    func magnifyGesture(in size: CGSize) -> some Gesture {
+        MagnifyGesture()
+            .onChanged { value in
+                scale = min(max(lastScale * value.magnification, 1), Self.maxScale)
+                isZoomed = scale > 1
+            }
+            .onEnded { _ in
+                guard scale > 1 else {
+                    withAnimation(.spring(duration: 0.3)) { reset() }
+                    return
+                }
+
+                lastScale = scale
+                withAnimation(.spring(duration: 0.3)) {
+                    offset = clamped(offset, in: size)
+                }
+                lastOffset = offset
+            }
+    }
+
+    func panGesture(in size: CGSize) -> some Gesture {
+        DragGesture()
+            .onChanged { value in
+                offset = CGSize(
+                    width: lastOffset.width + value.translation.width,
+                    height: lastOffset.height + value.translation.height
+                )
+            }
+            .onEnded { _ in
+                withAnimation(.spring(duration: 0.3)) {
+                    offset = clamped(offset, in: size)
+                }
+                lastOffset = offset
+            }
+    }
+}
+
+// MARK: - Zoom
+
+private extension ZoomablePhoto {
+
+    func toggleZoom() {
+        withAnimation(.spring(duration: 0.3)) {
+            guard scale == 1 else {
+                reset()
+                return
+            }
+
+            scale = Self.doubleTapScale
+            lastScale = scale
+            isZoomed = true
+        }
+    }
+
+    /// 확대한 사진이 화면 밖으로 너무 벗어나지 않게, 늘어난 만큼만 움직일 수 있게 해요.
+    func clamped(_ offset: CGSize, in size: CGSize) -> CGSize {
+        let maxX = size.width * (scale - 1) / 2
+        let maxY = size.height * (scale - 1) / 2
+        return CGSize(
+            width: min(max(offset.width, -maxX), maxX),
+            height: min(max(offset.height, -maxY), maxY)
+        )
+    }
+
+    func reset() {
+        scale = 1
+        lastScale = 1
+        offset = .zero
+        lastOffset = .zero
+        isZoomed = false
+    }
 }

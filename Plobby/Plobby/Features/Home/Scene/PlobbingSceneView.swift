@@ -59,6 +59,10 @@ private extension PlobbingSceneView {
                 .resizable()
                 .floatingButtonShadow(Metrics.sky)
 
+            // 수거를 마치고 떠오르는 장면에서는 카메라가 바다 이미지 끝보다 더 내려가서, 아래에 빈 곳이 생기지 않게 바닥을 이어 붙여요.
+            HomeSceneBackdrop(image: .homeSceneSea, edge: .bottom)
+                .floatingButtonShadow(Metrics.seabedExtension)
+
             Image(.homeSceneSea)
                 .resizable()
                 .floatingButtonShadow(Metrics.seabed)
@@ -269,6 +273,7 @@ private extension PlobbingSceneView {
         static let sky = CGRect(x: 0, y: 0, width: 402, height: 132)
         static let surface = CGRect(x: 0, y: 130, width: 402, height: 2)
         static let seabed = CGRect(x: 0, y: 132, width: 402, height: 1200)
+        static let seabedExtension = CGRect(x: 0, y: seabed.maxY, width: seabed.width, height: 600)
         static let boat = CGRect(x: 112, y: 44, width: 179, height: 99)
         static let surfaceLine = Color(red: 0xC2 / 255, green: 0xE6 / 255, blue: 0xF0 / 255)
 
