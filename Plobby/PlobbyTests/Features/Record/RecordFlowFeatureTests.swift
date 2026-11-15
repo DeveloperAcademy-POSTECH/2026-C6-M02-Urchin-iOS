@@ -62,6 +62,8 @@ struct RecordFlowFeatureTests {
         await store.receive(\.step.form.delegate.recordCreated) {
             $0.step = .collecting(RecordCollectingFeature.State(recordID: UUID(0), beachName: "영일대 해수욕장", trash: trash, weightKg: 2))
         }
+        await store.receive(\.profilePrefetched.success)
+        await store.receive(\.goalPrefetched.success)
     }
 
     @Test
@@ -132,6 +134,8 @@ struct RecordFlowFeatureTests {
             $0.date = .constant(now)
             $0.calendar = calendar
             $0.recordClient.submitRecord = { _ in }
+            $0.userClient.fetchMyProfile = { nil }
+            $0.goalClient.fetchCurrentGoal = { _ in nil }
             $0.locale = Locale(identifier: "ko_KR")
         }
     }

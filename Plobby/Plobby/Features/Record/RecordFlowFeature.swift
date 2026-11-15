@@ -17,6 +17,7 @@ struct RecordFlowFeature {
         let recordType: RecordType
         let beach: Beach?
         var step: Step.State
+        var prefetchedGoal: Goal?
         
         init(recordType: RecordType, beach: Beach? = nil, step: Step.State? = nil) {
             self.recordType = recordType
@@ -40,6 +41,8 @@ struct RecordFlowFeature {
     
     enum Action {
         case step(Step.Action)
+        case profilePrefetched(Result<Profile?, any Error>)
+        case goalPrefetched(Result<Goal?, any Error>)
         case delegate(Delegate)
         
         @CasePathable
@@ -53,6 +56,8 @@ struct RecordFlowFeature {
     
     @Dependency(\.date.now) var now
     @Dependency(\.calendar) var calendar
+    @Dependency(\.userClient) var userClient
+    @Dependency(\.goalClient) var goalClient
     
     // MARK: - Body
     
@@ -74,6 +79,30 @@ struct RecordFlowFeature {
                 
             case let .step(.form(.delegate(.recordCreated(recordID, beachName, trash, weightKg)))):
                 state.step = .collecting(.init(recordID: recordID, beachName: beachName, trash: trash, weightKg: weightKg))
+
+                let now = now
+                return .run { send in
+                    async let profile = Result { try await userClient.fetchMyProfile() }
+                    async let goal = Result { try await goalClient.fetchCurrentGoal(now) }
+                    await send(.profilePrefetched(profile))
+                    await send(.goalPrefetched(goal))
+                }
+
+            case let .profilePrefetched(.success(profile)):
+                @Shared(.myProfile) var myProfile
+                $myProfile.withLock { $0 = profile }
+                return .none
+
+            case let .profilePrefetched(.failure(error)):
+                PlobbyLogger.error(error)
+                return .none
+
+            case let .goalPrefetched(.success(goal)):
+                state.prefetchedGoal = goal
+                return .none
+
+            case let .goalPrefetched(.failure(error)):
+                PlobbyLogger.error(error)
                 return .none
 
             case .step(.collecting(.delegate(.finished))):
@@ -82,7 +111,8 @@ struct RecordFlowFeature {
                     recordID: collecting.recordID,
                     beachName: collecting.beachName,
                     trash: collecting.trash,
-                    weightKg: collecting.weightKg
+                    weightKg: collecting.weightKg,
+                    goal: state.prefetchedGoal
                 ))
                 return .none
                 
