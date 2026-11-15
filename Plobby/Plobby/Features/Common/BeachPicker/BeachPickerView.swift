@@ -37,7 +37,7 @@ private extension BeachPickerView {
             TextField(
                 "",
                 text: $store.searchText.sending(\.searchTextChanged),
-                prompt: Text(SearchBarPlaceholder.beachName)
+                prompt: Text("해변·해수욕장 이름으로 검색")
                     .foregroundStyle(Color(.textSecondary))
             )
             .foregroundStyle(Color(.textPrimary))
@@ -112,17 +112,33 @@ private extension BeachPickerView {
 
 private extension BeachPickerView {
 
+    @ViewBuilder
     var beachList: some View {
-        ScrollView {
-            LazyVStack(spacing: 8.scaled) {
-                ForEach(store.beaches) { beach in
-                    beachButton(beach)
+        if store.beaches.isEmpty && !store.searchText.allSatisfy(\.isWhitespace) {
+            VStack {
+                Text("검색 결과가 없어요.\n다른 해변 이름으로 검색해 주세요.")
+                    .plobbyFont(.body)
+                    .foregroundStyle(Color(.textSecondary))
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 40.scaled)
+
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .padding(.leading, 7.scaled)
+        } else {
+            ScrollView {
+                LazyVStack(spacing: 8.scaled) {
+                    ForEach(store.beaches) { beach in
+                        beachButton(beach)
+                    }
                 }
             }
+            .scrollDismissesKeyboard(.immediately)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .padding(.leading, 7.scaled)
         }
-        .scrollDismissesKeyboard(.immediately)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(.leading, 7.scaled)
     }
 
     func beachButton(_ beach: Beach) -> some View {
