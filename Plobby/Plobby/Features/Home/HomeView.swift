@@ -250,7 +250,7 @@ private extension HomeView {
     }
 }
 
-// MARK: - 공통 목표
+// MARK: - 공동 목표
 
 private extension HomeView {
     

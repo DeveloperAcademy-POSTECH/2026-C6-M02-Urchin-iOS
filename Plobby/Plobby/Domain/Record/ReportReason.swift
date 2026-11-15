@@ -24,9 +24,9 @@ nonisolated enum ReportReason: String, CaseIterable, Sendable {
     var title: String {
         switch self {
         case .spamAd: "스팸이나 광고성 기록이에요"
-        case .inappropriatePhoto: "부적절한 사진이 포함되어 있어요"
+        case .inappropriatePhoto: "부적절한 사진이 있어요"
         case .falseRecord: "사실과 다른 허위 기록이에요"
-        case .abuse: "욕설이나 비방이 담겨 있어요"
+        case .abuse: "욕설이나 불쾌한 표현이 있어요"
         case .other: "기타"
         }
     }

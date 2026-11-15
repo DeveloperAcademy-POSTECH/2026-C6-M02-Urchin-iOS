@@ -80,7 +80,7 @@ private extension SearchBeachView {
         TextField(
             "",
             text: $store.query,
-            prompt: Text(SearchBarPlaceholder.beachOrResort)
+            prompt: Text("해변·해수욕장 이름으로 검색")
                 .foregroundStyle(Color(.textSecondary))
         )
         .focused($isSearchFocused)

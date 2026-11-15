@@ -73,7 +73,7 @@ extension AppNotification {
             return "작성한 게시물이 신고로 인해 삭제되었어요"
 
         case .goalAchieved:
-            return "공동목표를 달성했어요!"
+            return "공동 목표를 달성했어요!"
         }
     }
 

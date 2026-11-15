@@ -19,7 +19,7 @@ struct HomeGoalCard: View {
     let onParticipantsTapped: () -> Void
     /// 튜토리얼에서 펼치기 버튼을 눌러 보라고 동그라미로 강조해요.
     var highlightsToggle = false
-    /// 튜토리얼에서 목표를 다 채운 모습을 보여줄 때 라벨을 "공통 목표 달성"으로 바꿔요.
+    /// 튜토리얼에서 목표를 다 채운 모습을 보여줄 때 라벨을 "공동 목표 달성"으로 바꿔요.
     var showsAchievedLabel = false
 
     var body: some View {
@@ -53,7 +53,7 @@ private extension HomeGoalCard {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(isExpanded ? "공통 목표 접기" : "공통 목표 펼치기")
+        .accessibilityLabel(isExpanded ? "공동 목표 접기" : "공동 목표 펼치기")
         .guestTapAllowed()
     }
 
@@ -61,7 +61,7 @@ private extension HomeGoalCard {
         HStack(spacing: 8.scaled) {
             VStack(alignment: .leading, spacing: 2.scaled) {
                 HStack(spacing: 8.scaled) {
-                    Text(showsAchievedLabel ? "공통 목표 달성" : "공통 목표")
+                    Text(showsAchievedLabel ? "공동 목표 달성" : "공동 목표")
                         .foregroundStyle(showsAchievedLabel ? Color(.textBrand) : Color(.textSecondary))
                     Text(status.chipText)
                 }

@@ -44,7 +44,7 @@ private extension LoginRequiredSheet {
     
     var title: some View {
         VStack(spacing: 0) {
-            Text("로그인하고 내 활동을 기록해보세요")
+            Text("로그인하면 활동을 기록할 수 있어요")
                 .plobbyFont(.metric)
                 .foregroundStyle(Color(.textPrimary))
                 .padding(.horizontal, 24.scaled)
@@ -55,7 +55,7 @@ private extension LoginRequiredSheet {
     
     var message: some View {
         VStack(spacing: 0) {
-            Text("로그인 후 다른 사람들의 기록 보기, 알림을 볼 수 있어요.")
+            Text("다른 사람의 활동 기록과 내 알림도 볼 수 있어요")
                 .plobbyFont(.label)
                 .foregroundStyle(Color(.textSecondary))
                 .multilineTextAlignment(.leading)

@@ -19,7 +19,7 @@ struct GoalListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            PlobbyNavigationBar(title: "공통 목표") {
+            PlobbyNavigationBar(title: "공동 목표") {
                 store.send(.backButtonTapped)
             }
 
@@ -69,7 +69,7 @@ private extension GoalListView {
             Image(systemName: "info.circle")
                 .font(.system(size: 16.scaled, weight: .medium))
 
-            Text("플로깅과 플로빙의 수거 개수를 합쳐요")
+            Text("플로깅과 플로빙에서 주운 쓰레기가 모여\n'공동 목표'가 돼요")
                 .plobbyFont(.label)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }

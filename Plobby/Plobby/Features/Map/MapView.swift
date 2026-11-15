@@ -155,7 +155,7 @@ private extension MapView {
                     .font(.system(size: 17.scaled, weight: .medium))
                     .foregroundStyle(Color(.textSecondary))
             } content: {
-                Text(SearchBarPlaceholder.beachOrResort)
+                Text("해변·해수욕장 이름으로 검색")
             }
             .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
         }

@@ -93,7 +93,7 @@ private extension HomeParticipantsSheet {
                         .plobbyFont(.actionLabel)
                         .foregroundStyle(Color(.textPrimary))
 
-                    Text("플로깅, 플로빙 합산")
+                    Text("플로깅, 플로빙 합계")
                         .plobbyFont(.label)
                         .foregroundStyle(Color(.textSecondary))
                 }
