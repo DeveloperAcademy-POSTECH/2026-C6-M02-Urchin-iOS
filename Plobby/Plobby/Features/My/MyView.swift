@@ -83,7 +83,6 @@ private extension MyView {
     static let iconSize: CGFloat = 19.scaled
     static let iconFrameSize: CGFloat = 24.scaled
 
-    /// 빨간 점 중심이 종 아이콘(24×24) 오른쪽 위 곡선의 45도 지점(약 16.4, 5)에 오도록 옮기는 값이에요.
     static let unreadDotInset = CGSize(width: CGFloat(4.5).scaled, height: 2.scaled)
 
     var settingsButton: PlobbyNavigationBarConfiguration.TrailingButton {
@@ -291,7 +290,6 @@ extension MyView {
 
 extension MyView {
 
-    /// 관심 해변을 해제하거나 되돌릴 때 카드가 천천히 빠지고 돌아오게 해요.
     private static let favoriteBeachAnimation: Animation = .easeInOut(duration: 0.5)
 
     private var favoriteBeachSection: some View {
@@ -341,7 +339,6 @@ extension MyView {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .disabled(store.isFavoriteBeachLimitReached)
         .accessibilityLabel("관심 해변 추가")
     }
 

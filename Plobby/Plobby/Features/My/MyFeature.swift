@@ -38,7 +38,6 @@ struct MyFeature {
             loadedRecords ?? []
         }
 
-        /// 처음 들어와 기록을 아직 한 번도 받지 못한 상태예요. 다시 들어올 때는 지난번 기록을 먼저 보여줘서 `false`예요.
         var isLoadingRecords: Bool {
             isMember && loadedRecords == nil
         }
@@ -107,7 +106,6 @@ struct MyFeature {
         enum Delegate {
             case loginRequired
             case signedOut
-            /// 목표 달성 알림을 눌러 홈으로 돌아가요.
             case homeRequested
         }
     }
@@ -176,6 +174,7 @@ struct MyFeature {
 
             case .favoriteBeachAddButtonTapped:
                 guard state.isMember else { return .send(.delegate(.loginRequired)) }
+                guard !state.isFavoriteBeachLimitReached else { return .send(.toast(.show(.favoriteBeachLimitReached))) }
 
                 state.favoriteBeachAdd = FavoriteBeachAddFeature.State()
                 return .none
