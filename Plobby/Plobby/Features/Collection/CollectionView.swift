@@ -301,13 +301,29 @@ private extension CollectionView {
 // MARK: - CardShareItemSource
 
 /// 공유 시트 헤더에 앱 아이콘과 앱 이름을 표시하기 위한 공유 아이템
-private final class CardShareItemSource: NSObject, UIActivityItemSource {
+private final class CardShareItemSource: NSObject {
 
     private let image: UIImage
 
     init(image: UIImage) {
         self.image = image
     }
+
+    private var appIcon: UIImage? {
+        guard
+            let icons = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any],
+            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
+            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
+            let iconName = iconFiles.last
+        else { return nil }
+
+        return UIImage(named: iconName)
+    }
+}
+
+// MARK: - UIActivityItemSource
+
+extension CardShareItemSource: UIActivityItemSource {
 
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
         image
@@ -328,16 +344,5 @@ private final class CardShareItemSource: NSObject, UIActivityItemSource {
             metadata.iconProvider = NSItemProvider(object: appIcon)
         }
         return metadata
-    }
-
-    private var appIcon: UIImage? {
-        guard
-            let icons = Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons") as? [String: Any],
-            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
-            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
-            let iconName = iconFiles.last
-        else { return nil }
-
-        return UIImage(named: iconName)
     }
 }
