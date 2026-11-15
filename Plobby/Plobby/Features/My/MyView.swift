@@ -176,7 +176,7 @@ extension MyView {
                     .resizable()
                     .scaledToFill()
             } else {
-                AsyncImage(url: store.profile?.profileImageURL) { image in
+                CachedImage(url: store.profile?.profileImageURL) { image in
                     image
                         .resizable()
                         .scaledToFill()

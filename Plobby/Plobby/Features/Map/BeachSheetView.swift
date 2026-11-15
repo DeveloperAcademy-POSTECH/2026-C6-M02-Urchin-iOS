@@ -210,7 +210,7 @@ private extension BeachSheetView {
                         Button {
                             store.send(.photoTapped(recordID: photo.recordID))
                         } label: {
-                            AsyncImage(url: photo.url) { image in
+                            CachedImage(url: photo.url) { image in
                                 image
                                     .resizable()
                                     .scaledToFill()

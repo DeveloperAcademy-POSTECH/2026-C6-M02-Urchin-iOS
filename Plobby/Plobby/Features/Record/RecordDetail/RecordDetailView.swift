@@ -167,7 +167,7 @@ private extension RecordDetailView {
     }
 
     func profileImage(_ url: URL?) -> some View {
-        AsyncImage(url: url) { image in
+        CachedImage(url: url) { image in
             image
                 .resizable()
                 .scaledToFill()
@@ -547,7 +547,7 @@ private struct ZoomablePhoto: View {
 
     var body: some View {
         GeometryReader { proxy in
-            AsyncImage(url: url) { image in
+            CachedImage(url: url) { image in
                 image
                     .resizable()
                     .scaledToFit()

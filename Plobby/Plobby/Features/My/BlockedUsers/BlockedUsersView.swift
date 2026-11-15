@@ -81,7 +81,7 @@ extension BlockedUsersView {
     }
 
     private func profileImage(_ url: URL?) -> some View {
-        AsyncImage(url: url) { image in
+        CachedImage(url: url) { image in
             image
                 .resizable()
                 .scaledToFill()

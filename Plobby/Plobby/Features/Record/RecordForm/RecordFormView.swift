@@ -292,7 +292,7 @@ private extension RecordFormView {
             PhotoThumbnailView(assetID: asset.id, size: size)
             
         case let .remote(_, url):
-            AsyncImage(url: url) { image in
+            CachedImage(url: url) { image in
                 image
                     .resizable()
                     .scaledToFill()

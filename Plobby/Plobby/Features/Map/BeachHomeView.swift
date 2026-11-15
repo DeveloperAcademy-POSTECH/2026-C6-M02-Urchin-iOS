@@ -398,7 +398,7 @@ private struct ProfileAvatar: View {
     let size: CGFloat
 
     var body: some View {
-        AsyncImage(url: url) { image in
+        CachedImage(url: url) { image in
             image
                 .resizable()
                 .scaledToFill()
