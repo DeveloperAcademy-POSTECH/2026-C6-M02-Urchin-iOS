@@ -9,15 +9,12 @@ import SwiftUI
 
 import ComposableArchitecture
 
-/// "닉네임" 제목, 입력창 안의 중복 확인 버튼, 아래 안내 문구예요.
-/// 알림창은 화면 전체를 덮어야 해서, 쓰는 화면에서 `store.alert`로 띄워요.
 struct NicknameCheckView: View {
 
     // MARK: - Properties
 
     @Bindable var store: StoreOf<NicknameCheckFeature>
     var isFocused: FocusState<Bool>.Binding
-    /// 확인을 마쳤을 때 "사용 가능한 닉네임이에요"를 보여줄지예요.
     var showsAvailableMessage = false
 
     // MARK: - Body
@@ -71,8 +68,6 @@ extension NicknameCheckView {
         }
     }
 
-    /// 확인을 마치면 회색 배경에 초록 "확인 완료"로 바뀌고, 확인할 수 없을 때는 흐리게 보여줘요.
-    /// `.disabled`는 글자를 자동으로 흐리게 해서, 색은 직접 정하고 터치만 막아요.
     private var checkButton: some View {
         Button {
             store.send(.checkButtonTapped)
@@ -101,7 +96,7 @@ extension NicknameCheckView {
             return ("한글, 영문, 숫자로 \(Nickname.minimumLength)~\(Nickname.maximumLength)자 입력해주세요.", true)
         }
         if store.isAvailable == false {
-            return ("이미 사용 중인 닉네임이에요. 다른 닉네임을 입력해 주세요", true)
+            return ("이미 사용 중인 닉네임이에요. 다른 닉네임을 입력해 주세요.", true)
         }
         if store.isChecked && showsAvailableMessage {
             return ("사용 가능한 닉네임이에요", false)

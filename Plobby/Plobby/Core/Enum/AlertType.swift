@@ -51,7 +51,7 @@ extension AlertType {
         case .userBlockConfirm: "이 사용자를 차단할까요?"
         case .profileUpdateFailed: "프로필을 저장하지 못했어요"
         case .recordExitConfirm: "기록 작성을 그만할까요?"
-        case .logoutConfirm: "로그아웃하시겠습니까?"
+        case .logoutConfirm: "로그아웃할까요?"
         case .logoutFailed: "로그아웃하지 못했어요"
         case .withdrawalConfirm: "plobby에서 탈퇴하시겠어요?"
         case .withdrawalCompleted: "plobby 탈퇴가 완료됐어요"

@@ -73,11 +73,11 @@ extension NotificationView {
     private var emptyView: some View {
         VStack(spacing: 16.scaled) {
             VStack(spacing: 12.scaled) {
-                Text("새로운 알림이 없습니다")
+                Text("아직 새로운 알림이 없어요")
                     .plobbyFont(.cardTitle)
                     .foregroundStyle(Color(.textPrimary))
 
-                Text("내 기록에 받은 좋아요와 관심 바다의 새 기록을\n여기서 알려드려요. 알림 설정을 켜보세요")
+                Text("알림을 켜고 내 기록의 좋아요와\n관심 해변의 새로운 활동을 바로 받아보세요")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.textTertiary))
                     .multilineTextAlignment(.center)
