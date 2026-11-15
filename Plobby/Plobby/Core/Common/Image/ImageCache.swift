@@ -18,6 +18,10 @@ nonisolated final class ImageCache: @unchecked Sendable {
 
     private let images = NSCache<NSURL, UIImage>()
 
+    /// 받는 중인 사진이에요. 같은 주소를 또 요청하면 새로 받지 않고 이 작업을 함께 기다려요.
+    private var downloads: [URL: Task<UIImage?, Never>] = [:]
+    private let lock = NSLock()
+
     private init() {
         images.totalCostLimit = 100 * 1024 * 1024
     }
@@ -28,12 +32,29 @@ nonisolated final class ImageCache: @unchecked Sendable {
         images.object(forKey: url as NSURL)
     }
 
-    /// 사진을 받아 화면에 바로 그릴 수 있게 풀어 둔 뒤 캐시에 넣어요. 메인 스레드를 막지 않게 백그라운드에서 실행해요.
+    /// 캐시에 없으면 사진을 받아서 캐시에 넣고 돌려줘요.
     ///
-    /// - Note: 같은 주소를 동시에 요청하면 두 번 받아요. 목록 사진을 다 받기 전에 상세를 여는 일이 잦아지면, 진행 중인 요청을 공유하도록 바꿔 주세요.
-    @concurrent
+    /// 다운로드는 화면과 상관없이 끝까지 진행해요. 느린 네트워크에서 다 받기 전에 화면을 나가도 취소되지 않아서,
+    /// 다음에 들어오면 그사이 받아 둔 사진을 바로 써요.
     func load(_ url: URL) async -> UIImage? {
         if let cached = image(for: url) { return cached }
+
+        let download = lock.withLock {
+            if let download = downloads[url] { return download }
+
+            let download = Task.detached(priority: .userInitiated) { [self] in
+                await fetchImage(from: url)
+            }
+            downloads[url] = download
+            return download
+        }
+
+        return await download.value
+    }
+
+    /// 사진을 받아 화면에 바로 그릴 수 있게 풀어 둔 뒤 캐시에 넣어요. 메인 스레드 밖에서 실행돼요.
+    private func fetchImage(from url: URL) async -> UIImage? {
+        defer { lock.withLock { downloads[url] = nil } }
 
         guard
             let data = try? await URLSession.shared.data(from: url).0,
