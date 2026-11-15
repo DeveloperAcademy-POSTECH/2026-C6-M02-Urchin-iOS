@@ -305,7 +305,7 @@ private extension TrashPickerView {
                 
                 Spacer()
                 
-                Text(store.selection.isEmpty ? "없음" : "총 \(store.selection.totalCount)개")
+                Text(store.selection.isEmpty ? "아직 선택한 종류가 없어요" : "총 \(store.selection.totalCount)개")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.textPrimary))
             }

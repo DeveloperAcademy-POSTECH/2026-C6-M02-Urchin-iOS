@@ -137,7 +137,7 @@ private extension PhotosPickerView {
     var guideBanner: some View {
         switch store.authorization {
         case .notDetermined:
-            banner(message: "기록을 저장하려면 사진이 필요해요.")
+            banner(message: "기록을 저장하려면 사진을 추가해 주세요")
 
         case .limited:
             banner(message: "전체 접근을 허용하면\n모든 사진을 고를 수 있어요.") {
@@ -145,7 +145,7 @@ private extension PhotosPickerView {
             }
 
         case .authorized where store.purpose != .profile:
-            banner(message: "최대 \(PhotoSelection.maxCount)장까지 추가할 수 있어요")
+            banner(message: "사진은 \(PhotoSelection.maxCount)장까지 추가할 수 있어요")
 
         case .authorized, .denied:
             EmptyView()

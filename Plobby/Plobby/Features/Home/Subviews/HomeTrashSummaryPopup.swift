@@ -68,7 +68,7 @@ struct HomeTrashSummaryPopup: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 8.scaled)
 
-            // 이름과 개수 사이는 이름이 길 때만 드러나서, "낚시·어업용품"처럼 긴 이름이 들어가도록 좁게 둬요
+            // 이름과 개수 사이는 이름이 길 때만 드러나서, "낚시·어업 용품"처럼 긴 이름이 들어가도록 좁게 둬요
             Text("\(item.collectedCount)개")
                 .plobbyFont(.labelSelected)
                 .foregroundStyle(Color(.textPrimary))

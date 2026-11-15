@@ -366,18 +366,18 @@ private extension RecordDetailView {
             trashCard(items: summary.items) {
                 if let weight = summary.weight {
                     HStack(spacing: 24.scaled) {
-                        metric("총개수", value: "\(summary.totalCount)개")
+                        metric("총 개수", value: "\(summary.totalCount)개")
 
                         Rectangle()
                             .fill(Color(.gray200))
                             .frame(width: 1, height: 44.scaled)
 
-                        metric("총무게", value: "\(Self.decimalText(weight))kg")
+                        metric("총 무게", value: "\(Self.decimalText(weight))kg")
                     }
                     .padding(16.scaled)
                     .frame(height: 86.scaled)
                 } else {
-                    metricRow("총개수", value: "\(summary.totalCount)개")
+                    metricRow("총 개수", value: "\(summary.totalCount)개")
                 }
             }
         }

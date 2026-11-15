@@ -50,7 +50,7 @@ extension AlertType {
         case .recordDeleteFailed: "기록을 삭제하지 못했어요"
         case .userBlockConfirm: "이 사용자를 차단할까요?"
         case .profileUpdateFailed: "프로필을 저장하지 못했어요"
-        case .recordExitConfirm: "작성 중인 글을 나가시겠습니까?"
+        case .recordExitConfirm: "기록 작성을 그만할까요?"
         case .logoutConfirm: "로그아웃하시겠습니까?"
         case .logoutFailed: "로그아웃하지 못했어요"
         case .withdrawalConfirm: "plobby에서 탈퇴하시겠어요?"
@@ -75,7 +75,7 @@ extension AlertType {
         case .recordDeleted, .logoutConfirm: nil
         case .withdrawalCompleted: "그동안 함께 바다를 지켜주셔서 고마워요.\n언제든 다시 찾아와 주세요."
         case .userBlockConfirm: "차단하면 이 사용자의 기록이 더 이상 보이지 않아요."
-        case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요."
+        case .recordExitConfirm: "지금 나가면 작성한 내용은 저장되지 않아요"
         case .withdrawalConfirm: "탈퇴하면 게시글, 좋아요 등 모든 활동 기록이 삭제돼요. 삭제된 기록은 복구할 수 없어요."
         case .favoriteBeachLimit: "관심 해변은 최대 \(Beach.maximumFavoriteCount)개까지 등록할 수 있어요."
         case .userBlocked: "차단한 사용자의 기록은 더 이상 보이지 않아요."

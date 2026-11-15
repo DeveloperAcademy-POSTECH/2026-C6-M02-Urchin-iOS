@@ -193,7 +193,7 @@ private extension RecordFormView {
             VStack(alignment: .leading, spacing: 0) {
                 sectionTitle("사진 *")
 
-                Text("사진을 \(maxPhotoCount)장까지 추가할 수 있어요")
+                Text("사진은 \(maxPhotoCount)장까지 추가할 수 있어요")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.textSecondary))
             }
@@ -272,7 +272,7 @@ private extension RecordFormView {
     @ViewBuilder
     func representativeLabel(isRepresentative: Bool) -> some View {
         if isRepresentative {
-            Text("대표사진")
+            Text("대표 사진")
                 .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 11.scaled))
                 .foregroundStyle(Color(.gray0))
                 .frame(maxWidth: .infinity)
@@ -367,7 +367,7 @@ private extension RecordFormView {
                         .foregroundStyle(Color(.textSecondary))
                         .frame(width: 24.scaled, height: 24.scaled)
 
-                    Text(store.beach?.name ?? "장소 선택")
+                    Text(store.beach?.name ?? "활동 장소 선택")
                         .plobbyFont(.body)
                         .foregroundStyle(store.beach == nil ? Color(.textSecondary) : Color(.textPrimary))
 
@@ -386,7 +386,7 @@ private extension RecordFormView {
             .buttonStyle(.plain)
 
             if store.isLocationErrorVisible {
-                errorText("활동한 해변을 선택해 주세요.")
+                errorText("활동한 해변을 선택해 주세요")
                     .padding(.top, -8.scaled)
             }
         }
@@ -513,7 +513,7 @@ private extension RecordFormView {
             }
 
             if store.isTrashErrorVisible {
-                errorText("주운 쓰레기를 선택해 주세요.")
+                errorText("주운 쓰레기를 선택해 주세요")
                     .padding(.top, -12.scaled)
             } else if let error = store.totalWeightError {
                 errorText(error)
@@ -546,7 +546,7 @@ private extension RecordFormView {
 
     var totalWeightRow: some View {
         HStack(spacing: 8.scaled) {
-            optionalTitle("총무게")
+            optionalTitle("총 무게")
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             unitInputBox("예: 30", text: $store.totalWeightText, unit: "kg")
@@ -693,7 +693,7 @@ private extension RecordFormView {
         text: Binding<String>,
         unit: String
     ) -> some View {
-        HStack(spacing: 8.scaled) {
+        HStack(spacing: 2.scaled) {
             TextField(
                 "",
                 text: text,

@@ -22,7 +22,7 @@ struct HomeActivityPicker: View {
                 .accessibilityAddTraits(.isButton)
 
             VStack(alignment: .leading, spacing: 8.scaled) {
-                Text("기록할 활동을 골라주세요")
+                Text("기록할 활동을 골라 주세요")
                     .plobbyFont(.heading)
                     .foregroundStyle(Color(.textPrimary))
                     .padding(.bottom, 4.scaled)

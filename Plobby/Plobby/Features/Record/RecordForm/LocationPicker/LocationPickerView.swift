@@ -25,7 +25,7 @@ struct LocationPickerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            PlobbyNavigationBar(title: "활동 위치 선택") {
+            PlobbyNavigationBar(title: "활동 장소 선택") {
                 store.send(.backTapped)
             }
 
@@ -114,11 +114,11 @@ private extension LocationPickerView {
 
     var searchGuide: some View {
         VStack(alignment: .leading, spacing: 16.scaled) {
-            Text("이렇게 검색해보세요")
+            Text("이렇게 검색해 보세요")
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
 
-            guideItem(title: "해변, 해수욕장 이름", example: "예: 함덕해수욕장, 협재해수욕장")
+            guideItem(title: "해변 이름", example: "예: 함덕해수욕장, 협재해수욕장")
             guideItem(title: "지역 + 장소 이름", example: "예: 제주 함덕해변, 부산 송정해변")
             guideItem(title: "주변 항구나 명소", example: "예: 함덕항, 서우봉")
         }
@@ -268,11 +268,11 @@ private extension LocationPickerView {
         VStack(alignment: .leading, spacing: 24.scaled) {
             VStack(alignment: .leading, spacing: 16.scaled) {
                 VStack(alignment: .leading, spacing: 8.scaled) {
-                    Text("활동한 해변을 선택해주세요")
+                    Text("활동한 해변을 선택해 주세요")
                         .plobbyFont(.heading)
                         .foregroundStyle(Color(.textPrimary))
 
-                    Text("지도를 움직여 활동한 위치를 맞춰주세요")
+                    Text("지도를 움직여 핀을 활동한 곳에 맞춰 주세요")
                         .plobbyFont(.label)
                         .foregroundStyle(Color(.textSecondary))
                 }
@@ -329,7 +329,7 @@ private extension LocationPickerView {
                     .plobbyFont(.notification)
                     .foregroundStyle(Color(.textPrimary))
 
-                Text("핀을 해변 가까이로 옮겨주세요")
+                Text("핀을 해변 가까이 옮겨 주세요")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.textSecondary))
             }
