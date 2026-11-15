@@ -42,8 +42,8 @@ extension TrashCategory {
     func collectionFact(count: Int, nickname: String?) -> CollectionFact {
         guard count > 0 else {
             return CollectionFact(
-                title: "아직 모은\n\(name) 쓰레기가 없어요",
-                description: "바다에서 \(name) 쓰레기를 주우면\n지켜낸 바다 생물 이야기를 볼 수 있어요.",
+                title: "아직 주운 \(name)\(name.subjectParticle) 없어요",
+                description: "\(name)\(name.objectParticle) 줍고 기록을 남기면\n바다 생물 이야기를 볼 수 있어요",
                 source: ""
             )
         }
