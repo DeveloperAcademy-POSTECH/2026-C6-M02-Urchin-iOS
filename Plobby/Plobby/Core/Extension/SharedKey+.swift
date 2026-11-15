@@ -55,6 +55,12 @@ extension SharedKey where Self == InMemoryKey<[Beach]>.Default {
     static var favoriteBeaches: Self { Self[.inMemory("favoriteBeaches"), default: []] }
 }
 
+extension SharedKey where Self == InMemoryKey<[HomeGoalBoard]>.Default {
+
+    /// 스플래시 뷰 중에 미리 로드한 홈 공동 목표 캐시. 앱이 닫히면 초기화돼요.
+    static var homeBoardsCache: Self { Self[.inMemory("homeBoardsCache"), default: []] }
+}
+
 extension SharedKey where Self == FileStorageKey<[Beach]>.Default {
 
     /// 지도 탭에서 최근 고른 해변. 최신순이에요.
@@ -72,7 +78,7 @@ extension SharedKey where Self == FileStorageKey<[Beach]>.Default {
 
 extension SharedKey where Self == FileStorageKey<Set<String>>.Default {
 
-    /// 이 기기에서 "다음 목표 보기"를 눌러 넘긴 공통 목표예요. 값은 `Goal.dismissalKey`예요.
+    /// 이 기기에서 "다음 목표 보기"를 눌러 넘긴 공동 목표예요. 값은 `Goal.dismissalKey`예요.
     /// 넘긴 목표는 축하(또는 아쉬움) 이모지를 다시 띄우지 않고, 다음 목표가 있으면 홈에서 건너뛰어요.
     static var dismissedGoalKeys: Self {
         Self[.fileStorage(.applicationSupportDirectory.appending(component: "dismissed-goals.json")), default: []]
