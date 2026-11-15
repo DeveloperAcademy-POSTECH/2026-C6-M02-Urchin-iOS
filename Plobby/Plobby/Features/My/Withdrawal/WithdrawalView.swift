@@ -37,6 +37,8 @@ struct WithdrawalView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
                 .padding(.bottom, 24)
+                // 탈퇴를 처리하는 동안에는 사유와 의견을 바꿔도 반영되지 않아서 막아 둬요.
+                .allowsHitTesting(!store.isWithdrawing)
             }
             .scrollDismissesKeyboard(.interactively)
 
@@ -140,7 +142,8 @@ extension WithdrawalView {
     }
 
     private var withdrawButton: some View {
-        PlobbyButton(text: "탈퇴하기") {
+        PlobbyButton(text: "탈퇴하기", isLoading: store.isWithdrawing) {
+            isDetailFocused = false
             store.send(.withdrawButtonTapped)
         }
         .disabled(!store.canWithdraw)
