@@ -168,7 +168,7 @@ extension RecordListSection {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .padding(.trailing, onMoreTapped == nil ? 0 : RecordMoreButton.width.scaled)
 
-            AsyncImage(url: record.coverPhotoURL) { image in
+            CachedImage(url: record.coverPhotoURL) { image in
                 image
                     .resizable()
                     .scaledToFill()

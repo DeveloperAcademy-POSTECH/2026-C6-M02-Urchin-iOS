@@ -238,7 +238,7 @@ private extension BeachHomeView {
             store.send(.recordTapped(record))
         } label: {
             HStack(alignment: .top, spacing: 16) {
-                AsyncImage(url: record.coverPhotoURL) { image in
+                CachedImage(url: record.coverPhotoURL) { image in
                     image
                         .resizable()
                         .scaledToFill()

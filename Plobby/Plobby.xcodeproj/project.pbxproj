@@ -258,6 +258,8 @@
 		ECE6F2D93098338400C4916C /* SupabaseClientKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28C3098338400C4916C /* SupabaseClientKey.swift */; };
 		ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28F3098338400C4916C /* PlobbyLogger.swift */; };
 		ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */; };
+		7B3C1A9BA1B2C3D4E5F60001 /* CachedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */; };
+		7B3C1A9DA1B2C3D4E5F60001 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */; };
 		ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2923098338400C4916C /* PlobbyButton.swift */; };
 		ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2943098338400C4916C /* AlertType.swift */; };
 		ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2953098338400C4916C /* Secrets.swift */; };
@@ -573,6 +575,8 @@
 		ECE6F28C3098338400C4916C /* SupabaseClientKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClientKey.swift; sourceTree = "<group>"; };
 		ECE6F28F3098338400C4916C /* PlobbyLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyLogger.swift; sourceTree = "<group>"; };
 		ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageCompressor.swift; sourceTree = "<group>"; };
+		7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImage.swift; sourceTree = "<group>"; };
+		7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		ECE6F2923098338400C4916C /* PlobbyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyButton.swift; sourceTree = "<group>"; };
 		ECE6F2943098338400C4916C /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		ECE6F2953098338400C4916C /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
@@ -1461,8 +1465,18 @@
 			children = (
 				ECE6F28F3098338400C4916C /* PlobbyLogger.swift */,
 				ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */,
+				7B3C1A9EA1B2C3D4E5F60001 /* Image */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		7B3C1A9EA1B2C3D4E5F60001 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */,
+				7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		ECE6F2933098338400C4916C /* DesignSystem */ = {
@@ -2086,6 +2100,8 @@
 				DA5B10E430998932003FEDF9 /* MyFeature.swift in Sources */,
 				ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */,
 				ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */,
+				7B3C1A9BA1B2C3D4E5F60001 /* CachedImage.swift in Sources */,
+				7B3C1A9DA1B2C3D4E5F60001 /* ImageCache.swift in Sources */,
 				DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */,
 				DAEC9A04309C5A0000AA0001 /* RecordPhoto.swift in Sources */,
 				DA5B0FE13099A001003FEDF9 /* RecordType.swift in Sources */,

@@ -200,7 +200,7 @@ private extension RecordDetailView {
             } else {
                 TabView(selection: $store.currentPhotoIndex.sending(\.photoPageChanged)) {
                     ForEach(Array(photos.enumerated()), id: \.offset) { index, photo in
-                        AsyncImage(url: photo.url) { image in
+                        CachedImage(url: photo.url) { image in
                             image
                                 .resizable()
                                 .scaledToFill()
