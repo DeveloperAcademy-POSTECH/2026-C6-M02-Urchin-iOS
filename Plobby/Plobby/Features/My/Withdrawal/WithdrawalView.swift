@@ -22,7 +22,7 @@ struct WithdrawalView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             PlobbyNavigationBar(
-                title: "회원 탈퇴",
+                title: "plobby 탈퇴",
                 style: .leading,
                 isBackEnabled: !store.isWithdrawing
             ) {
@@ -59,7 +59,7 @@ extension WithdrawalView {
 
     private var reasonSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sectionTitle("탈퇴하는 이유가 궁금해요")
+            sectionTitle("어떤 점이 가장 아쉬우셨나요?")
 
             VStack(alignment: .leading, spacing: 12) {
                 ForEach(WithdrawalReason.allCases, id: \.self) {
@@ -133,7 +133,7 @@ extension WithdrawalView {
     }
 
     private var detailPlaceholder: some View {
-        Text("서비스 탈퇴 사유를 알려주세요.\n소중한 피드백을 담아 더 나은 서비스로\n보답드리도록 하겠습니다.")
+        Text("아쉬웠던 점을 자유롭게 남겨주세요.\n남겨주신 의견을 참고해서 더 나은 plobby를 만들게요.")
             .plobbyFont(.label)
             .foregroundStyle(Color(.textDisabled))
             .allowsHitTesting(false)

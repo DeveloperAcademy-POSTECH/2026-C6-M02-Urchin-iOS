@@ -16,10 +16,10 @@ nonisolated enum WithdrawalReason: CaseIterable, Sendable {
     var title: String {
         switch self {
         case .noLongerActive: "플로깅·플로빙 활동을 더 이상 하지 않아요"
-        case .hardToRecord: "활동을 기록하는 과정이 번거로워요"
-        case .unmetExpectation: "기록을 통해 얻는 가치가 기대와 달라요"
-        case .lackOfMapInfo: "지도에서 보고 싶은 정보가 부족해요"
-        case .slowOrBuggy: "앱이 느리거나 오류가 있어요"
+        case .hardToRecord: "활동을 기록하기가 번거로워요"
+        case .unmetExpectation: "기록 기능이 기대했던 것과 달라요"
+        case .lackOfMapInfo: "지도에서 원하는 정보를 찾기 어려워요"
+        case .slowOrBuggy: "앱이 느리거나 오류가 잦아요"
         }
     }
 }
