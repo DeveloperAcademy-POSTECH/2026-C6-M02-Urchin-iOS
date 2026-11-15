@@ -32,12 +32,14 @@ struct HomeSceneCanvas<Content: View>: View {
     }
 }
 
+/// 장면 이미지의 맨 위(또는 맨 아래) 한 줄을 늘려서, 이미지 바깥 빈 곳을 같은 색으로 채워요.
 struct HomeSceneBackdrop: View {
 
     let image: ImageResource
+    var edge: VerticalEdge = .top
 
     var body: some View {
-        if let strip = Self.topStrip(of: image) {
+        if let strip = Self.strip(of: image, at: edge) {
             Image(uiImage: strip)
                 .resizable()
         } else {
@@ -45,11 +47,12 @@ struct HomeSceneBackdrop: View {
         }
     }
 
-    private static func topStrip(of resource: ImageResource) -> UIImage? {
+    private static func strip(of resource: ImageResource, at edge: VerticalEdge) -> UIImage? {
         let image = UIImage(resource: resource)
-        guard let cgImage = image.cgImage,
-              let row = cgImage.cropping(to: CGRect(x: 0, y: 0, width: cgImage.width, height: 1))
-        else { return nil }
+        guard let cgImage = image.cgImage else { return nil }
+
+        let y = edge == .top ? 0 : cgImage.height - 1
+        guard let row = cgImage.cropping(to: CGRect(x: 0, y: y, width: cgImage.width, height: 1)) else { return nil }
 
         return UIImage(cgImage: row, scale: image.scale, orientation: image.imageOrientation)
     }

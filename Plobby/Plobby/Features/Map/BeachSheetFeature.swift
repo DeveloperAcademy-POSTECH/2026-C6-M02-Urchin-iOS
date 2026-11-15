@@ -45,6 +45,7 @@ struct BeachSheetFeature {
         case favoriteResponse(Result<Void, any Error>, beach: Beach, isFavorite: Bool)
         case closeTapped
         case homeTapped
+        case photoTapped(recordID: UUID)
         case recordStartTapped
         case activityPicked(RecordType)
         case activityPickerDismissed
@@ -56,6 +57,7 @@ struct BeachSheetFeature {
         enum Delegate: Equatable {
             case closed
             case homeTapped(Beach)
+            case recordSelected(UUID)
             case recordStartTapped(Beach, RecordType)
             case loginRequired
             case favoriteChanged(isFavorite: Bool)
@@ -126,6 +128,11 @@ struct BeachSheetFeature {
 
             case .homeTapped:
                 return .send(.delegate(.homeTapped(state.beach)))
+
+            case let .photoTapped(recordID):
+                guard state.isMember else { return .send(.delegate(.loginRequired)) }
+
+                return .send(.delegate(.recordSelected(recordID)))
 
             case .recordStartTapped:
                 guard state.isMember else { return .send(.delegate(.loginRequired)) }

@@ -115,7 +115,7 @@ private extension HomeView {
                         walkProgress: store.walkProgress
                     )
                 }
-                .transition(.move(edge: .leading))
+                .transition(.move(edge: .trailing))
             case .plobbing:
                 sceneLayer(backdrop: .homeSceneSky) {
                     PlobbingSceneView(
@@ -125,7 +125,7 @@ private extension HomeView {
                         walkProgress: store.walkProgress
                     )
                 }
-                .transition(.move(edge: .trailing))
+                .transition(.move(edge: .leading))
             }
 
             if store.isCelebrationVisible, let status = store.status {
@@ -316,7 +316,7 @@ private extension HomeView {
 
 private extension HomeView {
     
-    static let tabs: [RecordType] = [.plogging, .plobbing]
+    static let tabs: [RecordType] = [.plobbing, .plogging]
     static let tabSwipeThreshold: CGFloat = 60
     
     static var noAnimation: Transaction {

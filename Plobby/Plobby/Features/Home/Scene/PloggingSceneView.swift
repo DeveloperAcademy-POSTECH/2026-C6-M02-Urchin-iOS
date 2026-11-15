@@ -60,6 +60,10 @@ private extension PloggingSceneView {
 
     var beach: some View {
         ZStack(alignment: .topLeading) {
+            // 마지막 날·수거대 장면에서는 카메라가 해변 이미지 끝보다 더 내려가서, 아래에 빈 곳이 생기지 않게 모래를 이어 붙여요.
+            HomeSceneBackdrop(image: .homeSceneBeach, edge: .bottom)
+                .floatingButtonShadow(Metrics.bottomExtension)
+
             Image(.homeSceneBeach)
                 .resizable()
                 .floatingButtonShadow(Metrics.background)
@@ -274,6 +278,7 @@ private extension PloggingSceneView {
         }
 
         static let background = CGRect(x: 0, y: 0, width: 402, height: 1200)
+        static let bottomExtension = CGRect(x: 0, y: background.maxY, width: background.width, height: 600)
 
         static let humans: [Human] = [
             Human(image: .homeHuman01, rect: CGRect(x: 206, y: 112, width: 37, height: 64)),
