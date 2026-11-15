@@ -195,7 +195,7 @@ private extension BeachHomeView {
                 .padding(.vertical, 40)
 
         case .empty:
-            message("아직 활동 기록이 없어요")
+            message(store.filter == .all ? "아직 활동 기록이 없어요" : "선택한 활동의 기록이 아직 없어요")
 
         case .failed:
             message("기록을 불러오지 못했어요")
@@ -381,7 +381,6 @@ private extension BeachHomeView {
         }
     }
 
-    /// 차단한 회원은 홈의 함께한 사람처럼 프로필 사진 대신 차단 표시를 보여줘요.
     var blockedAvatar: some View {
         Image(systemName: "nosign")
             .font(.system(size: 12, weight: .medium))

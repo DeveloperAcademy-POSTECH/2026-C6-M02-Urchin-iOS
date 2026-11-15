@@ -123,7 +123,7 @@ private extension BeachSheetView {
     var stats: some View {
         let text: String = switch store.content {
         case .loading, .empty: ""
-        case let .received(summary): "정화활동 \(summary.recordCount)회 • 참여자 \(summary.participantCount)명"
+        case let .received(summary): "정화 활동 \(summary.recordCount)회 · 참여자 \(summary.participantCount)명"
         case .failed: "정보를 불러오지 못했어요"
         }
 
@@ -134,14 +134,9 @@ private extension BeachSheetView {
 
     var emptyContent: some View {
         VStack(spacing: 8) {
-            Text("활동 기록을 등록해보세요")
+            Text("이 해변에는 아직 활동 기록이 없어요")
                 .plobbyFont(.cardTitle)
                 .foregroundStyle(Color(.textPrimary))
-
-            Text("해당 바다에 아직 기록이 없어요.\n첫 플로거가 되어주세요.")
-                .plobbyFont(.notification)
-                .foregroundStyle(Color(.textTertiary))
-                .multilineTextAlignment(.center)
 
             Button {
                 store.send(.recordStartTapped, transaction: store.isMember ? Self.noAnimation : Transaction())
@@ -150,7 +145,7 @@ private extension BeachSheetView {
                     Image(systemName: "doc.text.fill")
                         .font(.system(size: 15))
 
-                    Text("활동 기록하기")
+                    Text("기록하기")
                         .plobbyFont(.actionLabel)
                 }
                 .foregroundStyle(Color(.green600))
@@ -178,7 +173,6 @@ private extension BeachSheetView {
         }
     }
 
-    /// "기록 보기"와 "기록하기"가 함께 쓰는 초록 버튼이에요. 아이콘과 문구만 달라요.
     func actionButton(systemName: String, title: String, action: @escaping () -> Void) -> some View {
         Button {
             action()
