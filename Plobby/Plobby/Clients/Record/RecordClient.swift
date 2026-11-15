@@ -83,9 +83,9 @@ nonisolated extension RecordClient: DependencyKey {
             }, fetchUserRecords: { userID in
                 @Dependency(\.supabaseClient) var supabaseClient
 
-                async let currentUserIDTask = supabaseClient.currentUserIDIfSignedIn()
-                async let hiddenRecordsTask = supabaseClient.hiddenRecords()
-                let (currentUserID, hiddenRecords) = try await (currentUserIDTask, hiddenRecordsTask)
+                let currentUserID = try await supabaseClient.currentUserIDIfSignedIn()
+                // 내 기록에는 차단한 사용자의 기록이 섞일 수 없어서, 차단 목록을 기다리지 않고 바로 요청해요.
+                let hiddenRecords = userID == currentUserID ? HiddenRecords() : try await supabaseClient.hiddenRecords()
 
                 var query = supabaseClient
                     .from("records")
