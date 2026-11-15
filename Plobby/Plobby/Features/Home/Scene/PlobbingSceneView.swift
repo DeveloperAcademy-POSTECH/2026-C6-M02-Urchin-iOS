@@ -170,7 +170,7 @@ private extension PlobbingSceneView {
         let arrival = Metrics.arrivalOffset(day, lastDay: lastDay)
         let net = Metrics.netRect(for: collector(for: item, day: day)).offsetBy(dx: Metrics.diverGroup.minX, dy: Metrics.diverGroup.minY)
         let rect = phase.isAtCollector
-            ? item.rect.homeSceneShrunk(to: 0.25, center: CGPoint(x: net.midX, y: net.midY + Metrics.collectDive))
+            ? item.rect.homeSceneShrunk(to: Metrics.eatenScale, center: CGPoint(x: net.midX, y: net.midY + Metrics.collectDive))
             : item.rect
 
         return Image(item.image)
@@ -304,27 +304,28 @@ private extension PlobbingSceneView {
         static let swimUpOffset = CGSize(width: 16, height: -56)
         static let surfacedScale: CGFloat = 0.6
         static let surfacedOffset = CGSize(width: 18, height: -66)
-        
+        static let eatenScale: CGFloat = 0.2
+
         static let trash: [[HomeSceneTrash]] = [
             [
-                HomeSceneTrash(image: .bottleWhiteS, rect: CGRect(x: 109, y: 300, width: 14, height: 34), collector: 0, rotation: -24),
-                HomeSceneTrash(image: .buoyHorizontalOrangeS, rect: CGRect(x: 262, y: 330, width: 36, height: 19), collector: 1, rotation: -12),
-                HomeSceneTrash(image: .sodaCanMintS, rect: CGRect(x: 140, y: 400, width: 18, height: 26), collector: 5)
+                HomeSceneTrash(image: .bottleWhiteS, rect: CGRect(x: 109, y: 300, width: 11, height: 27), collector: 0, rotation: -24),
+                HomeSceneTrash(image: .buoyHorizontalOrangeS, rect: CGRect(x: 262, y: 330, width: 34, height: 17), collector: 1, rotation: -12),
+                HomeSceneTrash(image: .sodaCanMintS, rect: CGRect(x: 140, y: 400, width: 13, height: 19), collector: 5)
             ],
             [
-                HomeSceneTrash(image: .plasticBagWhiteS, rect: CGRect(x: 280, y: 330, width: 22, height: 30), collector: 1, rotation: 12),
-                HomeSceneTrash(image: .glassBottleGreenS, rect: CGRect(x: 140, y: 350, width: 10, height: 34), collector: 0, rotation: 24),
-                HomeSceneTrash(image: .tinCanRedS, rect: CGRect(x: 240, y: 410, width: 24, height: 19), collector: 5, rotation: -24)
+                HomeSceneTrash(image: .plasticBagWhiteS, rect: CGRect(x: 280, y: 330, width: 16, height: 22), collector: 1, rotation: 12),
+                HomeSceneTrash(image: .glassBottleGreenS, rect: CGRect(x: 140, y: 350, width: 9, height: 30), collector: 0, rotation: 24),
+                HomeSceneTrash(image: .tinCanRedS, rect: CGRect(x: 240, y: 410, width: 18, height: 14), collector: 5, rotation: -24)
             ],
             [
-                HomeSceneTrash(image: .sodaCanMintS, rect: CGRect(x: 110, y: 340, width: 18, height: 26), collector: 3),
-                HomeSceneTrash(image: .bottleBlueS, rect: CGRect(x: 305, y: 300, width: 14, height: 34), collector: 2, rotation: 12),
-                HomeSceneTrash(image: .buoyHorizontalOrangeS, rect: CGRect(x: 200, y: 410, width: 36, height: 19), collector: 4, rotation: -12)
+                HomeSceneTrash(image: .sodaCanMintS, rect: CGRect(x: 110, y: 340, width: 13, height: 19), collector: 3),
+                HomeSceneTrash(image: .bottleBlueS, rect: CGRect(x: 305, y: 300, width: 10, height: 24), collector: 2, rotation: 12),
+                HomeSceneTrash(image: .buoyHorizontalOrangeS, rect: CGRect(x: 200, y: 410, width: 36, height: 18), collector: 4, rotation: -12)
             ],
             [
-                HomeSceneTrash(image: .bottleWhiteS, rect: CGRect(x: 125, y: 330, width: 14, height: 34), collector: 0, rotation: 24),
-                HomeSceneTrash(image: .cupRedS, rect: CGRect(x: 265, y: 390, width: 18, height: 25), collector: 3, rotation: -12),
-                HomeSceneTrash(image: .plasticBagWhiteS, rect: CGRect(x: 310, y: 290, width: 22, height: 30), collector: 5)
+                HomeSceneTrash(image: .bottleWhiteS, rect: CGRect(x: 125, y: 330, width: 11, height: 27), collector: 0, rotation: 24),
+                HomeSceneTrash(image: .cupRedS, rect: CGRect(x: 265, y: 390, width: 20, height: 28), collector: 3, rotation: -12),
+                HomeSceneTrash(image: .plasticBagWhiteS, rect: CGRect(x: 310, y: 290, width: 16, height: 22), collector: 5)
             ]
         ]
 
