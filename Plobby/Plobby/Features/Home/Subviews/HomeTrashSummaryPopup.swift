@@ -55,7 +55,6 @@ struct HomeTrashSummaryPopup: View {
 
     private func cell(_ item: GoalTrashSummary) -> some View {
         HStack(spacing: 0) {
-            // 컬렉션 전체 분류와 같은 종류별 대표 이미지예요
             Image(item.category.thumbnailName)
                 .resizable()
                 .scaledToFit()
@@ -68,7 +67,6 @@ struct HomeTrashSummaryPopup: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 8.scaled)
 
-            // 이름과 개수 사이는 이름이 길 때만 드러나서, "낚시·어업 용품"처럼 긴 이름이 들어가도록 좁게 둬요
             Text("\(item.collectedCount)개")
                 .plobbyFont(.labelSelected)
                 .foregroundStyle(Color(.textPrimary))
@@ -79,7 +77,6 @@ struct HomeTrashSummaryPopup: View {
         .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 8.scaled))
     }
 
-    /// 첫 기록일부터 마지막 기록일까지예요.
     private var periodText: String {
         guard let first = board.days.first?.day, let last = board.days.last?.day else {
             return board.goal.periodText

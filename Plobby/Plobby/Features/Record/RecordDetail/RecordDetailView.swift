@@ -248,8 +248,6 @@ private extension RecordDetailView {
         }
     }
 
-    /// 사진 앱처럼 누른 사진에서 커지며 열리고, 아래로 끌어내리면 그 사진 자리로 줄어들며 닫혀요.
-    /// 확대한 상태에서는 사진을 둘러봐야 하니 끌어서 닫히지 않게 막아요.
     func photoViewer(_ photos: [RecordDetail.Photo]) -> some View {
         ZStack(alignment: .top) {
             Color(.neutralBlack)
@@ -530,7 +528,6 @@ private extension RecordDetailView {
 
 // MARK: - ZoomablePhoto
 
-/// 사진 자세히 보기의 한 장이에요. 두 손가락으로 확대하고, 확대한 상태에서는 끌어서 둘러봐요.
 private struct ZoomablePhoto: View {
 
     // MARK: - Properties
@@ -632,7 +629,6 @@ private extension ZoomablePhoto {
         }
     }
 
-    /// 확대한 사진이 화면 밖으로 너무 벗어나지 않게, 늘어난 만큼만 움직일 수 있게 해요.
     func clamped(_ offset: CGSize, in size: CGSize) -> CGSize {
         let maxX = size.width * (scale - 1) / 2
         let maxY = size.height * (scale - 1) / 2

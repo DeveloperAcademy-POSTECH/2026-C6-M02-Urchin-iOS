@@ -316,7 +316,6 @@ private extension TrashPickerView {
             }
         }
         .padding(.horizontal, 20.scaled)
-        // 시안 하단 여백 48에서 홈 인디케이터 영역(34)을 뺀 값
         .padding(.bottom, 14.scaled)
         .background(Color(.gray0))
         .overlay(alignment: .top) {

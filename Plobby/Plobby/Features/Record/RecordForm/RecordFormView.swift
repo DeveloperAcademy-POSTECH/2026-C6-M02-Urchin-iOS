@@ -226,7 +226,6 @@ private extension RecordFormView {
                     .foregroundStyle(Color(.textTertiary))
                     .frame(width: 24.scaled, height: 24.scaled)
 
-                // 사진을 고르기 전에는 카메라 아이콘만 보여줘요.
                 if !store.photos.isEmpty {
                     Text("\(photoCountText)/\(maxPhotoCount)")
                         .foregroundStyle(Color(.gray600))
@@ -250,7 +249,6 @@ private extension RecordFormView {
             .overlay(alignment: .topTrailing) {
                 photoDeleteButton(photo.id)
             }
-            // X 버튼은 사진 밖으로 걸쳐 있어서 끌 때 잘려 보여요. 끄는 동안에는 사진만 보여줘요.
             .onDrag {
                 NSItemProvider(object: photo.id as NSString)
             } preview: {
@@ -669,7 +667,6 @@ private extension RecordFormView {
         }
     }
 
-    /// "최대 수심 (선택)"처럼 선택 항목 표시를 흐리게 붙여요.
     func optionalTitle(_ title: String) -> some View {
         Text("\(title) \(Text("(선택)").foregroundStyle(Color(.textSecondary)))")
             .plobbyFont(.body)
