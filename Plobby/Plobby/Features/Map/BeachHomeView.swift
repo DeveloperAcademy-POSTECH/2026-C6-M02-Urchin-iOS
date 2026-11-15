@@ -312,8 +312,6 @@ private extension BeachHomeView {
     @ViewBuilder
     func guardianSection(bottomInset: CGFloat) -> some View {
         if case let .loaded(summary) = store.summary, !summary.guardians.isEmpty {
-            let guardians = summary.guardians.prefix(BeachHomeFeature.guardianLimit)
-
             VStack(spacing: 24) {
                 VStack(spacing: 4) {
                     Image(systemName: "eyes")
@@ -326,16 +324,15 @@ private extension BeachHomeView {
                 }
 
                 FlowLayout(spacing: 8) {
-                    ForEach(guardians) { guardian in
+                    ForEach(summary.guardians) { guardian in
                         guardianChip(
                             nickname: guardian.isBlocked ? "차단한 회원" : guardian.nickname,
                             url: guardian.profileImageURL,
                             isBlocked: guardian.isBlocked
                         )
-                    }
-
-                    if summary.guardians.count > guardians.count {
-                        guardianChip(nickname: "외", url: nil, isBlocked: false)
+                        .onTapGesture {
+                            store.send(.guardianChipTapped(guardian))
+                        }
                     }
                 }
             }

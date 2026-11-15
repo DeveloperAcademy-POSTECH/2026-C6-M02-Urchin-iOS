@@ -24,6 +24,7 @@ struct BeachHomeFeature {
         var visibleRecordCount = BeachHomeFeature.initialRecordCount
         @Shared(.favoriteBeaches) var favoriteBeaches
         @Shared(.membershipStatus) var membershipStatus
+        @Presents var userHome: UserHomeFeature.State?
         @Presents var alert: AlertState<Action.Alert>?
 
         init(beach: Beach) {
@@ -75,7 +76,9 @@ struct BeachHomeFeature {
         case recordRemoved(UUID)
         /// 차단한 사용자의 기록을 목록에서 모두 빼요.
         case userBlocked(UUID)
+        case guardianChipTapped(BeachSummary.Guardian)
         case backTapped
+        case userHome(PresentationAction<UserHomeFeature.Action>)
         case alert(PresentationAction<Alert>)
         case delegate(Delegate)
 
@@ -185,12 +188,20 @@ struct BeachHomeFeature {
             case let .userBlocked(userID):
                 return removeRecords(where: { $0.userID == userID }, state: &state)
 
+            case let .guardianChipTapped(guardian):
+                guard !guardian.isBlocked else { return .none }
+                state.userHome = UserHomeFeature.State(userID: guardian.id, nickname: guardian.nickname, profileImageURL: guardian.profileImageURL)
+                return .none
+
             case .backTapped:
                 return .run { _ in await dismiss() }
 
-            case .alert, .delegate:
+            case .userHome, .alert, .delegate:
                 return .none
             }
+        }
+        .ifLet(\.$userHome, action: \.userHome) {
+            UserHomeFeature()
         }
         .ifLet(\.$alert, action: \.alert)
     }
