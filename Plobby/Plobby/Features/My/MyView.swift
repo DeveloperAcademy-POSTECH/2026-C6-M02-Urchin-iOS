@@ -125,7 +125,8 @@ extension MyView {
                     onFilterChanged: { store.send(.recordFilterChanged($0)) },
                     onRecordTapped: { store.send(.recordTapped($0)) },
                     onMoreTapped: { menuRecord = $0 },
-                    menuRecordID: menuRecord?.id
+                    menuRecordID: menuRecord?.id,
+                    isLoading: store.isLoadingRecords
                 ) {
                     if store.isMember {
                         RecordListEmptyMessage()
@@ -224,7 +225,7 @@ extension MyView {
     }
 
     private func memberValue(_ value: String) -> String {
-        store.isMember ? value : "-"
+        store.isMember && !store.isLoadingRecords ? value : "-"
     }
 
     private func activitySummaryCard(title: String, value: String) -> some View {

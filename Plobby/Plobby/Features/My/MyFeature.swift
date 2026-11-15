@@ -18,9 +18,9 @@ struct MyFeature {
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
         @Shared(.favoriteBeaches) var favoriteBeaches
-        var profile: Profile?
+        @Shared(.myProfile) var profile
         var savedProfileImage: Data?
-        var records: [RecordSummary] = []
+        @Shared(.myRecords) var loadedRecords
         var recordFilter: RecordFilter = .all
         var removedFavoriteBeach: RemovedFavoriteBeach?
         var hasUnreadNotification = false
@@ -33,6 +33,15 @@ struct MyFeature {
         @Presents var beachHome: BeachHomeFeature.State?
         @Presents var beachRecordDetail: RecordDetailFeature.State?
         @Presents var favoriteBeachAdd: FavoriteBeachAddFeature.State?
+
+        var records: [RecordSummary] {
+            loadedRecords ?? []
+        }
+
+        /// 처음 들어와 기록을 아직 한 번도 받지 못한 상태예요. 다시 들어올 때는 지난번 기록을 먼저 보여줘서 `false`예요.
+        var isLoadingRecords: Bool {
+            isMember && loadedRecords == nil
+        }
 
         var filteredRecords: [RecordSummary] {
             guard let recordType = recordFilter.recordType else { return records }
@@ -143,7 +152,7 @@ struct MyFeature {
                 )
 
             case let .profileResponse(.success(profile)):
-                state.profile = profile
+                state.$profile.withLock { $0 = profile }
                 return .none
 
             case let .favoriteBeachesResponse(.success(beaches)):
@@ -151,7 +160,7 @@ struct MyFeature {
                 return .none
 
             case let .recordsResponse(.success(records)):
-                state.records = records
+                state.$loadedRecords.withLock { $0 = records }
                 return .none
 
             case let .unreadNotificationResponse(.success(hasUnread)):
@@ -225,7 +234,7 @@ struct MyFeature {
 
             case let .recordMenu(.presented(.delegate(.deleted(recordID)))):
                 state.recordMenu = nil
-                state.records.removeAll { $0.id == recordID }
+                state.$loadedRecords.withLock { $0?.removeAll { $0.id == recordID } }
                 return .none
 
             case .recordMenu(.presented(.delegate(.blocked))):
@@ -266,7 +275,7 @@ struct MyFeature {
                 return .send(.delegate(.loginRequired))
 
             case let .profileEdit(.presented(.delegate(.saved(profile, profileImage)))):
-                state.profile = profile
+                state.$profile.withLock { $0 = profile }
 
                 if let profileImage {
                     state.savedProfileImage = profileImage
@@ -286,7 +295,7 @@ struct MyFeature {
 
             case let .recordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.recordDetail = nil
-                state.records.removeAll { $0.id == recordID }
+                state.$loadedRecords.withLock { $0?.removeAll { $0.id == recordID } }
                 return .none
 
             case let .beachHome(.presented(.delegate(.recordSelected(record)))):
@@ -299,7 +308,7 @@ struct MyFeature {
 
             case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.beachRecordDetail = nil
-                state.records.removeAll { $0.id == recordID }
+                state.$loadedRecords.withLock { $0?.removeAll { $0.id == recordID } }
                 return .send(.beachHome(.presented(.recordRemoved(recordID))))
 
             case let .beachRecordDetail(.presented(.delegate(.blocked(userID)))):

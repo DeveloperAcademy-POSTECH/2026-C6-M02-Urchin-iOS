@@ -55,6 +55,20 @@ extension SharedKey where Self == InMemoryKey<[Beach]>.Default {
     static var favoriteBeaches: Self { Self[.inMemory("favoriteBeaches"), default: []] }
 }
 
+extension SharedKey where Self == InMemoryKey<Profile?>.Default {
+
+    /// 마이 화면에서 마지막으로 불러온 내 프로필. 마이에 다시 들어가면 이 값을 먼저 보여주고 새로 불러와요.
+    /// 다른 계정으로 바뀌면 AppFeature에서 비워요.
+    static var myProfile: Self { Self[.inMemory("myProfile"), default: nil] }
+}
+
+extension SharedKey where Self == InMemoryKey<[RecordSummary]?>.Default {
+
+    /// 마이 화면에서 마지막으로 불러온 내 기록. `nil`이면 아직 한 번도 불러오지 않은 거예요.
+    /// 다른 계정으로 바뀌면 AppFeature에서 비워요.
+    static var myRecords: Self { Self[.inMemory("myRecords"), default: nil] }
+}
+
 extension SharedKey where Self == FileStorageKey<[Beach]>.Default {
 
     /// 지도 탭에서 최근 고른 해변. 최신순이에요.
