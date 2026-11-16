@@ -39,6 +39,10 @@ struct BeachHomeFeature {
             if case .member = membershipStatus { true } else { false }
         }
 
+        var currentUserID: UUID? {
+            if case let .member(user) = membershipStatus { user.id } else { nil }
+        }
+
         var sortedRecords: [BeachRecord] {
             guard case let .loaded(records) = records else { return [] }
 
@@ -86,6 +90,7 @@ struct BeachHomeFeature {
 
         enum Delegate: Equatable {
             case recordSelected(BeachRecord)
+            case myProfileRequested
         }
     }
 
@@ -190,7 +195,16 @@ struct BeachHomeFeature {
 
             case let .guardianChipTapped(guardian):
                 guard !guardian.isBlocked else { return .none }
-                state.userHome = UserHomeFeature.State(userID: guardian.id, nickname: guardian.nickname, profileImageURL: guardian.profileImageURL)
+
+                if guardian.id == state.currentUserID {
+                    return .send(.delegate(.myProfileRequested))
+                }
+
+                state.userHome = UserHomeFeature.State(
+                    userID: guardian.id,
+                    nickname: guardian.nickname,
+                    profileImageURL: guardian.profileImageURL
+                )
                 return .none
 
             case .backTapped:

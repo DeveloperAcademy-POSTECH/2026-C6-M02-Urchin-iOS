@@ -167,8 +167,6 @@ private extension GoalRecordsView {
                         RecordMoreButton(isMenuPresented: menuRecord?.id == record.id) {
                             menuRecord = record
                         }
-                        .padding(.top, 8.scaled)
-                        .padding(.trailing, 8.scaled)
                     }
                 }
             }
