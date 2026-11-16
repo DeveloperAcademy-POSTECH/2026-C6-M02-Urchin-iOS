@@ -43,18 +43,15 @@ struct RecordRewardView: View {
                 summary
                     .opacity(isSummaryVisible ? 1 : 0)
             }
-            .overlay(alignment: .bottom) {
-                PlobbyButton(text: "기록 상세 보기", style: .highlight) {
-                    store.send(.nextButtonTapped)
-                }
-                .padding(.horizontal, 20.scaled)
-                .opacity(isSummaryVisible ? 1 : 0)
-                .allowsHitTesting(isSummaryVisible)
+            .overlay(alignment: .bottomTrailing) {
+                detailButton
+                    .padding(.trailing, 20.scaled)
+                    .opacity(isSummaryVisible ? 1 : 0)
+                    .allowsHitTesting(isSummaryVisible)
             }
             .onAppear {
                 store.send(.onAppear)
 
-                // 앞 화면에서 바로 이어지도록 기다리지 않고 나타나요
                 withAnimation(.easeOut(duration: 0.35)) {
                     isSummaryVisible = true
                 }
@@ -72,6 +69,25 @@ struct RecordRewardView: View {
 // MARK: - Subviews
 
 extension RecordRewardView {
+
+    private var detailButton: some View {
+        Button {
+            store.send(.nextButtonTapped)
+        } label: {
+            HStack(spacing: 4.scaled) {
+                Text("기록 상세 보기")
+                    .plobbyFont(.labelSelected)
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12.scaled, weight: .semibold))
+            }
+            .foregroundStyle(Color(.gray0))
+            .padding(.horizontal, 16.scaled)
+            .frame(height: 40.scaled)
+            .background(Color(.darkBGGreen), in: Capsule())
+        }
+        .buttonStyle(.plain)
+    }
 
     private var summary: some View {
         VStack(alignment: .leading, spacing: 0) {
