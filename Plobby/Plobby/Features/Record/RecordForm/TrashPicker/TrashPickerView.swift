@@ -150,6 +150,8 @@ private extension TrashPickerView {
                 .frame(width: 44.scaled, height: 44.scaled)
         }
         .buttonStyle(.plain)
+        .disabled(store.selection.isFull)
+        .opacity(store.selection.isFull ? 0.3 : 1)
         .accessibilityLabel("\(category.name) 추가")
     }
     
@@ -167,8 +169,8 @@ private extension TrashPickerView {
             stepperButton(.stepperPlus) {
                 store.send(.plusTapped(category))
             }
-            .disabled(count >= TrashSelection.maximumCount)
-            .opacity(count >= TrashSelection.maximumCount ? 0.3 : 1)
+            .disabled(store.selection.isFull)
+            .opacity(store.selection.isFull ? 0.3 : 1)
             .accessibilityLabel("\(category.name) 더하기")
         }
         .frame(height: 44.scaled)

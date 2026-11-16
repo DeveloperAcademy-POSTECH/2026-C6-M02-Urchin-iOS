@@ -28,7 +28,7 @@ struct TrashPickerFeature {
 
         var guideText: String {
             if isCountOverLimit {
-                return "최대 \(TrashSelection.maximumCount)개까지 입력할 수 있어요."
+                return "쓰레기는 총 \(TrashSelection.maximumTotalCount)개까지 입력할 수 있어요."
             }
 
             return selection.isEmpty
@@ -90,11 +90,13 @@ struct TrashPickerFeature {
 
                 let allDigits = text.filter(\.isASCIIDigit)
                 let digits = String(allDigits.prefix(Self.maximumCountDigits))
-                state.isCountOverLimit = allDigits.count > Self.maximumCountDigits
+                let maximumCount = state.selection.maximumCount(for: category)
+                let isOverTotal = (Int(digits) ?? 0) > maximumCount
+                state.isCountOverLimit = allDigits.count > Self.maximumCountDigits || isOverTotal
                 state.countText = text
-                state.countText = digits
+                state.countText = isOverTotal ? "\(maximumCount)" : digits
 
-                if let count = Int(digits), count > 0 {
+                if let count = Int(state.countText), count > 0 {
                     state.selection[category] = count
                 }
                 return .none
@@ -131,7 +133,7 @@ struct TrashPickerFeature {
 
 extension TrashPickerFeature {
 
-    private static let maximumCountDigits = String(TrashSelection.maximumCount).count
+    private static let maximumCountDigits = String(TrashSelection.maximumTotalCount).count
 
     private func commitCountEditing(_ state: inout State) {
         guard let category = state.editingCategory else { return }
