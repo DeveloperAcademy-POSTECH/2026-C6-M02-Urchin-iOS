@@ -280,10 +280,14 @@ private extension CollectionView {
         // 카드 가장자리 픽셀에는 뒤의 흰 배경이 섞여 있어서, 그대로 오려내면 저장한 이미지에 흰 테두리가 생겨요.
         // 오려내는 영역을 1pt 안쪽으로 잡아 섞인 픽셀을 빼요.
         let captureFrame = cardFrame.insetBy(dx: Self.captureEdgeInset, dy: Self.captureEdgeInset)
+        // 투명한 영역이 있으면 카카오톡 등에서 흰색으로 채워져 테두리처럼 보여요.
+        // 불투명 이미지로 만들고, 둥근 모서리 바깥은 카드와 같은 검은색으로 채워요.
         let format = UIGraphicsImageRendererFormat()
-        format.opaque = false
+        format.opaque = true
 
-        let image = UIGraphicsImageRenderer(bounds: captureFrame, format: format).image { _ in
+        let image = UIGraphicsImageRenderer(bounds: captureFrame, format: format).image { context in
+            UIColor(resource: .surfaceBlack).setFill()
+            context.fill(captureFrame)
             UIBezierPath(roundedRect: captureFrame, cornerRadius: 20.scaled - Self.captureEdgeInset).addClip()
             window.drawHierarchy(in: window.bounds, afterScreenUpdates: false)
         }
