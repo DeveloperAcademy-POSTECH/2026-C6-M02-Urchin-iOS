@@ -53,6 +53,9 @@ struct BeachHomeView: View {
             await store.send(.task).finish()
         }
         .plobbyAlert(store: store, state: \.alert, action: \.alert)
+        .navigationDestination(item: $store.scope(state: \.userHome, action: \.userHome)) { store in
+            UserHomeView(store: store)
+        }
     }
 }
 

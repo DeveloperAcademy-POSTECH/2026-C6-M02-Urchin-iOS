@@ -69,6 +69,7 @@ struct MapFeature {
         enum Delegate: Equatable {
             case recordStartRequested(Beach, RecordType)
             case loginRequired
+            case myProfileRequested
         }
     }
 
@@ -241,6 +242,9 @@ struct MapFeature {
             case let .path(.element(_, .beachHome(.delegate(.recordSelected(record))))):
                 state.path.append(.recordDetail(RecordDetailFeature.State(recordID: record.id)))
                 return .none
+
+            case .path(.element(_, .beachHome(.delegate(.myProfileRequested)))):
+                return .send(.delegate(.myProfileRequested))
 
             case let .path(.element(id, .recordDetail(.delegate(.closed)))):
                 state.path.pop(from: id)

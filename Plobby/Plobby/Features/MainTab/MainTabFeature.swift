@@ -126,7 +126,8 @@ struct MainTabFeature {
                 state.selectedTab = .home
                 return reloadRecordScreens(state)
                 
-            case .home(.delegate(.myProfileRequested)):
+            case .home(.delegate(.myProfileRequested)),
+                 .map(.delegate(.myProfileRequested)):
                 state.collection.my = MyFeature.State()
                 return .none
 
