@@ -32,8 +32,8 @@ struct TrashPickerFeature {
             }
 
             return selection.isEmpty
-            ? "주운 쓰레기 종류를 추가해주세요."
-            : "숫자를 눌러 개수를 바로 입력할 수 있어요."
+            ? "주운 쓰레기 종류를 골라 주세요"
+            : "숫자를 누르면 개수를 바로 입력할 수 있어요"
         }
 
         var isEtcMemoVisible: Bool {

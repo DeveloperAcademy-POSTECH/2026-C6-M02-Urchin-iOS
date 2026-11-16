@@ -17,6 +17,8 @@ struct RecordListSection<EmptyContent: View>: View {
     let onRecordTapped: (RecordSummary.ID) -> Void
     let onMoreTapped: ((RecordSummary) -> Void)?
     let menuRecordID: RecordSummary.ID?
+    /// 기록을 처음 불러오는 중이에요. 이때는 "0개"와 빈 목록 안내 대신 로딩 표시를 보여줘요.
+    let isLoading: Bool
     let emptyContent: EmptyContent
 
     private static var recentDayCount: Int { 7 }
@@ -29,6 +31,7 @@ struct RecordListSection<EmptyContent: View>: View {
         onRecordTapped: @escaping (RecordSummary.ID) -> Void,
         onMoreTapped: ((RecordSummary) -> Void)? = nil,
         menuRecordID: RecordSummary.ID? = nil,
+        isLoading: Bool = false,
         @ViewBuilder emptyContent: () -> EmptyContent
     ) {
         self.records = records
@@ -37,6 +40,7 @@ struct RecordListSection<EmptyContent: View>: View {
         self.onRecordTapped = onRecordTapped
         self.onMoreTapped = onMoreTapped
         self.menuRecordID = menuRecordID
+        self.isLoading = isLoading
         self.emptyContent = emptyContent()
     }
 
@@ -52,12 +56,16 @@ struct RecordListSection<EmptyContent: View>: View {
             filterChips
                 .padding(.top, 12.scaled)
 
-            Text("\(records.count)개")
+            Text(isLoading ? "-" : "\(records.count)개")
                 .plobbyFont(.metadata)
                 .foregroundStyle(Color(.gray600))
                 .padding(.top, 16.scaled)
 
-            if records.isEmpty {
+            if isLoading {
+                ProgressView()
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 40.scaled)
+            } else if records.isEmpty {
                 emptyContent
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 40.scaled)
@@ -168,7 +176,7 @@ extension RecordListSection {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .padding(.trailing, onMoreTapped == nil ? 0 : RecordMoreButton.width.scaled)
 
-            AsyncImage(url: record.coverPhotoURL) { image in
+            CachedImage(url: record.coverPhotoURL) { image in
                 image
                     .resizable()
                     .scaledToFill()

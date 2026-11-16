@@ -167,7 +167,7 @@ private extension RecordDetailView {
     }
 
     func profileImage(_ url: URL?) -> some View {
-        AsyncImage(url: url) { image in
+        CachedImage(url: url) { image in
             image
                 .resizable()
                 .scaledToFill()
@@ -200,7 +200,7 @@ private extension RecordDetailView {
             } else {
                 TabView(selection: $store.currentPhotoIndex.sending(\.photoPageChanged)) {
                     ForEach(Array(photos.enumerated()), id: \.offset) { index, photo in
-                        AsyncImage(url: photo.url) { image in
+                        CachedImage(url: photo.url) { image in
                             image
                                 .resizable()
                                 .scaledToFill()
@@ -248,8 +248,6 @@ private extension RecordDetailView {
         }
     }
 
-    /// 사진 앱처럼 누른 사진에서 커지며 열리고, 아래로 끌어내리면 그 사진 자리로 줄어들며 닫혀요.
-    /// 확대한 상태에서는 사진을 둘러봐야 하니 끌어서 닫히지 않게 막아요.
     func photoViewer(_ photos: [RecordDetail.Photo]) -> some View {
         ZStack(alignment: .top) {
             Color(.neutralBlack)
@@ -366,18 +364,18 @@ private extension RecordDetailView {
             trashCard(items: summary.items) {
                 if let weight = summary.weight {
                     HStack(spacing: 24.scaled) {
-                        metric("총개수", value: "\(summary.totalCount)개")
+                        metric("총 개수", value: "\(summary.totalCount)개")
 
                         Rectangle()
                             .fill(Color(.gray200))
                             .frame(width: 1, height: 44.scaled)
 
-                        metric("총무게", value: "\(Self.decimalText(weight))kg")
+                        metric("총 무게", value: "\(Self.decimalText(weight))kg")
                     }
                     .padding(16.scaled)
                     .frame(height: 86.scaled)
                 } else {
-                    metricRow("총개수", value: "\(summary.totalCount)개")
+                    metricRow("총 개수", value: "\(summary.totalCount)개")
                 }
             }
         }
@@ -530,7 +528,6 @@ private extension RecordDetailView {
 
 // MARK: - ZoomablePhoto
 
-/// 사진 자세히 보기의 한 장이에요. 두 손가락으로 확대하고, 확대한 상태에서는 끌어서 둘러봐요.
 private struct ZoomablePhoto: View {
 
     // MARK: - Properties
@@ -550,7 +547,7 @@ private struct ZoomablePhoto: View {
 
     var body: some View {
         GeometryReader { proxy in
-            AsyncImage(url: url) { image in
+            CachedImage(url: url) { image in
                 image
                     .resizable()
                     .scaledToFit()
@@ -632,7 +629,6 @@ private extension ZoomablePhoto {
         }
     }
 
-    /// 확대한 사진이 화면 밖으로 너무 벗어나지 않게, 늘어난 만큼만 움직일 수 있게 해요.
     func clamped(_ offset: CGSize, in size: CGSize) -> CGSize {
         let maxX = size.width * (scale - 1) / 2
         let maxY = size.height * (scale - 1) / 2

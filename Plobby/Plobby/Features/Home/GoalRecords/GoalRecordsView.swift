@@ -152,7 +152,7 @@ private extension GoalRecordsView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.trailing, showsMoreButton ? RecordMoreButton.width.scaled : 0)
 
-                AsyncImage(url: record.coverPhotoURL) { image in
+                CachedImage(url: record.coverPhotoURL) { image in
                     image
                         .resizable()
                         .scaledToFill()

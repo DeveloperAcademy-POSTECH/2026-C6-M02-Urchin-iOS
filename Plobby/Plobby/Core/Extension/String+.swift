@@ -7,6 +7,15 @@
 
 extension String {
 
+    /// 마지막 글자에 받침이 있으면 "이", 없으면 "가" (예: 유리가, 플라스틱이)
+    /// 한글로 끝나지 않으면 "이(가)"를 돌려줍니다.
+    var subjectParticle: String {
+        guard let scalar = last?.unicodeScalars.first?.value, (0xAC00...0xD7A3).contains(scalar) else {
+            return "이(가)"
+        }
+        return (scalar - 0xAC00) % 28 == 0 ? "가" : "이"
+    }
+
     /// 마지막 글자에 받침이 있으면 "을", 없으면 "를" (예: 나무를, 금속을)
     /// 한글로 끝나지 않으면 "을(를)"을 돌려줍니다.
     var objectParticle: String {

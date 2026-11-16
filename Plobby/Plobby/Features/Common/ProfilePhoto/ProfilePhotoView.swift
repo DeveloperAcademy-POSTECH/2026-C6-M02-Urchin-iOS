@@ -56,7 +56,7 @@ extension ProfilePhotoView {
                     .resizable()
                     .scaledToFill()
             } else if let savedImageURL = store.savedImageURL {
-                AsyncImage(url: savedImageURL) { image in
+                CachedImage(url: savedImageURL) { image in
                     image
                         .resizable()
                         .scaledToFill()

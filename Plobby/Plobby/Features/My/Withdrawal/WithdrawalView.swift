@@ -22,7 +22,7 @@ struct WithdrawalView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             PlobbyNavigationBar(
-                title: "회원 탈퇴",
+                title: "plobby 탈퇴",
                 style: .leading,
                 isBackEnabled: !store.isWithdrawing
             ) {
@@ -37,6 +37,8 @@ struct WithdrawalView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
                 .padding(.bottom, 24)
+                // 탈퇴를 처리하는 동안에는 사유와 의견을 바꿔도 반영되지 않아서 막아 둬요.
+                .allowsHitTesting(!store.isWithdrawing)
             }
             .scrollDismissesKeyboard(.interactively)
 
@@ -59,7 +61,7 @@ extension WithdrawalView {
 
     private var reasonSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sectionTitle("탈퇴하는 이유가 궁금해요")
+            sectionTitle("어떤 점이 가장 아쉬우셨나요?")
 
             VStack(alignment: .leading, spacing: 12) {
                 ForEach(WithdrawalReason.allCases, id: \.self) {
@@ -133,14 +135,15 @@ extension WithdrawalView {
     }
 
     private var detailPlaceholder: some View {
-        Text("서비스 탈퇴 사유를 알려주세요.\n소중한 피드백을 담아 더 나은 서비스로\n보답드리도록 하겠습니다.")
+        Text("아쉬웠던 점을 자유롭게 남겨주세요.\n남겨주신 의견을 참고해서 더 나은 plobby를 만들게요.")
             .plobbyFont(.label)
             .foregroundStyle(Color(.textDisabled))
             .allowsHitTesting(false)
     }
 
     private var withdrawButton: some View {
-        PlobbyButton(text: "탈퇴하기") {
+        PlobbyButton(text: "탈퇴하기", isLoading: store.isWithdrawing) {
+            isDetailFocused = false
             store.send(.withdrawButtonTapped)
         }
         .disabled(!store.canWithdraw)

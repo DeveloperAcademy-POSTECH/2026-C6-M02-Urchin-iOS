@@ -16,12 +16,15 @@ struct RecordRewardFeature {
     
     @ObservableState
     struct State: Equatable {
+        @Shared(.myProfile) var profile
         let recordID: UUID
         var beachName: String?
         var trash = TrashSelection()
         var weightKg: Double?
-        var nickname: String?
         var goal: Goal?
+        var nickname: String? {
+            profile?.nickname
+        }
     }
 
     // MARK: - Action
@@ -53,18 +56,13 @@ struct RecordRewardFeature {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                let now = now
                 return .merge(
-                    .run { send in
-                        await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
-                    },
-                    .run { send in
-                        await send(.goalResponse(Result { try await goalClient.fetchCurrentGoal(now) }))
-                    }
+                    state.profile == nil ? fetchMyProfile() : .none,
+                    state.goal == nil ? fetchCurrentGoal() : .none
                 )
                 
             case let .profileResponse(.success(profile)):
-                state.nickname = profile?.nickname
+                state.$profile.withLock { $0 = profile }
                 return .none
                 
             case let .profileResponse(.failure(error)):
@@ -88,6 +86,24 @@ struct RecordRewardFeature {
             case .delegate:
                 return .none
             }
+        }
+    }
+}
+
+// MARK: - Functions
+
+extension RecordRewardFeature {
+
+    private func fetchMyProfile() -> Effect<Action> {
+        .run { send in
+            await send(.profileResponse(Result { try await userClient.fetchMyProfile() }))
+        }
+    }
+
+    private func fetchCurrentGoal() -> Effect<Action> {
+        let now = now
+        return .run { send in
+            await send(.goalResponse(Result { try await goalClient.fetchCurrentGoal(now) }))
         }
     }
 }
