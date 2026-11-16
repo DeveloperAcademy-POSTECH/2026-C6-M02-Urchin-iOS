@@ -55,7 +55,7 @@ struct CachedImage<Content: View, Placeholder: View>: View {
         .task(id: url) {
             guard let url, ImageCache.shared.image(for: url) == nil else { return }
 
-            let image = await ImageCache.shared.load(url)
+            let image = await ImageLoader.shared.load(url)
             guard !Task.isCancelled else { return }
 
             loadedImage = image

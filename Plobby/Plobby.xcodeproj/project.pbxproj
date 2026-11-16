@@ -260,6 +260,7 @@
 		ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */; };
 		7B3C1A9BA1B2C3D4E5F60001 /* CachedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */; };
 		7B3C1A9DA1B2C3D4E5F60001 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */; };
+		7B3C1AA0A1B2C3D4E5F60001 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9FA1B2C3D4E5F60001 /* ImageLoader.swift */; };
 		ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2923098338400C4916C /* PlobbyButton.swift */; };
 		ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2943098338400C4916C /* AlertType.swift */; };
 		ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2953098338400C4916C /* Secrets.swift */; };
@@ -577,6 +578,7 @@
 		ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageCompressor.swift; sourceTree = "<group>"; };
 		7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImage.swift; sourceTree = "<group>"; };
 		7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		7B3C1A9FA1B2C3D4E5F60001 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		ECE6F2923098338400C4916C /* PlobbyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyButton.swift; sourceTree = "<group>"; };
 		ECE6F2943098338400C4916C /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		ECE6F2953098338400C4916C /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
@@ -1475,6 +1477,7 @@
 			children = (
 				7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */,
 				7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */,
+				7B3C1A9FA1B2C3D4E5F60001 /* ImageLoader.swift */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -2102,6 +2105,7 @@
 				ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */,
 				7B3C1A9BA1B2C3D4E5F60001 /* CachedImage.swift in Sources */,
 				7B3C1A9DA1B2C3D4E5F60001 /* ImageCache.swift in Sources */,
+				7B3C1AA0A1B2C3D4E5F60001 /* ImageLoader.swift in Sources */,
 				DA5B0FB33098BED8003FEDF9 /* NewRecord.swift in Sources */,
 				DAEC9A04309C5A0000AA0001 /* RecordPhoto.swift in Sources */,
 				DA5B0FE13099A001003FEDF9 /* RecordType.swift in Sources */,
