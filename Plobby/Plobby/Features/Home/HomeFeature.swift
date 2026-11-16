@@ -151,8 +151,10 @@ struct HomeFeature {
                 // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
                 state.isGoalExpanded = false
 
+                // 스플래시에서 미리 불러온 공동 목표는 처음 한 번만 쓰고, 이후 홈에 돌아올 때마다 새로 불러와요
                 @Shared(.homeBoardsCache) var cache
                 let fetch = cache.isEmpty ? loadBoards(state) : applyBoardsFromCache(cache, state: &state)
+                $cache.withLock { $0 = [] }
 
                 @Shared(.isHomeTutorialPending) var isHomeTutorialPending
                 guard isHomeTutorialPending, state.tutorialStep == nil else { return fetch }
@@ -219,6 +221,11 @@ struct HomeFeature {
                 let progress = min(max(target, -1), Double(lastDay + 1))
                 let nextStop = collectedThrough + 1
                 state.isScrollGuideVisible = false
+
+                // 수거대(마지막 도착점)에 도착한 뒤에는 더 아래로 스크롤해도 그 자리에 머물러요
+                if case .finale = stage, progress >= current {
+                    return .none
+                }
                 
                 if progress > current, progress >= Double(nextStop) {
                     state.walkProgresses[type] = Double(nextStop)

@@ -25,7 +25,7 @@ struct GoalListView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 24.scaled) {
-                    infoBanner
+                    InfoBanner(information: "플로깅과 플로빙에서 주운 쓰레기가 모여 '공동 목표'가 돼요")
 
                     if store.isLoading {
                         ProgressView()
@@ -63,20 +63,6 @@ struct GoalListView: View {
 // MARK: - Subviews
 
 private extension GoalListView {
-
-    var infoBanner: some View {
-        HStack(spacing: 8.scaled) {
-            Image(systemName: "info.circle")
-                .font(.system(size: 16.scaled, weight: .medium))
-
-            Text("플로깅과 플로빙에서 주운 쓰레기가 모여\n'공동 목표'가 돼요")
-                .plobbyFont(.label)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .foregroundStyle(Color(.textSecondary))
-        .padding(12.scaled)
-        .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12.scaled))
-    }
 
     func currentGoalSection(_ goal: Goal) -> some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
