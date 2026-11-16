@@ -70,12 +70,18 @@ struct WithdrawalFeature {
                     await dismiss()
                 }
 
+            // 탈퇴를 처리하는 동안 사유와 의견이 바뀌면, 인증 응답 뒤 보내는 탈퇴 요청에 바뀐 값이 섞여요.
+            // 화면에서도 입력을 막지만, 어떤 경로로 들어와도 여기서 한 번 더 막아요.
             case let .reasonTapped(reason):
+                guard !state.isWithdrawing else { return .none }
+
                 state.selectedReason = state.selectedReason == reason ? nil : reason
                 state.detail = ""
                 return .none
 
             case let .detailChanged(detail):
+                guard !state.isWithdrawing else { return .none }
+
                 state.detail = String(detail.prefix(Self.maximumDetailLength))
                 if state.hasDetail {
                     state.selectedReason = nil
