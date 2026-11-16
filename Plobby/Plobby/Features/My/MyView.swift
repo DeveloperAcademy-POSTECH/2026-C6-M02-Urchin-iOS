@@ -127,7 +127,9 @@ extension MyView {
                     menuRecordID: menuRecord?.id,
                     isLoading: store.isLoadingRecords
                 ) {
-                    if store.isMember {
+                    if store.isRecordsFetchFailed, store.loadedRecords == nil {
+                        recordsFetchFailedMessage
+                    } else if store.isMember {
                         RecordListEmptyMessage()
                     } else {
                         guestRecordPrompt
@@ -224,7 +226,7 @@ extension MyView {
     }
 
     private func memberValue(_ value: String) -> String {
-        store.isMember && !store.isLoadingRecords ? value : "-"
+        store.isMember && store.loadedRecords != nil ? value : "-"
     }
 
     private func activitySummaryCard(title: String, value: String) -> some View {
@@ -242,6 +244,26 @@ extension MyView {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12.scaled)
         .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12.scaled))
+    }
+}
+
+// MARK: - 기록 불러오기 실패
+
+extension MyView {
+
+    /// 기록을 한 번도 받지 못한 채로 요청이 실패했을 때 보여줘요. 기록 상세의 실패 화면과 같은 모양이에요.
+    private var recordsFetchFailedMessage: some View {
+        VStack(spacing: 16.scaled) {
+            Text("기록을 불러오지 못했어요")
+                .plobbyFont(.body)
+                .foregroundStyle(Color(.textSecondary))
+
+            Button("다시 시도") {
+                store.send(.recordsRetryTapped)
+            }
+            .plobbyFont(.actionLabel)
+            .foregroundStyle(Color(.green600))
+        }
     }
 }
 

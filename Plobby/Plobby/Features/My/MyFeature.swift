@@ -38,8 +38,11 @@ struct MyFeature {
             loadedRecords ?? []
         }
 
+        /// 기록을 한 번도 받지 못한 채로 마지막 요청이 실패했어요. 빈 기록과 구분해서 "불러오지 못했어요"를 보여줘요.
+        var isRecordsFetchFailed = false
+
         var isLoadingRecords: Bool {
-            isMember && loadedRecords == nil
+            isMember && loadedRecords == nil && !isRecordsFetchFailed
         }
 
         var filteredRecords: [RecordSummary] {
@@ -89,6 +92,7 @@ struct MyFeature {
         case favoriteBeachUndoButtonTapped
         case favoriteBeachRequestFailed(Beach, isFavorite: Bool)
         case recordFilterChanged(RecordFilter)
+        case recordsRetryTapped
         case recordTapped(RecordSummary.ID)
         case recordMenuSelected(RecordSummary, RecordMenuFeature.Menu)
         case recordStartButtonTapped
@@ -145,7 +149,7 @@ struct MyFeature {
                 return .merge(
                     fetchMyProfile(),
                     fetchFavoriteBeaches(),
-                    fetchRecords(userID: user.id),
+                    fetchRecords(userID: user.id, state: &state),
                     fetchHasUnreadNotification()
                 )
 
@@ -159,18 +163,28 @@ struct MyFeature {
 
             case let .recordsResponse(.success(records)):
                 state.$loadedRecords.withLock { $0 = records }
+                state.isRecordsFetchFailed = false
                 return .none
 
             case let .unreadNotificationResponse(.success(hasUnread)):
                 state.hasUnreadNotification = hasUnread
                 return .none
 
+            case let .recordsResponse(.failure(error)):
+                PlobbyLogger.error(error)
+                state.isRecordsFetchFailed = true
+                return .none
+
             case let .profileResponse(.failure(error)),
                  let .favoriteBeachesResponse(.failure(error)),
-                 let .recordsResponse(.failure(error)),
                  let .unreadNotificationResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 return .none
+
+            case .recordsRetryTapped:
+                guard case let .member(user) = state.membershipStatus else { return .none }
+
+                return fetchRecords(userID: user.id, state: &state)
 
             case .favoriteBeachAddButtonTapped:
                 guard state.isMember else { return .send(.delegate(.loginRequired)) }
@@ -229,7 +243,7 @@ struct MyFeature {
 
                 guard case let .member(user) = state.membershipStatus else { return .none }
 
-                return fetchRecords(userID: user.id)
+                return fetchRecords(userID: user.id, state: &state)
 
             case let .recordMenu(.presented(.delegate(.deleted(recordID)))):
                 state.recordMenu = nil
@@ -290,7 +304,7 @@ struct MyFeature {
 
                 guard case let .member(user) = state.membershipStatus else { return .none }
 
-                return fetchRecords(userID: user.id)
+                return fetchRecords(userID: user.id, state: &state)
 
             case let .recordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.recordDetail = nil
@@ -353,8 +367,10 @@ extension MyFeature {
         }
     }
 
-    private func fetchRecords(userID: UUID) -> Effect<Action> {
-        .run { send in
+    /// 다시 요청할 때는 실패 표시를 지워서, 받는 동안 로딩 표시가 나오게 해요.
+    private func fetchRecords(userID: UUID, state: inout State) -> Effect<Action> {
+        state.isRecordsFetchFailed = false
+        return .run { send in
             await send(.recordsResponse(Result { try await recordClient.fetchUserRecords(userID) }))
         }
     }
