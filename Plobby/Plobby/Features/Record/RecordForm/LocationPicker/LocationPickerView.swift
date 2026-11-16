@@ -257,8 +257,12 @@ private extension LocationPickerView {
                 }
             }
             .frame(width: 44, height: 44)
-            .background(Color(.gray0), in: Circle())
-            .shadow(color: .black.opacity(0.25), radius: 1, y: 1)
+            .background {
+                // 그림자는 원에만 넣어요. 버튼 전체에 넣으면 가운데 아이콘에도 그림자가 생겨 번져 보여요.
+                Circle()
+                    .fill(Color(.gray0))
+                    .shadow(color: .black.opacity(0.25), radius: 1, y: 1)
+            }
         }
         .buttonStyle(.plain)
         .accessibilityLabel("현재 위치로 이동")
