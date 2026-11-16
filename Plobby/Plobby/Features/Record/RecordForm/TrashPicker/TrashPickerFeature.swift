@@ -26,13 +26,8 @@ struct TrashPickerFeature {
             self.selection = selection
         }
 
-        /// 직접 입력이 한도를 넘었거나, 합계가 한도에 닿아 더 늘릴 수 없을 때예요.
-        var isLimitReached: Bool {
-            isCountOverLimit || selection.isFull
-        }
-
         var guideText: String {
-            if isLimitReached {
+            if isCountOverLimit {
                 return "쓰레기는 총 \(TrashSelection.maximumTotalCount)개까지 입력할 수 있어요."
             }
 
@@ -74,6 +69,12 @@ struct TrashPickerFeature {
             switch action {
             case let .plusTapped(category):
                 commitCountEditing(&state)
+
+                guard !state.selection.isFull else {
+                    state.isCountOverLimit = true
+                    return .none
+                }
+
                 state.selection[category] += 1
                 return .none
 
