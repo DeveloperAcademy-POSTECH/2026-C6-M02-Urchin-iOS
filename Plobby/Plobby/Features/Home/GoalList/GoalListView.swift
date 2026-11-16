@@ -69,8 +69,8 @@ private extension GoalListView {
             Image(systemName: "info.circle")
                 .font(.system(size: 16.scaled, weight: .medium))
 
-            Text("플로깅과 플로빙에서 주운 쓰레기가 모여\n'공동 목표'가 돼요")
-                .plobbyFont(.label)
+            Text("플로깅과 플로빙에서 주운 쓰레기가 모여 '공동 목표'가 돼요")
+                .plobbyFont(.metadata)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .foregroundStyle(Color(.textSecondary))
