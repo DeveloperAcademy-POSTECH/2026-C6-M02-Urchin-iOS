@@ -12,6 +12,7 @@ import ComposableArchitecture
 @testable import Plobby
 
 @MainActor
+@Suite(.serialized)
 struct RecordFlowFeatureTests {
 
     private let now = Date(timeIntervalSince1970: 1_793_000_000)
@@ -62,8 +63,9 @@ struct RecordFlowFeatureTests {
         await store.receive(\.step.form.delegate.recordCreated) {
             $0.step = .collecting(RecordCollectingFeature.State(recordID: UUID(0), beachName: "영일대 해수욕장", trash: trash, weightKg: 2))
         }
-        await store.receive(\.profilePrefetched.success)
-        await store.receive(\.goalPrefetched.success)
+        // 닉네임과 공동 목표는 끝나는 대로 따로 오기 때문에 순서를 정하지 않고 넘겨요. 값은 아래 미리 받기 테스트에서 확인해요.
+        await store.finish()
+        await store.skipReceivedActions()
     }
 
     @Test
@@ -124,9 +126,44 @@ struct RecordFlowFeatureTests {
         await store.receive(\.delegate.closed)
     }
 
+    // MARK: - 리워드 미리 받기
+
+    @Test
+    func 저장하면_모으기_동안_닉네임과_공동_목표를_미리_받아_리워드에_넘긴다() async {
+        @Shared(.myProfile) var myProfile
+        let profile = Profile(userID: UUID(1), nickname: "바다산책", profileImageKey: nil, profileImageURL: nil)
+        let goal = Goal.fixture()
+        let store = makeStore(step: .form(RecordFormFeature.State(recordType: .plogging)), profile: profile, goal: goal)
+        store.exhaustivity = .off
+
+        await store.send(.step(.form(.delegate(.recordCreated(recordID: UUID(0), beachName: nil, trash: TrashSelection(), weightKg: nil)))))
+        await store.finish()
+
+        #expect(myProfile == profile)
+        #expect(store.state.prefetchedGoal == goal)
+
+        await store.send(.step(.collecting(.delegate(.finished))))
+        #expect(store.state.step.reward?.goal == goal)
+    }
+
+    @Test
+    func 리워드로_넘어간_뒤_도착한_공동_목표도_리워드에_넘긴다() async {
+        let goal = Goal.fixture()
+        let store = makeStore(step: .reward(RecordRewardFeature.State(recordID: UUID(0))))
+
+        await store.send(.goalPrefetched(.success(goal))) {
+            $0.prefetchedGoal = goal
+            $0.step.modify(\.reward) { $0.goal = goal }
+        }
+    }
+
     // MARK: - Helpers
 
-    private func makeStore(step: RecordFlowFeature.Step.State) -> TestStoreOf<RecordFlowFeature> {
+    private func makeStore(
+        step: RecordFlowFeature.Step.State,
+        profile: Profile? = nil,
+        goal: Goal? = nil
+    ) -> TestStoreOf<RecordFlowFeature> {
         TestStore(initialState: RecordFlowFeature.State(recordType: .plogging, step: step)) {
             RecordFlowFeature()
         } withDependencies: {
@@ -134,8 +171,8 @@ struct RecordFlowFeatureTests {
             $0.date = .constant(now)
             $0.calendar = calendar
             $0.recordClient.submitRecord = { _ in }
-            $0.userClient.fetchMyProfile = { nil }
-            $0.goalClient.fetchCurrentGoal = { _ in nil }
+            $0.userClient.fetchMyProfile = { profile }
+            $0.goalClient.fetchCurrentGoal = { _ in goal }
             $0.locale = Locale(identifier: "ko_KR")
         }
     }
