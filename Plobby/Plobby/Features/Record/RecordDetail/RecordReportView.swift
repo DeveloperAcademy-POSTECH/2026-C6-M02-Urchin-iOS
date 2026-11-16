@@ -22,7 +22,7 @@ struct RecordReportView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0.scaled) {
             PlobbyNavigationBar(
-                title: "신고 사유",
+                title: "신고 이유",
                 style: .leading,
                 isBackEnabled: !store.isReporting
             ) {
@@ -60,7 +60,7 @@ extension RecordReportView {
 
     private var reasonSection: some View {
         VStack(alignment: .leading, spacing: 16.scaled) {
-            Text("신고하는 이유를 알려주세요")
+            Text("어떤 문제가 있는지 알려주세요")
                 .plobbyFont(.heading)
                 .foregroundStyle(Color(.textPrimary))
 
@@ -134,7 +134,7 @@ extension RecordReportView {
     }
 
     private var detailPlaceholder: some View {
-        Text("신고 사유를 자세히 알려주세요.\n확인 후 운영 정책에 따라 조치하겠습니다.")
+        Text("자세한 이유를 알려주세요.\n남겨주신 내용은 확인 후 빠르게 조치할게요.")
             .plobbyFont(.label)
             .foregroundStyle(Color(.textDisabled))
             .allowsHitTesting(false)

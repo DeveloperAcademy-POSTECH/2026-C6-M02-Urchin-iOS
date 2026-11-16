@@ -25,13 +25,14 @@ struct AppFeature {
     }
     
     // MARK: - Action
-    
+
     enum Action {
         case task
         case sessionRestored(Result<SignInResult?, any Error>)
         case sessionEnded
         case deviceTokenReceived(String)
         case pushTapped(UUID)
+        case homeBoardsLoaded(Result<[HomeGoalBoard], any Error>)
         case onboarding(OnboardingFeature.Action)
         case login(LoginFeature.Action)
         case signUp(SignUpFeature.Action)
@@ -47,6 +48,7 @@ struct AppFeature {
     @Dependency(\.pushClient) var pushClient
     @Dependency(\.notificationClient) var notificationClient
     @Dependency(\.beachClient) var beachClient
+    @Dependency(\.goalClient) var goalClient
     @Dependency(\.date.now) var now
     
     // MARK: - Body
@@ -57,6 +59,7 @@ struct AppFeature {
             case .task:
                 return .merge(
                     restoreSession(),
+                    loadHomeBoards(),
                     observeSignedOutEvents(),
                     observeDeviceTokens(),
                     observeTappedRecordIDs(),
@@ -82,7 +85,16 @@ struct AppFeature {
             case .sessionRestored(.success(nil)):
                 state = signedOutState()
                 return .none
-                
+
+            case let .homeBoardsLoaded(.success(boards)):
+                @Shared(.homeBoardsCache) var cache
+                $cache.withLock { $0 = boards }
+                return .none
+
+            case let .homeBoardsLoaded(.failure(error)):
+                PlobbyLogger.error(error)
+                return .none
+
             case .sessionEnded:
                 @Shared(.membershipStatus) var membershipStatus
 
@@ -274,6 +286,46 @@ extension AppFeature {
         } catch: { error, _ in
             PlobbyLogger.error(error)
         }
+    }
+
+    private func loadHomeBoards() -> Effect<Action> {
+        let now = now
+        return .run { send in
+            let dismissedKeys: Set<String> = {
+                @Shared(.dismissedGoalKeys) var keys
+                return keys
+            }()
+
+            await send(.homeBoardsLoaded(Result {
+                try await fetchHomeBoards(now: now, skipping: dismissedKeys)
+            }))
+        }
+    }
+
+    private func fetchHomeBoards(now: Date, skipping skippedKeys: Set<String>) async throws -> [HomeGoalBoard] {
+        async let goals = goalClient.fetchGoals(now)
+        async let upcoming = goalClient.fetchUpcomingGoal(now)
+        guard let goal = try await Goal.homeGoal(in: goals, upcoming: upcoming, skipping: skippedKeys, at: now) else {
+            return []
+        }
+
+        async let plogging = fetchBoard(goal: goal, recordType: .plogging)
+        async let plobbing = fetchBoard(goal: goal, recordType: .plobbing)
+        return try await [plogging, plobbing]
+    }
+
+    private func fetchBoard(goal: Goal, recordType: RecordType) async throws -> HomeGoalBoard {
+        async let days = goalClient.fetchDailyProgresses(goal.id, recordType)
+        async let trashSummaries = goalClient.fetchTrashSummaries(goal.id, recordType)
+        async let participants = goalClient.fetchParticipants(goal.id, recordType)
+
+        return try await HomeGoalBoard(
+            goal: goal,
+            recordType: recordType,
+            days: days,
+            trashSummaries: trashSummaries,
+            participants: participants
+        )
     }
 
     private func syncBeaches() -> Effect<Action> {

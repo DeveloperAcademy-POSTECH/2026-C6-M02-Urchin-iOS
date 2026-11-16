@@ -53,11 +53,11 @@ private extension SignUpCompleteView {
         VStack(spacing: 16.scaled) {
             checkmarkIcon
 
-            Text("회원가입이 완료됐어요")
+            Text("plobby에 오신걸 환영해요")
                 .plobbyFont(.heading)
                 .foregroundStyle(Color(.textPrimary))
 
-            Text("플로깅과 플로빙 활동을 기록해 보세요")
+            Text("플로깅과 플로빙을 기록하고 함께 목표를 채워봐요")
                 .plobbyFont(.body)
                 .foregroundStyle(Color(.textSecondary))
         }

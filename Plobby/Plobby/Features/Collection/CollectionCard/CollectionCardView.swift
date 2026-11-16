@@ -268,19 +268,19 @@ private extension CollectionCardView {
 
     var guestFront: some View {
         guestFace(
-            title: "바다에서 주운 것들이\n내 컬렉션에 쌓여요",
+            title: "주운 쓰레기가 종류별로 컬렉션에 쌓여요",
             image: Image(store.category.collectionIllustrationName(isEmpty: false)),
             imageWidth: 220,
-            description: "수거한 \(store.category.name)\(store.category.name.objectParticle) 기록해\n\(store.category.name) 컬렉션을 채워보세요"
+            description: "\(store.category.name)\(store.category.name.objectParticle) 줍고 첫 기록을 남겨보세요"
         )
     }
 
     var guestBack: some View {
         guestFace(
-            title: "수거기록을 남기면\n확인할 수 있어요",
+            title: "기록을 남기면 확인할 수 있어요",
             image: Image(.collectionCardGuestLocked),
             imageWidth: 181.5,
-            description: "로그인하고 \(store.category.name)\n수거 기록을 남겨보세요"
+            description: "\(store.category.name)\(store.category.name.objectParticle) 줍고 첫 기록을 남겨보세요"
         )
     }
 

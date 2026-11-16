@@ -11,7 +11,7 @@ import Testing
 import ComposableArchitecture
 @testable import Plobby
 
-/// 공통 목표가 달성되거나 끝나거나 바뀔 때 홈이 어떻게 보이는지 확인해요.
+/// 공동 목표가 달성되거나 끝나거나 바뀔 때 홈이 어떻게 보이는지 확인해요.
 @MainActor
 struct HomeFeatureTests {
 

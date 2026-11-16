@@ -27,13 +27,13 @@ enum HomeTutorialStep: CaseIterable, Equatable {
 
     var message: String? {
         switch self {
-        case .goal: "우리가 플로깅과 플로빙으로 함께 채워 가는 목표예요"
-        case .goalToggle: "공통 목표를 눌러 보세요"
+        case .goal: "플로깅과 플로빙으로 주운 쓰레기를 모아 함께 채우는 목표예요"
+        case .goalToggle: "공동 목표를 눌러 보세요"
         case .goalFill: nil
-        case .goalPeriod: "기간이 끝나거나 목표가 달성되면 새 목표가 시작돼요"
+        case .goalPeriod: "기간이 끝나거나 목표를 채우면 새 목표가 시작돼요"
         case .recordIntro: "기록이 쌓이면 어떻게 보일까요?"
-        case .recordResult: "이렇게 기록하면 공통 목표에 포함돼요"
-        case .scroll: "스크롤해 보세요"
+        case .recordResult: "기록한 쓰레기 개수가 공동 목표에 더해져요"
+        case .scroll: "아래로 내려 날짜별 기록을 확인해 보세요"
         case .finish: nil
         }
     }

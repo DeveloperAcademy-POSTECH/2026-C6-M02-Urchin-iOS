@@ -150,7 +150,9 @@ struct HomeFeature {
             case .onAppear:
                 // 홈에 들어올 때마다 공동 목표 카드는 접힌 상태로 보여줘요
                 state.isGoalExpanded = false
-                let fetch = loadBoards(state)
+
+                @Shared(.homeBoardsCache) var cache
+                let fetch = cache.isEmpty ? loadBoards(state) : applyBoardsFromCache(cache, state: &state)
 
                 @Shared(.isHomeTutorialPending) var isHomeTutorialPending
                 guard isHomeTutorialPending, state.tutorialStep == nil else { return fetch }
@@ -427,6 +429,10 @@ extension HomeFeature {
         }
     }
     
+    private func applyBoardsFromCache(_ boards: [HomeGoalBoard], state: inout State) -> Effect<Action> {
+        return .send(.boardsResponse(.success(boards), now: now))
+    }
+
     private func loadBoards(_ state: State) -> Effect<Action> {
         let now = now
         let skippedKeys = state.dismissedGoalKeys

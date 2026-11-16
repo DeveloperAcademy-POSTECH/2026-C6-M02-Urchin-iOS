@@ -64,11 +64,11 @@ private extension ProfileSetupView {
     
     var titleSection: some View {
         VStack(alignment: .leading, spacing: 8.scaled) {
-            Text("프로필을 등록해주세요")
+            Text("프로필을 설정해 주세요")
                 .plobbyFont(.heading)
                 .foregroundStyle(Color(.textPrimary))
 
-            Text("사진과 닉네임을 추가해 주세요")
+            Text("프로필 사진을 추가하고 닉네임을 입력해 주세요")
                 .plobbyFont(.body)
                 .foregroundStyle(Color(.textSecondary))
         }
@@ -83,7 +83,7 @@ private extension ProfileSetupView {
 private extension ProfileSetupView {
 
     var nextButton: some View {
-        PlobbyButton(text: "다음") {
+        PlobbyButton(text: "관심 해변 고르기") {
             store.send(.nextButtonTapped)
         }
         .disabled(!store.canGoNext)

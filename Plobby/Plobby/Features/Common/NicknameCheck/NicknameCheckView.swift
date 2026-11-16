@@ -93,13 +93,13 @@ extension NicknameCheckView {
 
     private var message: (text: String, isError: Bool)? {
         if store.isFormatInvalid || store.isOverLimit {
-            return ("한글, 영문, 숫자로 \(Nickname.minimumLength)~\(Nickname.maximumLength)자 입력해주세요.", true)
+            return ("닉네임은 한글, 영문, 숫자로 \(Nickname.minimumLength)~\(Nickname.maximumLength)자까지 쓸 수 있어요.", true)
         }
         if store.isAvailable == false {
             return ("이미 사용 중인 닉네임이에요. 다른 닉네임을 입력해 주세요.", true)
         }
         if store.isChecked && showsAvailableMessage {
-            return ("사용 가능한 닉네임이에요", false)
+            return ("사용할 수 있는 닉네임이에요", false)
         }
         return nil
     }

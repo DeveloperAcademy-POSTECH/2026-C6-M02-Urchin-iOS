@@ -65,7 +65,7 @@ private extension FavoriteBeachSetupView {
                 .plobbyFont(.heading)
                 .foregroundStyle(Color(.textPrimary))
 
-            Text("최대 3개까지 고르고, 마이페이지에서 바꿀 수 있어요")
+            Text("최대 3개까지 고를 수 있어요. 마이에서 바꿀 수 있어요")
                 .plobbyFont(.body)
                 .foregroundStyle(Color(.textSecondary))
         }
@@ -88,7 +88,7 @@ private extension FavoriteBeachSetupView {
     var bottomSection: some View {
         BeachPickerBottomBar(
             store: store.scope(state: \.picker, action: \.picker),
-            emptyMessage: "해변을 선택하면 가입할 수 있어요",
+            emptyMessage: "관심 해변을 1개 이상 고르면 가입할 수 있어요",
             buttonTitle: "가입하기",
             isButtonDisabled: store.picker.selectedBeachIDs.isEmpty
         ) {

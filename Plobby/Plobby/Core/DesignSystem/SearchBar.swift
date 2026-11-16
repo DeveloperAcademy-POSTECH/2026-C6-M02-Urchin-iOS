@@ -45,11 +45,3 @@ struct SearchBar<Leading: View, Content: View>: View {
         }
     }
 }
-
-// MARK: - Constants
-
-enum SearchBarPlaceholder {
-
-    static let beachOrResort = "해변·해수욕장 이름으로 검색"
-    static let beachName = "해변 이름으로 검색"
-}

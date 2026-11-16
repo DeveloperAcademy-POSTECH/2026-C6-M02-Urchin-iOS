@@ -9,7 +9,7 @@ import Foundation
 import Testing
 @testable import Plobby
 
-/// 공통 목표의 상태(진행 중·달성·기간 종료), D-day, 진행도를 확인해요.
+/// 공동 목표의 상태(진행 중·달성·기간 종료), D-day, 진행도를 확인해요.
 struct GoalTests {
 
     private let now = GoalFixture.now

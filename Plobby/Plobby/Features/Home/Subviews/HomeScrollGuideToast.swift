@@ -14,7 +14,7 @@ struct HomeScrollGuideToast: View {
         HStack(spacing: 8.scaled) {
             Image(systemName: "arrow.down")
                 .font(.system(size: 14.scaled, weight: .medium))
-            Text("아래로 스크롤해 주세요")
+            Text("아래로 스크롤해 보세요")
                 .plobbyFont(.label)
         }
         .foregroundStyle(Color(.gray0))
