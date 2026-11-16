@@ -172,6 +172,7 @@
 		DA0BB75D309B1C02003400FB /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */; };
 		DA0BB75F309B1C5D003400FB /* PhotoSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */; };
 		DA0BB761309B1CD6003400FB /* PhotoLibraryClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */; };
+		DA121A5B30AB1FFA001E825C /* InfoBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA121A5A30AB1FF6001E825C /* InfoBanner.swift */; };
 		DA1A4DD3308A009900AEAB52 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD2308A009900AEAB52 /* Supabase */; };
 		DA1A4DD6308A01BF00AEAB52 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = DA1A4DD5308A01BF00AEAB52 /* ComposableArchitecture */; };
 		DA23D33D30A2F4A500901240 /* HomeRankedParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA23D33C30A2F4A400901240 /* HomeRankedParticipant.swift */; };
@@ -489,6 +490,7 @@
 		DA0BB75C309B1BFA003400FB /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
 		DA0BB75E309B1C5A003400FB /* PhotoSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelection.swift; sourceTree = "<group>"; };
 		DA0BB760309B1CA6003400FB /* PhotoLibraryClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryClient.swift; sourceTree = "<group>"; };
+		DA121A5A30AB1FF6001E825C /* InfoBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBanner.swift; sourceTree = "<group>"; };
 		DA1A4DA53089FEAF00AEAB52 /* Plobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plobby.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DB43089FEB100AEAB52 /* PlobbyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1A4DBE3089FEB100AEAB52 /* PlobbyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlobbyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1522,6 +1524,7 @@
 				7B3C1A10309D0000004C5301 /* PlobbyToast.swift */,
 				EC0D4B7D3098AFE5000E7BB7 /* DesignScale.swift */,
 				EC196748309C58BA00BC4C19 /* PlobbyTypography.swift */,
+				DA121A5A30AB1FF6001E825C /* InfoBanner.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -2095,6 +2098,7 @@
 				6654B8A74949402D91998335 /* PushClient.swift in Sources */,
 				DAEC87A6309B9F260086965E /* TrashCategory.swift in Sources */,
 				107EDDE9A48A415FB6F95151 /* DependencyValues+PushClient.swift in Sources */,
+				DA121A5B30AB1FFA001E825C /* InfoBanner.swift in Sources */,
 				ECE6F2D93098338400C4916C /* SupabaseClientKey.swift in Sources */,
 				DA0A9D05309A1586006D2504 /* PeriodField.swift in Sources */,
 				DA0A9CF9309A13DD006D2504 /* TimePickerFeature.swift in Sources */,
