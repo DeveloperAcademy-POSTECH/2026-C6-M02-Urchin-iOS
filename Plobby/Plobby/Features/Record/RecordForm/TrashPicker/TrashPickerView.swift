@@ -101,7 +101,7 @@ private extension TrashPickerView {
     var guideText: some View {
         Text(store.guideText)
             .plobbyFont(.helper)
-            .foregroundStyle(store.isCountOverLimit ? Color(.currentError) : Color(.textSecondary))
+            .foregroundStyle(store.isLimitReached ? Color(.currentError) : Color(.textSecondary))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 20.scaled)
             .padding(.top, 24.scaled)
