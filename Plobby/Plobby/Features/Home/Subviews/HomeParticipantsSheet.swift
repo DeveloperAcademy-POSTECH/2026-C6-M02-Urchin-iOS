@@ -222,7 +222,7 @@ struct HomeParticipantAvatar: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color(.gray100))
             } else {
-                AsyncImage(url: participant.profileImageURL) { image in
+                CachedImage(url: participant.profileImageURL) { image in
                     image
                         .resizable()
                         .scaledToFill()

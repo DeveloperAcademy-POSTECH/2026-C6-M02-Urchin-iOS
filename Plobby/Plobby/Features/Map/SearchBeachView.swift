@@ -222,7 +222,7 @@ private extension SearchBeachView {
                     .plobbyFont(.body)
                     .foregroundStyle(Color(.textPrimary))
 
-                Text("해변이나 해수욕장 이름으로 다시 검색해주세요")
+                Text("다른 해변 이름으로 검색해 주세요")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.textSecondary))
             }

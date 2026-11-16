@@ -44,7 +44,7 @@ struct RecordRewardView: View {
                     .opacity(isSummaryVisible ? 1 : 0)
             }
             .overlay(alignment: .bottom) {
-                PlobbyButton(text: "다음", style: .highlight) {
+                PlobbyButton(text: "기록 상세 보기", style: .highlight) {
                     store.send(.nextButtonTapped)
                 }
                 .padding(.horizontal, 20.scaled)
@@ -94,7 +94,7 @@ extension RecordRewardView {
                 }
 
                 if let weightKg = store.weightKg {
-                    metric(value: weightKg.formatted(), unit: "kg", title: "총무게")
+                    metric(value: weightKg.formatted(), unit: "kg", title: "총 무게")
                 }
             }
             .padding(.top, 24.scaled)
@@ -114,7 +114,7 @@ extension RecordRewardView {
                 .frame(width: 290.scaled, height: 1)
                 .padding(.top, 12.scaled)
 
-            Text("공통 목표")
+            Text("공동 목표")
                 .plobbyFont(.helper)
                 .foregroundStyle(Color(.gray0))
                 .opacity(0.72)

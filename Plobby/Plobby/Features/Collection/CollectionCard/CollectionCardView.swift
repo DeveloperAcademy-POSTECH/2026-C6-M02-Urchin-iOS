@@ -126,12 +126,12 @@ private extension CollectionCardView {
                 .frame(width: 80.scaled, height: 80.scaled)
                 .padding(.bottom, 20.scaled)
 
-            Text("아직 수거 기록이 없어요")
+            Text("아직 주운 \(store.category.name)\(store.category.name.subjectParticle) 없어요")
                 .plobbyFont(.heading)
                 .foregroundStyle(Color(.gray0))
                 .padding(.bottom, 8.scaled)
 
-            Text("\(store.category.name)\(store.category.name.objectParticle) 수거한 활동을 기록하면\n이 카드에 차곡차곡 쌓여요.")
+            Text("\(store.category.name)\(store.category.name.objectParticle) 줍고 기록을 남기면\n이 카드에 차곡차곡 쌓여요")
                 .plobbyFont(.label)
                 .foregroundStyle(Color(.textDisabled))
         }
@@ -243,7 +243,7 @@ private extension CollectionCardView {
             transaction.disablesAnimations = true
             store.send(.recordButtonTapped, transaction: transaction)
         } label: {
-            Label("활동 기록하기", systemImage: "plus")
+            Label("기록하기", systemImage: "plus")
                 .plobbyFont(.label)
                 .foregroundStyle(Color(.gray0))
                 .frame(width: 128.scaled, height: 36.scaled)

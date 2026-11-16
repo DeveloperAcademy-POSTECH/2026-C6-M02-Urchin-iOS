@@ -305,7 +305,7 @@ private extension TrashPickerView {
                 
                 Spacer()
                 
-                Text(store.selection.isEmpty ? "없음" : "총 \(store.selection.totalCount)개")
+                Text(store.selection.isEmpty ? "아직 선택한 종류가 없어요" : "총 \(store.selection.totalCount)개")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.textPrimary))
             }
@@ -316,7 +316,6 @@ private extension TrashPickerView {
             }
         }
         .padding(.horizontal, 20.scaled)
-        // 시안 하단 여백 48에서 홈 인디케이터 영역(34)을 뺀 값
         .padding(.bottom, 14.scaled)
         .background(Color(.gray0))
         .overlay(alignment: .top) {

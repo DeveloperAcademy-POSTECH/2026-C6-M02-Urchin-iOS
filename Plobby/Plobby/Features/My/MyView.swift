@@ -83,7 +83,6 @@ private extension MyView {
     static let iconSize: CGFloat = 19.scaled
     static let iconFrameSize: CGFloat = 24.scaled
 
-    /// 빨간 점 중심이 종 아이콘(24×24) 오른쪽 위 곡선의 45도 지점(약 16.4, 5)에 오도록 옮기는 값이에요.
     static let unreadDotInset = CGSize(width: CGFloat(4.5).scaled, height: 2.scaled)
 
     var settingsButton: PlobbyNavigationBarConfiguration.TrailingButton {
@@ -125,9 +124,12 @@ extension MyView {
                     onFilterChanged: { store.send(.recordFilterChanged($0)) },
                     onRecordTapped: { store.send(.recordTapped($0)) },
                     onMoreTapped: { menuRecord = $0 },
-                    menuRecordID: menuRecord?.id
+                    menuRecordID: menuRecord?.id,
+                    isLoading: store.isLoadingRecords
                 ) {
-                    if store.isMember {
+                    if store.isRecordsFetchFailed, store.loadedRecords == nil {
+                        recordsFetchFailedMessage
+                    } else if store.isMember {
                         RecordListEmptyMessage()
                     } else {
                         guestRecordPrompt
@@ -175,7 +177,7 @@ extension MyView {
                     .resizable()
                     .scaledToFill()
             } else {
-                AsyncImage(url: store.profile?.profileImageURL) { image in
+                CachedImage(url: store.profile?.profileImageURL) { image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -224,7 +226,7 @@ extension MyView {
     }
 
     private func memberValue(_ value: String) -> String {
-        store.isMember ? value : "-"
+        store.isMember && store.loadedRecords != nil ? value : "-"
     }
 
     private func activitySummaryCard(title: String, value: String) -> some View {
@@ -242,6 +244,26 @@ extension MyView {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12.scaled)
         .background(Color(.gray50), in: RoundedRectangle(cornerRadius: 12.scaled))
+    }
+}
+
+// MARK: - 기록 불러오기 실패
+
+extension MyView {
+
+    /// 기록을 한 번도 받지 못한 채로 요청이 실패했을 때 보여줘요. 기록 상세의 실패 화면과 같은 모양이에요.
+    private var recordsFetchFailedMessage: some View {
+        VStack(spacing: 16.scaled) {
+            Text("기록을 불러오지 못했어요")
+                .plobbyFont(.body)
+                .foregroundStyle(Color(.textSecondary))
+
+            Button("다시 시도") {
+                store.send(.recordsRetryTapped)
+            }
+            .plobbyFont(.actionLabel)
+            .foregroundStyle(Color(.green600))
+        }
     }
 }
 
@@ -290,7 +312,6 @@ extension MyView {
 
 extension MyView {
 
-    /// 관심 해변을 해제하거나 되돌릴 때 카드가 천천히 빠지고 돌아오게 해요.
     private static let favoriteBeachAnimation: Animation = .easeInOut(duration: 0.5)
 
     private var favoriteBeachSection: some View {
@@ -340,7 +361,6 @@ extension MyView {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .disabled(store.isFavoriteBeachLimitReached)
         .accessibilityLabel("관심 해변 추가")
     }
 

@@ -18,9 +18,9 @@ struct MyFeature {
     struct State: Equatable {
         @Shared(.membershipStatus) var membershipStatus
         @Shared(.favoriteBeaches) var favoriteBeaches
-        var profile: Profile?
+        @Shared(.myProfile) var profile
         var savedProfileImage: Data?
-        var records: [RecordSummary] = []
+        @Shared(.myRecords) var loadedRecords
         var recordFilter: RecordFilter = .all
         var removedFavoriteBeach: RemovedFavoriteBeach?
         var hasUnreadNotification = false
@@ -33,6 +33,17 @@ struct MyFeature {
         @Presents var beachHome: BeachHomeFeature.State?
         @Presents var beachRecordDetail: RecordDetailFeature.State?
         @Presents var favoriteBeachAdd: FavoriteBeachAddFeature.State?
+
+        var records: [RecordSummary] {
+            loadedRecords ?? []
+        }
+
+        /// 기록을 한 번도 받지 못한 채로 마지막 요청이 실패했어요. 빈 기록과 구분해서 "불러오지 못했어요"를 보여줘요.
+        var isRecordsFetchFailed = false
+
+        var isLoadingRecords: Bool {
+            isMember && loadedRecords == nil && !isRecordsFetchFailed
+        }
 
         var filteredRecords: [RecordSummary] {
             guard let recordType = recordFilter.recordType else { return records }
@@ -81,6 +92,7 @@ struct MyFeature {
         case favoriteBeachUndoButtonTapped
         case favoriteBeachRequestFailed(Beach, isFavorite: Bool)
         case recordFilterChanged(RecordFilter)
+        case recordsRetryTapped
         case recordTapped(RecordSummary.ID)
         case recordMenuSelected(RecordSummary, RecordMenuFeature.Menu)
         case recordStartButtonTapped
@@ -98,7 +110,6 @@ struct MyFeature {
         enum Delegate {
             case loginRequired
             case signedOut
-            /// 목표 달성 알림을 눌러 홈으로 돌아가요.
             case homeRequested
         }
     }
@@ -138,12 +149,12 @@ struct MyFeature {
                 return .merge(
                     fetchMyProfile(),
                     fetchFavoriteBeaches(),
-                    fetchRecords(userID: user.id),
+                    fetchRecords(userID: user.id, state: &state),
                     fetchHasUnreadNotification()
                 )
 
             case let .profileResponse(.success(profile)):
-                state.profile = profile
+                state.$profile.withLock { $0 = profile }
                 return .none
 
             case let .favoriteBeachesResponse(.success(beaches)):
@@ -151,22 +162,33 @@ struct MyFeature {
                 return .none
 
             case let .recordsResponse(.success(records)):
-                state.records = records
+                state.$loadedRecords.withLock { $0 = records }
+                state.isRecordsFetchFailed = false
                 return .none
 
             case let .unreadNotificationResponse(.success(hasUnread)):
                 state.hasUnreadNotification = hasUnread
                 return .none
 
+            case let .recordsResponse(.failure(error)):
+                PlobbyLogger.error(error)
+                state.isRecordsFetchFailed = true
+                return .none
+
             case let .profileResponse(.failure(error)),
                  let .favoriteBeachesResponse(.failure(error)),
-                 let .recordsResponse(.failure(error)),
                  let .unreadNotificationResponse(.failure(error)):
                 PlobbyLogger.error(error)
                 return .none
 
+            case .recordsRetryTapped:
+                guard case let .member(user) = state.membershipStatus else { return .none }
+
+                return fetchRecords(userID: user.id, state: &state)
+
             case .favoriteBeachAddButtonTapped:
                 guard state.isMember else { return .send(.delegate(.loginRequired)) }
+                guard !state.isFavoriteBeachLimitReached else { return .send(.toast(.show(.favoriteBeachLimitReached))) }
 
                 state.favoriteBeachAdd = FavoriteBeachAddFeature.State()
                 return .none
@@ -221,11 +243,11 @@ struct MyFeature {
 
                 guard case let .member(user) = state.membershipStatus else { return .none }
 
-                return fetchRecords(userID: user.id)
+                return fetchRecords(userID: user.id, state: &state)
 
             case let .recordMenu(.presented(.delegate(.deleted(recordID)))):
                 state.recordMenu = nil
-                state.records.removeAll { $0.id == recordID }
+                state.$loadedRecords.withLock { $0?.removeAll { $0.id == recordID } }
                 return .none
 
             case .recordMenu(.presented(.delegate(.blocked))):
@@ -266,7 +288,7 @@ struct MyFeature {
                 return .send(.delegate(.loginRequired))
 
             case let .profileEdit(.presented(.delegate(.saved(profile, profileImage)))):
-                state.profile = profile
+                state.$profile.withLock { $0 = profile }
 
                 if let profileImage {
                     state.savedProfileImage = profileImage
@@ -282,11 +304,11 @@ struct MyFeature {
 
                 guard case let .member(user) = state.membershipStatus else { return .none }
 
-                return fetchRecords(userID: user.id)
+                return fetchRecords(userID: user.id, state: &state)
 
             case let .recordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.recordDetail = nil
-                state.records.removeAll { $0.id == recordID }
+                state.$loadedRecords.withLock { $0?.removeAll { $0.id == recordID } }
                 return .none
 
             case let .beachHome(.presented(.delegate(.recordSelected(record)))):
@@ -299,7 +321,7 @@ struct MyFeature {
 
             case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.beachRecordDetail = nil
-                state.records.removeAll { $0.id == recordID }
+                state.$loadedRecords.withLock { $0?.removeAll { $0.id == recordID } }
                 return .send(.beachHome(.presented(.recordRemoved(recordID))))
 
             case let .beachRecordDetail(.presented(.delegate(.blocked(userID)))):
@@ -345,8 +367,10 @@ extension MyFeature {
         }
     }
 
-    private func fetchRecords(userID: UUID) -> Effect<Action> {
-        .run { send in
+    /// 다시 요청할 때는 실패 표시를 지워서, 받는 동안 로딩 표시가 나오게 해요.
+    private func fetchRecords(userID: UUID, state: inout State) -> Effect<Action> {
+        state.isRecordsFetchFailed = false
+        return .run { send in
             await send(.recordsResponse(Result { try await recordClient.fetchUserRecords(userID) }))
         }
     }

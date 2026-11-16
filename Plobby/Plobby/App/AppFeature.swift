@@ -201,6 +201,15 @@ extension AppFeature {
 
     private func updateMembershipStatus(_ status: MembershipStatus) {
         @Shared(.membershipStatus) var membershipStatus
+
+        // 로그아웃하거나 다른 계정으로 바뀌면, 이전 계정의 마이 화면 데이터가 잠깐이라도 보이지 않게 비워요.
+        if membershipStatus != status {
+            @Shared(.myProfile) var myProfile
+            @Shared(.myRecords) var myRecords
+            $myProfile.withLock { $0 = nil }
+            $myRecords.withLock { $0 = nil }
+        }
+
         $membershipStatus.withLock { $0 = status }
     }
 

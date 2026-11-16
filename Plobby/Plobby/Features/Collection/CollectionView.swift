@@ -268,6 +268,8 @@ private extension CollectionView {
 
 private extension CollectionView {
 
+    static let captureEdgeInset: CGFloat = 1
+
     func shareCurrentCard() {
         guard let window = UIApplication.shared.connectedScenes
             .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
@@ -275,11 +277,14 @@ private extension CollectionView {
         else { return }
 
         let cardFrame = cardsFrame.insetBy(dx: 32.scaled, dy: 0)
+        // 카드 가장자리 픽셀에는 뒤의 흰 배경이 섞여 있어서, 그대로 오려내면 저장한 이미지에 흰 테두리가 생겨요.
+        // 오려내는 영역을 1pt 안쪽으로 잡아 섞인 픽셀을 빼요.
+        let captureFrame = cardFrame.insetBy(dx: Self.captureEdgeInset, dy: Self.captureEdgeInset)
         let format = UIGraphicsImageRendererFormat()
         format.opaque = false
 
-        let image = UIGraphicsImageRenderer(bounds: cardFrame, format: format).image { _ in
-            UIBezierPath(roundedRect: cardFrame, cornerRadius: 20.scaled).addClip()
+        let image = UIGraphicsImageRenderer(bounds: captureFrame, format: format).image { _ in
+            UIBezierPath(roundedRect: captureFrame, cornerRadius: 20.scaled - Self.captureEdgeInset).addClip()
             window.drawHierarchy(in: window.bounds, afterScreenUpdates: false)
         }
 

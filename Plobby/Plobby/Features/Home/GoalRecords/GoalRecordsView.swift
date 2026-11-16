@@ -152,7 +152,7 @@ private extension GoalRecordsView {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 ZStack(alignment: .topTrailing) {
-                    AsyncImage(url: record.coverPhotoURL) { image in
+                    CachedImage(url: record.coverPhotoURL) { image in
                         image
                             .resizable()
                             .scaledToFill()

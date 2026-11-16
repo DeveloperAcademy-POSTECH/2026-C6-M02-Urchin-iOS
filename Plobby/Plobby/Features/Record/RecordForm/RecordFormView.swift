@@ -193,7 +193,7 @@ private extension RecordFormView {
             VStack(alignment: .leading, spacing: 0) {
                 sectionTitle("사진 *")
 
-                Text("사진을 \(maxPhotoCount)장까지 추가할 수 있어요")
+                Text("사진은 \(maxPhotoCount)장까지 추가할 수 있어요")
                     .plobbyFont(.helper)
                     .foregroundStyle(Color(.textSecondary))
             }
@@ -226,7 +226,6 @@ private extension RecordFormView {
                     .foregroundStyle(Color(.textTertiary))
                     .frame(width: 24.scaled, height: 24.scaled)
 
-                // 사진을 고르기 전에는 카메라 아이콘만 보여줘요.
                 if !store.photos.isEmpty {
                     Text("\(photoCountText)/\(maxPhotoCount)")
                         .foregroundStyle(Color(.gray600))
@@ -250,7 +249,6 @@ private extension RecordFormView {
             .overlay(alignment: .topTrailing) {
                 photoDeleteButton(photo.id)
             }
-            // X 버튼은 사진 밖으로 걸쳐 있어서 끌 때 잘려 보여요. 끄는 동안에는 사진만 보여줘요.
             .onDrag {
                 NSItemProvider(object: photo.id as NSString)
             } preview: {
@@ -272,7 +270,7 @@ private extension RecordFormView {
     @ViewBuilder
     func representativeLabel(isRepresentative: Bool) -> some View {
         if isRepresentative {
-            Text("대표사진")
+            Text("대표 사진")
                 .font(.custom(PretendardWeight.medium.rawValue, fixedSize: 11.scaled))
                 .foregroundStyle(Color(.gray0))
                 .frame(maxWidth: .infinity)
@@ -294,7 +292,7 @@ private extension RecordFormView {
             PhotoThumbnailView(assetID: asset.id, size: size)
             
         case let .remote(_, url):
-            AsyncImage(url: url) { image in
+            CachedImage(url: url) { image in
                 image
                     .resizable()
                     .scaledToFill()
@@ -367,7 +365,7 @@ private extension RecordFormView {
                         .foregroundStyle(Color(.textSecondary))
                         .frame(width: 24.scaled, height: 24.scaled)
 
-                    Text(store.beach?.name ?? "장소 선택")
+                    Text(store.beach?.name ?? "활동 장소 선택")
                         .plobbyFont(.body)
                         .foregroundStyle(store.beach == nil ? Color(.textSecondary) : Color(.textPrimary))
 
@@ -386,7 +384,7 @@ private extension RecordFormView {
             .buttonStyle(.plain)
 
             if store.isLocationErrorVisible {
-                errorText("활동한 해변을 선택해 주세요.")
+                errorText("활동한 해변을 선택해 주세요")
                     .padding(.top, -8.scaled)
             }
         }
@@ -513,7 +511,7 @@ private extension RecordFormView {
             }
 
             if store.isTrashErrorVisible {
-                errorText("주운 쓰레기를 선택해 주세요.")
+                errorText("주운 쓰레기를 선택해 주세요")
                     .padding(.top, -12.scaled)
             } else if let error = store.totalWeightError {
                 errorText(error)
@@ -546,7 +544,7 @@ private extension RecordFormView {
 
     var totalWeightRow: some View {
         HStack(spacing: 8.scaled) {
-            optionalTitle("총무게")
+            optionalTitle("총 무게")
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             unitInputBox("예: 30", text: $store.totalWeightText, unit: "kg")
@@ -669,7 +667,6 @@ private extension RecordFormView {
         }
     }
 
-    /// "최대 수심 (선택)"처럼 선택 항목 표시를 흐리게 붙여요.
     func optionalTitle(_ title: String) -> some View {
         Text("\(title) \(Text("(선택)").foregroundStyle(Color(.textSecondary)))")
             .plobbyFont(.body)
@@ -693,7 +690,7 @@ private extension RecordFormView {
         text: Binding<String>,
         unit: String
     ) -> some View {
-        HStack(spacing: 8.scaled) {
+        HStack(spacing: 2.scaled) {
             TextField(
                 "",
                 text: text,

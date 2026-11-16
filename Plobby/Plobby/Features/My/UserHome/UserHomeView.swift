@@ -79,7 +79,7 @@ extension UserHomeView {
 
     private var profile: some View {
         HStack(alignment: .center, spacing: 16.scaled) {
-            AsyncImage(url: store.profileImageURL) { image in
+            CachedImage(url: store.profileImageURL) { image in
                 image
                     .resizable()
                     .scaledToFill()
