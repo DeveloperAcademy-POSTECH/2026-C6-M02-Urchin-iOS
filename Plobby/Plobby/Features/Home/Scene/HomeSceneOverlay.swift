@@ -18,6 +18,11 @@ struct HomeSceneOverlay: View {
     let onTrashSummaryTapped: () -> Void
     /// 날짜 칩과 개수 칩 영역을 화면 좌표로 알려줘요. 튜토리얼에서 칩을 밝게 비출 때 써요.
     var onPillFrameChanged: ((Pill, CGRect) -> Void)?
+    /// true면 쓰레기를 줍기 시작할 때만 개수 칩을 띄우고, 개수가 다 올라간 뒤 잠시 있다가 숨겨요.
+    /// false면(튜토리얼) 모은 상태에서 칩을 계속 보여줘요.
+    var showsCountChipBriefly = false
+
+    @State private var shownCollect: CollectKey?
 
     enum Pill {
         case date
@@ -28,6 +33,52 @@ struct HomeSceneOverlay: View {
         topPills
             .frame(maxHeight: .infinity, alignment: .top)
             .padding(.top, 12.scaled)
+            .onChange(of: SceneKey(recordType: recordType, stage: stage)) { oldKey, newKey in
+                guard showsCountChipBriefly else { return }
+                // 플로깅·플로빙을 넘길 때는 칩을 띄우지 않고, 같은 활동에서 줍기 시작했을 때만 띄워요
+                guard oldKey.recordType == newKey.recordType else {
+                    shownCollect = nil
+                    return
+                }
+                guard case let .collecting(day) = newKey.stage else { return }
+                withAnimation { shownCollect = CollectKey(recordType: newKey.recordType, day: day) }
+            }
+            .task(id: shownCollect) {
+                guard shownCollect != nil else { return }
+                try? await Task.sleep(for: HomeCountUpText.totalDuration + Self.countChipHoldDuration)
+                guard !Task.isCancelled else { return }
+                withAnimation { shownCollect = nil }
+            }
+    }
+}
+
+// MARK: - Count Chip
+
+private extension HomeSceneOverlay {
+
+    /// 개수가 다 올라간 뒤 칩을 보여주는 시간
+    static let countChipHoldDuration: Duration = .seconds(1)
+
+    struct SceneKey: Equatable {
+        let recordType: RecordType
+        let stage: HomeSceneStage
+    }
+
+    struct CollectKey: Equatable {
+        let recordType: RecordType
+        let day: Int
+    }
+
+    var showsCountChip: Bool {
+        guard isAtDay else { return false }
+        guard showsCountChipBriefly else { return stage.isCollected }
+
+        switch stage {
+        case let .collecting(day), let .collected(day):
+            return shownCollect == CollectKey(recordType: recordType, day: day)
+        case .arrived, .finale:
+            return false
+        }
     }
 }
 
@@ -57,7 +108,7 @@ private extension HomeSceneOverlay {
                     .homeSceneShadow()
                     .reportsFrame { onPillFrameChanged?(.date, $0) }
 
-                if stage.isCollected, isAtDay {
+                if showsCountChip {
                     HomeCountUpText(count: day.collectedCount)
                         .id(day.day)
                         .plobbyFont(.labelSelected)
@@ -105,13 +156,17 @@ private extension HomeSceneOverlay {
 
 private struct HomeCountUpText: View {
 
+    static let delay: Duration = .milliseconds(100)
+    static let duration: Duration = .milliseconds(600)
+    static var totalDuration: Duration { delay + duration }
+
     let count: Int
     @State private var shownCount = 0.0
 
     var body: some View {
         CountText(value: shownCount)
             .onAppear {
-                withAnimation(.easeOut(duration: 0.6).delay(0.1)) {
+                withAnimation(.easeOut(duration: Self.duration.seconds).delay(Self.delay.seconds)) {
                     shownCount = Double(count)
                 }
             }
@@ -150,5 +205,14 @@ private extension View {
         } action: { frame in
             action(frame)
         }
+    }
+}
+
+// MARK: - Duration
+
+private extension Duration {
+
+    var seconds: Double {
+        Double(components.seconds) + Double(components.attoseconds) / 1e18
     }
 }

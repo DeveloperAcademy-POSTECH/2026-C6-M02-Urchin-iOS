@@ -76,6 +76,9 @@
 		7B3C1A95A1B2C3D4E5F60001 /* HomeTutorialOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A94A1B2C3D4E5F60001 /* HomeTutorialOverlay.swift */; };
 		7B3C1A97A1B2C3D4E5F60001 /* HomeTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A96A1B2C3D4E5F60001 /* HomeTutorialView.swift */; };
 		7B3C1A99A1B2C3D4E5F60001 /* HomeTutorialFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A98A1B2C3D4E5F60001 /* HomeTutorialFeatureTests.swift */; };
+		7B3C1A9BA1B2C3D4E5F60001 /* CachedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */; };
+		7B3C1A9DA1B2C3D4E5F60001 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */; };
+		7B3C1AA0A1B2C3D4E5F60001 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9FA1B2C3D4E5F60001 /* ImageLoader.swift */; };
 		7F6604FCA89CBAB01B584458 /* BeachSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E58C5C437D6E802334EBA0 /* BeachSheetView.swift */; };
 		8B75290473133F917916BA5D /* UserClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B83BBF957568508C43BBA03 /* UserClient.swift */; };
 		99D7B4F443AEAB31162B39D0 /* TimeOfDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CDA82F1ABD462D21D92A40 /* TimeOfDay.swift */; };
@@ -265,9 +268,6 @@
 		ECE6F2D93098338400C4916C /* SupabaseClientKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28C3098338400C4916C /* SupabaseClientKey.swift */; };
 		ECE6F2DA3098338400C4916C /* PlobbyLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F28F3098338400C4916C /* PlobbyLogger.swift */; };
 		ECE6F2DB3098338400C4916C /* ProfileImageCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */; };
-		7B3C1A9BA1B2C3D4E5F60001 /* CachedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */; };
-		7B3C1A9DA1B2C3D4E5F60001 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */; };
-		7B3C1AA0A1B2C3D4E5F60001 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3C1A9FA1B2C3D4E5F60001 /* ImageLoader.swift */; };
 		ECE6F2DC3098338400C4916C /* PlobbyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2923098338400C4916C /* PlobbyButton.swift */; };
 		ECE6F2DD3098338400C4916C /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2943098338400C4916C /* AlertType.swift */; };
 		ECE6F2DE3098338400C4916C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE6F2953098338400C4916C /* Secrets.swift */; };
@@ -385,6 +385,9 @@
 		7B3C1A94A1B2C3D4E5F60001 /* HomeTutorialOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTutorialOverlay.swift; sourceTree = "<group>"; };
 		7B3C1A96A1B2C3D4E5F60001 /* HomeTutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTutorialView.swift; sourceTree = "<group>"; };
 		7B3C1A98A1B2C3D4E5F60001 /* HomeTutorialFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTutorialFeatureTests.swift; sourceTree = "<group>"; };
+		7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImage.swift; sourceTree = "<group>"; };
+		7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		7B3C1A9FA1B2C3D4E5F60001 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		80273A7BC92A464F26671A60 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		85CABD57D49687CB8C64DAC1 /* BeachMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeachMarker.swift; sourceTree = "<group>"; };
 		8FB45DD2E86E419B885B9F42 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
@@ -582,9 +585,6 @@
 		ECE6F28C3098338400C4916C /* SupabaseClientKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClientKey.swift; sourceTree = "<group>"; };
 		ECE6F28F3098338400C4916C /* PlobbyLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyLogger.swift; sourceTree = "<group>"; };
 		ECE6F2903098338400C4916C /* ProfileImageCompressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageCompressor.swift; sourceTree = "<group>"; };
-		7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImage.swift; sourceTree = "<group>"; };
-		7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
-		7B3C1A9FA1B2C3D4E5F60001 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		ECE6F2923098338400C4916C /* PlobbyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlobbyButton.swift; sourceTree = "<group>"; };
 		ECE6F2943098338400C4916C /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		ECE6F2953098338400C4916C /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
@@ -778,6 +778,16 @@
 				7B3C1A62309D0000004C5301 /* RecordCollectingFeature.swift */,
 			);
 			path = RecordCollecting;
+			sourceTree = "<group>";
+		};
+		7B3C1A9EA1B2C3D4E5F60001 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */,
+				7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */,
+				7B3C1A9FA1B2C3D4E5F60001 /* ImageLoader.swift */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		84C514248E87412C8FC65AA2 /* Push */ = {
@@ -1496,16 +1506,6 @@
 				7B3C1A9EA1B2C3D4E5F60001 /* Image */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		7B3C1A9EA1B2C3D4E5F60001 /* Image */ = {
-			isa = PBXGroup;
-			children = (
-				7B3C1A9AA1B2C3D4E5F60001 /* CachedImage.swift */,
-				7B3C1A9CA1B2C3D4E5F60001 /* ImageCache.swift */,
-				7B3C1A9FA1B2C3D4E5F60001 /* ImageLoader.swift */,
-			);
-			path = Image;
 			sourceTree = "<group>";
 		};
 		ECE6F2933098338400C4916C /* DesignSystem */ = {
@@ -2373,7 +2373,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -2433,7 +2432,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -2476,7 +2474,6 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.2;
-				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.plobby;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2526,7 +2523,6 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.2;
-				MARKETING_VERSION = 1.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.plobby;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2553,7 +2549,6 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z5J43V9D9J;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.PlobbyTests;
@@ -2576,7 +2571,6 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z5J43V9D9J;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.urchin.PlobbyTests;
