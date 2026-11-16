@@ -221,6 +221,11 @@ struct HomeFeature {
                 let progress = min(max(target, -1), Double(lastDay + 1))
                 let nextStop = collectedThrough + 1
                 state.isScrollGuideVisible = false
+
+                // 수거대(마지막 도착점)에 도착한 뒤에는 더 아래로 스크롤해도 그 자리에 머물러요
+                if case .finale = stage, progress >= current {
+                    return .none
+                }
                 
                 if progress > current, progress >= Double(nextStop) {
                     state.walkProgresses[type] = Double(nextStop)
