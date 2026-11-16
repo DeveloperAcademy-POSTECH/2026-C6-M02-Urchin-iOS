@@ -138,8 +138,7 @@ extension RecordListSection {
                         RecordMoreButton(isMenuPresented: menuRecordID == record.id) {
                             onMoreTapped(record)
                         }
-                        .padding(.top, (16 - RecordMoreButton.tapInset).scaled)
-                        .padding(.trailing, (Self.imageSize + RecordMoreButton.imageSpacing).scaled)
+                        .padding(.top, 16.scaled)
                     }
                 }
 
@@ -174,7 +173,6 @@ extension RecordListSection {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .padding(.trailing, onMoreTapped == nil ? 0 : RecordMoreButton.width.scaled)
 
             CachedImage(url: record.coverPhotoURL) { image in
                 image
@@ -220,17 +218,22 @@ struct RecordMoreButton: View {
     static var imageSpacing: CGFloat { 32 }
     static var height: CGFloat { PlobbyTypography.actionLabel.lineHeight }
     static var tapSize: CGFloat { 44 }
-    /// 터치 영역이 아이콘보다 위아래로 넓어진 만큼이에요. 위치를 잡을 때 이만큼 올려요.
-    static var tapInset: CGFloat { (tapSize - height) / 2 }
+    /// 사진 오른쪽 위 모서리에서 아이콘까지의 거리예요.
+    static var imageInset: CGSize { CGSize(width: 12, height: 4) }
 
+    /// 사진의 오른쪽 위 모서리에 맞춰 두면, 아이콘이 사진 안쪽에 흰색으로 보여요.
     var body: some View {
-        Button(action: action) {
+        Button {
+            action()
+        } label: {
             Image(systemName: "ellipsis")
                 .font(.system(size: 13.scaled, weight: .semibold))
-                .foregroundStyle(Color(.gray600))
+                .foregroundStyle(Color(.gray0))
                 .frame(width: Self.width.scaled, height: Self.height.scaled, alignment: .trailing)
                 .plobbyDropdownAnchor(isPresented: isMenuPresented)
-                .frame(width: Self.tapSize.scaled, height: Self.tapSize.scaled, alignment: .trailing)
+                .padding(.top, Self.imageInset.height.scaled)
+                .padding(.trailing, Self.imageInset.width.scaled)
+                .frame(width: Self.tapSize.scaled, height: Self.tapSize.scaled, alignment: .topTrailing)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
