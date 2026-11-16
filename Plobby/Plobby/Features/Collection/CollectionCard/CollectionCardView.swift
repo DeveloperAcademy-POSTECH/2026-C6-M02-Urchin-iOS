@@ -268,7 +268,7 @@ private extension CollectionCardView {
 
     var guestFront: some View {
         guestFace(
-            title: "주운 쓰레기가 종류별로 컬렉션에 쌓여요",
+            title: "주운 쓰레기가\n종류별로 컬렉션에 쌓여요",
             image: Image(store.category.collectionIllustrationName(isEmpty: false)),
             imageWidth: 220,
             description: "\(store.category.name)\(store.category.name.objectParticle) 줍고 첫 기록을 남겨보세요"
@@ -284,7 +284,12 @@ private extension CollectionCardView {
         )
     }
 
-    func guestFace(title: String, image: Image, imageWidth: CGFloat, description: String) -> some View {
+    func guestFace(
+        title: String,
+        image: Image,
+        imageWidth: CGFloat,
+        description: String
+    ) -> some View {
         cardFace(
             VStack(spacing: 0) {
                 header
@@ -318,7 +323,6 @@ private extension CollectionCardView {
         )
     }
 
-    /// 비회원 탭은 화면에서 가로채 로그인 시트로 이어져요.
     var loginButton: some View {
         Button {
             store.send(.recordButtonTapped)
