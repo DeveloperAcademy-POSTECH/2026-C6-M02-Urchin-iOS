@@ -53,8 +53,9 @@ struct CachedImage<Content: View, Placeholder: View>: View {
             }
         }
         .task(id: url) {
-            guard let url, ImageCache.shared.image(for: url) == nil else { return }
+            guard let url else { return }
 
+            // 캐시에 있어도 받아 둬요. 나중에 캐시에서 지워져도, 이미 보이던 사진이 회색 칸으로 바뀌지 않아요.
             let image = await ImageLoader.shared.load(url)
             guard !Task.isCancelled else { return }
 
