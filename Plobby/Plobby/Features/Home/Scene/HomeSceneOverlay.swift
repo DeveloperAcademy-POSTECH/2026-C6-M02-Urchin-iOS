@@ -102,6 +102,7 @@ private extension HomeSceneOverlay {
                     .foregroundStyle(Color(.textPrimary))
                     .contentTransition(.numericText(value: day.day.timeIntervalSince1970))
                     .animation(.snappy(duration: 0.35), value: day.day)
+                    .fixedSize()
                     .padding(.horizontal, 16.scaled)
                     .frame(height: 32.scaled)
                     .background(Color(.gray0).opacity(0.95), in: Capsule())
@@ -184,6 +185,7 @@ private struct HomeCountUpText: View {
         var body: some View {
             Text("+\(Int(value.rounded()))개")
                 .monospacedDigit()
+                .fixedSize()
         }
     }
 }
