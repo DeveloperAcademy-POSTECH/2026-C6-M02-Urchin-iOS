@@ -26,6 +26,7 @@ struct GoalRecordsView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 24.scaled) {
+                    InfoBanner(information: "기록을 삭제해도 달성한 목표는 유지돼요")
                     goalCard
                     recordsSection
                 }

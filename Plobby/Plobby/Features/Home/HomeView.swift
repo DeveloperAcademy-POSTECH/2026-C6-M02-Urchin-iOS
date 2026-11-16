@@ -140,7 +140,8 @@ private extension HomeView {
                 totalTrashCount: store.board?.totalTrashCount ?? 0,
                 isGoalFinished: store.isGoalFinished,
                 isAtDay: store.walkProgress == store.walkProgress.rounded(),
-                onTrashSummaryTapped: { store.send(.trashSummaryButtonTapped, transaction: Self.noAnimation) }
+                onTrashSummaryTapped: { store.send(.trashSummaryButtonTapped, transaction: Self.noAnimation) },
+                showsCountChipBriefly: true
             )
             .padding(.top, max(visibleCardHeight, cardHeight))
             .animation(.easeInOut(duration: 0.25), value: visibleCardHeight)
