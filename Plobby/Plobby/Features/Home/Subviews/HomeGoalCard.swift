@@ -118,20 +118,26 @@ private extension HomeGoalCard {
             .font(.system(size: 14.scaled))
             .foregroundStyle(Color(.textSecondary))
             .rotationEffect(.degrees(isExpanded ? 180 : 0))
+            // 강조할 때는 아이콘을 동그라미 가운데에 두고, 카드 테두리와 간격을 둬서 선에 닿지 않게 해요.
+            .frame(width: highlightsToggle ? HomeGoalToggleHighlight.diameter.scaled : nil)
             .background {
                 if highlightsToggle {
                     HomeGoalToggleHighlight()
                 }
             }
-            .padding(.trailing, CGFloat(highlightsToggle ? 13 : 12 - 1.5).scaled)
+            .padding(.trailing, highlightsToggle ? Self.highlightTrailing.scaled : CGFloat(12 - 1.5).scaled)
             .frame(width: 44.scaled, height: 44.scaled, alignment: .trailing)
     }
+
+    static let highlightTrailing: CGFloat = 4
 }
 
 // MARK: - HomeGoalToggleHighlight
 
 /// 튜토리얼에서 펼치기 버튼을 감싸는 동그라미예요. 나타날 때 살짝 커졌다 작아지며 눈에 띄게 해요.
 private struct HomeGoalToggleHighlight: View {
+
+    static let diameter: CGFloat = 40
 
     @State private var hasAppeared = false
 
@@ -142,7 +148,7 @@ private struct HomeGoalToggleHighlight: View {
                 Circle()
                     .strokeBorder(Color(.textBrand), lineWidth: 1.25)
             }
-            .frame(width: 40.scaled, height: 40.scaled)
+            .frame(width: Self.diameter.scaled, height: Self.diameter.scaled)
             .keyframeAnimator(initialValue: 1.0, trigger: hasAppeared) { content, scale in
                 content.scaleEffect(scale)
             } keyframes: { _ in

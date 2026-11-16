@@ -27,7 +27,7 @@ enum HomeTutorialStep: CaseIterable, Equatable {
 
     var message: String? {
         switch self {
-        case .goal: "플로깅과 플로빙으로 주운 쓰레기를 모아 함께 채우는 목표예요"
+        case .goal: "플로깅과 플로빙으로 주운 쓰레기를 모아\n함께 채우는 목표예요"
         case .goalToggle: "공동 목표를 눌러 보세요"
         case .goalFill: nil
         case .goalPeriod: "기간이 끝나거나 목표를 채우면 새 목표가 시작돼요"
