@@ -151,7 +151,7 @@ private extension RecordDetailView {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .allowsHitTesting(!record.isMine && store.opensAuthorHome)
+            .allowsHitTesting(store.opensAuthorHome)
 
             Text(record.title)
                 .plobbyFont(.heading)

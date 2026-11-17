@@ -355,6 +355,10 @@ struct HomeFeature {
                 state.tutorialStep = nil
                 return .none
                 
+            case .recordDetail(.presented(.delegate(.myProfileRequested))):
+                state.recordDetail = nil
+                return .send(.delegate(.myProfileRequested))
+
             case .recordDetail(.presented(.delegate(.closed))):
                 state.recordDetail = nil
                 return .none

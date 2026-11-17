@@ -243,7 +243,8 @@ struct MapFeature {
                 state.path.append(.recordDetail(RecordDetailFeature.State(recordID: record.id)))
                 return .none
 
-            case .path(.element(_, .beachHome(.delegate(.myProfileRequested)))):
+            case .path(.element(_, .recordDetail(.delegate(.myProfileRequested)))),
+                 .path(.element(_, .beachHome(.delegate(.myProfileRequested)))):
                 return .send(.delegate(.myProfileRequested))
 
             case let .path(.element(id, .recordDetail(.delegate(.closed)))):

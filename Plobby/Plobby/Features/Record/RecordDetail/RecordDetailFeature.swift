@@ -104,6 +104,8 @@ struct RecordDetailFeature {
             /// 작성자를 차단했어요. 부모는 상세를 닫고 그 사용자의 기록을 모두 빼요.
             case blocked(userID: UUID)
             case deleted(UUID)
+            /// 내 기록에서 내 프로필을 눌렀어요. 부모는 마이 화면으로 보내요.
+            case myProfileRequested
         }
     }
     
@@ -184,7 +186,8 @@ struct RecordDetailFeature {
                 return .send(.delegate(.closed))
 
             case .authorProfileTapped:
-                guard state.opensAuthorHome, let record = state.record, !record.isMine else { return .none }
+                guard state.opensAuthorHome, let record = state.record else { return .none }
+                guard !record.isMine else { return .send(.delegate(.myProfileRequested)) }
 
                 state.userHome = UserHomeFeature.State(
                     userID: record.userID,
