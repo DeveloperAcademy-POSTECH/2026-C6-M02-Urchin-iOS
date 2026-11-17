@@ -71,7 +71,6 @@ struct MapFeature {
         enum Delegate: Equatable {
             case recordStartRequested(Beach, RecordType)
             case loginRequired
-            case myProfileRequested
         }
     }
 
@@ -80,6 +79,7 @@ struct MapFeature {
         case beachHome(BeachHomeFeature)
         case searchBeach(SearchBeachFeature)
         case recordDetail(RecordDetailFeature)
+        case my(MyFeature)
     }
 
     static let defaultSpanMeters: Double = 5_000
@@ -243,9 +243,10 @@ struct MapFeature {
                 state.path.append(.recordDetail(RecordDetailFeature.State(recordID: record.id)))
                 return .none
 
-            case .path(.element(_, .recordDetail(.delegate(.myProfileRequested)))),
-                 .path(.element(_, .beachHome(.delegate(.myProfileRequested)))):
-                return .send(.delegate(.myProfileRequested))
+            // 마이를 지도 화면 스택 위에 쌓아서, 뒤로가면 해변 홈으로 돌아가요.
+            case .path(.element(_, .beachHome(.delegate(.myProfileRequested)))):
+                state.path.append(.my(MyFeature.State()))
+                return .none
 
             case let .path(.element(id, .recordDetail(.delegate(.closed)))):
                 state.path.pop(from: id)

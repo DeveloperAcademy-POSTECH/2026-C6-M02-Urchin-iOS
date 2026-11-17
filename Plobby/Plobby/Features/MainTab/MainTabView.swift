@@ -40,11 +40,16 @@ struct MainTabView: View {
                 .navigationDestination(
                     item: $store.scope(state: \.collection.my, action: \.collection.my)
                 ) { store in
-                    myView(store: store)
+                    MyScreen(store: store)
                 }
         } destination: { store in
-            MapView.destination(store)
-                .toolbar(.hidden, for: .navigationBar)
+            // 마이는 프로필 수정·설정 등 이어지는 화면까지 붙은 `MyScreen`으로 그려요.
+            if case let .my(myStore) = store.case {
+                MyScreen(store: myStore)
+            } else {
+                MapView.destination(store)
+                    .toolbar(.hidden, for: .navigationBar)
+            }
         }
         .tint(.primary)
         .overlay {
@@ -142,46 +147,6 @@ private extension MainTabView {
     func tabLabel(_ title: String, icon: String, tab: MainTab) -> some View {
         Label(title, systemImage: store.selectedTab == tab ? "\(icon).fill" : icon)
             .environment(\.symbolVariants, .none)
-    }
-
-    func myView(store: StoreOf<MyFeature>) -> some View {
-        @Bindable var store = store
-
-        return MyView(store: store)
-            .toolbar(.hidden, for: .navigationBar)
-            .navigationDestination(
-                item: $store.scope(state: \.profileEdit, action: \.profileEdit)
-            ) { store in
-                ProfileEditView(store: store)
-            }
-            .navigationDestination(
-                item: $store.scope(state: \.settings, action: \.settings)
-            ) { store in
-                SettingsView(store: store)
-            }
-            .navigationDestination(
-                item: $store.scope(state: \.notification, action: \.notification)
-            ) { store in
-                NotificationView(store: store)
-            }
-            .navigationDestination(
-                item: $store.scope(state: \.recordDetail, action: \.recordDetail)
-            ) { store in
-                RecordDetailView(store: store)
-                    .toolbar(.hidden, for: .navigationBar)
-            }
-            .navigationDestination(
-                item: $store.scope(state: \.beachHome, action: \.beachHome)
-            ) { beachHomeStore in
-                BeachHomeView(store: beachHomeStore)
-                    .toolbar(.hidden, for: .navigationBar)
-                    .navigationDestination(
-                        item: $store.scope(state: \.beachRecordDetail, action: \.beachRecordDetail)
-                    ) { store in
-                        RecordDetailView(store: store)
-                            .toolbar(.hidden, for: .navigationBar)
-                    }
-            }
     }
 }
 

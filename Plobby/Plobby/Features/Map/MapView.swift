@@ -61,6 +61,9 @@ struct MapView: View {
             SearchBeachView(store: store)
         case let .recordDetail(store):
             RecordDetailView(store: store)
+        case .my:
+            // `MainTabView`에서 그려요.
+            EmptyView()
         }
     }
 }

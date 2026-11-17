@@ -101,7 +101,7 @@ struct MainTabFeature {
                 state.home.userHome = nil
 
                 var my = MyFeature.State()
-                my.notification = NotificationFeature.State(recordDetail: RecordDetailFeature.State(recordID: recordID))
+                my.notification = NotificationFeature.State(recordDetail: RecordDetailFeature.State(recordID: recordID, myProfileTap: .returnsToMy))
 
                 state.selectedTab = .collection
                 state.collection.my = my
@@ -126,9 +126,25 @@ struct MainTabFeature {
                 state.selectedTab = .home
                 return reloadRecordScreens(state)
                 
-            case .home(.delegate(.myProfileRequested)),
-                 .map(.delegate(.myProfileRequested)):
+            case .home(.delegate(.myProfileRequested)):
                 state.collection.my = MyFeature.State()
+                return .none
+
+            // 해변 홈이나 기록 상세 위에 연 마이도 컬렉션에서 연 마이와 같은 일을 해요.
+            case .map(.path(.element(_, .my(.delegate(.signedOut))))),
+                 .map(.path(.element(_, .recordDetail(.my(.presented(.delegate(.signedOut))))))),
+                 .home(.recordDetail(.presented(.my(.presented(.delegate(.signedOut)))))),
+                 .home(.goalList(.presented(.goalRecords(.presented(.recordDetail(.presented(.my(.presented(.delegate(.signedOut)))))))))):
+                return .send(.delegate(.signedOut))
+
+            case .map(.path(.element(_, .my(.delegate(.homeRequested))))),
+                 .map(.path(.element(_, .recordDetail(.my(.presented(.delegate(.homeRequested))))))),
+                 .home(.recordDetail(.presented(.my(.presented(.delegate(.homeRequested)))))),
+                 .home(.goalList(.presented(.goalRecords(.presented(.recordDetail(.presented(.my(.presented(.delegate(.homeRequested)))))))))):
+                state.map.path.removeAll()
+                state.home.recordDetail = nil
+                state.home.goalList = nil
+                state.selectedTab = .home
                 return .none
 
             case let .home(.delegate(.recordStarted(recordType))):

@@ -118,7 +118,7 @@ struct RecordFlowFeature {
                 return .none
                 
             case let .step(.reward(.delegate(.finished(recordID)))):
-                state.step = .detail(.init(recordID: recordID))
+                state.step = .detail(.init(recordID: recordID, myProfileTap: .ignored))
                 return .none
                 
             case .step(.photoPicker(.delegate(.cancelled))),

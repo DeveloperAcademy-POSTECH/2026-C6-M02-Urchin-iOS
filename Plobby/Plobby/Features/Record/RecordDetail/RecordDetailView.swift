@@ -57,6 +57,9 @@ struct RecordDetailView: View {
         .navigationDestination(item: $store.scope(state: \.userHome, action: \.userHome)) { store in
             UserHomeView(store: store)
         }
+        .navigationDestination(item: $store.scope(state: \.my, action: \.my)) { store in
+            MyScreen(store: store)
+        }
     }
 }
 
