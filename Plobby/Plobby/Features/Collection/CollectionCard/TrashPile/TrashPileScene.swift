@@ -35,7 +35,7 @@ final class TrashPileScene: SKScene {
     override func didMove(to view: SKView) {
         backgroundColor = UIColor(resource: .surfaceBlack)
         // 화면에 다시 붙을 때 멈춘 채로 남아 있으면 떨어지던 쓰레기가 그 자리에 멈춰요.
-        isPaused = false
+        resume()
         startIfNeeded()
     }
 
@@ -63,10 +63,17 @@ extension TrashPileScene {
 
     private var ratio: CGFloat { DesignScale.fitRatio(for: size) }
 
+    /// 장면과 장면을 그리는 뷰를 함께 다시 움직여요.
+    /// 뷰(`SKView`)가 멈춰 있으면 장면을 풀거나 쓰레기 위치를 옮겨도 화면이 다시 그려지지 않아, 마지막 모습에 멈춰 보여요.
+    func resume() {
+        view?.isPaused = false
+        isPaused = false
+    }
+
     private func startIfNeeded() {
         guard isActive, !hasStarted, size.width > 0, size.height > 0, view != nil else { return }
         hasStarted = true
-        isPaused = false
+        resume()
 
         let textures = imageNames.map { SKTexture(imageNamed: $0) }
         let targets = pileTargets(count: textures.count, itemExtent: averageExtent(of: textures))
@@ -199,7 +206,7 @@ extension TrashPileScene {
 
     /// 남은 쓰레기를 모두 최종 위치에 놓아요. 이미 다 떨어졌다면 겉모습은 바뀌지 않아요.
     private func settleAll() {
-        isPaused = false
+        resume()
         removeAllActions()
 
         for index in drops.indices {
