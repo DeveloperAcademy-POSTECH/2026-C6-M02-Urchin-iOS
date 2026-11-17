@@ -116,7 +116,7 @@ struct MainTabFeature {
                 state.pendingRecordBeach = nil
                 return .none
                 
-            // 기록하기는 탭 위에 덮어 띄워서 닫아도 홈·컬렉션이 다시 나타나지 않아요. 직접 다시 불러와야 개수가 바로 바뀌어요.
+            // 기록하기는 탭 위에 덮어 띄워서 닫아도 홈·지도·컬렉션이 다시 나타나지 않아요. 직접 다시 불러와야 개수와 지도 핀이 바로 바뀌어요.
             case .recordFlow(.presented(.delegate(.closed))):
                 state.recordFlow = nil
                 return reloadRecordScreens(state)
@@ -175,6 +175,7 @@ private extension MainTabFeature {
     func reloadRecordScreens(_ state: State) -> Effect<Action> {
         var effects: [Effect<Action>] = [
             .send(.home(.onAppear)),
+            .send(.map(.task)),
             .send(.collection(.onAppear))
         ]
         if state.collection.my != nil {
