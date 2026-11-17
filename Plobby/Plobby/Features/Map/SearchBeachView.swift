@@ -209,9 +209,12 @@ private extension SearchBeachView {
                     }
                     .buttonStyle(.plain)
                     .overlay(alignment: .bottom) {
-                        Rectangle()
-                            .fill(Color(.gray200))
-                            .frame(height: 1)
+                        // 구분선은 결과 사이에만 그어요. 마지막 결과 아래에는 긋지 않아요.
+                        if result.id != results.last?.id {
+                            Rectangle()
+                                .fill(Color(.gray200))
+                                .frame(height: 1)
+                        }
                     }
                 }
             }
