@@ -30,16 +30,16 @@ struct TrashPileView: View {
             .onChange(of: PileInput(count: count, isActive: isActive), initial: true) { _, input in
                 scene.imageNames = Self.imageNames(category: category, count: input.count)
                 scene.isActive = input.isActive
-                scene.isPaused = false
+                scene.resume()
             }
-            // 앱이 잠깐 비활성화되면(알림 센터, 제어 센터 등) SpriteKit이 장면을 멈추고 다시 풀지 않아요.
+            // 앱이 잠깐 비활성화되면(알림 센터, 제어 센터 등) SpriteKit이 뷰와 장면을 멈추고 다시 풀지 않아요.
             .onChange(of: scenePhase) { _, phase in
                 if phase == .active {
-                    scene.isPaused = false
+                    scene.resume()
                 }
             }
             .onAppear {
-                scene.isPaused = false
+                scene.resume()
             }
     }
 

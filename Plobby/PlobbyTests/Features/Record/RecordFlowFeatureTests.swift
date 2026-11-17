@@ -84,7 +84,7 @@ struct RecordFlowFeatureTests {
 
         await store.send(\.step.reward.nextButtonTapped)
         await store.receive(\.step.reward.delegate.finished) {
-            $0.step = .detail(RecordDetailFeature.State(recordID: UUID(0)))
+            $0.step = .detail(RecordDetailFeature.State(recordID: UUID(0), myProfileTap: .ignored))
         }
     }
 
@@ -119,7 +119,7 @@ struct RecordFlowFeatureTests {
 
     @Test
     func 기록상세에서_닫으면_기록_플로우가_종료된다() async {
-        let store = makeStore(step: .detail(RecordDetailFeature.State(recordID: UUID(0))))
+        let store = makeStore(step: .detail(RecordDetailFeature.State(recordID: UUID(0), myProfileTap: .ignored)))
 
         await store.send(\.step.detail.backTapped)
         await store.receive(\.step.detail.delegate.closed)

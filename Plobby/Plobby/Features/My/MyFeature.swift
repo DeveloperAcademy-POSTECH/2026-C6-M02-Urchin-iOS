@@ -231,7 +231,7 @@ struct MyFeature {
                 return .none
 
             case let .recordTapped(recordID):
-                state.recordDetail = RecordDetailFeature.State(recordID: recordID)
+                state.recordDetail = RecordDetailFeature.State(recordID: recordID, myProfileTap: .returnsToMy)
                 return .none
 
             case let .recordMenuSelected(record, menu):
@@ -279,6 +279,10 @@ struct MyFeature {
                 state.notification = nil
                 return .send(.delegate(.homeRequested))
 
+            case .notification(.presented(.delegate(.myRequested))):
+                state.notification = nil
+                return .none
+
             case .notification(.presented(.delegate(.settingsRequested))):
                 state.notification = nil
                 state.settings = SettingsFeature.State()
@@ -306,17 +310,27 @@ struct MyFeature {
 
                 return fetchRecords(userID: user.id, state: &state)
 
+            // 마이에서 연 내 기록이라, 상세를 닫으면 바로 마이 화면이에요.
+            case .recordDetail(.presented(.delegate(.myProfileRequested))):
+                state.recordDetail = nil
+                return .none
+
             case let .recordDetail(.presented(.delegate(.deleted(recordID)))):
                 state.recordDetail = nil
                 state.$loadedRecords.withLock { $0?.removeAll { $0.id == recordID } }
                 return .none
 
             case let .beachHome(.presented(.delegate(.recordSelected(record)))):
-                state.beachRecordDetail = RecordDetailFeature.State(recordID: record.id)
+                state.beachRecordDetail = RecordDetailFeature.State(recordID: record.id, myProfileTap: .returnsToMy)
                 return .none
 
             case .beachRecordDetail(.presented(.delegate(.closed))):
                 state.beachRecordDetail = nil
+                return .none
+
+            case .beachRecordDetail(.presented(.delegate(.myProfileRequested))):
+                state.beachRecordDetail = nil
+                state.beachHome = nil
                 return .none
 
             case let .beachRecordDetail(.presented(.delegate(.deleted(recordID)))):

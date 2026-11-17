@@ -23,13 +23,16 @@ struct RecordDetailFeature {
         var isLikeUpdating = false
         /// 타인 홈에서 연 상세는 작성자 홈을 또 열지 않아요.
         var opensAuthorHome = true
+        let myProfileTap: MyProfileTap
         @Presents var editForm: RecordFormFeature.State?
         @Presents var userHome: UserHomeFeature.State?
+        @Presents var my: MyFeature.State?
         @Presents var report: RecordReportFeature.State?
         @Presents var alert: AlertState<Action.Alert>?
         
-        init(recordID: UUID) {
+        init(recordID: UUID, myProfileTap: MyProfileTap = .opensMy) {
             self.recordID = recordID
+            self.myProfileTap = myProfileTap
         }
         
         var record: RecordDetail? {
@@ -42,6 +45,18 @@ struct RecordDetailFeature {
         }
     }
     
+    // MARK: - MyProfileTap
+
+    /// 내 기록에서 내 프로필을 눌렀을 때 할 일이에요.
+    enum MyProfileTap: Equatable {
+        /// 상세 위에 마이를 띄워요. 뒤로가면 이 상세로 돌아와요.
+        case opensMy
+        /// 마이 안에서 연 상세예요. 부모가 상세를 닫아 원래 마이를 보여줘요.
+        case returnsToMy
+        /// 기록하기 화면처럼 마이로 갈 수 없는 곳이에요.
+        case ignored
+    }
+
     // MARK: - LoadState
     
     enum LoadState: Equatable {
@@ -78,6 +93,7 @@ struct RecordDetailFeature {
         case moreMenuSelected(MoreMenu)
         case editForm(PresentationAction<RecordFormFeature.Action>)
         case userHome(PresentationAction<UserHomeFeature.Action>)
+        case my(PresentationAction<MyFeature.Action>)
         case report(PresentationAction<RecordReportFeature.Action>)
         case alert(PresentationAction<Alert>)
         case deleteResponse(Result<Void, any Error>)
@@ -104,6 +120,8 @@ struct RecordDetailFeature {
             /// 작성자를 차단했어요. 부모는 상세를 닫고 그 사용자의 기록을 모두 빼요.
             case blocked(userID: UUID)
             case deleted(UUID)
+            /// 마이 안에서 연 내 기록에서 내 프로필을 눌렀어요. 부모는 상세를 닫아 마이를 보여줘요.
+            case myProfileRequested
         }
     }
     
@@ -184,14 +202,25 @@ struct RecordDetailFeature {
                 return .send(.delegate(.closed))
 
             case .authorProfileTapped:
-                guard state.opensAuthorHome, let record = state.record, !record.isMine else { return .none }
+                guard state.opensAuthorHome, let record = state.record else { return .none }
+                guard record.isMine else {
+                    state.userHome = UserHomeFeature.State(
+                        userID: record.userID,
+                        nickname: record.nickname,
+                        profileImageURL: record.profileImageURL
+                    )
+                    return .none
+                }
 
-                state.userHome = UserHomeFeature.State(
-                    userID: record.userID,
-                    nickname: record.nickname,
-                    profileImageURL: record.profileImageURL
-                )
-                return .none
+                switch state.myProfileTap {
+                case .opensMy:
+                    state.my = MyFeature.State()
+                    return .none
+                case .returnsToMy:
+                    return .send(.delegate(.myProfileRequested))
+                case .ignored:
+                    return .none
+                }
 
             case .userHome(.presented(.delegate(.closed))):
                 state.userHome = nil
@@ -271,6 +300,7 @@ struct RecordDetailFeature {
                 
             case .editForm,
                     .userHome,
+                    .my,
                     .report,
                     .alert,
                     .delegate:
@@ -285,6 +315,9 @@ struct RecordDetailFeature {
         }
         .ifLet(\.$userHome, action: \.userHome) {
             UserHomeFeature()
+        }
+        .ifLet(\.$my, action: \.my) {
+            MyFeature()
         }
         .ifLet(\.$alert, action: \.alert)
     }

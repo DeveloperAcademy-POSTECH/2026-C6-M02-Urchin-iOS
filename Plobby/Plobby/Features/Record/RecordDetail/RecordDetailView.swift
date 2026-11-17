@@ -57,6 +57,9 @@ struct RecordDetailView: View {
         .navigationDestination(item: $store.scope(state: \.userHome, action: \.userHome)) { store in
             UserHomeView(store: store)
         }
+        .navigationDestination(item: $store.scope(state: \.my, action: \.my)) { store in
+            MyScreen(store: store)
+        }
     }
 }
 
@@ -151,7 +154,7 @@ private extension RecordDetailView {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .allowsHitTesting(!record.isMine && store.opensAuthorHome)
+            .allowsHitTesting(store.opensAuthorHome)
 
             Text(record.title)
                 .plobbyFont(.heading)

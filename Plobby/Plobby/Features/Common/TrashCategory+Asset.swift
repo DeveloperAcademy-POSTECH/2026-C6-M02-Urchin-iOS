@@ -34,38 +34,34 @@ extension TrashCategory {
         }
     }
 
+    /// 쇼케이스용으로 고른 에셋만 애니메이션(리워드의 떨어지는 쓰레기, 컬렉션 쓰레기 더미)에 써요.
     var assetNames: [String] {
         switch self {
         case .glass:
             ["glass_bottle_brown", "glass_bottle_green", "glass_bottle_rust"]
         case .plastic:
             [
-                "bottle_blue", "bottle_gray", "bottle_white", "bottle_yellow", "bottle_crumpled_yellow",
-                "water_jug_blue", "water_can_pink", "water_can_yellow",
-                "plastic_bag_pink", "plastic_bag_sky_blue", "plastic_bag_teal", "plastic_bag_white",
-                "cup_orange", "cup_red", "tube_white", "tube_yellow", "straw_striped", "straw_yellow"
+                "water_can_yellow", "water_can_pink", "water_jug_blue", "bottle_white",
+                "plastic_bag_sky_blue"
             ]
         case .metal:
-            ["chopsticks_gray", "spoon_gray", "fork_gray"]
+            ["spoon_gray", "chopsticks_gray"]
         case .wood:
             ["wood_piece_brown"]
         case .fishingGear:
-            ["fishing_net_green", "fishing_trap_teal", "buoy_horizontal_orange", "buoy_vertical_orange"]
+            ["fishing_trap_teal", "buoy_vertical_orange"]
         case .clothing:
-            ["tshirt_mint", "tshirt_pink", "sneaker_blue"]
+            ["tshirt_pink", "tshirt_mint"]
         case .styrofoam:
             ["styrofoam_ver1"]
         case .can:
-            ["soda_can_mint", "soda_can_pink", "soda_can_red", "tin_can_blue", "tin_can_red"]
+            ["soda_can_red", "soda_can_pink", "tin_can_blue", "tin_can_red"]
         case .paper:
-            ["crumpled_paper_white", "paper_cup_white", "spoon_white"]
+            ["paper_cup_white", "paper_bag_beige"]
         case .rubber:
             ["tire_gray"]
         case .etc:
-            [
-                "cigarette_butt", "battery_orange", "battery_red",
-                "refrigerator_white", "washing_machine_white", "monitor_gray", "brick"
-            ]
+            ["monitor_gray", "phone_gray", "washing_machine_white", "brick"]
         }
     }
 }

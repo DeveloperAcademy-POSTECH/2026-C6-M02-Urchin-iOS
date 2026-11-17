@@ -101,7 +101,7 @@ struct MainTabFeature {
                 state.home.userHome = nil
 
                 var my = MyFeature.State()
-                my.notification = NotificationFeature.State(recordDetail: RecordDetailFeature.State(recordID: recordID))
+                my.notification = NotificationFeature.State(recordDetail: RecordDetailFeature.State(recordID: recordID, myProfileTap: .returnsToMy))
 
                 state.selectedTab = .collection
                 state.collection.my = my
@@ -116,7 +116,7 @@ struct MainTabFeature {
                 state.pendingRecordBeach = nil
                 return .none
                 
-            // 기록하기는 탭 위에 덮어 띄워서 닫아도 홈·컬렉션이 다시 나타나지 않아요. 직접 다시 불러와야 개수가 바로 바뀌어요.
+            // 기록하기는 탭 위에 덮어 띄워서 닫아도 홈·지도·컬렉션이 다시 나타나지 않아요. 직접 다시 불러와야 개수와 지도 핀이 바로 바뀌어요.
             case .recordFlow(.presented(.delegate(.closed))):
                 state.recordFlow = nil
                 return reloadRecordScreens(state)
@@ -126,9 +126,25 @@ struct MainTabFeature {
                 state.selectedTab = .home
                 return reloadRecordScreens(state)
                 
-            case .home(.delegate(.myProfileRequested)),
-                 .map(.delegate(.myProfileRequested)):
+            case .home(.delegate(.myProfileRequested)):
                 state.collection.my = MyFeature.State()
+                return .none
+
+            // 해변 홈이나 기록 상세 위에 연 마이도 컬렉션에서 연 마이와 같은 일을 해요.
+            case .map(.path(.element(_, .my(.delegate(.signedOut))))),
+                 .map(.path(.element(_, .recordDetail(.my(.presented(.delegate(.signedOut))))))),
+                 .home(.recordDetail(.presented(.my(.presented(.delegate(.signedOut)))))),
+                 .home(.goalList(.presented(.goalRecords(.presented(.recordDetail(.presented(.my(.presented(.delegate(.signedOut)))))))))):
+                return .send(.delegate(.signedOut))
+
+            case .map(.path(.element(_, .my(.delegate(.homeRequested))))),
+                 .map(.path(.element(_, .recordDetail(.my(.presented(.delegate(.homeRequested))))))),
+                 .home(.recordDetail(.presented(.my(.presented(.delegate(.homeRequested)))))),
+                 .home(.goalList(.presented(.goalRecords(.presented(.recordDetail(.presented(.my(.presented(.delegate(.homeRequested)))))))))):
+                state.map.path.removeAll()
+                state.home.recordDetail = nil
+                state.home.goalList = nil
+                state.selectedTab = .home
                 return .none
 
             case let .home(.delegate(.recordStarted(recordType))):
@@ -175,6 +191,7 @@ private extension MainTabFeature {
     func reloadRecordScreens(_ state: State) -> Effect<Action> {
         var effects: [Effect<Action>] = [
             .send(.home(.onAppear)),
+            .send(.map(.task)),
             .send(.collection(.onAppear))
         ]
         if state.collection.my != nil {

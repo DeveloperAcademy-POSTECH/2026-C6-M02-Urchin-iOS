@@ -401,3 +401,50 @@ extension MyView {
         }
     }
 }
+
+// MARK: - MyScreen
+
+/// 마이와 마이에서 이어지는 화면(프로필 수정, 설정, 알림, 기록 상세, 해변 홈)을 함께 붙인 화면이에요.
+/// 컬렉션, 지도, 기록 상세 어디서 마이를 열어도 이 화면을 써요.
+struct MyScreen: View {
+
+    @Bindable var store: StoreOf<MyFeature>
+
+    var body: some View {
+        MyView(store: store)
+            .toolbar(.hidden, for: .navigationBar)
+            .navigationDestination(
+                item: $store.scope(state: \.profileEdit, action: \.profileEdit)
+            ) { store in
+                ProfileEditView(store: store)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.settings, action: \.settings)
+            ) { store in
+                SettingsView(store: store)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.notification, action: \.notification)
+            ) { store in
+                NotificationView(store: store)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.recordDetail, action: \.recordDetail)
+            ) { store in
+                RecordDetailView(store: store)
+                    .toolbar(.hidden, for: .navigationBar)
+            }
+            .navigationDestination(
+                item: $store.scope(state: \.beachHome, action: \.beachHome)
+            ) { beachHomeStore in
+                BeachHomeView(store: beachHomeStore)
+                    .toolbar(.hidden, for: .navigationBar)
+                    .navigationDestination(
+                        item: $store.scope(state: \.beachRecordDetail, action: \.beachRecordDetail)
+                    ) { store in
+                        RecordDetailView(store: store)
+                            .toolbar(.hidden, for: .navigationBar)
+                    }
+            }
+    }
+}

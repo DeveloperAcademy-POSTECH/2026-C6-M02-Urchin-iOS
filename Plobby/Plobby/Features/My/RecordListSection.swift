@@ -21,7 +21,6 @@ struct RecordListSection<EmptyContent: View>: View {
     let isLoading: Bool
     let emptyContent: EmptyContent
 
-    private static var recentDayCount: Int { 7 }
     private static var imageSize: CGFloat { 108 }
 
     init(
@@ -157,7 +156,7 @@ extension RecordListSection {
                     .foregroundStyle(Color(.textPrimary))
                     .lineLimit(1)
 
-                recordDate(record.createdAt)
+                Text(record.createdAt.recordDateText)
                     .plobbyFont(.metadata)
                     .foregroundStyle(Color(.gray600))
                     .padding(.top, 6.scaled)
@@ -186,24 +185,6 @@ extension RecordListSection {
         }
         .frame(height: Self.imageSize.scaled)
         .padding(.vertical, 16.scaled)
-    }
-}
-
-// MARK: - Format
-
-extension RecordListSection {
-
-    private func recordDate(_ date: Date) -> Text {
-        let recentLimit = Calendar.current.date(byAdding: .day, value: -Self.recentDayCount, to: .now) ?? .now
-        let dateFormat = Date.VerbatimFormatStyle(
-            format: "\(year: .defaultDigits).\(month: .twoDigits).\(day: .twoDigits)",
-            timeZone: .current,
-            calendar: .current
-        )
-
-        return date > recentLimit
-            ? Text(date, format: .relative(presentation: .numeric))
-            : Text(date, format: dateFormat)
     }
 }
 

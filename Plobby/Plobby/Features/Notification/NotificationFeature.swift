@@ -60,6 +60,8 @@ struct NotificationFeature {
             case homeRequested
             /// 알림이 없을 때 알림 설정을 켜러 설정 화면으로 가요.
             case settingsRequested
+            /// 내 기록 상세에서 내 프로필을 눌러 마이 화면으로 돌아가요.
+            case myRequested
         }
     }
 
@@ -110,7 +112,7 @@ struct NotificationFeature {
                 }
 
                 if notification.canOpenRecord, let recordID = notification.recordID {
-                    state.recordDetail = RecordDetailFeature.State(recordID: recordID)
+                    state.recordDetail = RecordDetailFeature.State(recordID: recordID, myProfileTap: .returnsToMy)
                 }
                 return readEffect
 
@@ -138,6 +140,9 @@ struct NotificationFeature {
             case .recordDetail(.presented(.delegate(.deleted))):
                 state.recordDetail = nil
                 return fetchNotifications()
+
+            case .recordDetail(.presented(.delegate(.myProfileRequested))):
+                return .send(.delegate(.myRequested))
 
             case .recordDetail, .delegate:
                 return .none

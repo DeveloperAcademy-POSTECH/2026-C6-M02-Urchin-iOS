@@ -30,6 +30,8 @@ struct MapFeature {
         var hasRequestedLocation = false
         var currentLocation: Coordinate?
         var isShowingCurrentLocation = false
+        /// 시트 사진으로 기록 상세를 열었을 때의 해변이에요. 상세에서 돌아오면 이 해변의 시트를 다시 띄워요.
+        var sheetReturnBeach: Beach?
         @Shared(.beaches) var allBeaches
         @Shared(.favoriteBeaches) var favoriteBeaches
         @Shared(.membershipStatus) var membershipStatus
@@ -69,7 +71,6 @@ struct MapFeature {
         enum Delegate: Equatable {
             case recordStartRequested(Beach, RecordType)
             case loginRequired
-            case myProfileRequested
         }
     }
 
@@ -78,6 +79,7 @@ struct MapFeature {
         case beachHome(BeachHomeFeature)
         case searchBeach(SearchBeachFeature)
         case recordDetail(RecordDetailFeature)
+        case my(MyFeature)
     }
 
     static let defaultSpanMeters: Double = 5_000
@@ -216,11 +218,9 @@ struct MapFeature {
                 state.path.append(.beachHome(BeachHomeFeature.State(beach: beach)))
                 return .none
 
-            // 시트 사진으로 연 기록은 해변 홈 위에 쌓아서, 뒤로가면 그 해변 홈이 보여요.
+            // 시트 사진으로 연 기록에서 뒤로가면 사진을 고르던 시트로 돌아가요.
             case let .beachSheet(.presented(.delegate(.recordSelected(recordID)))):
-                if let beach = state.beachSheet?.beach {
-                    state.path.append(.beachHome(BeachHomeFeature.State(beach: beach)))
-                }
+                state.sheetReturnBeach = state.beachSheet?.beach
                 state.beachSheet = nil
                 state.path.append(.recordDetail(RecordDetailFeature.State(recordID: recordID)))
                 return .none
@@ -243,8 +243,10 @@ struct MapFeature {
                 state.path.append(.recordDetail(RecordDetailFeature.State(recordID: record.id)))
                 return .none
 
+            // 마이를 지도 화면 스택 위에 쌓아서, 뒤로가면 해변 홈으로 돌아가요.
             case .path(.element(_, .beachHome(.delegate(.myProfileRequested)))):
-                return .send(.delegate(.myProfileRequested))
+                state.path.append(.my(MyFeature.State()))
+                return .none
 
             case let .path(.element(id, .recordDetail(.delegate(.closed)))):
                 state.path.pop(from: id)
@@ -267,6 +269,16 @@ struct MapFeature {
             BeachSheetFeature()
         }
         .forEach(\.path, action: \.path)
+        // 뒤로가기 버튼과 밀어서 뒤로가기 모두 화면 스택이 비는 것으로 알 수 있어요.
+        .onChange(of: \.path.isEmpty) { _, isEmpty in
+            Reduce { state, _ in
+                guard isEmpty, let beach = state.sheetReturnBeach else { return .none }
+
+                state.sheetReturnBeach = nil
+                state.beachSheet = BeachSheetFeature.State(beach: beach)
+                return .none
+            }
+        }
     }
 }
 
