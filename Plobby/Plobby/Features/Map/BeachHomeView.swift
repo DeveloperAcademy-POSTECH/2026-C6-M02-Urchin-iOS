@@ -209,9 +209,7 @@ private extension BeachHomeView {
                     recordRow(record)
 
                     if record.id != store.visibleRecords.last?.id {
-                        Rectangle()
-                            .fill(Color(.gray200))
-                            .frame(height: 1)
+                        Divider()
                     }
                 }
             }
@@ -236,30 +234,22 @@ private extension BeachHomeView {
         }
     }
 
+    /// 마이의 기록 목록(`RecordListSection`)과 같은 형태예요. 다른 사람 기록도 섞여 있어서 작성자를 함께 보여줘요.
     func recordRow(_ record: BeachRecord) -> some View {
         Button {
             store.send(.recordTapped(record))
         } label: {
-            HStack(alignment: .top, spacing: 16) {
-                CachedImage(url: record.coverPhotoURL) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    Color(.gray50)
-                }
-                .frame(width: 108, height: 108)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-
-                VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .top, spacing: 32) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text(record.title)
-                        .plobbyFont(.cardTitle)
+                        .plobbyFont(.actionLabel)
                         .foregroundStyle(Color(.textPrimary))
                         .lineLimit(1)
 
-                    Text(record.startedAt.formatted(Self.dateStyle))
-                        .plobbyFont(.helper)
-                        .foregroundStyle(Color(.textSecondary))
+                    Text(record.startedAt.recordDateText)
+                        .plobbyFont(.metadata)
+                        .foregroundStyle(Color(.gray600))
+                        .padding(.top, 6)
 
                     Spacer(minLength: 0)
 
@@ -271,23 +261,30 @@ private extension BeachHomeView {
                             .foregroundStyle(Color(.textSecondary))
                             .lineLimit(1)
 
-                        Spacer(minLength: 0)
-
                         if record.likeCount > 0 {
                             HStack(spacing: 2) {
                                 Image(systemName: "heart")
-                                    .font(.system(size: 11))
-
                                 Text("\(record.likeCount)")
-                                    .plobbyFont(.metadata)
                             }
-                            .foregroundStyle(Color(.textSecondary))
+                            .plobbyFont(.metadata)
+                            .foregroundStyle(Color(.gray600))
                         }
                     }
                 }
-                .frame(height: 108)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+
+                CachedImage(url: record.coverPhotoURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Color(.gray50)
+                }
+                .frame(width: 108, height: 108)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
-            .padding(.vertical, 24)
+            .frame(height: 108)
+            .padding(.vertical, 16)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -300,12 +297,6 @@ private extension BeachHomeView {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 40)
     }
-
-    static let dateStyle = Date.VerbatimFormatStyle(
-        format: "\(year: .defaultDigits).\(month: .twoDigits).\(day: .twoDigits)",
-        timeZone: .current,
-        calendar: .current
-    )
 }
 
 // MARK: - 해변을 지키는 사람들
